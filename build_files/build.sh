@@ -3,7 +3,6 @@
 set -ouex pipefail
 
 ### Enable required COPRs
-dnf5 -y copr enable solopasha/hyprland
 dnf5 -y copr enable scottames/ghostty
 
 ### Install Hyprland and Wayland desktop stack
@@ -63,7 +62,6 @@ dnf5 install -y \
     fira-code-fonts
 
 ### Disable COPRs so they don't end up enabled on the final image
-dnf5 -y copr disable solopasha/hyprland
 dnf5 -y copr disable scottames/ghostty
 
 ### Enable system services
