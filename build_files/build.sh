@@ -2,23 +2,75 @@
 
 set -ouex pipefail
 
-### Install packages
+### Enable required COPRs
+dnf5 -y copr enable solopasha/hyprland
+dnf5 -y copr enable scottames/ghostty
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+### Install Hyprland and Wayland desktop stack
+dnf5 install -y \
+    hyprland \
+    hyprlock \
+    hypridle \
+    hyprpaper \
+    hyprpicker \
+    hyprcursor \
+    xdg-desktop-portal-hyprland \
+    waybar \
+    wofi \
+    ghostty \
+    mako \
+    swaybg \
+    grim \
+    slurp \
+    wl-clipboard \
+    cliphist \
+    brightnessctl \
+    playerctl \
+    pamixer \
+    pavucontrol \
+    network-manager-applet \
+    polkit-gnome \
+    qt5-qtwayland \
+    qt6-qtwayland
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+### Install login manager
+dnf5 install -y \
+    sddm \
+    sddm-wayland-generic
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+### Install useful CLI tools
+dnf5 install -y \
+    tmux \
+    htop \
+    fastfetch \
+    git \
+    curl \
+    wget \
+    unzip \
+    fzf \
+    ripgrep \
+    bat \
+    eza
 
-#### Example for enabling a System Unit File
+### Install fonts
+dnf5 install -y \
+    google-noto-fonts-common \
+    google-noto-sans-fonts \
+    google-noto-serif-fonts \
+    google-noto-emoji-fonts \
+    jetbrains-mono-fonts \
+    fontawesome-fonts \
+    fira-code-fonts
 
+### Disable COPRs so they don't end up enabled on the final image
+dnf5 -y copr disable solopasha/hyprland
+dnf5 -y copr disable scottames/ghostty
+
+### Enable system services
 systemctl enable podman.socket
+systemctl enable sddm.service
+systemctl enable NetworkManager.service
+
+### Set SDDM as the default display manager
+ln -sf /usr/lib/systemd/system/sddm.service /etc/systemd/system/display-manager.service
+
