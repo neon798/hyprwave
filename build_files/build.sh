@@ -29,7 +29,7 @@ dnf5 install -y \
     pamixer \
     pavucontrol \
     network-manager-applet \
-    polkit-gnome \
+    polkit-kde \
     qt5-qtwayland \
     qt6-qtwayland
 
