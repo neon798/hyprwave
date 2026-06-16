@@ -9,11 +9,6 @@ dnf5 -y copr enable scottames/ghostty
 ### Install Hyprland and Wayland desktop stack
 dnf5 install -y \
     hyprland \
-    hyprlock \
-    hypridle \
-    hyprpaper \
-    hyprpicker \
-    hyprcursor \
     xdg-desktop-portal-hyprland \
     waybar \
     wofi \
@@ -22,21 +17,16 @@ dnf5 install -y \
     swaybg \
     grim \
     slurp \
-    wl-clipboard \
     cliphist \
     brightnessctl \
     playerctl \
     pamixer \
     pavucontrol \
-    network-manager-applet \
-    polkit-kde \
-    qt5-qtwayland \
-    qt6-qtwayland
+    network-manager-applet
 
 ### Install login manager
 dnf5 install -y \
-    sddm \
-    sddm-wayland-generic
+    sddm
 
 ### Install useful CLI tools
 dnf5 install -y \
@@ -52,7 +42,7 @@ dnf5 install -y \
     bat \
     eza
 
-### Install fonts
+### Install fonts (for proper icon rendering in Waybar, Wofi, etc.)
 dnf5 install -y \
     google-noto-fonts-common \
     google-noto-sans-fonts \
