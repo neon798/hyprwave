@@ -1,0 +1,4 @@
+FROM localhost/hyprwave:latest
+COPY build_files/etc/skel/. /etc/skel/
+COPY build_files/usr/share/hyprwave/ /usr/share/hyprwave/
+RUN bootc container lint

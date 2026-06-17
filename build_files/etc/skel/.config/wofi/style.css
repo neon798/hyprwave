@@ -1,0 +1,61 @@
+window {
+    margin: 0px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(135deg, #ff2d95, #b967ff, #00f0ff) 1;
+    border-radius: 10px;
+    background-color: rgba(11, 1, 33, 0.95);
+    font-family: "JetBrains Mono";
+    font-size: 13px;
+}
+
+#input {
+    margin: 8px;
+    border: 1px solid #b967ff;
+    background-color: rgba(21, 5, 53, 0.9);
+    color: #e0e0ff;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+#inner-box {
+    margin: 4px;
+    border: none;
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 4px;
+    border: none;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#text {
+    margin: 4px;
+    border: none;
+    color: #e0e0ff;
+}
+
+#entry {
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+#entry:selected {
+    background: linear-gradient(90deg, rgba(255, 45, 149, 0.2), rgba(185, 103, 255, 0.2), rgba(0, 240, 255, 0.2));
+    border: none;
+    outline: none;
+}
+
+#entry:selected #text {
+    color: #00f0ff;
+}
+
+#img {
+    margin-right: 8px;
+}

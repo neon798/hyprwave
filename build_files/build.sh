@@ -22,7 +22,10 @@ dnf5 install -y \
     playerctl \
     pamixer \
     pavucontrol \
-    network-manager-applet
+    network-manager-applet \
+    polkit-kde \
+    nautilus \
+    blueman
 
 ### Install login manager
 dnf5 install -y \
@@ -63,4 +66,11 @@ systemctl enable NetworkManager.service
 
 ### Set SDDM as the default display manager
 ln -sf /usr/lib/systemd/system/sddm.service /etc/systemd/system/display-manager.service
+
+### Deploy default dotfiles to /etc/skel/ (new users get these on first login)
+cp -r /ctx/etc/skel/. /etc/skel/
+
+### Deploy wallpapers and system assets
+mkdir -p /usr/share/hyprwave/wallpapers
+cp -r /ctx/usr/share/hyprwave/wallpapers/* /usr/share/hyprwave/wallpapers/
 
