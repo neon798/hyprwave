@@ -10,6 +10,7 @@ dnf5 -y copr enable scottames/ghostty
 dnf5 install -y \
     hyprland \
     xdg-desktop-portal-hyprland \
+    xdg-desktop-portal-gtk \
     waybar \
     wofi \
     ghostty \
@@ -17,15 +18,26 @@ dnf5 install -y \
     swaybg \
     grim \
     slurp \
+    wl-clipboard \
     cliphist \
     brightnessctl \
     playerctl \
-    pamixer \
     pavucontrol \
     network-manager-applet \
     polkit-kde \
-    nautilus \
     blueman
+
+### Install file manager (Thunar) and desktop utilities
+dnf5 install -y \
+    thunar \
+    thunar-volman \
+    thunar-archive-plugin \
+    tumbler \
+    gvfs \
+    xarchiver \
+    imv \
+    mpv \
+    geany
 
 ### Install login manager
 dnf5 install -y \
@@ -58,6 +70,63 @@ dnf5 install -y \
 ### Disable COPRs so they don't end up enabled on the final image
 dnf5 -y copr disable ashbuk/Hyprland-Fedora
 dnf5 -y copr disable scottames/ghostty
+
+### Install Neonwolf — Hyprwave's default web browser (latest stable release).
+### Built in its own repo (neon798/neonwolf) and shipped as an AppImage. We track
+### the latest *stable* release via GitHub's /releases/latest/download/ redirect
+### (excludes pre-releases, no API rate limits). The AppImage is extracted at build
+### time so the deployed image needs no FUSE at runtime; /usr/bin/neonwolf launches it.
+curl -fsSL -o /tmp/neonwolf.AppImage \
+    https://github.com/neon798/neonwolf/releases/latest/download/Neonwolf-x86_64.AppImage
+chmod +x /tmp/neonwolf.AppImage
+(cd /tmp && ./neonwolf.AppImage --appimage-extract >/dev/null)
+rm -rf /usr/lib/neonwolf
+mv /tmp/squashfs-root /usr/lib/neonwolf
+rm -f /tmp/neonwolf.AppImage
+cat >/usr/bin/neonwolf <<'EOF'
+#!/usr/bin/bash
+exec /usr/lib/neonwolf/AppRun "$@"
+EOF
+chmod +x /usr/bin/neonwolf
+cp -L /usr/lib/neonwolf/.DirIcon /usr/share/pixmaps/neonwolf.png 2>/dev/null || true
+cat >/usr/share/applications/neonwolf.desktop <<'EOF'
+[Desktop Entry]
+Name=Neonwolf
+GenericName=Web Browser
+Comment=Synthwave, privacy-focused web browser
+Exec=neonwolf %u
+Icon=neonwolf
+Type=Application
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+StartupWMClass=neonwolf
+Terminal=false
+EOF
+
+### Install FlatArcade — Hyprwave's default "app store" (Flathub TUI, latest release).
+### Also its own repo (neon798/flatarcade): a Rust/ratatui TUI for browsing Flathub
+### and managing Flatpaks. Flatpak + the Flathub remote already come from the base
+### image (at /etc/flatpak/remotes.d/flathub.flatpakrepo); no GUI store ships, so this
+### TUI is the front-end. It's launched inside Ghostty from graphical launchers.
+curl -fsSL -o /usr/bin/flatarcade \
+    https://github.com/neon798/flatarcade/releases/latest/download/flatarcade
+chmod +x /usr/bin/flatarcade
+mkdir -p /usr/share/icons/hicolor/scalable/apps
+curl -fsSL -o /usr/share/icons/hicolor/scalable/apps/flatarcade.svg \
+    https://github.com/neon798/flatarcade/releases/latest/download/flatarcade.svg
+cat >/usr/share/applications/flatarcade.desktop <<'EOF'
+[Desktop Entry]
+Name=FlatArcade
+GenericName=Software Center
+Comment=Browse Flathub and manage your Flatpaks
+Exec=ghostty -e flatarcade
+Icon=flatarcade
+Type=Application
+Categories=System;PackageManager;Settings;
+StartupNotify=true
+Terminal=false
+EOF
 
 ### Enable system services
 systemctl enable podman.socket

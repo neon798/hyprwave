@@ -3,7 +3,31 @@ font-size = 12
 font-feature = calt
 font-feature = liga
 
-theme = catppuccin-mocha
+# Synthwave palette (matches waybar / wofi / mako / hyprlock)
+background = 15052e
+foreground = e0e0ff
+cursor-color = ff2d95
+cursor-text = 15052e
+selection-background = b967ff
+selection-foreground = 15052e
+
+# 16-color ANSI (normal 0-7, bright 8-15)
+palette = 0=#2a0a45
+palette = 1=#ff2d95
+palette = 2=#72f1b8
+palette = 3=#fede5d
+palette = 4=#5d5dff
+palette = 5=#b967ff
+palette = 6=#00f0ff
+palette = 7=#e0e0ff
+palette = 8=#404080
+palette = 9=#ff5dab
+palette = 10=#8affc1
+palette = 11=#ffe98a
+palette = 12=#8f8fff
+palette = 13=#d8a4ff
+palette = 14=#36f9f6
+palette = 15=#ffffff
 
 background-opacity = 0.92
 background-blur-radius = 20

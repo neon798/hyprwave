@@ -29,4 +29,10 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
-PS1='\[\e[38;5;39m\]\u\[\e[0m\]\[\e[38;5;248m\]@\[\e[0m\]\[\e[38;5;44m\]\h\[\e[0m\] \[\e[38;5;248m\]\w\[\e[0m\] \[\e[38;5;39m\]\$\[\e[0m\] '
+# Synthwave prompt: user (magenta) @ host (purple)  path (cyan)  $ (magenta)
+PS1='\[\e[38;2;255;45;149m\]\u\[\e[0m\]\[\e[38;2;64;64;128m\]@\[\e[0m\]\[\e[38;2;185;103;255m\]\h\[\e[0m\] \[\e[38;2;0;240;255m\]\w\[\e[0m\] \[\e[38;2;255;45;149m\]\$\[\e[0m\] '
+
+# Synthwave login banner
+if command -v fastfetch >/dev/null 2>&1; then
+    fastfetch
+fi

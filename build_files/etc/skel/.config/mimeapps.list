@@ -1,0 +1,8 @@
+[Default Applications]
+x-scheme-handler/http=neonwolf.desktop
+x-scheme-handler/https=neonwolf.desktop
+x-scheme-handler/about=neonwolf.desktop
+x-scheme-handler/unknown=neonwolf.desktop
+text/html=neonwolf.desktop
+application/xhtml+xml=neonwolf.desktop
+application/xml=neonwolf.desktop
