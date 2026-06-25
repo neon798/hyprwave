@@ -27,12 +27,17 @@ dnf5 install -y \
     polkit-kde \
     blueman
 
-### Install file manager (Thunar) and desktop utilities
+### Install file-manager helpers + desktop utilities. The file manager is Yazi
+### (a terminal app installed from upstream below — it isn't packaged in Fedora);
+### these are its preview/extraction dependencies plus general desktop tools.
 dnf5 install -y \
-    thunar \
-    thunar-volman \
-    thunar-archive-plugin \
-    tumbler \
+    ffmpegthumbnailer \
+    poppler-utils \
+    fd-find \
+    unar \
+    jq \
+    ImageMagick \
+    zoxide \
     gvfs \
     xarchiver \
     imv \
@@ -70,6 +75,31 @@ dnf5 install -y \
 ### Disable COPRs so they don't end up enabled on the final image
 dnf5 -y copr disable ashbuk/Hyprland-Fedora
 dnf5 -y copr disable scottames/ghostty
+
+### Install Yazi — Hyprwave's default file manager (terminal-based, latest release).
+### Not packaged in Fedora, so we pull the upstream prebuilt binaries (yazi + the
+### `ya` helper) from GitHub's /releases/latest/download/ redirect, same pattern as
+### the apps below. Launched inside Ghostty from the keybind / .desktop.
+curl -fsSL -o /tmp/yazi.zip \
+    https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip
+mkdir -p /tmp/yazi
+unzip -q /tmp/yazi.zip -d /tmp/yazi
+install -m0755 /tmp/yazi/*/yazi /usr/bin/yazi
+install -m0755 /tmp/yazi/*/ya /usr/bin/ya
+rm -rf /tmp/yazi /tmp/yazi.zip
+cat >/usr/share/applications/yazi.desktop <<'EOF'
+[Desktop Entry]
+Name=Yazi
+GenericName=File Manager
+Comment=Blazing fast terminal file manager
+Exec=ghostty -e yazi %f
+Icon=system-file-manager
+Type=Application
+Categories=System;FileManager;Utility;
+MimeType=inode/directory;
+StartupNotify=true
+Terminal=false
+EOF
 
 ### Install Neonwolf — Hyprwave's default web browser (latest stable release).
 ### Built in its own repo (neon798/neonwolf) and shipped as an AppImage. We track
