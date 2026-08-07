@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: IN_PROGRESS  
+status: DONE  
 task_id: E-W1-001  
 wave: 1  
 issued: 2026-08-07T03:50:00Z  
@@ -30,15 +30,15 @@ See IDENTITY.md (skel hypr/waybar/walker/mako/ghostty/yazi/autostart/systemd use
 
 ## Requirements
 
-- [ ] Audit `autostart.conf` + walker autostart + hyprpaper: document start order in `planning/integration/e-hyprland/AUTOSTART.md`
-- [ ] Fix real bugs found (race, missing exec, obsolete swaybg/wofi references)
-- [ ] `bindings.conf`: ensure Walker, terminal, yazi, screenshots, theme GUI binds exist and do not conflict; comment sections
-- [ ] Produce `planning/integration/e-hyprland/KEYBIND-MAP.md` — every bind → action (machine-readable table)
-- [ ] `windowrules.conf`: walker namespace no-anim rule present; add rules only with rationale comments
-- [ ] Waybar: modules list documented; no dead modules; style still theme-symlink friendly if applicable
-- [ ] Ghostty/yazi: defaults match “default apps” story (Neonwolf is browser — don’t break)
-- [ ] `planning/integration/e-hyprland/SESSION-SMOKE.md` — 15 manual checks after login
-- [ ] ≥3 commits; push `lane/e-hyprland`
+- [x] Audit `autostart.conf` + walker autostart + hyprpaper: document start order in `planning/integration/e-hyprland/AUTOSTART.md`
+- [x] Fix real bugs found (race, missing exec, obsolete swaybg/wofi references)
+- [x] `bindings.conf`: ensure Walker, terminal, yazi, screenshots, theme GUI binds exist and do not conflict; comment sections
+- [x] Produce `planning/integration/e-hyprland/KEYBIND-MAP.md` — every bind → action (machine-readable table)
+- [x] `windowrules.conf`: walker namespace no-anim rule present; add rules only with rationale comments
+- [x] Waybar: modules list documented; no dead modules; style still theme-symlink friendly if applicable
+- [x] Ghostty/yazi: defaults match “default apps” story (Neonwolf is browser — don’t break)
+- [x] `planning/integration/e-hyprland/SESSION-SMOKE.md` — 15 manual checks after login
+- [x] ≥3 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
@@ -46,7 +46,7 @@ See IDENTITY.md (skel hypr/waybar/walker/mako/ghostty/yazi/autostart/systemd use
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
