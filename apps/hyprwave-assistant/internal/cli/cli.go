@@ -94,19 +94,22 @@ Update flags:
   --all           Flatpaks then base (default)
   --check         Non-mutating check (status / remote-ls --updates)
   --dry-run       Print plan only; never execute
-  --yes           Skip confirmation for mutating ops (scripted)
+  --yes           First confirmation for mutating ops (scripted)
+  --confirm       Second confirmation (required with --yes for all mutations)
 
 Install flags:
   --dry-run       Print flatpak install plan
-  --yes           Required for real install (non-interactive)
+  --yes --confirm Required together for real install (double-confirm)
 
 Global:
   --data DIR / HYPRWAVE_ASSISTANT_DATA   Data directory
 
 Notes:
   • This tool never reboots the system.
+  • Destructive paths need dry-run available + double confirm (--yes and --confirm).
   • Base upgrades need root/sudo/polkit; failures are reported clearly.
   • Prefer Flatpak for apps; layer catalog entries print instructions only.
+  • Offline: KB + catalog still work; updater blocks remote ops clearly.
 `, version)
 }
 
@@ -157,6 +160,7 @@ func runUpdate(cfg Config, args []string) error {
 	dry := hasFlag(args, "--dry-run")
 	check := hasFlag(args, "--check")
 	yes := cfg.Yes || hasFlag(args, "--yes")
+	confirm := hasFlag(args, "--confirm")
 
 	target := system.TargetAll
 	switch {
@@ -190,17 +194,21 @@ func runUpdate(cfg Config, args []string) error {
 	// Mutating path
 	pf := system.CollectPreflight(cfg.runner())
 	fmt.Fprintln(cfg.out(), pf.Summary())
+	if ban := pf.OfflineBanner(); ban != "" {
+		fmt.Fprintln(cfg.out(), ban)
+		return fmt.Errorf("refusing remote update while offline (KB/catalog still work; try again online)")
+	}
 	if (target == system.TargetBase || target == system.TargetAll) && !pf.CanMutateBase() {
 		return fmt.Errorf("cannot update base: bootc/privileges unavailable")
 	}
 	if (target == system.TargetFlatpak || target == system.TargetAll) && !pf.CanMutateFlatpak() {
 		return fmt.Errorf("cannot update flatpak: flatpak unavailable")
 	}
-	if !yes {
-		return fmt.Errorf("refusing mutating update without --yes (or use --dry-run / --check)\nplan:\n%s", system.FormatPlan(cmds))
+	if err := requireDoubleConfirm(yes, confirm, cmds); err != nil {
+		return err
 	}
 
-	fmt.Fprintln(cfg.out(), "Executing:")
+	fmt.Fprintln(cfg.out(), "Executing (double-confirmed):")
 	fmt.Fprint(cfg.out(), system.FormatPlan(cmds))
 	ctx, cancel := context.WithTimeout(context.Background(), system.LongTimeout)
 	defer cancel()
@@ -212,12 +220,29 @@ func runUpdate(cfg Config, args []string) error {
 	return err
 }
 
+// requireDoubleConfirm enforces --yes and --confirm for destructive CLI ops.
+func requireDoubleConfirm(yes, confirm bool, cmds []system.Cmd) error {
+	if yes && confirm {
+		return nil
+	}
+	plan := system.FormatPlan(cmds)
+	switch {
+	case !yes && !confirm:
+		return fmt.Errorf("refusing mutation without double-confirm: pass --yes --confirm (or --dry-run)\n%s", plan)
+	case !yes:
+		return fmt.Errorf("refusing mutation: missing --yes (double-confirm requires --yes --confirm)\n%s", plan)
+	default:
+		return fmt.Errorf("refusing mutation: missing --confirm (second confirmation after --yes)\n%s", plan)
+	}
+}
+
 func runInstall(cfg Config, args []string) error {
 	dry := hasFlag(args, "--dry-run")
 	yes := cfg.Yes || hasFlag(args, "--yes")
+	confirm := hasFlag(args, "--confirm")
 	pos := positional(args)
 	if len(pos) < 1 {
-		return fmt.Errorf("usage: hyprwave-assistant install <catalog-id|flatpak-id> [--dry-run|--yes]")
+		return fmt.Errorf("usage: hyprwave-assistant install <catalog-id|flatpak-id> [--dry-run|--yes --confirm]")
 	}
 	id := pos[0]
 
@@ -261,16 +286,17 @@ func runInstall(cfg Config, args []string) error {
 		fmt.Fprint(cfg.out(), system.FormatDryRun([]system.Cmd{cmd}))
 		return nil
 	}
-	if !yes {
-		return fmt.Errorf("refusing install without --yes (or use --dry-run)\nplan:\n%s", system.FormatPlan([]system.Cmd{cmd}))
+	if err := requireDoubleConfirm(yes, confirm, []system.Cmd{cmd}); err != nil {
+		return err
 	}
 
 	pf := system.CollectPreflight(cfg.runner())
+	if ban := pf.OfflineBanner(); ban != "" {
+		fmt.Fprintln(cfg.out(), ban)
+		return fmt.Errorf("refusing install while offline")
+	}
 	if !pf.CanMutateFlatpak() {
 		return fmt.Errorf("flatpak not available")
-	}
-	if !pf.Online {
-		fmt.Fprintln(cfg.err(), "warning:", pf.OnlineDetail)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), system.LongTimeout)

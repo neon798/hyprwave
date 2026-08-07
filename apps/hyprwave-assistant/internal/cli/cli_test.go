@@ -9,7 +9,12 @@ import (
 
 	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/catalog"
 	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/kb"
+	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/system"
 )
+
+func systemPlanAll() ([]system.Cmd, error) {
+	return system.PlanUpdate(system.TargetAll, false)
+}
 
 type fakeRunner struct {
 	paths map[string]bool
@@ -67,16 +72,42 @@ func TestUpdateDryRun(t *testing.T) {
 	}
 }
 
-func TestUpdateRefusesWithoutYes(t *testing.T) {
+func TestUpdateRefusesWithoutDoubleConfirm(t *testing.T) {
+	// Avoid real network in CollectPreflight via tests in system package — here
+	// runUpdate will call CollectPreflight. Use dry-run-only assert on missing flags first.
 	var out bytes.Buffer
 	err := Run(Config{
 		Stdout: &out,
 		Runner: fakeRunner{paths: map[string]bool{"bootc": true, "flatpak": true, "sudo": true}},
-	}, []string{"update", "--flatpak"})
-	if err == nil {
-		t.Fatal("expected refuse")
+	}, []string{"update", "--flatpak", "--dry-run"})
+	if err != nil {
+		t.Fatal(err)
 	}
-	if !strings.Contains(err.Error(), "--yes") {
+	err = Run(Config{
+		Stdout: &out,
+		Runner: fakeRunner{paths: map[string]bool{"bootc": true, "flatpak": true, "sudo": true}},
+	}, []string{"update", "--flatpak", "--yes"})
+	// May fail offline or missing --confirm
+	if err == nil {
+		t.Fatal("expected refuse without --confirm")
+	}
+	if !strings.Contains(err.Error(), "--confirm") && !strings.Contains(err.Error(), "offline") {
+		t.Fatal(err)
+	}
+}
+
+func TestRequireDoubleConfirm(t *testing.T) {
+	cmds, _ := systemPlanAll()
+	if err := requireDoubleConfirm(true, true, cmds); err != nil {
+		t.Fatal(err)
+	}
+	if err := requireDoubleConfirm(false, false, cmds); err == nil {
+		t.Fatal("expected err")
+	}
+	if err := requireDoubleConfirm(true, false, cmds); !strings.Contains(err.Error(), "--confirm") {
+		t.Fatal(err)
+	}
+	if err := requireDoubleConfirm(false, true, cmds); !strings.Contains(err.Error(), "--yes") {
 		t.Fatal(err)
 	}
 }

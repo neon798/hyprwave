@@ -72,23 +72,47 @@ func TestTabNavigation(t *testing.T) {
 
 func TestConfirmBaseUpdate(t *testing.T) {
 	m := New(Config{Runner: stubRunner{}, Catalog: testCatalog(), KB: testKB()})
+	// Mark status loaded online so offline guard doesn't block.
+	m.statusLoaded = true
+	m.status.Preflight.Online = true
 	nm, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'b'}})
 	m = nm.(Model)
 	if m.confirm == nil || m.confirm.action != actionUpdateBase {
 		t.Fatalf("expected confirm base: %+v", m.confirm)
 	}
-	if !m.confirm.danger {
-		t.Fatal("expected reboot danger flag")
+	if !m.confirm.danger || m.confirm.step != 1 {
+		t.Fatalf("expected danger step1: %+v", m.confirm)
 	}
 	view := m.View()
 	if !strings.Contains(view, "REBOOT") && !strings.Contains(view, "reboot") {
 		t.Fatalf("confirm view missing reboot warning: %s", view)
+	}
+	// first Y advances to step 2
+	nm, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'y'}})
+	m = nm.(Model)
+	if m.confirm == nil || m.confirm.step != 2 {
+		t.Fatalf("expected step 2: %+v", m.confirm)
 	}
 	// cancel
 	nm, _ = m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'n'}})
 	m = nm.(Model)
 	if m.confirm != nil {
 		t.Fatal("confirm should clear")
+	}
+}
+
+func TestOfflineBlocksBaseUpdate(t *testing.T) {
+	m := New(Config{Runner: stubRunner{}, Catalog: testCatalog(), KB: testKB()})
+	m.statusLoaded = true
+	m.status.Preflight.Online = false
+	m.status.Preflight.OnlineDetail = "test offline"
+	nm, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'b'}})
+	m = nm.(Model)
+	if m.confirm != nil {
+		t.Fatal("should not open confirm offline")
+	}
+	if !m.showLog {
+		t.Fatal("expected offline log")
 	}
 }
 

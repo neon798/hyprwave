@@ -86,6 +86,8 @@ type confirmState struct {
 	message string
 	action  confirmAction
 	danger  bool // shows reboot warning chrome
+	// step 1 = first confirm, step 2 = second confirm (double-confirm for mutations)
+	step int
 }
 
 type confirmAction int
@@ -292,6 +294,14 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 func (m Model) handleConfirmKey(key string) (tea.Model, tea.Cmd) {
 	switch key {
 	case "y", "Y", "enter":
+		if m.confirm.step < 2 {
+			// Second confirmation required for all destructive actions.
+			m.confirm.step = 2
+			m.confirm.title = "Confirm again: " + m.confirm.title
+			m.confirm.message = "Second confirmation required.\n\n" + m.confirm.message +
+				"\n\nPress Y again to execute, or N to cancel."
+			return m, nil
+		}
 		act := m.confirm.action
 		m.confirm = nil
 		return m.startConfirmed(act)
@@ -309,32 +319,56 @@ func (m Model) handleUpdaterKey(key string) (tea.Model, tea.Cmd) {
 		m.busyLabel = "Refreshing status…"
 		return m, m.refreshStatus()
 	case "b", "B":
+		if ban := m.status.Preflight.OfflineBanner(); ban != "" && m.statusLoaded {
+			m.lastErr = ban
+			m.lastOutput = "Base upgrades need network. KB and catalog still work offline."
+			m.showLog = true
+			m.logVP.SetContent(m.formatLog())
+			return m, nil
+		}
 		plan, _ := system.PlanUpdate(system.TargetBase, false)
 		m.confirm = &confirmState{
 			title: "Update base system (bootc)",
 			message: "This stages a new deployment. Reboot is NEVER forced.\n\n" +
-				system.FormatPlan(plan) + "\nMay need root/sudo/polkit. Proceed?",
+				system.FormatPlan(plan) + "\nMay need root/sudo/polkit.\nDouble-confirm required (Y twice).",
 			action: actionUpdateBase,
 			danger: true,
+			step:   1,
 		}
 		return m, nil
 	case "f", "F":
+		if ban := m.status.Preflight.OfflineBanner(); ban != "" && m.statusLoaded {
+			m.lastErr = ban
+			m.lastOutput = "Flatpak updates need network. KB and catalog still work offline."
+			m.showLog = true
+			m.logVP.SetContent(m.formatLog())
+			return m, nil
+		}
 		plan, _ := system.PlanUpdate(system.TargetFlatpak, false)
 		m.confirm = &confirmState{
 			title: "Update Flatpaks",
 			message: "Updates installed Flatpaks (usually no reboot).\n\n" +
-				system.FormatPlan(plan) + "\nProceed?",
+				system.FormatPlan(plan) + "\nDouble-confirm required (Y twice).",
 			action: actionUpdateFlatpaks,
+			step:   1,
 		}
 		return m, nil
 	case "a", "A":
+		if ban := m.status.Preflight.OfflineBanner(); ban != "" && m.statusLoaded {
+			m.lastErr = ban
+			m.lastOutput = "Update-all needs network. KB and catalog still work offline."
+			m.showLog = true
+			m.logVP.SetContent(m.formatLog())
+			return m, nil
+		}
 		plan, _ := system.PlanUpdate(system.TargetAll, false)
 		m.confirm = &confirmState{
 			title: "Update all",
 			message: "Flatpaks first, then base image. Reboot is NEVER forced.\n\n" +
-				system.FormatPlan(plan) + "\nProceed?",
+				system.FormatPlan(plan) + "\nDouble-confirm required (Y twice).",
 			action: actionUpdateAll,
 			danger: true,
+			step:   1,
 		}
 		return m, nil
 	case "o", "O":
@@ -375,17 +409,27 @@ func (m Model) handleInstallerKey(key string) (tea.Model, tea.Cmd) {
 		msg := fmt.Sprintf("Install %s?\n\n%s\nSource: %s\n\n", it.Name, it.Description, it.InstallLabel())
 		if it.Source == catalog.SourceLayer {
 			msg += system.LayerNote(it.Packages) + "\n\n(Layer items show instructions only — not auto-installed.)"
+			// Layer notes are non-destructive; single confirm is enough, but step=2 skips second prompt.
 			m.confirm = &confirmState{
 				title:   "Layer package (manual)",
 				message: msg + "\n\nPress Y to show instructions in the log.",
 				action:  actionInstall,
+				step:    2,
 			}
 		} else {
-			msg += "This runs `flatpak install -y flathub <id>`.\n\nProceed?"
+			if ban := m.status.Preflight.OfflineBanner(); ban != "" && m.statusLoaded {
+				m.lastErr = ban
+				m.lastOutput = "Install needs network. Browse the catalog offline; install when online."
+				m.showLog = true
+				m.logVP.SetContent(m.formatLog())
+				return m, nil
+			}
+			msg += "This runs `flatpak install -y flathub <id>`.\nDouble-confirm required (Y twice).\n\nProceed?"
 			m.confirm = &confirmState{
 				title:   "Install " + it.Name,
 				message: msg,
 				action:  actionInstall,
+				step:    1,
 			}
 		}
 		return m, nil
@@ -629,13 +673,19 @@ func (m Model) View() string {
 
 func (m Model) viewConfirm() string {
 	c := m.confirm
-	title := style.Highlight.Render(c.title)
+	stepLabel := style.Muted.Render(fmt.Sprintf("confirm %d/2", max(1, c.step)))
+	title := style.Highlight.Render(c.title) + "  " + stepLabel
 	msg := style.Body.Render(c.message)
 	warn := ""
 	if c.danger {
 		warn = "\n" + style.Warning.Render("⚠ REBOOT WARNING: base changes apply on next boot — never forced here.")
 	}
-	prompt := "\n\n" + style.Success.Render("[Y]") + " yes   " + style.Error.Render("[N]") + " no / Esc"
+	prompt := "\n\n"
+	if c.step < 2 {
+		prompt += style.Success.Render("[Y]") + " continue to 2nd confirm   " + style.Error.Render("[N]") + " cancel"
+	} else {
+		prompt += style.Success.Render("[Y]") + " execute now   " + style.Error.Render("[N]") + " cancel"
+	}
 	return title + "\n\n" + msg + warn + prompt
 }
 
@@ -658,6 +708,10 @@ func (m Model) viewUpdater() string {
 	b.WriteString(style.Highlight.Render("Preflight") + "  ")
 	b.WriteString(style.Muted.Render(fmt.Sprintf("online=%s  root=%s  bootc=%s  flatpak=%s",
 		boolYN(pf.Online), boolYN(pf.IsRoot), boolYN(pf.HasBootc), boolYN(pf.HasFlatpak))) + "\n")
+	if ban := pf.OfflineBanner(); ban != "" {
+		b.WriteString(style.Error.Render("  "+ban) + "\n")
+		b.WriteString(style.Muted.Render("  KB + catalog still work offline. Updates/installs need network.") + "\n")
+	}
 	if len(pf.Warnings) > 0 {
 		for _, w := range pf.Warnings {
 			b.WriteString(style.Warning.Render("  ⚠ "+w) + "\n")

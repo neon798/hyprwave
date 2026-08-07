@@ -22,7 +22,7 @@ import (
 )
 
 // version is overridden at link time: -ldflags "-X main.version=1.0.0"
-var version = "0.2.0"
+var version = "0.2.1"
 
 func main() {
 	// Global flags work before subcommands: hyprwave-assistant --data DIR status
