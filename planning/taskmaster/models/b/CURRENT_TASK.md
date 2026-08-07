@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: B-W1-004  
 wave: 1  
 issued: 2026-08-07T05:05:00Z  
@@ -25,11 +25,11 @@ Freeze user docs for integration: honest pending-merge table final pass, CHANGEL
 
 ## Requirements
 
-- [ ] CHANGELOG Unreleased: final A–G pending-merge honesty table; add “Post-merge template” subsection with bullets integrator can flip to Released
-- [ ] `docs/architecture.md`: bootc + dual DE + theme store + (lane) Assistant/duress packaging boundaries
-- [ ] `docs/contributor-notes.md`: how to refresh handbook after lane merges; link Task Master PROTOCOL
-- [ ] Relative link check clean; ACCURACY-AUDIT freeze note (date + main tip)
-- [ ] ≥3 commits; push `lane/b-docs`
+- [x] CHANGELOG Unreleased: final A–G pending-merge honesty table; add “Post-merge template” subsection with bullets integrator can flip to Released
+- [x] `docs/architecture.md`: bootc + dual DE + theme store + (lane) Assistant/duress packaging boundaries
+- [x] `docs/contributor-notes.md`: how to refresh handbook after lane merges; link Task Master PROTOCOL
+- [x] Relative link check clean; ACCURACY-AUDIT freeze note (date + main tip)
+- [x] ≥3 commits; push `lane/b-docs`
 
 ## Deliverables
 
@@ -37,7 +37,7 @@ Freeze user docs for integration: honest pending-merge table final pass, CHANGEL
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
