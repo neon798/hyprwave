@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: D-W1-003  
+status: OPEN  
+task_id: D-W1-004  
 wave: 1  
-issued: 2026-08-07T04:55:00Z  
-title: Signing workflow dry-run docs + snippet self-test + residual operator duties  
+issued: 2026-08-07T05:05:00Z  
+title: Pre-merge duress freeze + integrator checklist  
 
 ## Objective
 
-Final packaging confidence before integration: document **how operators sign** without shipping signatures, prove snippets are inert, and list residual risks operators still own (ENDPOINT: packaged OFF by default).
+Freeze duress packaging for merge: single INTEGRATOR-CHECKLIST, validate+snippet-selftest green, reaffirm OFF by default with no path to accidental enable.
 
 ## Exclusive paths
 
@@ -19,27 +19,25 @@ Final packaging confidence before integration: document **how operators sign** w
 
 ## Forbidden
 
-- Enabling pam_duress in shipped defaults
-- Committing `*.sha256` signatures into the repo
-- Skel / assistant / handbook prose (B)
+- Enabling pam_duress in defaults
+- Committing `*.sha256`
+- Skel / assistant / handbook product prose
 
 ## Requirements
 
-- [x] `planning/integration/d-duress/SIGNING.md` — generate checksums locally, install to target dir, `--verify` success path, **never** commit signatures; worked example with disposable path
-- [x] `snippet-selftest.sh` (or validate.sh section): asserts `build.sh.snippet` / `Containerfile.snippet` do not enable PAM / write pam.d; exit 0 on current tree
-- [x] README severity table still matches all templates; link FAQ + OPERATOR-RUNBOOK + SIGNING
-- [x] `RESIDUALS.md` — what packaging does **not** solve (disk encryption, physical access, signed-script trust root, bootc PAM drift) for integrator/B
-- [x] validate.sh still green including negatives
-- [x] ≥3 commits; push `lane/d-duress`
+- [ ] `planning/integration/d-duress/INTEGRATOR-CHECKLIST.md` — ordered steps: merge tree → apply snippets → do **not** enable PAM → run validate → document operator ENABLE path only
+- [ ] README index links SIGNING, RESIDUALS, FAQ, OPERATOR-RUNBOOK, DRILL, checklist
+- [ ] `validate.sh` + `snippet-selftest.sh` exit 0
+- [ ] Confirm zero `*.sha256` in tree; no active pam.d writes in snippets
+- [ ] ≥3 commits; push `lane/d-duress`
 
 ## Deliverables
 
-- SIGNING.md, residuals, snippet self-test, README index polish
+- INTEGRATOR-CHECKLIST + freeze validation
 
 ## Done criteria
 
-- [x] `bash planning/integration/d-duress/validate.sh` exits 0
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] validate + snippet-selftest green; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
