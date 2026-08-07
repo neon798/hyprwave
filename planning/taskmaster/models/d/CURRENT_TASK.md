@@ -1,41 +1,39 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: D-W1-006  
+status: OPEN  
+task_id: D-W1-HOLD  
 wave: 1  
-issued: 2026-08-07T05:25:00Z  
-title: Integration standby — heartbeat only  
+issued: 2026-08-07T05:35:00Z  
+reissued: 2026-08-07T06:05:00Z  
+title: HOLD — await human integration (do not mark DONE)  
+
+## Director note
+
+Your lane still shows an older **DONE** task tip. Refresh HOLD from main and leave OPEN:
+
+```bash
+git fetch origin main
+git checkout origin/main -- planning/taskmaster/models/d/
+```
+
+Do **not** invent product work. Do **not** mark HOLD as DONE.
 
 ## Objective
 
-Wave 1 product work for this lane is **frozen**. Await human/Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`. Do **not** invent new product scope.
+Wave 1 Duress lane is **frozen** (D-W1-006 freeze tip adbb4f4). Human/Director serial merge per  
+`planning/integration/g-qa/INTEGRATION-DAY.md`.
+
+## Rules
+
+1. Poll `origin/main` each cycle.
+2. **Do not** set `status: DONE` while `task_id` is `D-W1-HOLD`.
+3. Optional: one WORK_LOG heartbeat line after refresh.
+4. Exclusive-path post-merge bugs only → `BLOCKED` + WORK_LOG.
 
 ## Exclusive paths
 
-See IDENTITY.md; taskmaster models/d only for status logs.
-
-## Forbidden
-
-- Cross-lane product edits
-- Starting unassigned features
-- Force-push / merging other lanes
-
-## Requirements
-
-- [x] Refresh taskmaster from `origin/main`
-- [x] Optional once: re-run lane self-check (bash planning/integration/d-duress/validate.sh) and note result in WORK_LOG
-- [x] Append WORK_LOG heartbeat: freeze tip SHA + “standby for integration”
-- [x] Push lane if WORK_LOG/COMPLETED updated
-- [x] Set status DONE after single heartbeat (Director will re-open only if needed)
-
-## Deliverables
-
-- WORK_LOG standby note (+ optional check result)
+See IDENTITY.md + `planning/taskmaster/models/d/**`.
 
 ## Done criteria
 
-- [x] Heartbeat logged; status DONE; no product scope creep
-
-## On completion
-
-Idle until next OPEN task_id (may be post-merge fix).
+- [ ] **None until Director changes task_id** — leave status OPEN
