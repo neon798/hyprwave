@@ -12,6 +12,7 @@
 | [PRE-MERGE-DRY-RUN.md](./PRE-MERGE-DRY-RUN.md) | Pairwise conflict probe narrative + go/no-go |
 | [SMOKE-MATRIX.md](./SMOKE-MATRIX.md) | Build/session smokes; **§9 = GHCR publish hard gates** |
 | [ENDPOINT-RESIDUALS.md](./ENDPOINT-RESIDUALS.md) | Program closeout tracker (update after merges) |
+| [PROGRAM-CLOSEOUT.md](./PROGRAM-CLOSEOUT.md) | ENDPOINT 1–10 → exact verify commands for `PROGRAM_COMPLETE` |
 | [../../qa/README.md](../../qa/README.md) | Host harness usage + exit codes |
 | [../a-stabilize/MERGE-READY.md](../a-stabilize/MERGE-READY.md) | A pin/CI freeze gate (when A merged) |
 | [../a-stabilize/RELEASE.md](../a-stabilize/RELEASE.md) · [COSIGN.md](../a-stabilize/COSIGN.md) | Publish/sign |
