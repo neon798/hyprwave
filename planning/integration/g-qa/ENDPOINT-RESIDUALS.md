@@ -2,19 +2,20 @@
 
 **Owner:** Model G (read-only inspection + tracking; does not merge product lanes).  
 **Source of truth for “finished”:** `planning/taskmaster/ENDPOINT.md` product items 1–10.  
-**Inspection date:** 2026-08-07 (UTC) — G-W1-004 refresh  
-**Baseline refs:** `origin/main` @ `6c5da71` + remote-tracking `origin/lane/*` after `git fetch`.  
-**Master human procedure:** [INTEGRATION-DAY.md](./INTEGRATION-DAY.md)
+**Inspection date:** 2026-08-07 (UTC) — G-W1-005 refresh  
+**Baseline refs:** `origin/main` @ `98fe075` + remote-tracking `origin/lane/*` after `git fetch`.  
+**Master human procedure:** [INTEGRATION-DAY.md](./INTEGRATION-DAY.md)  
+**Closeout verify matrix:** [PROGRAM-CLOSEOUT.md](./PROGRAM-CLOSEOUT.md)
 
 | Lane | Tip (short) | Notes |
 |---|---|---|
-| a-stabilize | `94f08d6` | MERGE-READY on lane |
-| b-docs | `fb3eb36` | POST-MERGE-DOC-FLIP on lane |
-| c-assistant | `92a1a89` | snippets + HANDOFF |
-| d-duress | `4bb5b55` | INTEGRATOR-CHECKLIST |
-| e-hyprland | `935fd96` | INTEGRATION-DAY VM card |
-| f-cosmic | `7b19270` | INTEGRATOR-CHECKLIST + vendor script |
-| g-qa | this branch | harness + integration-day master |
+| a-stabilize | `0dbde46` | MERGE-READY on lane |
+| b-docs | `4ababf9` | POST-MERGE-DOC-FLIP on lane |
+| c-assistant | `2dafc3b` | snippets + HANDOFF |
+| d-duress | `84371bb` | INTEGRATOR-CHECKLIST |
+| e-hyprland | `985b441` | INTEGRATION-DAY VM card |
+| f-cosmic | `a4cdb8a` | INTEGRATOR-CHECKLIST + vendor script |
+| g-qa | this branch | harness + integration-day + closeout |
 
 Status vocabulary:
 
