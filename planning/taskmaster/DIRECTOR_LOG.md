@@ -316,3 +316,9 @@
 - HOLD steady: **C** `5dfa5a3`, **D** `c40d83c`, **E** `1d939c0` heartbeats; A/B/F/G tips unchanged (`a69e0d9` / `3cbe3e6` / `9f59118` / `b6efd63`).
 - Main product still unmerged; sole blocker human serial merge.
 - No new tasks; no re-issue.
+
+## 2026-08-07T12:13:13Z — Director check-in
+
+- HOLD steady: **D** `5958f7a`, **E** `7c8fd63` heartbeats; **C** still `5dfa5a3` (no new poll); A/B/F/G tips unchanged (`a69e0d9` / `3cbe3e6` / `9f59118` / `b6efd63`).
+- Main product still unmerged; sole blocker human serial merge.
+- No new tasks; no re-issue.
