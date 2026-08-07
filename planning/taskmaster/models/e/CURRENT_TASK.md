@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: E-W1-003  
 wave: 1  
 issued: 2026-08-07T04:55:00Z  
@@ -33,13 +33,13 @@ Polish remaining Hyprland session edges: windowrules rationale completeness, mul
 
 ## Requirements
 
-- [ ] `windowrules.conf`: every rule has rationale comment; walker no-anim present; ThemeSwitcher float preserved
-- [ ] `hyprpaper.conf` (+ AUTOSTART/THEME notes): multi-monitor wallpaper behavior documented; no swaybg
-- [ ] `bindings.conf`: add **commented** optional Super+Shift+A → hyprwave-assistant line + pointer to C HANDOFF; do not require binary present
-- [ ] Update KEYBIND-MAP.md (include commented future bind section)
-- [ ] SESSION-SMOKE: + multi-monitor / hyprpaper reload / windowrule spot-checks if practical
-- [ ] HANDOFF.md: list integrator steps for Assistant bind uncomment after C merge
-- [ ] ≥3 commits; push `lane/e-hyprland`
+- [x] `windowrules.conf`: every rule has rationale comment; walker no-anim present; ThemeSwitcher float preserved
+- [x] `hyprpaper.conf` (+ AUTOSTART/THEME notes): multi-monitor wallpaper behavior documented; no swaybg
+- [x] `bindings.conf`: add **commented** optional Super+Shift+A → hyprwave-assistant line + pointer to C HANDOFF; do not require binary present
+- [x] Update KEYBIND-MAP.md (include commented future bind section)
+- [x] SESSION-SMOKE: + multi-monitor / hyprpaper reload / windowrule spot-checks if practical
+- [x] HANDOFF.md: list integrator steps for Assistant bind uncomment after C merge
+- [x] ≥3 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
@@ -47,7 +47,7 @@ Polish remaining Hyprland session edges: windowrules rationale completeness, mul
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 

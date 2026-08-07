@@ -29,3 +29,12 @@
 - Confirmed: walker/mako/waybar theme-friendly; no wofi/swaybg
 - HANDOFF: no package installs; optional theme-aware hyprlock wallpaper is switcher-side
 - Idle awaiting next OPEN task
+
+## 2026-08-07T05:10Z — E-W1-003
+
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
+- Status → DONE
+- Commits: windowrules rationale; hyprpaper multi-output + commented Assistant bind; docs/HANDOFF/smoke/map
+- Preserved: walker layerrule no_anim; ThemeSwitcher float+center
+- Assistant: Super+SHIFT+A commented only; Super+A still FlatArcade; HANDOFF steps for C
+- Idle awaiting next OPEN task
