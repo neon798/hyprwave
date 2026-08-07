@@ -2,14 +2,14 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **HUMAN INTEGRATION**  
-**Updated:** 2026-08-07T06:35:00Z  
+**Updated:** 2026-08-07T06:45:00Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
 |---|---|---|---|---|
 | A | Build / CI / pins / release | `lane/a-stabilize` | A-W1-HOLD | OPEN — ack |
 | B | Docs / handbook | `lane/b-docs` | B-W1-HOLD | OPEN — ack |
-| C | Hyprwave Assistant | `lane/c-assistant` | C-W1-HOLD | OPEN — ack |
+| C | Hyprwave Assistant | `lane/c-assistant` | C-W1-HOLD | OPEN — ack (heartbeat) |
 | D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN — ack (heartbeat) |
 | E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-HOLD | OPEN — ack (heartbeat) |
 | F | COSMIC variant | `lane/f-cosmic` | F-W1-HOLD | OPEN — ack |
@@ -17,7 +17,8 @@
 
 ## This check-in
 
-- **A–G** still HOLD OPEN; D/E posted poll heartbeats (`6ea752e`, `9aff7ee`).
+- **A–G** HOLD OPEN; heartbeats: C `5f957e6`, D `1963a10`, E `4982de7`.
+- A/B/F/G idle on prior tips (still valid HOLD).
 - Still **no** product merge to main.
 - No new tasks; no BLOCKED; no DONE→next.
 
