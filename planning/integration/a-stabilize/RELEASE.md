@@ -93,10 +93,43 @@ External downloads are **not** floating:
 - Source of truth: `build_files/versions.env`
 - Build-time verify: `sha256sum -c` in `build_files/build.sh`
 - Local/CI URL check: `planning/integration/a-stabilize/scripts/verify-pins.sh`
-- Bump procedure: `planning/integration/a-stabilize/BUMP.md`
+- Bump procedure: `planning/integration/a-stabilize/BUMP.md` (includes worked example)
 
 Never ship a release that greps positive for `releases/latest` in
 `build_files/build.sh` (`pin_guards` enforces this).
+
+### When to bump pins (policy)
+
+| Trigger | Action |
+|---------|--------|
+| Security advisory in Yazi / Neonwolf / FlatArcade | Bump that component ASAP; rebuild + publish |
+| Broken download / 404 on pinned tag | Bump to a live tag or restore last known-good pin |
+| Intentional feature pull for a release | Bump during release freeze window; run `--checksum` |
+| Daily upstream noise | **Do not** chase; pins are deliberate |
+
+After any bump: `verify-pins.sh` (then `--checksum --light` or full `--checksum`),
+commit `versions.env` only, let `pin_guards` pass, dual-variant image build.
+
+### Rollback
+
+**Bad companion pin (build still succeeding but app broken):**
+
+1. Revert the `versions.env` commit (see BUMP.md worked example §6).
+2. Rebuild both images and re-push so `latest` is healthy.
+3. Prefer telling installers to use a **dated** tag (`YYYYMMDD`) until `latest` is fixed.
+
+**Bad full OS image already on GHCR:**
+
+1. Identify last good tag: `podman pull ghcr.io/<owner>/hyprwave:YYYYMMDD` (or digest).
+2. Consumers on bootc: switch/rebase back to that tag, e.g.  
+   `bootc switch ghcr.io/<owner>/hyprwave:YYYYMMDD` then reboot (exact flags per INSTALL).
+3. Do **not** delete GHCR tags casually — mark / document bad digests in CHANGELOG.
+4. Cosign: verify the rollback tag still matches `cosign.pub` before recommending it.
+
+**CI false failure on pin_guards network flake:**
+
+1. Re-run the failed job (HEAD to GitHub can flake).
+2. If URL permanently 404, treat as pin breakage and roll pin forward/back — do not disable `pin_guards`.
 
 ## Suggested release checklist (morning)
 

@@ -115,15 +115,18 @@ Do not delete historical blocks — append new ones under the template.
 ### Run log
 - Date (UTC): YYYY-MM-DD
 - Operator:
-- Branch / commit:
-- Artifact: (localhost/hyprwave:latest | qcow2 | iso | ghcr.io/... )
+- Branch / commit: (git rev-parse --short HEAD)
+- Artifact: (localhost/hyprwave:latest | qcow2 path | iso path | ghcr.io/...:tag )
+- Image digest: (podman image inspect -f '{{.Digest}}' …  OR  skopeo/GHCR digest; blank if N/A)
+- Image ID / RepoDigest: (optional second line for local builds)
 - Variant: hyprland | cosmic
 - Host notes: (KVM y/n, nested, cloud VM, …)
 
 | Check | Result | Notes |
 |-------|--------|-------|
 | pin grep clean (build.sh) | PASS/FAIL/SKIP | |
-| verify-pins.sh | PASS/FAIL/SKIP | |
+| verify-pins.sh (--head) | PASS/FAIL/SKIP | |
+| verify-pins.sh --checksum [--light] | PASS/FAIL/SKIP | |
 | image/disk build | PASS/FAIL/SKIP | |
 | greeter appears | PASS/FAIL/SKIP | |
 | new-user login / skel | PASS/FAIL/SKIP | |
@@ -136,11 +139,19 @@ Do not delete historical blocks — append new ones under the template.
 | hyprwave-theme | PASS/FAIL/SKIP | |
 | NetworkManager | PASS/FAIL/SKIP | |
 | GHCR anonymous pull | PASS/FAIL/SKIP | |
-| Cosign verify | PASS/FAIL/SKIP | |
+| Cosign verify (digest/tag) | PASS/FAIL/SKIP | |
 
 Overall: PASS / FAIL
 Blockers for ship:
 Follow-ups:
+```
+
+How to capture digest after a local build:
+
+```bash
+podman image inspect localhost/hyprwave:latest --format '{{.Digest}} {{.Id}}'
+# or after pull:
+podman image inspect ghcr.io/<owner>/hyprwave:latest --format '{{index .RepoDigests 0}}'
 ```
 
 ### Filled logs
@@ -148,17 +159,20 @@ Follow-ups:
 ```
 ### Run log
 - Date (UTC): 2026-08-07
-- Operator: Model A Wave 2 (overnight)
-- Branch / commit: lane/a-stabilize (see git log; Wave 2 pin_guards + docs)
-- Artifact: none (no full image/VM this run)
+- Operator: Model A (A-W1-001)
+- Branch / commit: lane/a-stabilize (task A-W1-001 deepen)
+- Artifact: none (static pin validation only)
+- Image digest: n/a
+- Image ID / RepoDigest: n/a
 - Variant: n/a
-- Host notes: static validation only
+- Host notes: no VM this session
 
 | Check | Result | Notes |
 |-------|--------|-------|
 | pin grep clean (build.sh) | PASS | no releases/latest |
-| verify-pins.sh | PASS | all four URLs HTTP 200 |
-| image/disk build | SKIP | overnight: no full build required |
+| verify-pins.sh (--head) | PASS | all four URLs HTTP 200 |
+| verify-pins.sh --checksum [--light] | PASS | --checksum --light (Yazi+FlatArcade digests) |
+| image/disk build | SKIP | not required for A-W1-001 static done criteria |
 | greeter appears | SKIP | needs VM |
 | new-user login / skel | SKIP | |
 | session + wallpaper | SKIP | |
@@ -170,9 +184,9 @@ Follow-ups:
 | hyprwave-theme | SKIP | |
 | NetworkManager | SKIP | |
 | GHCR anonymous pull | FAIL | private/403 as of 2026-08-06; see RELEASE.md |
-| Cosign verify | SKIP | needs public pull + published digest |
+| Cosign verify (digest/tag) | SKIP | needs public pull |
 
-Overall: FAIL (GHCR visibility) / static pins PASS
-Blockers for ship: make GHCR packages public; morning dual-variant build + one VM first-boot
-Follow-ups: integrator merge A→B→C→D; re-run this log on qcow2
+Overall: static pins PASS; GHCR public pull still FAIL (maintainer visibility)
+Blockers for ship: GHCR public packages; integrator dual-variant build + one VM first-boot
+Follow-ups: re-run this log on qcow2 with digest filled
 ```

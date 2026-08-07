@@ -95,3 +95,82 @@ After a bump, open a PR (or push a branch that runs the workflow) and confirm
 
 Read the file itself for the live values; this doc intentionally does not
 duplicate tag numbers so it cannot drift.
+
+---
+
+## Worked example: bump FlatArcade end-to-end
+
+This walkthrough uses FlatArcade as the single component being bumped.
+Commands are copy-pasteable; substitute the real **new** tag when one exists.
+
+### 0. Baseline
+
+```bash
+git checkout lane/a-stabilize
+grep '^FLATARCADE_' build_files/versions.env
+bash planning/integration/a-stabilize/scripts/verify-pins.sh   # expect exit 0
+```
+
+### 1. Discover the target release
+
+Open https://github.com/neon798/flatarcade/releases and copy the tag
+(e.g. `v0.1.0` — use a newer tag when bumping for real). Confirm assets:
+
+- `flatarcade` (binary)
+- `flatarcade.svg` (icon)
+
+### 2. Download and hash
+
+```bash
+NEW=v0.1.0   # <-- replace with the tag you are bumping TO
+curl -fsSL -o /tmp/flatarcade \
+  "https://github.com/neon798/flatarcade/releases/download/${NEW}/flatarcade"
+curl -fsSL -o /tmp/flatarcade.svg \
+  "https://github.com/neon798/flatarcade/releases/download/${NEW}/flatarcade.svg"
+sha256sum /tmp/flatarcade /tmp/flatarcade.svg
+```
+
+Example output shape (hashes must match whatever you just downloaded):
+
+```
+f0e0c097011077adec06f226daad5e60cdc7de1eead80b7be07297fbb3bd2096  /tmp/flatarcade
+6f9a1def99179f9a93f91b5454e00a810cf9ed74a4fbfa077b941b74ac2ef84b  /tmp/flatarcade.svg
+```
+
+### 3. Edit `build_files/versions.env` only
+
+```bash
+# Only these four lines (URL expands from VERSION via ${FLATARCADE_VERSION}):
+FLATARCADE_VERSION=v0.1.0
+FLATARCADE_URL="https://github.com/neon798/flatarcade/releases/download/${FLATARCADE_VERSION}/flatarcade"
+FLATARCADE_SHA256=<paste from sha256sum>
+FLATARCADE_SVG_URL="https://github.com/neon798/flatarcade/releases/download/${FLATARCADE_VERSION}/flatarcade.svg"
+FLATARCADE_SVG_SHA256=<paste from sha256sum>
+```
+
+Do **not** change `build.sh` unless asset **names** changed (rare).
+
+### 4. Validate before commit
+
+```bash
+grep -n 'releases/latest' build_files/build.sh && exit 1 || echo OK
+bash planning/integration/a-stabilize/scripts/verify-pins.sh
+# Stronger (downloads + checks digests; use --light to skip huge Neonwolf):
+bash planning/integration/a-stabilize/scripts/verify-pins.sh --checksum --light
+```
+
+### 5. Commit and push
+
+```bash
+git add build_files/versions.env
+git commit -m "Pin FlatArcade ${NEW}"
+git push -u origin lane/a-stabilize
+# After merge to main: pin_guards + dual image build must stay green
+```
+
+### 6. Rollback if the bump breaks the image
+
+1. `git revert <bump-commit>` (or restore previous `FLATARCADE_*` lines from `git show HEAD~1:build_files/versions.env`).
+2. Re-run `verify-pins.sh` and `pin_guards` locally (or push and let CI run).
+3. Rebuild / re-publish so GHCR `latest` no longer embeds the bad binary.
+4. See `RELEASE.md` § Rollback for image-level rollback (`bootc` consumers on a dated tag).
