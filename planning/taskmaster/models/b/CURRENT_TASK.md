@@ -1,54 +1,47 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: B-W1-001  
+status: OPEN  
+task_id: B-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-started: 2026-08-07T04:00:00Z  
-completed: 2026-08-07T04:30:00Z  
-title: Ship a full operator handbook and accuracy audit  
+issued: 2026-08-07T04:45:00Z  
+title: Keybind accuracy sync, first-boot handbook chapter, release notes polish  
 
 ## Objective
 
-Produce a **handbook-quality** doc set so a new user and a contributor can install, update, troubleshoot, and understand Hyprland vs COSMIC without reading planning theory docs. Depth over speed.
+Drive docs toward ENDPOINT accuracy: keybinds match Hyprland reality (read E’s KEYBIND-MAP / skel on `origin/lane/e-hyprland` **read-only**), a complete first-boot chapter, and CHANGELOG/INSTALL that reflect **pending multi-lane merge** honestly.
 
 ## Exclusive paths
 
 - `INSTALL.md`, `CHANGELOG.md`, `README.md`
 - `docs/**`
 - `planning/integration/b-docs/**`
+- `planning/taskmaster/models/b/**`
 
 ## Forbidden
 
 - Editing `build_files/**`
-- Claiming duress is enabled by default
-- Claiming GHCR is public unless verified
-- Inventing keybinds not present in skel `bindings.conf` (read from main or describe as “typical”)
+- Claiming duress enabled by default
+- Claiming GHCR public unless verified
+- Inventing binds not present in skel (prefer `git show origin/lane/e-hyprland:…`)
 
 ## Requirements
 
-- [x] `docs/README.md` index of all user docs
-- [x] Expand or create: troubleshooting, architecture, updating, security, cosmic, theming, keybinds (link `docs/keybinds.md` if exists)
-- [x] `docs/faq.md` — ≥12 real Q&As (bootc, skel caveat, themes, Walker, FlatArcade, dual DE, updates)
-- [x] `docs/contributor-notes.md` — how lanes work, where not to edit, link Task Master PROTOCOL
-- [x] INSTALL.md: Atomic rebase + ISO paths + private GHCR contingency + first hour after login
-- [x] CHANGELOG Unreleased section matches **lane reality** (Walker, themes, pins pending merge, assistant/duress as pending merge if not on main)
-- [x] Accuracy pass: grep docs for Wofi, swaybg, Thunar-as-default — remove/fix
-- [x] Screenshot checklist: every planned shot has purpose + alt text + capture command notes
-- [x] `planning/integration/b-docs/ACCURACY-AUDIT.md` listing sources checked (file paths)
-- [x] ≥3 commits; push `lane/b-docs`
+- [ ] `docs/keybinds.md` reconciled against `origin/lane/e-hyprland` `bindings.conf` + `planning/integration/e-hyprland/KEYBIND-MAP.md` (read-only); note COSMIC differences
+- [ ] New or expanded `docs/first-boot.md` — login → wallpaper/bar/launcher → terminal/browser/store → theme switcher → update story; link A’s FIRST-BOOT-CHECKLIST
+- [ ] INSTALL.md: dual-variant (Hyprland vs COSMIC) decision tree + ISO vs rebase; private GHCR contingency still accurate
+- [ ] CHANGELOG Unreleased: list Wave-1 lane deliverables as **pending merge** where not on main; no false “shipped on main” claims
+- [ ] `docs/cosmic.md` cross-links F greeter/session smoke when present on `origin/lane/f-cosmic` (paths as “on lane” if not merged)
+- [ ] Update `planning/integration/b-docs/ACCURACY-AUDIT.md` with keybind + first-boot sources checked
+- [ ] Relative link check remains clean
+- [ ] ≥3 commits; push `lane/b-docs`
 
 ## Deliverables
 
-- Handbook under `docs/` + polished INSTALL/CHANGELOG/README
-- ACCURACY-AUDIT.md
+- first-boot chapter, keybind sync, CHANGELOG/INSTALL honesty pass, audit update
 
 ## Done criteria
 
-- [x] All Requirements met
-- [x] Relative links between docs resolve
-- [x] `git push -u origin lane/b-docs`
-- [x] WORK_LOG + COMPLETED; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 

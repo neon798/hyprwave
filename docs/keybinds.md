@@ -1,12 +1,27 @@
 # Hyprland keybinds (Hyprwave defaults)
 
-These bindings come from the default user config
-`~/.config/hypr/bindings.conf` (seeded from `/etc/skel` for **new** users).
-`Super` is the Windows / Command key (`$mainMod = SUPER`).
+These bindings match the Hyprland skel file
+`build_files/etc/skel/.config/hypr/bindings.conf` as refined on **`lane/e-hyprland`**
+(machine-readable map: `planning/integration/e-hyprland/KEYBIND-MAP.md`). New users
+get a copy under `~/.config/hypr/bindings.conf` from `/etc/skel`.
 
-COSMIC variant users: these shortcuts **do not apply**. Use COSMIC’s own
-keybindings; themes still use **Hyprwave Themes** from the app menu or
-`hyprwave-theme` in a terminal.
+`Super` is the Windows / Command key (`$mainMod = SUPER`). Layout assumption:
+**dwindle** (see theme `looknfeel.conf`).
+
+### Merge honesty
+
+Until the E lane merge is on the image you boot (`bootc status` / published GHCR),
+older trees may still use **Super+M** to exit Hyprland and master-layout ratio binds
+for H/L/−. After E-W1-001 lands, exit is **Super+Shift+E** and focus/split use
+dwindle-safe dispatchers (documented below). Prefer live `~/.config/hypr/bindings.conf`
+on your machine if it differs.
+
+### COSMIC
+
+These Super+… shortcuts **do not apply** on `hyprwave-cosmic`. Use COSMIC’s keyboard
+settings and launcher. Themes still use **Hyprwave Themes** (`hyprwave-theme` /
+`hyprwave-theme-gui`). See [cosmic.md](cosmic.md) and first-boot notes in
+[first-boot.md](first-boot.md).
 
 ---
 
@@ -19,7 +34,7 @@ keybindings; themes still use **Hyprwave Themes** from the app menu or
 | **Super + R** | Walker **runner** mode (`walker --prefix ">"`) |
 | **XF86Search** | Open Walker (hardware search key) |
 | **Super + Return** | **Ghostty** terminal |
-| **Super + T** | **Ghostty** terminal |
+| **Super + T** | **Ghostty** terminal (alt muscle memory) |
 | **Super + E** | **Yazi** file manager (in Ghostty) |
 | **Super + B** | **Neonwolf** browser |
 | **Super + A** | **FlatArcade** (Flathub TUI, in Ghostty) |
@@ -27,15 +42,15 @@ keybindings; themes still use **Hyprwave Themes** from the app menu or
 | **Super + Q** | Close active window |
 | **Super + F** | Fullscreen |
 | **Super + W** | Toggle floating |
-| **Super + M** | Exit Hyprland session |
+| **Super + Shift + E** | Exit Hyprland session (Shift required — avoids fat-finger Super+M) |
 | **Super + Shift + L** | Lock (**hyprlock**) |
-| **Super + Shift + P** | Color picker (**hyprpicker**, copy) |
+| **Super + Shift + P** | Color picker (**hyprpicker -a**, copy) |
 
 ---
 
 ## Walker prefixes (inside the launcher)
 
-Configured in `~/.config/walker/config.toml`:
+Configured in `~/.config/walker/config.toml` (not Hyprland binds):
 
 | Prefix | Provider |
 |--------|----------|
@@ -49,24 +64,37 @@ Configured in `~/.config/walker/config.toml`:
 
 ---
 
-## Windows & focus
+## Windows, focus, move
 
 | Shortcut | Action |
 |----------|--------|
 | Super + ←/→/↑/↓ | Move focus |
+| Super + H / J / K / L | Move focus (vim) |
 | Super + Shift + ←/→/↑/↓ | Move window |
-| Super + Alt + ←/→/↑/↓ | Resize active window |
-| Super + V | Toggle group |
+| Super + Shift + H / J / K / L | Move window (vim) |
+| Super + Alt + ←/→/↑/↓ | Resize active (±40 px) |
+| Super + Alt + H / J / K / L | Resize active (vim) |
+| Super + V | Toggle tab group |
 | Super + Tab / Super + Shift + Tab | Next / previous in group |
-| Super + H / L / − | Master layout ratio (left wider −/+) |
-| Super + = | Toggle split (layoutmsg) |
-| Super + P | Pseudo-tile |
-| Super + mouse drag (LMB) | Move window |
-| Super + mouse drag (RMB) | Resize window |
+| Super + P | Pseudo-tile (dwindle) |
+| Super + mouse drag (LMB) | Move window (`bindm`) |
+| Super + mouse drag (RMB) | Resize window (`bindm`) |
 
 ---
 
-## Workspaces
+## Dwindle split / resize
+
+| Shortcut | Action |
+|----------|--------|
+| Super + = | `layoutmsg togglesplit` |
+| Super + − | `splitratio -0.05` (shrink) |
+| Super + Shift + = | `splitratio +0.05` (grow; “+” key) |
+
+Do **not** use master-only `setleftwideratio` — the default layout is dwindle (E-W1-001).
+
+---
+
+## Workspaces & monitors
 
 | Shortcut | Action |
 |----------|--------|
@@ -78,6 +106,8 @@ Configured in `~/.config/walker/config.toml`:
 ---
 
 ## Screenshots (hyprshot → grim/slurp)
+
+`~/Pictures` is created on session start (`autostart.conf`).
 
 | Shortcut | Action |
 |----------|--------|
@@ -92,10 +122,10 @@ Configured in `~/.config/walker/config.toml`:
 
 | Shortcut | Action |
 |----------|--------|
-| Volume up / down / mute | `wpctl` on default sink |
+| Volume up / down / mute | `wpctl` on default sink (raise capped at 150%) |
 | Mic mute | Toggle default source mute |
 | Brightness up / down | `brightnessctl` |
-| Play / next / prev | `playerctl` |
+| Play / next / prev | `playerctl` (`binde` — holds repeat) |
 
 ---
 
@@ -110,12 +140,25 @@ hyprwave-theme set vaporwave
 hyprwave-theme menu
 ```
 
-Store: `/usr/share/hyprwave/themes/` (11 packs).
+Store: `/usr/share/hyprwave/themes/` (11 packs). Full guide: [theming.md](theming.md).
+
+---
+
+## Intentional E-W1-001 changes (for upgraders)
+
+| Change | Older skel | After E lane |
+|--------|------------|--------------|
+| Session exit | Super+M | **Super+Shift+E** |
+| Focus H/L | master `setleftwideratio` | **movefocus** (vim) |
+| Split ratio | master ratio on minus | **splitratio** (dwindle) |
+| Vim move/resize | missing | Super+Shift / Super+Alt + hjkl |
+
+Full table: `planning/integration/e-hyprland/KEYBIND-MAP.md` (on `lane/e-hyprland` until merge).
 
 ---
 
 ## Customizing
 
 Edit `~/.config/hypr/bindings.conf` (and other fragments under `~/.config/hypr/`).
-Reload Hyprland after changes (`hyprctl reload` or your usual reload bind if you add
-one). Image defaults only re-apply for **new** users via `/etc/skel`.
+Reload with `hyprctl reload`. Image defaults only re-apply for **new** users via
+`/etc/skel` — see [architecture.md](architecture.md) and [first-boot.md](first-boot.md).
