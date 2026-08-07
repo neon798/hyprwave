@@ -65,6 +65,7 @@ planning/qa/
   check-duress-safety.sh
   check-assistant.sh
   check-lane-artifacts.sh   # multi-ref residual checks
+  probe-merge-conflicts.sh  # read-only merge-tree probe (not in run-all)
   ci-snippet.yml            # copy-paste GH job (not a live workflow)
   theme-exceptions.list     # optional theme:component exceptions
   lib/common.sh             # PASS/FAIL/WARN helpers
@@ -130,3 +131,13 @@ Full harness (including `go test`, duress validate, optional lane refs) after C/
 Endpoint residual tracker (human-maintained from harness + `git ls-tree`):
 
 - `planning/integration/g-qa/ENDPOINT-RESIDUALS.md`
+
+Pre-merge conflict dry-run (integrator):
+
+- `planning/integration/g-qa/PRE-MERGE-DRY-RUN.md`
+- `bash planning/qa/probe-merge-conflicts.sh --product-only`
+
+### Probe script (not in `run-all.sh`)
+
+`probe-merge-conflicts.sh` uses read-only `git merge-tree` against `origin/main` (or `--base`).  
+It is **integration-time advisory**, not a packaging invariant of the checked-out tree, so it is **not** registered in `run-all.sh` (avoids FAIL noise from expected `planning/taskmaster/**` add/add conflicts). Use `--product-only` for product go/no-go; `--fail-on-conflict` only when you want a hard gate.
