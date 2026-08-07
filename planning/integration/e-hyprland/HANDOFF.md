@@ -1,75 +1,40 @@
-# HANDOFF — Model E → other lanes
+# HANDOFF — Model E residuals (E-W1-004 freeze)
 
 **From:** Model E (Hyprland skel)  
-**Task:** E-W1-003  
-**Date:** 2026-08-07
+**Task:** E-W1-004  
+**Date:** 2026-08-07  
+**Branch:** `lane/e-hyprland` — ready for integrator merge
 
-## Package / build.sh requests
+## Package / build.sh residuals
 
-None required for E-W1-003. Already present on the Hyprland variant (read-only
-check of `build_files/build.sh` — not edited):
+**None.** E does not request package list changes. Hyprland skel assumes the image
+already ships (verified read-only historically): walker/elephant, waybar, mako,
+hypridle/hyprlock/hyprpaper, hyprshot+grim/slurp, ghostty, yazi, neonwolf,
+flatarcade, portals, fonts. Missing binary on a broken build → lane A / builder.
 
-- waybar, walker, elephant (+ plugins), mako, hypridle, hyprlock, hyprpaper  
-- grim, slurp, wl-clipboard, hyprshot (source-built), brightnessctl, playerctl  
-- ghostty, yazi, neonwolf, flatarcade  
-- xdg-desktop-portal-hyprland, polkit-kde-agent, fontawesome-fonts, jetbrains-mono-fonts  
+## Only open residual: Assistant bind uncomment (Model C)
 
-If a future smoke test finds **hyprshot** missing from a build that skipped
-`build-hypr-utils`, that is lane A / builder territory — not skel.
-
-## Assistant bind (Model C + integrator)
-
-Skel **does not** enable a live Assistant keybind (binary may be absent; Super+A
-is FlatArcade). A **commented** line is reserved in
-`build_files/etc/skel/.config/hypr/bindings.conf`:
+Skel keeps Assistant **commented** (binary may be absent; **Super+A = FlatArcade**):
 
 ```bash
 # bind = $mainMod SHIFT, A, exec, hyprwave-assistant
 ```
 
-### Steps after C merges `hyprwave-assistant` onto the image
+**After** `hyprwave-assistant` is on the image:
 
-1. Confirm package/binary: `command -v hyprwave-assistant` on a built image.
-2. In skel `bindings.conf`, **uncomment** the Super+SHIFT+A line (leave Super+A
-   as FlatArcade unless product explicitly reassigns it).
-3. Optionally add a float rule in `windowrules.conf` if the Assistant window
-   should be modal (class/app-id TBD by C — E will accept a follow-up OPEN task).
-4. Update `KEYBIND-MAP.md`: move the row from “Future / commented” → active table.
-5. Add a SESSION-SMOKE item: Super+SHIFT+A launches Assistant.
-6. Integrator/A: no `build.sh` change from E; C owns packaging HANDOFF to A if needed.
+1. `command -v hyprwave-assistant`
+2. Uncomment Super+SHIFT+A in `bindings.conf`
+3. Move the row in `KEYBIND-MAP.md` from “Future / commented” → active
+4. Add SESSION-SMOKE: Super+SHIFT+A launches Assistant
+5. Optional: float windowrule if C publishes app-id
 
-**Owner:** Model C (app) + integrator for uncomment; E only reserves the chord.
+**Owner:** Model C + integrator. E does not enable a live bind without the binary.
 
-## Optional future work (do not block DONE)
+## QA gate
 
-| Need | Why | Owner |
-|------|-----|-------|
-| Theme-aware hyprlock wallpaper | Lock uses brand default; switcher does not rewrite hyprlock | Switcher owner if product wants it |
-| `cliphist` or similar | Walker `$` clipboard richer with history daemon | A if desired |
-| `uwsm` | systemd graphical-session for XDG autostart only | A — low priority |
-| Theme pack missing component | Dangling skel symlink into a pack | Theme pack lane |
+Post-merge VM: run `SESSION-SMOKE.md` items **1–30** (minimum PASS).  
+Map freeze: `KEYBIND-MAP.md` audited against `bindings.conf` (86 active + 1 commented).
 
-## Docs for G (QA)
+## Out of scope
 
-- `AUTOSTART.md` — start order + multi-monitor hyprpaper notes  
-- `KEYBIND-MAP.md` — binds + **commented future** Assistant chord  
-- `SESSION-SMOKE.md` — lock/idle/theme + windowrule/hyprpaper checks  
-- `THEME-SYMLINKS.md` — indirection layout  
-- `HANDOFF.md` — this file  
-
-## Idle chain (for QA expectation)
-
-| Seconds | Action |
-|--------:|--------|
-| 300 | dim (`brightnessctl`, best-effort) |
-| 600 | `loginctl lock-session` → hyprlock |
-| 630 | DPMS off |
-| 1200 | `systemctl suspend` |
-
-## Out of scope (other lanes)
-
-- COSMIC vendor tree — F  
-- Duress — D  
-- Assistant app implementation — C  
-- Theme pack wholesale regeneration — deferred  
-- `build.sh` package lists — A / HANDOFF only  
+COSMIC (F) · Duress (D) · Assistant app (C) · `build.sh` (A) · theme pack wholesale
