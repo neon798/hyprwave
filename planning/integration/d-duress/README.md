@@ -16,6 +16,7 @@
 | `RESIDUALS.md` | What packaging does **not** solve (LUKS, physical access, trust root, bootc drift) |
 | `snippet-selftest.sh` | Asserts build/Containerfile snippets stay PAM-inert |
 | `validate.sh` | Packaging safety gates + negative fixtures (no `.sha256`, no pam.d writes, threat model) |
+| `INTEGRATOR-CHECKLIST.md` | **Pre-merge freeze:** ordered merge → snippets → no PAM → validate → operator ENABLE docs only |
 
 ## Templates (severity — must match `build_files/duress/README.md`)
 
@@ -25,7 +26,17 @@
 | `templates/10-clear-histories.sh` | **MILD** | `--mild-template` |
 | `templates/20-local-only-clear.sh` | **MILD** | `--local-clear-template` |
 
-Operator docs: [FAQ.md](./FAQ.md) · [OPERATOR-RUNBOOK.md](./OPERATOR-RUNBOOK.md) · [SIGNING.md](./SIGNING.md) · [RESIDUALS.md](./RESIDUALS.md) · [DRILL.md](./DRILL.md)
+### Operator & integrator docs (index)
+
+| Doc | Use when |
+|---|---|
+| [INTEGRATOR-CHECKLIST.md](./INTEGRATOR-CHECKLIST.md) | Merging packaging into the live image (**start here**) |
+| [FAQ.md](./FAQ.md) | Scope, off-by-default, greeter/lock, lockout, bootc, LUKS residual |
+| [OPERATOR-RUNBOOK.md](./OPERATOR-RUNBOOK.md) | Ordered enable → VM test → disable/rollback |
+| [SIGNING.md](./SIGNING.md) | Local `duress_sign` / `--verify`; never commit `*.sha256` |
+| [RESIDUALS.md](./RESIDUALS.md) | What packaging does **not** solve |
+| [DRILL.md](./DRILL.md) | 30–45 min disposable VM procedure |
+| [ENABLE.md](./ENABLE.md) | PAM insert details, recovery, bootc drift |
 
 ## Setup tool
 
@@ -38,23 +49,28 @@ hyprwave-duress-setup --verify
 hyprwave-duress-setup --status --json
 ```
 
-## Validate
+## Validate (pre-merge freeze)
 
 ```bash
 bash planning/integration/d-duress/snippet-selftest.sh
 bash planning/integration/d-duress/validate.sh
 ```
 
+Both must exit 0. Packaging stays **OFF by default** — no accidental enable path in snippets.
+
 ## Integrator merge
 
-1. Land Model A (pins) if concurrent.
-2. Apply `Containerfile.snippet` + `build.sh.snippet`.
-3. Build both variants; confirm setup tool + module path.
-4. **Do not** enable PAM in the same PR unless product + security explicitly want it.
-5. Run `validate.sh` in CI if possible.
+Follow **[INTEGRATOR-CHECKLIST.md](./INTEGRATOR-CHECKLIST.md)** end-to-end. Summary:
+
+1. Merge packaging tree (`build_files/duress/**`, `build-duress.sh`, this directory).
+2. Apply `Containerfile.snippet` + `build.sh.snippet` (assets only).
+3. **Do not** enable PAM / bake `*.sha256` in the same PR.
+4. Run `snippet-selftest.sh` + `validate.sh`.
+5. Point operators at ENABLE path docs only (runbook / DRILL / SIGNING) — not CI enable.
 
 ## Forbidden (kept)
 
 - No production `build.sh` / `Containerfile` edits in this lane (snippets only)
 - No default signed scripts / no default PAM lines
 - No skel / assistant / product README ownership
+- No path to accidental PAM enable at build time
