@@ -2,8 +2,18 @@
 
 **Owner:** Model G (read-only inspection + tracking; does not merge product lanes).  
 **Source of truth for “finished”:** `planning/taskmaster/ENDPOINT.md` product items 1–10.  
-**Inspection date:** 2026-08-07 (UTC)  
-**Baseline refs:** `origin/main` @ `3a9cb79` + remote-tracking `origin/lane/*` after `git fetch`.
+**Inspection date:** 2026-08-07 (UTC) — refresh after G-W1-003  
+**Baseline refs:** `origin/main` @ `2eed66f` + remote-tracking `origin/lane/*` after `git fetch`.
+
+| Lane | Tip (short) |
+|---|---|
+| a-stabilize | `a9c3ded` |
+| b-docs | `f21b6c2` |
+| c-assistant | `0c9838a` |
+| d-duress | `b69a474` |
+| e-hyprland | `747b995` |
+| f-cosmic | `799d952` |
+| g-qa | this branch |
 
 Status vocabulary:
 
@@ -15,7 +25,9 @@ Status vocabulary:
 | **open** | Not met on main or the expected lane (or requires merge + manual snippet apply) |
 | **deferred** | Explicitly out of program scope (see ENDPOINT non-goals) |
 
-Re-run: after each serial merge, update this table (or regenerate notes) so Director can close with `PROGRAM_COMPLETE` only when open rows are empty or deferred.
+Re-run: `git fetch origin && bash planning/qa/run-all.sh && bash planning/qa/probe-merge-conflicts.sh --product-only`
+
+Pre-merge narrative: `PRE-MERGE-DRY-RUN.md`.
 
 ---
 
@@ -25,15 +37,15 @@ Re-run: after each serial merge, update this table (or regenerate notes) so Dire
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| Pins / stabilize (A) on main | **open** | `build_files/versions.env` absent on main; **met on lane** `origin/lane/a-stabilize` |
-| Docs (B) on main | **open** | `INSTALL.md` / `CHANGELOG.md` / `docs/**` **met on lane** `origin/lane/b-docs` |
-| Assistant (C) on main | **open** | `apps/hyprwave-assistant/**` **met on lane** `origin/lane/c-assistant`; snippets not applied on main |
-| Duress packaging (D) on main | **open** | `build_files/duress/**` + `validate.sh` **met on lane** `origin/lane/d-duress` |
-| Hyprland polish (E) on main | **partial** | Main already has skel/themes from pre-program work; E adds SESSION-SMOKE / KEYBIND-MAP / polish — **met on lane** `origin/lane/e-hyprland` |
-| COSMIC vendor (F) on main | **partial** | Main ships cosmic vendor tree; F inventory/smoke docs **met on lane** `origin/lane/f-cosmic` |
-| QA harness (G) on main | **open** | `planning/qa/**` **met on lane** `origin/lane/g-qa` only |
+| Pins / stabilize (A) on main | **open** | `versions.env` absent on main; **met on lane** A |
+| Docs (B) on main | **open** | INSTALL/CHANGELOG/docs **met on lane** B |
+| Assistant (C) on main | **open** | app + share **met on lane** C; snippets not applied |
+| Duress packaging (D) on main | **open** | **met on lane** D |
+| Hyprland polish (E) on main | **partial** | baseline skel on main; E polish/docs **met on lane** |
+| COSMIC vendor (F) on main | **partial** | vendor baseline on main; F docs/fixes **met on lane** |
+| QA harness (G) on main | **open** | **met on lane** G only |
 
-**Residual:** Serial merge A→B→C→D→E→F→G per `MERGE-PLAYBOOK.md`; C/D **snippet apply** after git merge.
+**Residual:** Serial merge A→G; C/D snippet apply. Product pairwise merge-tree: **clean** (taskmaster-only conflicts).
 
 ---
 
@@ -41,11 +53,9 @@ Re-run: after each serial merge, update this table (or regenerate notes) so Dire
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| No `/releases/latest` in `build_files/build.sh` on main | **open** | main: **6** hits; harness `pins-static` **FAIL** on unpinned baseline |
-| Pins on A lane | **met on lane** | `origin/lane/a-stabilize`: **0** `/releases/latest`; `versions.env` present |
-| `just build` green post-A | **open** | Requires merge + CI/host build (not run by G) |
-
-**Residual:** Merge A; expect harness `pins-static` FAIL→PASS; run `just build`.
+| No `/releases/latest` on main `build.sh` | **open** | main: **6** hits; `pins-static` FAIL |
+| Pins on A lane | **met on lane** | A tip: **0** hits; `versions.env` present |
+| `just build` green post-A | **open** | Integrator/CI |
 
 ---
 
@@ -53,11 +63,9 @@ Re-run: after each serial merge, update this table (or regenerate notes) so Dire
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| COSMIC group / greeter packaging path | **partial** | Containerfile `DE=cosmic` on main; F vendor inventory/smoke docs on lane |
-| Vendor defaults under `build_files/usr/share/cosmic/` | **met on main** (baseline) / **met on lane** F for docs | Confirm post-F with `VENDOR-INVENTORY.md` |
-| `just build-cosmic` green | **open** | Integrator VM/CI |
-
-**Residual:** Merge F; run `just build-cosmic`; walk F SESSION-SMOKE.
+| Packaging path `DE=cosmic` | **partial** | on main; F smoke/inventory on lane |
+| Vendor under `build_files/usr/share/cosmic/` | **met on main** + F delta on lane | favorites / `is_dark` on F |
+| `just build-cosmic` green | **open** | Integrator/CI |
 
 ---
 
@@ -65,26 +73,21 @@ Re-run: after each serial merge, update this table (or regenerate notes) so Dire
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| App sources + tests | **met on lane** C | `apps/hyprwave-assistant`, `go test` via harness when tree present |
-| Image install (Containerfile + build.sh) | **open** | Snippets only on C; not applied on main |
-| Desktop entry / launch path | **met on lane** C | `build_files/usr/share/applications/hyprwave-assistant.desktop` |
-| Super+Shift+A bind | **open** | Handoff on C; skel bind owned by E merge or manual single-line apply |
-
-**Residual:** Merge C + apply snippets; harness `assistant` WARN→PASS; optional E bind.
+| App sources + tests | **met on lane** C | `apps/hyprwave-assistant` |
+| Image install stages | **open** | snippets only |
+| Desktop + KB share | **met on lane** C | note: accidental main KB paths removed in `121ea50` |
+| Super+Shift+A | **open** | E reserves bind **commented** until C in image |
 
 ---
 
-### 5. Duress packaged, OFF by default; ENABLE.md; validate green; no pre-signed scripts
+### 5. Duress packaged, OFF by default; ENABLE; validate; no pre-signed scripts
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| Packaging tree + ENABLE.md | **met on lane** D | `build_files/duress/**` |
-| `validate.sh` | **met on lane** D | `planning/integration/d-duress/validate.sh` |
-| No `*.sha256` on D | **met on lane** | `git ls-tree` scan: none |
-| OFF by default on main image | **open** until merge | Snippet contract forbids live PAM enable; verify post-merge |
-| Image stages copy assets | **open** | D Containerfile/build.sh snippets must be applied |
-
-**Residual:** Merge D + snippets; harness `duress-safety` WARN→PASS; never commit signatures.
+| Packaging + ENABLE | **met on lane** D | |
+| `validate.sh` | **met on lane** D | |
+| No `*.sha256` | **met on lane** | |
+| OFF by default in shipped image | **open** until merge + snippet verify | |
 
 ---
 
@@ -92,24 +95,19 @@ Re-run: after each serial merge, update this table (or regenerate notes) so Dire
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| Walker / waybar / mako / hyprpaper stack | **met on main** (baseline) + **met on lane** E docs | harness `no-wofi-swaybg` PASS on main; E autostart documents order |
-| Keybinds documented vs reality | **partial** | E `KEYBIND-MAP.md` on lane; B `docs/keybinds.md` on lane — need post-merge accuracy pass |
-| Theme pack structure | **met on main** | harness `themes` PASS (11 themes); exceptions list empty |
-
-**Residual:** Merge E (+ B docs); manual SESSION-SMOKE; re-run themes + no-wofi checks.
+| Walker / waybar / mako / hyprpaper | **met on main** + E polish on lane | `no-wofi-swaybg` PASS on G tree |
+| Keybinds doc vs reality | **partial** | B docs + E KEYBIND-MAP on lanes |
+| Theme pack structure | **met on main** | `themes` PASS (11); exceptions empty |
 
 ---
 
-### 7. COSMIC greeter/session on-brand; FlatArcade store; no store regression
+### 7. COSMIC greeter/session on-brand; FlatArcade; no store regression
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| Greeter notes | **met on lane** F | `GREETER.md` |
-| Favorites / background vendor keys | **met on main** / F | cosmic share tree present |
-| FlatArcade as app store | **partial** | Product intent on main; confirm favorites after F |
-| No COSMIC store regression | **open** | VM smoke (F SESSION-SMOKE) |
-
-**Residual:** F merge + COSMIC session smoke.
+| Greeter / inventory docs | **met on lane** F | |
+| Favorites / theme mode | **met on lane** F (delta) | |
+| Session smoke | **open** | VM |
 
 ---
 
@@ -117,70 +115,52 @@ Re-run: after each serial merge, update this table (or regenerate notes) so Dire
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| INSTALL / CHANGELOG | **met on lane** B | not on main |
-| docs/* handbook set | **met on lane** B | architecture, troubleshooting, keybinds, etc. |
-| Accuracy vs shipped tree | **open** | B `ACCURACY-AUDIT.md` / ISSUES on lane; re-audit after A–F merge |
-
-**Residual:** Merge B; optional README section apply from `b-docs/README-sections.md`.
+| Handbook set | **met on lane** B | not on main |
+| Accuracy vs final tree | **open** | re-audit after A–F merge |
 
 ---
 
-### 9. QA: automated packaging checks documented and runnable
+### 9. QA automated checks documented and runnable
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| Harness scripts | **met on lane** G | `planning/qa/run-all.sh` + checks |
-| Documented exit semantics | **met on lane** G | README + run-all header (0/1/2) |
-| CI-ready snippet | **met on lane** G | `planning/qa/ci-snippet.yml` (A may copy) |
-| Harness on main | **open** | Merge G last |
-
-**Residual:** Merge G; wire CI from snippet (A or Director).
+| Harness + lane-artifacts + CI snippet | **met on lane** G | |
+| Pre-merge probe script | **met on lane** G | `probe-merge-conflicts.sh` (not in run-all) |
+| Dry-run + publish gates | **met on lane** G | PRE-MERGE-DRY-RUN + SMOKE-MATRIX §9 |
+| On main | **open** | merge G last |
 
 ---
 
-### 10. Release path: GHCR notes, first-boot checklist, no silent `:latest` downloads
+### 10. Release path: GHCR, first-boot, no silent latest downloads
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| RELEASE / FIRST-BOOT | **met on lane** A | `planning/integration/a-stabilize/{RELEASE,FIRST-BOOT-CHECKLIST}.md` |
-| Pin discipline (no floating latest) | **met on lane** A / **open** on main | same as item 2 |
-| First-boot log template usable | **partial** | A checklist + G `SMOKE-MATRIX.md` |
-
-**Residual:** Merge A (+ G smoke matrix); publish notes when images green.
+| RELEASE / FIRST-BOOT / COSIGN docs | **met on lane** A | |
+| Pin discipline on main | **open** | item 2 |
+| GHCR publish minimum green | **open** | SMOKE-MATRIX §9 |
 
 ---
 
-## Process residuals (ENDPOINT § Process)
+## Process residuals
 
-| Item | Status | Note |
-|---|---|---|
-| Lanes A–G ownership clear | **met** | Task Master IDENTITY + exclusive paths |
-| Residuals listed | **this file** | Update until empty/deferred |
-| `STATUS.md` PROGRAM_COMPLETE | **open** | Director only after integration day |
-| Non-goals (NVIDIA farm, theme rewrite, marketing site, default PAM duress) | **deferred** | Do not block ENDPOINT |
+| Item | Status |
+|---|---|
+| Ownership A–G clear | **met** |
+| Residuals listed | **this file** |
+| PROGRAM_COMPLETE | **open** (Director) |
+| Non-goals | **deferred** |
 
 ---
 
 ## Expected harness flips after merges
 
-| After merge | Check | Before (typical main) | After (expected) |
+| After | Check | Before | After |
 |---|---|---|---|
-| A | `pins-static` | FAIL (`/releases/latest`) | PASS |
-| C + snippets | `assistant` | WARN (missing app) | PASS (`go test`) |
-| D + snippets | `duress-safety` | WARN (missing packaging) | PASS (`validate.sh`) |
-| E | `themes`, `no-wofi-swaybg` | PASS | PASS (still) |
-| any | `lane-artifacts` | WARN missing refs **or** PASS if fetched | PASS paths on remaining unmerged refs; after all on main, still useful pre-fetch |
-| G on main | full `run-all.sh` | harness absent | RESULT OK if A–D applied |
+| A | `pins-static` | FAIL | PASS |
+| C + snippets | `assistant` | WARN | PASS |
+| D + snippets | `duress-safety` | WARN | PASS |
+| E/F | themes / no-wofi | PASS | PASS |
+| G on main | full harness | absent | runnable |
+| any (fetched) | `lane-artifacts` | PASS if refs present | PASS |
 
----
-
-## How to refresh this tracker
-
-```bash
-git fetch origin
-bash planning/qa/run-all.sh
-bash planning/qa/check-lane-artifacts.sh   # also included in run-all
-# Manually re-check ENDPOINT rows against origin/main vs origin/lane/*
-```
-
-G does **not** mark PROGRAM_COMPLETE; Director does after integration + smokes.
+Publish gates: **SMOKE-MATRIX §9**. Conflict narrative: **PRE-MERGE-DRY-RUN.md**.

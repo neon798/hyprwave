@@ -189,3 +189,49 @@ signer/tester:
 - Packaging FAIL on host harness **blocks** “integration complete” even if VMs look pretty.
 - Missing E/F docs → fallback rows only; mark residual “link E/F SESSION-SMOKE when merged.”
 - Model G updates this matrix when check IDs change; product UX criteria remain owned by E/F.
+
+---
+
+## 9. Minimum green before GHCR publish
+
+Do **not** push/sign a “Wave 1 integrated” image to GHCR until **all** hard gates pass. Soft gates may ship with a tracked residual in `ENDPOINT-RESIDUALS.md`.
+
+### 9.1 Hard gates (block publish)
+
+| # | Gate | Command / proof | Owner |
+|---|---|---|---|
+| P1 | Host packaging harness clean | `bash planning/qa/run-all.sh` → **RESULT OK** (no FAIL) | G harness / integrator |
+| P2 | Pins fail-closed | `--only pins-static` PASS; `grep -nE '/releases/latest' build_files/build.sh` empty | A |
+| P3 | Hyprland image builds | `just build` (or CI matrix job) green; `bootc container lint` | A/CI |
+| P4 | COSMIC image builds | `just build-cosmic` green | A/CI + F vendor intact |
+| P5 | Duress still OFF by default | `duress-safety` PASS; no default `pam_duress` in image PAM; no `*.sha256` in tree | D |
+| P6 | Assistant present if claimed | If release notes claim assistant: binary in image + `go test` green on sources | C + snippets applied |
+| P7 | Pre-merge product conflicts resolved | `probe-merge-conflicts.sh --product-only` was clean before merge; no leftover conflict markers in product paths | G probe / integrator |
+
+### 9.2 Soft gates (publish allowed with residual)
+
+| # | Gate | Residual if skipped |
+|---|---|---|
+| S1 | Full Hyprland SESSION-SMOKE (E doc) | Log PARTIAL + file issue |
+| S2 | Full COSMIC SESSION-SMOKE (F doc) | Log PARTIAL |
+| S3 | Optional `verify-pins.sh` network | Static pins still required (P2) |
+| S4 | VM disk (`build-qcow2`) | Container-only publish OK if documented |
+| S5 | Deep duress DRILL | Never required for default images |
+
+### 9.3 Publish checklist (copy into release log)
+
+```
+[ ] P1 run-all RESULT OK
+[ ] P2 no /releases/latest
+[ ] P3 just build
+[ ] P4 just build-cosmic
+[ ] P5 duress OFF + validate
+[ ] P6 assistant (if in scope) go test + image path
+[ ] P7 no product conflict markers
+[ ] Digests recorded (hyprwave + hyprwave-cosmic)
+[ ] FIRST-BOOT-CHECKLIST owner assigned
+[ ] Tag post-integration-YYYYMMDD on main
+[ ] Cosign sign per a-stabilize RELEASE/COSIGN
+```
+
+Related: `PRE-MERGE-DRY-RUN.md` (go/no-go), `MERGE-PLAYBOOK.md` (order), `ENDPOINT-RESIDUALS.md` (program closeout).
