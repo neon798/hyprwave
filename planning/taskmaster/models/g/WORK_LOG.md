@@ -136,3 +136,8 @@ Harness still **FAIL** only on `pins-static` until A merges (expected).
 ### Notes
 
 - G did not merge lanes or set PROGRAM_COMPLETE.
+
+## Poll heartbeat — 2026-08-07 (G-W1-HOLD)
+
+**Status:** OPEN HOLD — idle  
+Wave 1 frozen at G-W1-005. Awaiting human integration via INTEGRATION-DAY.md. No product work; no DONE on HOLD.
