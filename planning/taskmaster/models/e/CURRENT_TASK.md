@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: E-W1-004  
 wave: 1  
 issued: 2026-08-07T05:05:00Z  
@@ -32,11 +32,11 @@ Freeze Hyprland skel for integration: KEYBIND-MAP matches bindings exactly, SESS
 
 ## Requirements
 
-- [ ] Diff KEYBIND-MAP.md against `bindings.conf` — zero silent drift; include commented Super+Shift+A section
-- [ ] SESSION-SMOKE.md: numbered final gate (≥20 items) suitable for post-merge VM
-- [ ] HANDOFF.md: only Assistant uncomment + any package residual (or “none”)
-- [ ] Grep skel for wofi/swaybg/rofi — must be clean
-- [ ] ≥3 commits; push `lane/e-hyprland`
+- [x] Diff KEYBIND-MAP.md against `bindings.conf` — zero silent drift; include commented Super+Shift+A section
+- [x] SESSION-SMOKE.md: numbered final gate (≥20 items) suitable for post-merge VM
+- [x] HANDOFF.md: only Assistant uncomment + any package residual (or “none”)
+- [x] Grep skel for wofi/swaybg/rofi — must be clean
+- [x] ≥3 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
@@ -44,7 +44,7 @@ Freeze Hyprland skel for integration: KEYBIND-MAP matches bindings exactly, SESS
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 

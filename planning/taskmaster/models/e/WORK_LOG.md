@@ -38,3 +38,12 @@
 - Preserved: walker layerrule no_anim; ThemeSwitcher float+center
 - Assistant: Super+SHIFT+A commented only; Super+A still FlatArcade; HANDOFF steps for C
 - Idle awaiting next OPEN task
+
+## 2026-08-07T05:20Z — E-W1-004
+
+- Branch: `lane/e-hyprland` — Status → DONE
+- Audit: 86 active binds + 1 commented (Super+SHIFT+A); KEYBIND-MAP expanded; skel grep CLEAN (no wofi/swaybg/rofi)
+- SESSION-SMOKE: post-merge gate items 1–30 minimum PASS
+- HANDOFF: package residual none; only Assistant uncomment for C
+- No bind behavior changes; freeze ready for integrator merge
+- Idle awaiting next OPEN task
