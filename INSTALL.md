@@ -1,48 +1,64 @@
 # Install Hyprwave
 
 Hyprwave is a **bootc** (bootable container) image: an immutable Fedora Atomic–based OS.
-You install by **switching** an existing bootc host to the Hyprwave image, or by building
-an installable **ISO** / VM disk from this repo.
+You install by **rebasing** an existing Atomic/bootc host, or by building an **ISO**
+from this repository.
 
-Two desktop variants ship:
+| Variant | Image | Greeter | Desktop |
+|---------|-------|---------|---------|
+| **Hyprland** (default) | `ghcr.io/neon798/hyprwave:latest` | **SDDM** | Hyprland + Waybar, Walker, Mako, hyprpaper |
+| **COSMIC** | `ghcr.io/neon798/hyprwave-cosmic:latest` | **cosmic-greeter** | Fedora COSMIC + Hyprwave theme |
 
-| Variant | Image | Display manager | Desktop |
-|---------|-------|-----------------|---------|
-| **Hyprland** (default) | `ghcr.io/neon798/hyprwave:latest` | **SDDM** (synthwave theme) | Hyprland + Waybar, Walker, Mako, hyprpaper |
-| **COSMIC** | `ghcr.io/neon798/hyprwave-cosmic:latest` | **cosmic-greeter** | Fedora COSMIC DE + Hyprwave theme/wallpaper |
+**Both variants include:** Neonwolf (browser), FlatArcade (Flathub TUI), Yazi, Ghostty,
+fonts, wallpapers, and **`hyprwave-theme`**.
 
-Shared on both: **Neonwolf** (browser), **FlatArcade** (Flathub TUI), **Yazi** (file manager),
-**Ghostty** (terminal), fonts, wallpapers, and the **`hyprwave-theme`** switcher.
-
-For day-to-day desktop usage after install, see [docs/keybinds.md](docs/keybinds.md)
-(Hyprland) and the [README](README.md) themes section.
+Docs index: [docs/README.md](docs/README.md) · Keybinds: [docs/keybinds.md](docs/keybinds.md) ·
+COSMIC: [docs/cosmic.md](docs/cosmic.md) · Updates: [docs/updating.md](docs/updating.md)
 
 ---
 
-## Requirements
+## Important: GHCR may be private
 
-### Switch an existing system (`bootc switch`)
+Published refs use GitHub Container Registry:
 
-You need a machine already running a **bootc-compatible** OS (for example Universal Blue /
-Fedora Atomic images that provide `bootc`). You must be able to run privileged commands
-(`sudo`) and reboot.
+```text
+ghcr.io/neon798/hyprwave:latest
+ghcr.io/neon798/hyprwave-cosmic:latest
+```
 
-### Build ISO / qcow2 from source
+**Until package visibility is set to public**, anonymous `bootc switch` / `podman pull`
+can fail with **401/403**. That is an ops/registry setting, not a missing install command.
 
-- [Podman](https://podman.io/)
-- [just](https://github.com/casey/just)
-- For disk images (`build-iso`, `build-qcow2`, `run-vm-*`): **rootful Podman**, **sudo**, and ideally **KVM**
+| If pull works | If pull fails (private/403) |
+|---------------|----------------------------|
+| Use **Path A** (`bootc switch`) below | Use **Path B** (build ISO/image from this repo) or wait for public GHCR |
+| Then `bootc upgrade` for later updates | After a local/private publish, authenticate or retarget your own registry |
 
-A plain container build does **not** need sudo:
+Test without switching:
 
 ```bash
-just build hyprwave latest        # Hyprland variant
-just build-cosmic                 # COSMIC variant → hyprwave-cosmic:latest
+podman pull ghcr.io/neon798/hyprwave:latest
+```
+
+Details: [docs/troubleshooting.md](docs/troubleshooting.md#install--registry).
+
+---
+
+## Choose an install path
+
+```text
+Already on Fedora Atomic / Universal Blue / any bootc host?
+    ├─ Yes, and GHCR pull works ──► Path A: bootc switch (fastest)
+    ├─ Yes, but GHCR is private ──► Path B (local build) or fix registry access
+    └─ No / bare metal / VM from installer media ──► Path B: ISO
+Developer iterating on the image ──► Path C: local container + qcow2 VM
 ```
 
 ---
 
-## Path 1 — Rebase with bootc (recommended if you already have bootc)
+## Path A — Rebase an existing Atomic host (`bootc switch`)
+
+**Requirements:** a bootc-capable OS, `sudo`, network, ability to reboot.
 
 ### Hyprland (default)
 
@@ -58,41 +74,38 @@ sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest
 sudo systemctl reboot
 ```
 
-### Switch between variants later
+### Switch variants later
 
-Same commands: `bootc switch` to the other image, then reboot. Your home directory is
-preserved; desktop configs under `~/.config` are **not** rewritten (skel only applies to
-**new** users — see [First login](#first-login)).
+Same `bootc switch` to the other image, then reboot. `/home` is kept; **desktop configs
+are not rewritten** (see [skel caveat](#skel-caveat)).
 
 ### After reboot
 
-1. Confirm the deployment:
-   ```bash
-   bootc status
-   ```
-2. Log in at the greeter for your variant (SDDM or cosmic-greeter).
-3. Optional: pull newer image layers without changing the image URL:
-   ```bash
-   sudo bootc upgrade
-   sudo systemctl reboot
-   ```
+```bash
+bootc status    # confirm booted image
+```
 
-> **Note:** Public pull/sign status of `ghcr.io/neon798/*` may vary by registry
-> permissions. If `bootc switch` or `podman pull` fails with auth errors, build locally
-> (Path 2 / Path 3) or check the package visibility on GitHub Packages.
+Log in at **SDDM** (Hyprland) or **cosmic-greeter** (COSMIC), then follow
+[Post-install](#post-install-first-hour).
+
+Day-to-day upgrades (same image ref): see [docs/updating.md](docs/updating.md) —
+`sudo bootc upgrade` then reboot.
 
 ---
 
-## Path 2 — Install from ISO
+## Path B — Install from ISO
 
-Build an Anaconda-style installer ISO that finishes with a `bootc switch` into the
-published image (see `disk_config/iso.toml` and `disk_config/iso-cosmic.toml`).
+Build an Anaconda-style installer that finishes with a kickstart `bootc switch` into
+the published image (`disk_config/iso.toml` / `iso-cosmic.toml`).
+
+**Requirements:** [Podman](https://podman.io/), [just](https://github.com/casey/just),
+**sudo** / rootful Podman (and ideally KVM for testing).
 
 ### Hyprland ISO
 
 ```bash
-just build hyprwave latest    # ensure localhost/hyprwave:latest exists (or set IMAGE_NAME)
-just build-iso                # needs sudo / rootful Podman
+just build hyprwave latest
+just build-iso
 ```
 
 ### COSMIC ISO
@@ -102,157 +115,120 @@ just build-cosmic
 just build-iso-cosmic
 ```
 
-Artifacts land under the bootc-image-builder output directory (typically `output/` —
-see the Justfile / BIB logs). Boot the ISO on real hardware or in a VM, complete the
-installer (user, disk, network), and let the post-install kickstart switch to:
+Boot the ISO from `output/` (or the path bootc-image-builder prints). Complete user,
+disk, and network steps. Post-install kickstart targets:
 
-- Hyprland: `ghcr.io/neon798/hyprwave:latest`
-- COSMIC: `ghcr.io/neon798/hyprwave-cosmic:latest`
+- Hyprland → `ghcr.io/neon798/hyprwave:latest`
+- COSMIC → `ghcr.io/neon798/hyprwave-cosmic:latest`
 
-The installed system still needs network access at install time (or a later
-`bootc switch` / `bootc upgrade`) to pull the registry image if it is not already
-cached.
+The installer host still needs registry access for that switch unless you customize BIB
+config for a local mirror. If GHCR is private, fix visibility or point kickstart at an
+image you control before relying on Path B for end users.
 
 ---
 
-## Path 3 — Local image + VM (developers)
-
-Useful when iterating on the OS image without publishing to GHCR.
+## Path C — Developers (local image + VM)
 
 ```bash
-# Container image only
 just build hyprwave latest
 just build-cosmic
 
-# Bootable qcow2 + browser-based QEMU (sudo + KVM)
-just build-qcow2
-just run-vm-qcow2
-
-# COSMIC
-just build-qcow2-cosmic
-just run-vm-qcow2-cosmic
-
-# Force a fresh container build then rebuild the disk
-just rebuild-qcow2
+just build-qcow2 && just run-vm-qcow2
+just build-qcow2-cosmic && just run-vm-qcow2-cosmic
+just rebuild-qcow2          # force fresh container build, then disk
 ```
 
-Default local image name from the Justfile is `image-template` unless you set
-`IMAGE_NAME=hyprwave` (CI sets the name to the repository name). Examples above use
-`hyprwave` explicitly.
+Default Justfile `IMAGE_NAME` is `image-template` unless you set `IMAGE_NAME=hyprwave`
+(CI uses the repo name). Examples above pass `hyprwave` explicitly.
 
-Fast **dotfile-only** rebuild (Hyprland skel + `/usr/share/hyprwave` assets) on top of
-an existing image — does **not** reinstall packages:
+Dotfile-only overlay (no full package rebuild):
 
 ```bash
 podman build -f Dockerfile.overlay -t hyprwave:latest .
 ```
 
-Remember: `/etc/skel` only applies to **newly created** users.
-
 ---
 
 ## First login
 
-### Hyprland variant — SDDM
+### Hyprland — SDDM
 
-1. Boot completes into **SDDM** with the Hyprwave synthwave theme (deep purple panel,
-   chromatic “HYPRWAVE” title, shared default wallpaper).
-2. Select your user, enter password, start the session.
-3. Hyprland starts with default skel (new users only), including:
-   - **Waybar** (status bar)
-   - **Walker** launcher (via elephant) — `Super+D` / `Super+Space`
-   - **Mako** notifications
-   - **hyprpaper** wallpaper
-   - **hypridle** / lock stack
-4. Default apps: **Ghostty** terminal, **Neonwolf** browser, **Yazi** (in Ghostty),
-   **FlatArcade** for Flatpaks.
-5. Themes: **Hyprwave Themes** app, or `Super+Shift+T`, or `hyprwave-theme set <name>`.
+1. Boot into **SDDM** (synthwave theme: purple panel, “HYPRWAVE” title).
+2. Log in → **Hyprland** session with skel defaults (**new users only**):
+   - Waybar, Walker (elephant), Mako, hyprpaper, hypridle
+3. Try: **Super+D** (Walker), **Super+Return** (Ghostty), **Super+B** (Neonwolf).
 
-### COSMIC variant — cosmic-greeter
+### COSMIC — cosmic-greeter
 
-1. Boot completes into **cosmic-greeter** (not SDDM).
-2. Log in to a **COSMIC** session.
-3. Expect the Hyprwave vendor look: synthwave palette, default wallpaper, dock favorites
-   including Neonwolf, Cosmic Files, Ghostty, FlatArcade, Cosmic Settings.
-4. There is **no** Hyprland stack (no Walker / Waybar / Mako / hypr configs). Use COSMIC’s
-   own launcher, panel, and notifications.
-5. Themes still work via **Hyprwave Themes** / `hyprwave-theme` (applies COSMIC appearance
-   keys + wallpaper + Ghostty).
+1. Boot into **cosmic-greeter** (not SDDM).
+2. COSMIC session with Hyprwave wallpaper/palette and dock favorites
+   (Neonwolf, Files, Ghostty, FlatArcade, Settings).
+3. No Walker/Waybar — use COSMIC’s launcher. Themes still via **Hyprwave Themes**.
 
-### If the desktop looks “stock” after an upgrade
+More: [docs/cosmic.md](docs/cosmic.md).
 
-Skel is not re-copied for existing users. Either create a new user to pick up defaults,
-or copy the pieces you want from `/etc/skel/` into your home directory carefully.
+### Skel caveat
+
+`/etc/skel` copies into a home **only when the user is created**. Image upgrades do not
+reset `~/.config`. Details: [docs/architecture.md](docs/architecture.md).
 
 ---
 
-## Updates
+## Post-install (first hour)
 
-Hyprwave is immutable at the base-image layer. Day-to-day:
+1. **Confirm image:** `bootc status`
+2. **Browser:** launch **Neonwolf** (Hyprland: Super+B)
+3. **Apps:** open **FlatArcade** (Hyprland: Super+A) and install Flatpaks from Flathub
+4. **Files:** **Yazi** (Hyprland: Super+E in Ghostty); COSMIC also has Cosmic Files
+5. **Themes:** **Hyprwave Themes** app, or Hyprland **Super+Shift+T**, or:
+   ```bash
+   hyprwave-theme list
+   hyprwave-theme set vaporwave
+   ```
+   Eleven packs under `/usr/share/hyprwave/themes/`.
+6. **Terminal:** Ghostty (Super+Return / Super+T on Hyprland)
+7. **Updates later:** [docs/updating.md](docs/updating.md)
+
+| Role | Hyprland | COSMIC |
+|------|----------|--------|
+| Login | SDDM | cosmic-greeter |
+| Launcher | Walker | COSMIC launcher |
+| Bar | Waybar | COSMIC panel/dock |
+| Wallpaper | hyprpaper | cosmic-bg |
+| Notifications | Mako | COSMIC |
+| Theme switcher | `hyprwave-theme` + Super+Shift+T | CLI + GUI |
+
+---
+
+## Updates (summary)
 
 ```bash
-# Base OS (new image layers for the current image ref)
 sudo bootc upgrade
 sudo systemctl reboot
-
-# See current / staged deployments
-bootc status
-
-# Flatpak apps (user and/or system, depending how you install)
-flatpak update
+flatpak update          # apps
 ```
 
-There is no traditional `dnf upgrade` of the whole OS. Layered packages (if you use
-them) follow your host’s bootc / rpm-ostree workflow and still require a reboot when the
-base deployment changes.
-
-To move to a **different** image (e.g. Hyprland ↔ COSMIC):
-
-```bash
-sudo bootc switch ghcr.io/neon798/hyprwave:latest
-# or
-sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest
-sudo systemctl reboot
-```
-
----
-
-## What you get (quick map)
-
-| Role | Hyprland image | COSMIC image |
-|------|----------------|--------------|
-| Login | SDDM | cosmic-greeter |
-| Shell / compositor | Hyprland | cosmic-comp / COSMIC session |
-| Launcher | Walker (+ elephant plugins) | COSMIC launcher |
-| Bar / panel | Waybar | COSMIC panel / dock |
-| Wallpaper | hyprpaper | cosmic-bg (vendor wallpaper) |
-| Notifications | Mako | COSMIC notifications |
-| Terminal | Ghostty | Ghostty (promoted; cosmic-term remains for session) |
-| Browser | Neonwolf | Neonwolf |
-| Files | Yazi (keybind / desktop entry) | Cosmic Files + Yazi available |
-| App store | FlatArcade | FlatArcade (cosmic-store removed) |
-| Theme switcher | `hyprwave-theme` / GUI / Super+Shift+T | same CLI + GUI |
-
-Eleven theme packs live under `/usr/share/hyprwave/themes/` (default **hyprwave** plus
-ten others). See the [README](README.md#themes) for names and CLI usage.
+Full guide: [docs/updating.md](docs/updating.md).
 
 ---
 
 ## Troubleshooting
 
-| Symptom | What to try |
-|---------|-------------|
-| `bootc switch` cannot pull image | Check network; try `podman pull ghcr.io/neon798/hyprwave:latest`; confirm package is public; build locally if private |
-| Black screen after login (Hyprland) | Switch to a TTY, confirm `Hyprland` / GPU drivers; for NVIDIA, extra work may be required (not certified in-repo) |
-| Walker shows no apps | Ensure `elephant` is running (`exec-once` in skel); restart: `systemctl --user restart app-walker@autostart.service` |
-| Theme switch did nothing on old user | Point symlinks / run `hyprwave-theme set …` again; COSMIC may need a session restart for some keys |
-| Want repo-dev docs | [CLAUDE.md](CLAUDE.md) / [AGENTS.md](AGENTS.md) for build architecture — not required for end users |
+| Symptom | Start here |
+|---------|------------|
+| 403 on pull / switch | [GHCR section](#important-ghcr-may-be-private), [troubleshooting](docs/troubleshooting.md#install--registry) |
+| Black screen (Hyprland) | [troubleshooting — black screen](docs/troubleshooting.md#black-screen-after-sddm-login) |
+| No wallpaper | [troubleshooting — wallpaper](docs/troubleshooting.md#no-wallpaper) |
+| Walker empty | [troubleshooting — Walker](docs/troubleshooting.md#walker-empty--no-apps--does-nothing) |
+| NVIDIA | Not certified in-repo; see troubleshooting GPU notes |
+
+Full index: [docs/troubleshooting.md](docs/troubleshooting.md).
 
 ---
 
 ## See also
 
-- [docs/keybinds.md](docs/keybinds.md) — Hyprland keyboard shortcuts
-- [CHANGELOG.md](CHANGELOG.md) — what ships and what changed
-- [README.md](README.md) — product overview, companions, themes, COSMIC notes
-- [Justfile](Justfile) — all `just` recipes (`just --list`)
+- [docs/README.md](docs/README.md) — all end-user docs  
+- [docs/keybinds.md](docs/keybinds.md) — Hyprland shortcuts  
+- [docs/security.md](docs/security.md) — immutability, duress off by default  
+- [CHANGELOG.md](CHANGELOG.md) · [README.md](README.md) · `just --list`

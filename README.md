@@ -15,9 +15,36 @@ sudo bootc switch ghcr.io/neon798/hyprwave:latest && sudo systemctl reboot
 sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest && sudo systemctl reboot
 ```
 
-Full guide (ISO, first login, updates): **[INSTALL.md](INSTALL.md)**.  
-Hyprland keybinds: **[docs/keybinds.md](docs/keybinds.md)**.  
-Changelog: **[CHANGELOG.md](CHANGELOG.md)**.
+Full guide (ISO, first login, updates): **[INSTALL.md](INSTALL.md)**.
+
+> **Registry note:** GHCR packages may be **private** until visibility is fixed. If
+> `bootc switch` / `podman pull` returns 403, see INSTALL or build from source.
+
+**Docs:** [User guide](docs/README.md) ·
+[Updating](docs/updating.md) ·
+[Troubleshooting](docs/troubleshooting.md) ·
+[Keybinds](docs/keybinds.md) ·
+[COSMIC](docs/cosmic.md) ·
+[Architecture](docs/architecture.md) ·
+[Security](docs/security.md) ·
+[Changelog](CHANGELOG.md)
+
+## Default stack (Hyprland)
+
+| Piece | Choice |
+|-------|--------|
+| Compositor | Hyprland |
+| Launcher | Walker (+ elephant) |
+| Bar | Waybar |
+| Notifications | Mako |
+| Wallpaper | hyprpaper |
+| Terminal | Ghostty |
+| Browser | Neonwolf |
+| Files | Yazi |
+| App store | FlatArcade |
+| Themes | 11 packs via `hyprwave-theme` / Super+Shift+T |
+
+COSMIC variant differences: [docs/cosmic.md](docs/cosmic.md).
 
 ## Companion apps
 
@@ -94,4 +121,24 @@ hyprwave-theme menu    # launches the same GUI in a graphical session
 ```
 
 Theme store: `/usr/share/hyprwave/themes/`. Ghostty picks up colors on new windows. COSMIC writes Appearance + wallpaper under `~/.config/cosmic/`; Hyprland live-reloads borders/waybar/walker/mako/hyprpaper.
+
+## Upcoming (optional)
+
+Not required for a usable desktop; may land after parallel lanes merge into the published image:
+
+| Feature | Notes |
+|---------|--------|
+| **Hyprwave Assistant** | Go TUI for updates / Flatpak / knowledge base — treat as **upcoming** until listed as shipped in the changelog |
+| **Duress password** | Optional PAM tooling — **off by default**; never enabled on a stock install. Overview: [docs/security.md](docs/security.md) |
+
+## Building from source
+
+```bash
+just build hyprwave latest
+just build-cosmic
+just build-iso            # needs sudo
+just build-iso-cosmic
+```
+
+See [INSTALL.md](INSTALL.md) and [docs/architecture.md](docs/architecture.md). Contributor-oriented build detail: [CLAUDE.md](CLAUDE.md).
 
