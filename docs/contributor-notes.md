@@ -17,7 +17,7 @@ application monorepo:
 | `build_files/etc/skel/` | Defaults for **new** users only |
 | `build_files/usr/share/hyprwave/` | Themes, wallpapers, helpers |
 | `Justfile` | `just build`, ISO, VM |
-| `docs/`, `INSTALL.md` | Operator handbook (this lane) |
+| `docs/`, `INSTALL.md`, `CHANGELOG.md` | Operator handbook (Model B / `lane/b-docs`) |
 
 Contributor depth: [CLAUDE.md](../CLAUDE.md), [AGENTS.md](../AGENTS.md).
 
@@ -26,15 +26,17 @@ Contributor depth: [CLAUDE.md](../CLAUDE.md), [AGENTS.md](../AGENTS.md).
 ## Parallel lanes (do not step on each other)
 
 Work is split so models/branches do not edit the same product files. Canonical
-protocol: [planning/taskmaster/PROTOCOL.md](../planning/taskmaster/PROTOCOL.md).
+protocol: **[planning/taskmaster/PROTOCOL.md](../planning/taskmaster/PROTOCOL.md)**.
 
 | Model | Branch | Owns (typical) |
 |-------|--------|----------------|
 | A | `lane/a-stabilize` | pins (`versions.env`), CI guards, stabilize notes |
-| **B** | **`lane/b-docs`** | **INSTALL, CHANGELOG, README, `docs/**`, b-docs integration** |
+| **B** | **`lane/b-docs`** | **INSTALL, CHANGELOG, README, `docs/**`, `planning/integration/b-docs/**`** |
 | C | `lane/c-assistant` | Assistant app + dormant snippets |
 | D | `lane/d-duress` | Duress packaging (**off by default**) |
-| E–G | other lanes | DE polish / QA (see Task Master STATUS) |
+| E | `lane/e-hyprland` | Hyprland skel / keybinds / session |
+| F | `lane/f-cosmic` | COSMIC vendor / greeter / declutter |
+| G | `lane/g-qa` | QA scripts, smoke matrix, merge playbook |
 
 **Model B must not edit** `build_files/**` product code, workflows, apps, or duress
 enablement. Read those trees only for **accuracy** (e.g. keybinds, package names).
@@ -55,7 +57,37 @@ Director issues tasks under `planning/taskmaster/models/<letter>/CURRENT_TASK.md
 5. When Done criteria are true: status DONE, append WORK_LOG + COMPLETED
 6. **Idle** until a new OPEN task appears — do not invent unassigned work
 
-Full rules: [PROTOCOL.md](../planning/taskmaster/PROTOCOL.md).
+Full rules: [PROTOCOL.md](../planning/taskmaster/PROTOCOL.md).  
+Program board: `planning/taskmaster/STATUS.md` (on `main` after director check-ins).
+
+---
+
+## Refreshing the handbook after lane merges
+
+When the integrator lands A–G (or a subset) onto `main`, docs must **stop claiming
+pending** for features that actually shipped. Checklist:
+
+1. **Diff product sources on the new `main` tip**
+   - Keybinds: `build_files/etc/skel/.config/hypr/bindings.conf` vs [keybinds.md](keybinds.md)
+   - Autostart / themes / greeters: `build.sh` case arms, `/usr/share/cosmic/`
+   - Pins: `build_files/versions.env` if present
+2. **Edit honesty language**
+   - [CHANGELOG.md](../CHANGELOG.md): use the **Post-merge template** under Unreleased;
+     add `## [YYYY-MM-DD]` and uncheck only what is truly on the image
+   - Drop “on `lane/e-hyprland` until merge” notes when E is merged
+   - Keep duress **off by default** even if D assets are on the image
+   - Mention Assistant only if the binary is actually installed
+3. **Re-run accuracy**
+   - Relative link walk (see [ACCURACY-AUDIT.md](../planning/integration/b-docs/ACCURACY-AUDIT.md))
+   - Grep removed stack: `Wofi|swaybg|Thunar` as defaults
+   - Grep forbidden claims: GHCR public (unless verified), duress on by default
+4. **Skel caveat** — image merge does not rewrite existing users’ `~/.config`; document
+   when defaults change for **new** users only.
+5. **Screenshots** — still optional; ops checklist in
+   [screenshots.md](screenshots.md) / b-docs screenshot-checklist.
+
+Until merge, prefer documenting **lane ENDPOINT + merge honesty** over inventing
+main-only fiction.
 
 ---
 
@@ -66,10 +98,11 @@ Full rules: [PROTOCOL.md](../planning/taskmaster/PROTOCOL.md).
 - File manager default is **Yazi**, not Thunar.  
 - Do not claim GHCR is public without verification.  
 - Do not claim duress is on by default.  
-- Keybinds: read `build_files/etc/skel/.config/hypr/bindings.conf` (or document as
-  skel defaults for new users only).  
-- After doc edits, re-check relative links and run the accuracy grep (see
-  [ACCURACY-AUDIT.md](../planning/integration/b-docs/ACCURACY-AUDIT.md)).
+- Keybinds: read skel `bindings.conf` (or E-lane tip until merge); note skel =
+  **new users only**.  
+- Architecture boundaries: Assistant + duress are optional/pending packaging —
+  [architecture.md](architecture.md).  
+- After doc edits, re-check relative links and update ACCURACY-AUDIT.
 
 ---
 
@@ -99,4 +132,6 @@ image is built and installed. Document that clearly whenever you describe defaul
 
 - [architecture.md](architecture.md)  
 - [security.md](security.md)  
+- [CHANGELOG.md](../CHANGELOG.md) — pending-merge table + post-merge template  
 - [planning/integration/b-docs/](../planning/integration/b-docs/)  
+- [PROTOCOL.md](../planning/taskmaster/PROTOCOL.md)  

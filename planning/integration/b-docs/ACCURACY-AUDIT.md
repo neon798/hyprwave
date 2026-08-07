@@ -1,6 +1,6 @@
 # Accuracy audit (Model B)
 
-**Tasks:** B-W1-001, B-W1-002, B-W1-003 (security + screenshots + dual-variant TS)  
+**Tasks:** B-W1-001 … B-W1-004 (pre-merge handbook freeze)  
 **Date:** 2026-08-07  
 **Branch:** `lane/b-docs`  
 **Scope:** Handbook claims vs tree on this branch + **read-only** lane tips
@@ -157,3 +157,33 @@ Registry publicity and Wave-1 merge status remain deliberately cautious.
 | GHCR public | Still **not claimed** |
 
 **New handbook files:** `docs/screenshots.md` → checklist + `docs/assets/` reserved.
+
+
+---
+
+## Pre-merge handbook freeze (B-W1-004)
+
+| Field | Value |
+|-------|--------|
+| Freeze date (UTC) | 2026-08-07 |
+| origin/main tip at freeze | `371ea34` |
+| Lane | `lane/b-docs` |
+| Intent | User handbook ready for integrator serial merge; CHANGELOG has post-merge template |
+
+### Freeze claims
+
+| Area | State |
+|------|--------|
+| Stock desktop (Walker, hyprpaper, Yazi, dual DE, 11 themes) | Documented; base on main `8a623a2` + lane polish pending |
+| A–G lane table | Final honesty table in CHANGELOG Unreleased |
+| Post-merge template | CHANGELOG subsection for integrator flip-to-Released |
+| Architecture | bootc + dual DE + theme store + Assistant/duress **boundaries** |
+| Contributor refresh | docs/contributor-notes.md post-merge checklist + PROTOCOL link |
+| Duress default on | **Not claimed** |
+| Features only on lanes claimed as on main GHCR | **Not claimed** |
+| Screenshot binaries | Still TODO (ops ready) |
+
+### After merge
+
+Re-run link check, refresh ACCURACY-AUDIT with **merge commit**, execute CHANGELOG
+Post-merge template checkboxes, drop obsolete “pending merge” banners.
