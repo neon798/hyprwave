@@ -2,7 +2,7 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **HUMAN INTEGRATION**  
-**Updated:** 2026-08-07T06:15:00Z  
+**Updated:** 2026-08-07T06:25:00Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
@@ -10,15 +10,15 @@
 | A | Build / CI / pins / release | `lane/a-stabilize` | A-W1-HOLD | OPEN — ack |
 | B | Docs / handbook | `lane/b-docs` | B-W1-HOLD | OPEN — ack |
 | C | Hyprwave Assistant | `lane/c-assistant` | C-W1-HOLD | OPEN — ack |
-| D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN — ack (refreshed) |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-HOLD | OPEN — ack (refreshed) |
-| F | COSMIC variant | `lane/f-cosmic` | F-W1-HOLD | OPEN — ack (refreshed) |
+| D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN — ack |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-HOLD | OPEN — ack |
+| F | COSMIC variant | `lane/f-cosmic` | F-W1-HOLD | OPEN — ack |
 | G | QA automation / integration prep | `lane/g-qa` | G-W1-HOLD | OPEN — ack |
 
 ## This check-in
 
-- **All seven models** on HOLD OPEN on both main and lanes (D/E/F refreshed after re-nudge).
-- Still **no** product merge to main.
+- Steady state: **A–G** HOLD OPEN on main + all lane tips (unchanged since 06:15).
+- Still **no** product merge to main (only `planning/theoretical/*` + base image tree).
 - No new tasks; no BLOCKED; no DONE→next.
 
 ## Integration readiness
