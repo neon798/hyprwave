@@ -4,8 +4,11 @@
 authentication. Follow this document only after:
 
 1. You understand the threat model in `/usr/share/hyprwave/duress/README.md`
-2. You have tested in a **disposable VM**
+2. You have tested in a **disposable VM** (not your daily driver first)
 3. You accept that mis-editing PAM can lock everyone out of the machine
+
+There is **no** supported Containerfile/CI mode `DURESS=enable`.  
+Build intent is always **assets only** (`DURESS=assets` as documentation).
 
 ## Prerequisites
 
@@ -14,12 +17,39 @@ authentication. Follow this document only after:
   - `/usr/bin/duress_sign`
   - `/usr/bin/hyprwave-duress-setup`
   - templates under `/usr/share/hyprwave/duress/templates/`
-- At least one **signed** script (user `~/.duress/` or `/etc/duress.d/`)
 - Root / admin access to edit `/etc/pam.d/`
+- A second root session you can use if login breaks
+
+Optional before PAM enable: sign a **mild** script so you can test without
+destroying keys:
+
+```bash
+hyprwave-duress-setup --dry-run --mild-template
+hyprwave-duress-setup --mild-template
+```
+
+## Fedora Atomic / bootc notes
+
+- `/etc` is writable; PAM edits survive until the next intentional reset of that file.
+- Image updates via `bootc upgrade` may **replace** vendor PAM files if they are
+  owned by packages — re-check `system-auth` after upgrades.
+- Prefer a small drop-in mindset: one `sufficient pam_duress.so` line, not a full
+  stack rewrite.
+- Keep recovery media or a root console path ready (serial, second account, live USB).
+
+## Keep a root shell open (mandatory checklist)
+
+Before editing PAM on a real machine or long-lived VM:
+
+- [ ] `sudo -i` (or root on TTY2) left open for the whole test
+- [ ] Backup taken (step below)
+- [ ] You know how to restore the backup from that root shell
+- [ ] Normal password login tested **before** any duress password test
+- [ ] You will test greeter **and** hyprlock if both matter to you
 
 ## Recommended enable path (Fedora / ublue): `system-auth`
 
-Most greeters and locks eventually hit `system-auth`. One careful edit covers:
+Most greeters and locks eventually hit `system-auth`. One careful edit may cover:
 
 - SDDM (Hyprland)
 - greetd / cosmic-greeter (when it includes system-auth)
@@ -62,107 +92,106 @@ Most greeters and locks eventually hit `system-auth`. One careful edit covers:
    - duress success skips deny
    - failure falls through to deny
 
-4. **Keep a root shell open** in another TTY/SSH session while testing.
-
-5. **Verify module load** (optional):
+4. **Verify module present**
 
    ```bash
    ls -l /usr/lib64/security/pam_duress.so
    hyprwave-duress-setup --status
+   hyprwave-duress-setup --status --json
    ```
+
+5. **Test normal password first** (must still work) from greeter and/or `login`.
 
 ## Greeter-specific notes
 
 ### SDDM (Hyprland)
 
 - File: `/etc/pam.d/sddm`
-- Often `@include` / `substack` to `system-auth` — enabling system-auth may be enough.
-- If sddm has a fully inlined stack, insert `pam_duress` there instead (see
-  `build_files/duress/pam.d/sddm.snippet`).
-- **Do not** overwrite the whole file with the reference snippet without merging
+- Often includes `system-auth` — system-auth enable may be enough.
+- **Do not** overwrite the whole file with reference snippets without merging
   account/session lines.
 
 ### greetd / cosmic-greeter (COSMIC)
 
-- Check:
+```bash
+ls /etc/pam.d/greetd /etc/pam.d/cosmic-greeter 2>/dev/null
+cat /etc/pam.d/greetd 2>/dev/null
+```
 
-  ```bash
-  ls /etc/pam.d/greetd /etc/pam.d/cosmic-greeter 2>/dev/null
-  cat /etc/pam.d/greetd 2>/dev/null
-  ```
-
-- Same rule: after `pam_unix`, add `sufficient pam_duress.so` **or** rely on
-  system-auth if included.
-- Re-test COSMIC login after any PAM change.
+Same rule: after `pam_unix`, add `sufficient pam_duress.so` **or** rely on
+system-auth if included. Re-test COSMIC login after any PAM change.
 
 ### hyprlock
 
-- Check:
+```bash
+cat /etc/pam.d/hyprlock 2>/dev/null || echo "no dedicated hyprlock pam file"
+```
 
-  ```bash
-  cat /etc/pam.d/hyprlock 2>/dev/null || echo "no dedicated hyprlock pam file"
-  ```
+If hyprlock uses system-auth, unlock inherits duress. Test normal unlock before
+duress unlock.
 
-- If hyprlock uses system-auth, unlock inherits duress automatically.
-- Test: normal password (no wipe) vs duress password (scripts run, unlock still works).
-
-## User configuration (after PAM is enabled)
-
-As the end user (not root, for personal scripts):
+## User configuration
 
 ```bash
-hyprwave-duress-setup
-# or non-interactive-ish:
+# Mild (recommended for first test)
+hyprwave-duress-setup --mild-template
+
+# Aggressive wipe (keys/browsers/secrets)
 hyprwave-duress-setup --wipe-template
+
+# Status
 hyprwave-duress-setup --status
 hyprwave-duress-setup --list
 ```
 
-Global (root) scripts:
+Global (root):
 
 ```bash
-sudo hyprwave-duress-setup --system --wipe-template
+sudo hyprwave-duress-setup --system --mild-template
 ```
 
 Rules from upstream:
 
-- Scripts live in `~/.duress/` (user) or `/etc/duress.d/` (global)
+- Scripts: `~/.duress/` (user) or `/etc/duress.d/` (global)
 - Mode must be `500`, `540`, or `550`
-- Each script needs a matching `script.sha256` from `duress_sign`
-- Env var for scripts: `PAMUSER`
+- Matching `script.sha256` from `duress_sign`
+- Env: `PAMUSER`
 
 ## Test plan (disposable VM)
 
 | # | Action | Expected |
 |---|---|---|
-| 1 | Login with **normal** password, no signed scripts | Success, no wipes |
-| 2 | Sign wipe template with `hyprwave-duress-setup` | `.sha256` created |
-| 3 | Login / unlock with **normal** password | Success, secrets **intact** |
-| 4 | Login / unlock with **duress** password | Success, secrets **wiped**, no error UI |
-| 5 | Wrong password | Fail as usual |
-| 6 | Repeat on COSMIC greeter if enabling for both variants | Same as 3–5 |
-| 7 | `bootc container lint` / image build still green | No packaging regression |
+| 1 | Login with **normal** password, no signed scripts | Success, no side effects |
+| 2 | `--dry-run --mild-template` | Preview only; no `.sha256` |
+| 3 | Sign mild template | `.sha256` created; mode 500 |
+| 4 | Login / unlock with **normal** password | Success; data **intact** |
+| 5 | Login / unlock with **duress** password | Success; mild clears run; no error UI |
+| 6 | Optional: aggressive template on a throwaway account | Secrets wiped |
+| 7 | Wrong password | Fail as usual |
+| 8 | COSMIC greeter if shipping both variants | Same as 4–5 |
+| 9 | Image build / `bootc container lint` | No packaging regression |
 
 ## Disable / rollback
 
+From the **open root shell**:
+
 ```bash
 sudo cp /etc/pam.d/system-auth.bak.TIMESTAMP /etc/pam.d/system-auth
-# or remove the pam_duress.so line only
+# or remove only the pam_duress.so line
 ```
-
-Removing signed scripts:
 
 ```bash
 hyprwave-duress-setup --list
+hyprwave-duress-setup --remove 10-clear-histories.sh
 hyprwave-duress-setup --remove 00-wipe-sensitive.sh
 ```
 
 ## Hard no’s
 
-- Do **not** enable by default in CI or release images without an explicit product decision.
+- Do **not** enable by default in CI or release images.
 - Do **not** ship pre-signed scripts or shared default duress passwords.
 - Do **not** use `required` for `pam_duress.so` unless you have tested missing-module behavior.
-- Do **not** rely on duress as the only protection for classified or high-value data.
+- Do **not** rely on duress as the only protection for high-value data.
 
 ## Integrator checklist
 
@@ -170,4 +199,5 @@ hyprwave-duress-setup --remove 00-wipe-sensitive.sh
 - [ ] `build.sh.snippet` applied (templates + setup tool + empty `/etc/duress.d`)
 - [ ] `ENABLE.md` installed under `/usr/share/hyprwave/duress/ENABLE.md`
 - [ ] **No** unconditional PAM edits in build.sh
+- [ ] `planning/integration/d-duress/validate.sh` passes in CI or pre-merge
 - [ ] VM test matrix above executed before documenting “supported”

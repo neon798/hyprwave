@@ -1,6 +1,9 @@
-# INTEGRATION SNIPPET — Model D (duress)
+# INTEGRATION SNIPPET — Model D (duress) — Wave 2
 # Paste into build_files/build.sh in the SHARED section (after theme assets is fine).
 # This deploys packaging ONLY. It does NOT enable pam_duress in any PAM stack.
+#
+# Intent: DURESS=assets (ship tooling). There is no supported DURESS=enable in-build.
+# Live PAM enable is a post-boot admin action (ENABLE.md) after VM testing.
 #
 # Prerequisites:
 #   - Containerfile wires duressbuilder and COPY --from=duressbuilder /install/ /
@@ -16,6 +19,8 @@ install -d /usr/share/hyprwave/duress/pam.d
 install -d /etc/duress.d
 
 # Templates (unsigned). Users copy via hyprwave-duress-setup.
+#   00-wipe-sensitive.sh  — AGGRESSIVE
+#   10-clear-histories.sh — MILD
 if [ -d /ctx/duress/templates ]; then
 	cp -a /ctx/duress/templates/. /usr/share/hyprwave/duress/templates/
 	# Templates should be readable; setup tool re-installs as mode 500 when copying.
@@ -31,14 +36,11 @@ if [ -d /ctx/duress/pam.d ]; then
 fi
 
 # ENABLE.md ships with the image so admins can find enable steps offline.
-# Integrator should also copy planning/integration/d-duress/ENABLE.md into the
-# ctx tree, e.g. place a copy at build_files/duress/ENABLE.md, or:
-#   install -m0644 /ctx/duress/ENABLE.md /usr/share/hyprwave/duress/ENABLE.md
 if [ -f /ctx/duress/ENABLE.md ]; then
 	install -m0644 /ctx/duress/ENABLE.md /usr/share/hyprwave/duress/ENABLE.md
 fi
 
-# Setup tool (opt-in; does not enable PAM).
+# Setup tool (opt-in; does not enable PAM). Supports --dry-run / --mild-template.
 if [ -f /ctx/duress/hyprwave-duress-setup ]; then
 	install -m0755 /ctx/duress/hyprwave-duress-setup /usr/bin/hyprwave-duress-setup
 fi
@@ -51,13 +53,14 @@ cat >/etc/duress.d/README <<'EOF'
 # Stock Hyprwave ships this directory EMPTY and does NOT enable pam_duress.so.
 # To configure:
 #   1. Enable PAM (see /usr/share/hyprwave/duress/ENABLE.md) — admin decision
-#   2. sudo hyprwave-duress-setup --system --wipe-template
-#      or install + duress_sign your own scripts here
+#   2. Preview: hyprwave-duress-setup --dry-run --mild-template
+#   3. sudo hyprwave-duress-setup --system --mild-template   # or --wipe-template
 # Scripts must be mode 500/540/550 with a matching .sha256 from duress_sign.
+# Never commit or bake .sha256 into the image.
 EOF
 chmod 0644 /etc/duress.d/README
 
-# Explicitly do NOT touch:
+# Explicitly do NOT touch (and this snippet must never gain writes to these):
 #   /etc/pam.d/system-auth
 #   /etc/pam.d/sddm
 #   /etc/pam.d/greetd

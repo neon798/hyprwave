@@ -1,30 +1,41 @@
 # Integration: Model D — Duress (lane/d-duress)
 
-## Delivered in this branch
+## Wave 1 + Wave 2 delivered
 
 | Artifact | Purpose |
 |---|---|
 | `build_files/build-duress.sh` | Pin + compile pam-duress → `$DESTROOT` |
-| `build_files/duress/` | Templates, setup tool, PAM **snippets**, security README, ENABLE.md |
-| `build.sh.snippet` | Deploy packaging; **no PAM enable** |
+| `build_files/duress/` | Templates (mild + aggressive), setup tool, PAM **snippets**, security README, ENABLE.md |
+| `build.sh.snippet` | Deploy packaging; **no PAM enable** (`DURESS=assets` intent) |
 | `Containerfile.snippet` | Optional `duressbuilder` stage |
-| `ENABLE.md` | Exact admin enable / rollback / test plan |
+| `ENABLE.md` | Admin enable / rollback / Atomic notes / root-shell checklist |
+| `validate.sh` | Packaging safety gates (syntax, no `.sha256`, no pam.d writes) |
 
-## Integrator merge order
+## Setup tool (Wave 2)
+
+```bash
+hyprwave-duress-setup --dry-run --mild-template
+hyprwave-duress-setup --mild-template
+hyprwave-duress-setup --wipe-template
+hyprwave-duress-setup --status --json
+```
+
+## Validate
+
+```bash
+bash planning/integration/d-duress/validate.sh
+```
+
+## Integrator merge
 
 1. Land Model A (pins) if concurrent.
 2. Apply `Containerfile.snippet` + `build.sh.snippet`.
-3. Build both variants; confirm `/usr/bin/hyprwave-duress-setup` and module path.
+3. Build both variants; confirm setup tool + module path.
 4. **Do not** enable PAM in the same PR unless product + security explicitly want it.
-5. Document enable as optional admin procedure only.
-
-## Validation already run on this lane
-
-- `bash -n` on setup tool and wipe template
-- `shellcheck` if available (non-blocking)
+5. Run `validate.sh` in CI if possible.
 
 ## Forbidden (kept)
 
-- No edits to live skel, themes, assistant, or production `build.sh` / `Containerfile` in this lane
-- No default signed scripts
-- No default PAM lines
+- No production `build.sh` / `Containerfile` edits in this lane (snippets only)
+- No default signed scripts / no default PAM lines
+- No skel / assistant / product README ownership

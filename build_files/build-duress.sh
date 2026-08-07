@@ -18,6 +18,15 @@ JOBS="$(nproc)"
 ### Pin — update this SHA deliberately; do not track floating main.
 ### Source: https://github.com/nuvious/pam-duress
 ### Recorded tip of main as of 2026-07-16 (post-Sonar config merge).
+###
+### How to bump:
+###   1. Pick a commit:  git ls-remote https://github.com/nuvious/pam-duress.git HEAD
+###   2. Set PAM_DURESS_COMMIT below (full 40-char SHA only — no branches/tags).
+###   3. Rebuild the duressbuilder stage; confirm BUILD-INFO.txt in the image.
+###   4. Re-test ENABLE.md matrix in a disposable VM (do not enable in CI).
+### Override at build time without editing this file:
+###   podman build --build-arg not used here; pass env into RUN if needed, e.g.
+###   PAM_DURESS_COMMIT=... /ctx/build-duress.sh
 PAM_DURESS_REPO="${PAM_DURESS_REPO:-https://github.com/nuvious/pam-duress.git}"
 PAM_DURESS_COMMIT="${PAM_DURESS_COMMIT:-1f699c157fbafd03c48032661d5f15f87e8efd13}"
 

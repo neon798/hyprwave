@@ -1,6 +1,11 @@
-# INTEGRATION SNIPPET — Model D (duress)
+# INTEGRATION SNIPPET — Model D (duress) — Wave 2
 # DO NOT apply without human review. Duress remains OFF BY DEFAULT even after
 # this stage is wired: binaries + templates only; no /etc/pam.d edits here.
+#
+# Build posture (document only — do not invent a CI "enable" mode):
+#   DURESS=assets   (default intent) — compile module + ship templates/setup
+#   DURESS=enable   — NEVER set in CI/release. Live PAM is a human post-boot edit
+#                     per ENABLE.md after disposable-VM testing.
 #
 # Place relative to the existing Containerfile multi-stage layout.
 # Mirror the hyprbuilder pattern so -devel packages never land in the final image.
@@ -15,6 +20,12 @@
 #     --mount=type=cache,dst=/var/cache \
 #     --mount=type=tmpfs,dst=/tmp \
 #     /ctx/build-duress.sh
+#
+# Optional pin override without editing build-duress.sh:
+# RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+#     --mount=type=cache,dst=/var/cache \
+#     --mount=type=tmpfs,dst=/tmp \
+#     PAM_DURESS_COMMIT=1f699c157fbafd03c48032661d5f15f87e8efd13 /ctx/build-duress.sh
 
 # ---------------------------------------------------------------------------
 # 2) Copy staged artifacts into BOTH desktop variants (shared security tooling).
@@ -41,4 +52,9 @@
 # Runtime libraries: pam + openssl-libs are already on ublue base-main.
 # If a future base drops them, add to build.sh.snippet:
 #   dnf5 install -y openssl-libs pam
+#
+# NEVER in Containerfile:
+#   - sed/cp into /etc/pam.d/*
+#   - signing templates or baking .sha256
+#   - ENV DURESS=enable (not a supported image mode)
 # ---------------------------------------------------------------------------

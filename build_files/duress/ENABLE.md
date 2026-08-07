@@ -1,48 +1,60 @@
 # Enabling Hyprwave Duress (ADMIN / INTEGRATOR ONLY)
 
-This file is the image-local copy of the enable procedure. The canonical
-integration copy is `planning/integration/d-duress/ENABLE.md` (kept in sync).
+This file is the image-local copy of the enable procedure. The full copy is
+`planning/integration/d-duress/ENABLE.md` (kept in sync for Wave 2).
 
-**Default: OFF.** Packaging alone does not activate duress authentication.
+**Default: OFF.** Packaging alone does not activate duress authentication.  
+There is no supported `DURESS=enable` image build mode (assets only).
 
-## Quick path (Fedora / ublue)
+## Quick path (Fedora Atomic / ublue)
 
-1. Backup PAM:
+1. Keep a **root shell open** for the entire change + test window.
+
+2. Backup PAM:
 
    ```bash
    sudo cp -a /etc/pam.d/system-auth "/etc/pam.d/system-auth.bak.$(date +%Y%m%d%H%M%S)"
    ```
 
-2. After the `pam_unix` auth line in `/etc/pam.d/system-auth`, add:
+3. After the `pam_unix` auth line in `/etc/pam.d/system-auth`, add:
 
    ```
    auth       sufficient                  pam_duress.so
    ```
 
-3. Keep a root session open. Test in a disposable VM.
+4. Prefer **`sufficient`**, never start with `required`.
 
-4. User opt-in:
+5. User opt-in (mild first):
 
    ```bash
-   hyprwave-duress-setup
+   hyprwave-duress-setup --dry-run --mild-template
+   hyprwave-duress-setup --mild-template
    hyprwave-duress-setup --status
    ```
+
+6. Test **normal password** before any duress password.
 
 ## Login managers
 
 | Component | Notes |
 |---|---|
-| SDDM | Often uses `system-auth`; greeter-only alternative is `/etc/pam.d/sddm` |
-| cosmic-greeter / greetd | Check `/etc/pam.d/greetd` (and `cosmic-greeter` if present) |
-| hyprlock | Uses PAM; inherits system-auth when included |
+| SDDM | Often uses `system-auth` |
+| cosmic-greeter / greetd | Check `/etc/pam.d/greetd` |
+| hyprlock | Uses PAM; may inherit system-auth |
 
-Reference snippets: `/usr/share/hyprwave/duress/pam.d/` (after packaging install).
+## Templates
+
+| Severity | Template | Flag |
+|---|---|---|
+| MILD | `10-clear-histories.sh` | `--mild-template` |
+| AGGRESSIVE | `00-wipe-sensitive.sh` | `--wipe-template` |
 
 ## Hard rules
 
 - Prefer `sufficient`, not `required`, for `pam_duress.so`.
 - Never ship pre-signed scripts or a shared default duress password.
 - Fail-safe stock state: no PAM line + no signatures = normal auth only.
+- Re-check PAM after `bootc upgrade` if vendor files refresh.
 
-Full test plan, rollback, and threat model: see sibling `README.md` and the
-repo file `planning/integration/d-duress/ENABLE.md`.
+Full test plan, rollback, Atomic notes: sibling `README.md` and
+`planning/integration/d-duress/ENABLE.md`.

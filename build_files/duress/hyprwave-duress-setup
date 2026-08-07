@@ -5,14 +5,19 @@
 # planning/integration/d-duress/ENABLE.md (or the installed copy under
 # /usr/share/hyprwave/duress/ if the integrator installs it).
 #
-# Requires: duress_sign (from pam-duress), bash, standard coreutils.
+# Requires: duress_sign (from pam-duress) for actual signing; bash; coreutils.
+# --dry-run never calls duress_sign and never writes signatures.
 
 set -euo pipefail
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 TEMPLATE_DIR="${HYPRWAVE_DURESS_TEMPLATE_DIR:-/usr/share/hyprwave/duress/templates}"
-TEMPLATE_NAME="00-wipe-sensitive.sh"
+WIPE_TEMPLATE="00-wipe-sensitive.sh"
+MILD_TEMPLATE="10-clear-histories.sh"
 USER_DURESS_DIR="${HOME}/.duress"
+
+# Accepted script modes for pam-duress (octal).
+ALLOWED_MODES_RE='^0?[545]00$'
 
 usage() {
 	cat <<'EOF'
@@ -21,23 +26,31 @@ Usage: hyprwave-duress-setup [OPTIONS]
 Opt-in setup for a personal duress password (pam-duress).
 
 This tool:
-  - warns about irreversible data loss
-  - optionally installs the Hyprwave wipe template into ~/.duress/
+  - warns about irreversible data loss (aggressive wipe) or milder clears
+  - optionally installs a Hyprwave template into ~/.duress/ (or /etc/duress.d)
   - signs a script with duress_sign (you choose the duress password)
-  - sets permissions required by pam_duress (500 / 400 on .sha256)
+  - sets permissions required by pam_duress (500 on script / 400 on .sha256)
 
 It does NOT:
   - enable pam_duress in /etc/pam.d (admin/integrator only)
   - sign any global script under /etc/duress.d unless you pass --system
-  - run wipes during setup
+  - run wipe/clear scripts during setup
+  - ship or create pre-signed .sha256 files in the OS image
+
+Templates (unsigned in the image; severity):
+  00-wipe-sensitive.sh   AGGRESSIVE — keys, browsers, common secrets
+  10-clear-histories.sh  MILD       — shell histories + clipboard only
 
 Options:
-  --wipe-template   Install and sign the default wipe template (default interactive)
-  --script PATH     Sign an existing script instead of the wipe template
+  --wipe-template   Install and sign the AGGRESSIVE wipe template
+  --mild-template   Install and sign the MILD histories/clipboard template
+  --script PATH     Sign an existing script (copied into target dir if needed)
   --system          Operate on /etc/duress.d (requires root); still no PAM enable
+  --dry-run         Print planned actions; do not copy/sign/remove anything
   --list            List scripts and signatures in the target directory
   --remove NAME     Remove script NAME and its .sha256 from the target directory
   --status          Show whether pam_duress appears enabled (best-effort)
+  --json            With --status: machine-readable JSON on stdout
   -h, --help        Show this help
   -V, --version     Show version
 
@@ -47,6 +60,7 @@ Environment:
 
 After setup, ensure an administrator has enabled pam_duress per
 /usr/share/hyprwave/duress/ENABLE.md (if installed) or the Hyprwave docs.
+Stock Hyprwave: PAM OFF BY DEFAULT.
 EOF
 }
 
@@ -59,9 +73,26 @@ need_cmd() {
 	command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
 }
 
+log() {
+	echo "$*"
+}
+
+dry() {
+	if [[ "${DRY_RUN:-0}" == "1" ]]; then
+		# stderr so command substitutions only capture real paths/data
+		echo "[dry-run] $*" >&2
+		return 0
+	fi
+	return 1
+}
+
 confirm() {
 	local prompt=$1
 	local reply
+	if [[ "${DRY_RUN:-0}" == "1" ]]; then
+		echo "[dry-run] would prompt: $prompt [y/N] -> assume no further destructive steps"
+		return 1
+	fi
 	read -r -p "$prompt [y/N] " reply || true
 	case "${reply,,}" in
 	y | yes) return 0 ;;
@@ -77,9 +108,40 @@ target_dir() {
 	fi
 }
 
+# Return 0 if mode is 500, 540, or 550 (with or without leading 0).
+mode_ok() {
+	local path=$1
+	local mode
+	[[ -e "$path" ]] || return 1
+	mode="$(stat -c '%a' "$path" 2>/dev/null || stat -f '%OLp' "$path" 2>/dev/null || echo "")"
+	case "$mode" in
+	500 | 540 | 550 | 0500 | 0540 | 0550) return 0 ;;
+	*) return 1 ;;
+	esac
+}
+
+assert_or_fix_mode() {
+	local path=$1
+	if mode_ok "$path"; then
+		return 0
+	fi
+	local mode
+	mode="$(stat -c '%a' "$path" 2>/dev/null || echo '?')"
+	echo "warning: $path mode is $mode (pam-duress requires 500, 540, or 550)" >&2
+	if [[ "${DRY_RUN:-0}" == "1" ]]; then
+		echo "[dry-run] would chmod 500 $path" >&2
+		return 0
+	fi
+	chmod 500 "$path"
+	mode_ok "$path" || die "failed to set acceptable mode on $path"
+}
+
 ensure_target_dir() {
 	local dir
 	dir="$(target_dir)"
+	if dry "mkdir -p $dir && chmod $([[ ${SYSTEM_MODE:-0} == 1 ]] && echo 755 || echo 700) $dir"; then
+		return 0
+	fi
 	if [[ "${SYSTEM_MODE:-0}" == "1" ]]; then
 		[[ "$(id -u)" -eq 0 ]] || die "--system requires root"
 		mkdir -p "$dir"
@@ -88,6 +150,27 @@ ensure_target_dir() {
 		mkdir -p "$dir"
 		chmod 700 "$dir"
 	fi
+}
+
+find_module() {
+	for p in /usr/lib64/security/pam_duress.so /lib64/security/pam_duress.so /lib/security/pam_duress.so; do
+		if [[ -f "$p" ]]; then
+			echo "$p"
+			return 0
+		fi
+	done
+	return 1
+}
+
+pam_enabled_files() {
+	local f
+	for f in /etc/pam.d/system-auth /etc/pam.d/sddm /etc/pam.d/greetd \
+		/etc/pam.d/cosmic-greeter /etc/pam.d/hyprlock /etc/pam.d/login \
+		/etc/pam.d/common-auth; do
+		if [[ -f "$f" ]] && grep -qE 'pam_duress\.so' "$f" 2>/dev/null; then
+			printf '%s\n' "$f"
+		fi
+	done
 }
 
 cmd_list() {
@@ -100,6 +183,20 @@ cmd_list() {
 	echo "Duress directory: $dir"
 	# shellcheck disable=SC2012
 	ls -la "$dir" 2>/dev/null || true
+	echo
+	echo "Mode check (scripts must be 500/540/550):"
+	local f
+	shopt -s nullglob
+	for f in "$dir"/*; do
+		[[ -f "$f" ]] || continue
+		[[ "$f" == *.sha256 ]] && continue
+		if mode_ok "$f"; then
+			echo "  OK  $(stat -c '%a' "$f")  $f"
+		else
+			echo "  BAD $(stat -c '%a' "$f" 2>/dev/null || echo '?')  $f"
+		fi
+	done
+	shopt -u nullglob
 }
 
 cmd_remove() {
@@ -109,6 +206,9 @@ cmd_remove() {
 	base="$(basename "$name")"
 	script="$dir/$base"
 	sig="$dir/${base}.sha256"
+	if dry "rm -f -- $script $sig"; then
+		return 0
+	fi
 	[[ -e "$script" || -e "$sig" ]] || die "nothing named $base under $dir"
 	confirm "Remove $script and $sig?" || die "aborted"
 	rm -f -- "$script" "$sig"
@@ -116,18 +216,43 @@ cmd_remove() {
 }
 
 cmd_status() {
-	echo "hyprwave-duress-setup $VERSION"
+	local module="" duress_sign_path="" pam_on=0
+	local -a pam_files=()
+	module="$(find_module || true)"
 	if command -v duress_sign >/dev/null 2>&1; then
-		echo "duress_sign: $(command -v duress_sign)"
+		duress_sign_path="$(command -v duress_sign)"
+	fi
+	mapfile -t pam_files < <(pam_enabled_files || true)
+	if [[ ${#pam_files[@]} -gt 0 ]]; then
+		pam_on=1
+	fi
+
+	if [[ "${JSON_OUT:-0}" == "1" ]]; then
+		# Minimal JSON without jq dependency.
+		local pam_json="["
+		local i=0
+		local f
+		for f in "${pam_files[@]+"${pam_files[@]}"}"; do
+			[[ -n "$f" ]] || continue
+			[[ $i -gt 0 ]] && pam_json+=","
+			pam_json+="\"${f//\"/\\\"}\""
+			i=$((i + 1))
+		done
+		pam_json+="]"
+		cat <<EOF
+{"version":"$VERSION","duress_sign":"${duress_sign_path:-}","pam_duress_so":"${module:-}","user_dir":"$USER_DURESS_DIR","global_dir":"/etc/duress.d","pam_enabled":$([ "$pam_on" -eq 1 ] && echo true || echo false),"pam_files":$pam_json,"stock_default":"OFF","dry_run":$([ "${DRY_RUN:-0}" = 1 ] && echo true || echo false)}
+EOF
+		return 0
+	fi
+
+	echo "hyprwave-duress-setup $VERSION"
+	if [[ -n "$duress_sign_path" ]]; then
+		echo "duress_sign: $duress_sign_path"
 	else
 		echo "duress_sign: NOT FOUND (pam-duress binaries not installed)"
 	fi
-	if [[ -f /usr/lib64/security/pam_duress.so ]]; then
-		echo "pam_duress.so: /usr/lib64/security/pam_duress.so"
-	elif [[ -f /lib64/security/pam_duress.so ]]; then
-		echo "pam_duress.so: /lib64/security/pam_duress.so"
-	elif [[ -f /lib/security/pam_duress.so ]]; then
-		echo "pam_duress.so: /lib/security/pam_duress.so"
+	if [[ -n "$module" ]]; then
+		echo "pam_duress.so: $module"
 	else
 		echo "pam_duress.so: NOT FOUND"
 	fi
@@ -137,60 +262,83 @@ cmd_status() {
 	else
 		echo "global scripts: /etc/duress.d (missing)"
 	fi
+	echo "stock default: PAM OFF"
 	echo
 	echo "PAM enablement (best-effort grep; does not prove load order):"
-	local found=0
-	for f in /etc/pam.d/system-auth /etc/pam.d/sddm /etc/pam.d/greetd \
-		/etc/pam.d/hyprlock /etc/pam.d/login /etc/pam.d/common-auth; do
-		if [[ -f "$f" ]] && grep -qE 'pam_duress\.so' "$f" 2>/dev/null; then
-			echo "  ENABLED reference in $f"
-			found=1
-		fi
-	done
-	if [[ "$found" -eq 0 ]]; then
+	if [[ "$pam_on" -eq 0 ]]; then
 		echo "  no pam_duress.so lines found — OFF (expected on stock Hyprwave)"
+	else
+		for f in "${pam_files[@]}"; do
+			echo "  ENABLED reference in $f"
+		done
 	fi
 	echo
 	echo "Signed user scripts are required before a duress password does anything."
+	echo "Use --dry-run to preview install/sign without writing signatures."
 }
 
 install_template_copy() {
+	local template_name=$1
 	local dest_dir dest src
 	dest_dir="$(target_dir)"
-	dest="$dest_dir/$TEMPLATE_NAME"
-	src="$TEMPLATE_DIR/$TEMPLATE_NAME"
-	[[ -f "$src" ]] || die "template not found: $src"
+	dest="$dest_dir/$template_name"
+	src="$TEMPLATE_DIR/$template_name"
+	# Repo / dev fallback when not installed into the image yet.
+	if [[ ! -f "$src" && -f "$(dirname "$0")/templates/$template_name" ]]; then
+		src="$(dirname "$0")/templates/$template_name"
+	fi
+	if [[ ! -f "$src" && -f "build_files/duress/templates/$template_name" ]]; then
+		src="build_files/duress/templates/$template_name"
+	fi
+	[[ -f "$src" ]] || die "template not found: $template_name (looked in $TEMPLATE_DIR)"
+
+	if dry "install -m 0500 $src $dest"; then
+		printf '%s\n' "$dest"
+		return 0
+	fi
+
 	if [[ -e "$dest" ]]; then
 		confirm "Overwrite existing $dest?" || die "aborted"
 	fi
 	install -m 0500 "$src" "$dest"
-	echo "Installed template -> $dest"
-	echo "$dest"
+	assert_or_fix_mode "$dest"
+	echo "Installed template -> $dest" >&2
+	printf '%s\n' "$dest"
+}
+
+preflight_password_advice() {
+	cat <<'EOF'
+
+PASSWORD ADVICE (duress_sign will prompt; this tool never sees the password):
+  - Do NOT reuse your normal login password.
+  - Avoid empty, single-character, or trivial passwords (password, 123456, duress).
+  - Prefer something memorable under stress but not guessable by a coercer.
+  - Never demonstrate or discuss the duress password in front of others.
+
+EOF
 }
 
 sign_script() {
 	local script=$1
+	[[ -f "$script" || "${DRY_RUN:-0}" == "1" ]] || die "script not found: $script"
+
+	if dry "chmod 500 $script && duress_sign $script && chmod 400 ${script}.sha256"; then
+		echo "[dry-run] would sign: $script" >&2
+		echo "[dry-run] would require admin PAM enable afterward (still OFF by default)" >&2
+		return 0
+	fi
+
 	[[ -f "$script" ]] || die "script not found: $script"
 	need_cmd duress_sign
+	assert_or_fix_mode "$script"
+	preflight_password_advice
 
-	# pam-duress requires 500/540/550 on the script itself.
-	chmod 500 "$script"
-
-	echo
-	echo "You will now set the DURESS password (NOT your normal login password)."
-	echo "Choose something you can type under stress, that is NOT your real password,"
-	echo "and that a coercer is unlikely to guess. Never tell anyone it is a duress code."
-	echo
+	echo "You will now set the DURESS password via duress_sign (NOT your normal login password)."
 	if ! confirm "Continue and run duress_sign on $(basename "$script")?"; then
 		die "aborted (script left unsigned at $script)"
 	fi
 
-	# duress_sign prompts for password interactively (no CLI password args — good).
-	if [[ "${SYSTEM_MODE:-0}" == "1" ]]; then
-		duress_sign "$script"
-	else
-		duress_sign "$script"
-	fi
+	duress_sign "$script"
 
 	if [[ -f "${script}.sha256" ]]; then
 		chmod 400 "${script}.sha256"
@@ -198,22 +346,42 @@ sign_script() {
 		die "duress_sign did not produce ${script}.sha256"
 	fi
 
-	# Tighten directory perms for user mode.
+	assert_or_fix_mode "$script"
+
 	if [[ "${SYSTEM_MODE:-0}" != "1" ]]; then
-		chmod 700 "$(dirname "$script")"
-		# Upstream note: 500/540/550 only for scripts; keep dir private.
-		chmod 500 "$script" 2>/dev/null || true
+		chmod 700 "$(dirname "$script")" 2>/dev/null || true
 	fi
 
 	echo
 	echo "Signed: $script"
 	echo "Signature: ${script}.sha256"
+	echo "Script mode: $(stat -c '%a' "$script" 2>/dev/null || echo '?')"
 	echo
 	echo "NEXT STEPS:"
 	echo "  1. An administrator must enable pam_duress in PAM (still OFF by default)."
 	echo "     See: /usr/share/hyprwave/duress/ENABLE.md  (or planning/integration/d-duress/ENABLE.md)"
 	echo "  2. Test ONLY in a disposable VM first."
-	echo "  3. Using the duress password will run this script and may DESTROY DATA."
+	echo "  3. Using the duress password will run this script (data loss possible)."
+}
+
+pick_template_interactive() {
+	cat <<'EOF'
+Choose a template severity:
+  1) MILD       — 10-clear-histories.sh (histories + clipboard)
+  2) AGGRESSIVE — 00-wipe-sensitive.sh (keys, browsers, secrets)
+  3) Cancel
+EOF
+	local choice
+	if [[ "${DRY_RUN:-0}" == "1" ]]; then
+		echo "[dry-run] would wait for template choice"
+		return 1
+	fi
+	read -r -p "Choice [1/2/3]: " choice || true
+	case "$choice" in
+	1) echo "$MILD_TEMPLATE" ;;
+	2) echo "$WIPE_TEMPLATE" ;;
+	*) return 1 ;;
+	esac
 }
 
 interactive_main() {
@@ -222,45 +390,59 @@ Hyprwave Duress Password Setup
 ==============================
 
 A duress password logs you in like a normal password, but runs signed scripts
-(for example a wipe of SSH keys, browser profiles, etc.).
+in the background (wipe secrets, clear histories, etc.).
 
 WARNINGS:
-  - This is opt-in. Stock Hyprwave does not enable duress authentication.
-  - Wipes are irreversible. Review the template before signing.
+  - This is opt-in. Stock Hyprwave does NOT enable duress authentication.
+  - Aggressive wipes are irreversible. Prefer MILD unless you need more.
   - A knowledgeable attacker may still recover data from disk images.
   - Never discuss or demonstrate your duress password in front of others.
   - Multi-user systems need a clear policy before enabling system-wide.
 
 EOF
+	if [[ "${DRY_RUN:-0}" == "1" ]]; then
+		echo "[dry-run] interactive flow preview only"
+		ensure_target_dir
+		local t
+		t="$MILD_TEMPLATE"
+		echo "[dry-run] example path would install mild template $t"
+		install_template_copy "$t" >/dev/null || true
+		sign_script "$(target_dir)/$t"
+		return 0
+	fi
+
 	if ! confirm "I understand and want to continue"; then
 		echo "Aborted."
 		exit 0
 	fi
 
 	ensure_target_dir
-	local script
-	if confirm "Install the default wipe template into $(target_dir)?"; then
-		script="$(install_template_copy)"
-		echo
-		echo "---- template preview (first 40 lines) ----"
-		head -n 40 "$script" || true
-		echo "---- end preview ----"
-		echo
-		if ! confirm "Sign THIS wipe script with a new duress password?"; then
-			echo "Template installed but NOT signed. Exiting."
-			exit 0
-		fi
-		sign_script "$script"
-	else
-		echo "No template installed. Use: hyprwave-duress-setup --script /path/to/script.sh"
+	local template script
+	template="$(pick_template_interactive)" || {
+		echo "No template installed. Use --mild-template, --wipe-template, or --script."
+		exit 0
+	}
+
+	script="$(install_template_copy "$template")"
+	echo
+	echo "---- template preview (first 40 lines) ----"
+	head -n 40 "$script" || true
+	echo "---- end preview ----"
+	echo
+	if ! confirm "Sign THIS script with a new duress password?"; then
+		echo "Template installed but NOT signed. Exiting."
 		exit 0
 	fi
+	sign_script "$script"
 }
 
 SYSTEM_MODE=0
+DRY_RUN=0
+JSON_OUT=0
 ACTION=""
 SCRIPT_PATH=""
 REMOVE_NAME=""
+TEMPLATE_CHOICE=""
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -276,8 +458,22 @@ while [[ $# -gt 0 ]]; do
 		SYSTEM_MODE=1
 		shift
 		;;
+	--dry-run)
+		DRY_RUN=1
+		shift
+		;;
+	--json)
+		JSON_OUT=1
+		shift
+		;;
 	--wipe-template)
-		ACTION="wipe"
+		ACTION="template"
+		TEMPLATE_CHOICE="$WIPE_TEMPLATE"
+		shift
+		;;
+	--mild-template)
+		ACTION="template"
+		TEMPLATE_CHOICE="$MILD_TEMPLATE"
 		shift
 		;;
 	--script)
@@ -320,21 +516,32 @@ remove)
 	ensure_target_dir
 	cmd_remove "$REMOVE_NAME"
 	;;
-wipe)
+template)
 	ensure_target_dir
-	need_cmd duress_sign
-	script="$(install_template_copy)"
+	if [[ "${DRY_RUN:-0}" != "1" ]]; then
+		need_cmd duress_sign
+	fi
+	script="$(install_template_copy "$TEMPLATE_CHOICE")"
+	if [[ "${DRY_RUN:-0}" != "1" && ! -f "$script" ]]; then
+		die "template install failed for $script"
+	fi
 	sign_script "$script"
 	;;
 script)
 	ensure_target_dir
-	need_cmd duress_sign
-	# Copy into target dir if outside
+	if [[ "${DRY_RUN:-0}" != "1" ]]; then
+		need_cmd duress_sign
+	fi
 	base="$(basename "$SCRIPT_PATH")"
 	dest="$(target_dir)/$base"
-	if [[ "$(readlink -f "$SCRIPT_PATH" 2>/dev/null || realpath "$SCRIPT_PATH" 2>/dev/null || echo "$SCRIPT_PATH")" != \
-		"$(readlink -f "$dest" 2>/dev/null || realpath "$dest" 2>/dev/null || echo "$dest")" ]]; then
-		install -m 0500 "$SCRIPT_PATH" "$dest"
+	src_resolved="$(readlink -f "$SCRIPT_PATH" 2>/dev/null || realpath "$SCRIPT_PATH" 2>/dev/null || echo "$SCRIPT_PATH")"
+	dest_resolved="$(readlink -f "$dest" 2>/dev/null || realpath "$dest" 2>/dev/null || echo "$dest")"
+	if [[ "$src_resolved" != "$dest_resolved" ]]; then
+		if dry "install -m 0500 $SCRIPT_PATH $dest"; then
+			:
+		else
+			install -m 0500 "$SCRIPT_PATH" "$dest"
+		fi
 		SCRIPT_PATH="$dest"
 	fi
 	sign_script "$SCRIPT_PATH"

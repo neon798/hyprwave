@@ -1,15 +1,18 @@
 #!/bin/sh
-# Hyprwave default duress wipe template.
+# Hyprwave AGGRESSIVE duress wipe template.
 #
+# Severity: AGGRESSIVE (vs mild 10-clear-histories.sh).
 # OPT-IN ONLY. This file is NOT signed and NOT installed into ~/.duress or
 # /etc/duress.d on a stock image. hyprwave-duress-setup copies + signs it after
-# explicit user confirmation.
+# explicit user confirmation:
+#   hyprwave-duress-setup --wipe-template
 #
 # When run by pam_duress:
 #   - /etc/duress.d/* scripts run as root with PAMUSER set
 #   - ~/.duress/* scripts run as the authenticating user with PAMUSER set
 #
-# DESTROYS DATA. Review TARGETS before signing. Test only in a disposable VM.
+# DESTROYS DATA (keys, browsers, common secrets). Review TARGETS before signing.
+# Test only in a disposable VM. Prefer --mild-template if you only need histories.
 
 set -eu
 
