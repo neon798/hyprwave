@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: E-W1-005  
 wave: 1  
 issued: 2026-08-07T05:15:00Z  
@@ -23,9 +23,9 @@ One-page operator card for post-merge VM: SESSION-SMOKE gates 1–30 condensed w
 
 ## Requirements
 
-- [ ] `planning/integration/e-hyprland/INTEGRATION-DAY.md` — condensed smoke 1–30 + fill-in log (date, image digest, pass/fail)
-- [ ] Link SESSION-SMOKE, KEYBIND-MAP, HANDOFF
-- [ ] ≥2 commits; push `lane/e-hyprland`
+- [x] `planning/integration/e-hyprland/INTEGRATION-DAY.md` — condensed smoke 1–30 + fill-in log (date, image digest, pass/fail)
+- [x] Link SESSION-SMOKE, KEYBIND-MAP, HANDOFF
+- [x] ≥2 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
@@ -33,7 +33,7 @@ One-page operator card for post-merge VM: SESSION-SMOKE gates 1–30 condensed w
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
