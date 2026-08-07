@@ -198,6 +198,19 @@ bash planning/qa/run-all.sh
 
 ## 6. QA gates between merges
 
+### 6.0 Pre-merge baseline (always)
+
+```bash
+git fetch origin
+bash planning/qa/run-all.sh || true   # record exit + summary
+# Optional multi-ref residual signal (soft-WARN if a lane ref not fetched):
+bash planning/qa/run-all.sh --only lane-artifacts || true
+```
+
+Record: date, `main` SHA, harness RESULT, and which checks FAIL/WARN.
+
+### 6.1 Minimum gates after each lane
+
 | After | Minimum harness | Extra |
 |---|---|---|
 | A | `--only pins-static` | `verify-pins.sh` if network OK |
@@ -207,6 +220,27 @@ bash planning/qa/run-all.sh
 | E | `--only themes,no-wofi-swaybg` | SESSION-SMOKE (manual) |
 | F | themes still green | COSMIC SESSION-SMOKE (manual) |
 | G / final | `run-all.sh` full | `just build` + `just build-cosmic` if resources allow |
+
+### 6.2 Expected harness flips (FAIL/WARN → PASS)
+
+| Event | Check | Typical before | Expected after |
+|---|---|---|---|
+| Merge A | `pins-static` | **FAIL** (`/releases/latest` in `build.sh`; missing `versions.env` WARN) | **PASS** (no latest; keys + sha shape OK) |
+| Merge C + apply snippets | `assistant` | **WARN** soft-skip (no `apps/hyprwave-assistant`) | **PASS** (`go test ./...`) |
+| Merge D + apply snippets | `duress-safety` | **WARN** soft-skip (no packaging / validate) | **PASS** (`validate.sh` green; no `*.sha256`) |
+| Merge E | `themes`, `no-wofi-swaybg` | usually already **PASS** on main | still **PASS** (regression guard) |
+| Merge F | themes / cosmic paths | PASS | PASS; manual COSMIC smoke |
+| Merge G | harness available on main | N/A (scripts absent) | full `run-all.sh` RESULT OK when A–D done |
+| `git fetch` lane tips | `lane-artifacts` | **WARN** per missing `origin/lane/*` | **PASS** paths when ref present; **FAIL** only if ref exists but expected path missing |
+
+If a flip does **not** occur, stop the merge train and fix before the next lane (especially A pins and D validate).
+
+### 6.3 Post-merge closeout
+
+1. Full harness: `bash planning/qa/run-all.sh` → RESULT OK  
+2. Update `planning/integration/g-qa/ENDPOINT-RESIDUALS.md` rows to **met on main**  
+3. CI: copy `planning/qa/ci-snippet.yml` job into workflows (A/Director)  
+4. Tag `post-integration-YYYYMMDD`
 
 ---
 
