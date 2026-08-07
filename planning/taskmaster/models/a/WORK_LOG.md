@@ -133,3 +133,32 @@ Re-validated all requirements already landed on this lane:
 - check-upstream-pins.sh present (advisory)
 
 No invented follow-up work. Status remains DONE; idle for next OPEN task id.
+
+## 2026-08-07 — A-W1-004
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`
+
+### Work done
+
+- Added `INTEGRATION-DAY.md` one-page ordered merge/verify card
+- Cross-links from MERGE-READY, RELEASE, versions.env
+- Confirmed floating-release token clean; verify-pins --head exit 0
+
+### Commits
+
+1. `docs(a-stabilize): INTEGRATION-DAY one-page merge run sheet`
+2. `docs(a-stabilize): cross-link INTEGRATION-DAY from pin freeze docs`
+3. taskmaster DONE + WORK_LOG/COMPLETED
+
+## 2026-08-07 — A-W1-004 reconfirm (main reissued OPEN)
+
+**status:** DONE (no new product work)
+
+Director reissued W1-004 after W1-003 completed. Lane already had:
+
+- `INTEGRATION-DAY.md` (40b349f) with MERGE-READY/CI-MATRIX/COSIGN/BUMP links
+- Cross-links in versions.env, MERGE-READY, RELEASE
+- Floating-release token clean; tip 0dbde46 / COMPLETED 435c39b
+
+No invented follow-up. Idle for next OPEN task id.

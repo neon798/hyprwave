@@ -120,3 +120,19 @@ Harness still **FAIL** only on `pins-static` until A merges (expected).
 - residuals + dry-run tips
 - cross-links
 - taskmaster DONE
+
+## G-W1-005 — 2026-08-07
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** Program closeout matrix — ENDPOINT verification after merge
+
+### Work performed
+
+1. `planning/integration/g-qa/PROGRAM-CLOSEOUT.md` — ENDPOINT §Product 1–10 matrix: pre-merge status, owner, verify commands, block flags; process section; one-shot host script; Director decision rule.
+2. Pre-merge baseline documented: pins FAIL (6× latest), no harness/docs/assistant/duress on main; C/D snippets required.
+3. Cross-links from INTEGRATION-DAY, ENDPOINT-RESIDUALS, SMOKE-MATRIX; residual tip SHAs refreshed (main `98fe075`).
+
+### Notes
+
+- G did not merge lanes or set PROGRAM_COMPLETE.

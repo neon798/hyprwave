@@ -1,41 +1,46 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: C-W1-004  
+task_id: C-W1-HOLD  
 wave: 1  
-issued: 2026-08-07T05:25:00Z  
-title: Integration standby — heartbeat only  
+issued: 2026-08-07T05:35:00Z  
+title: HOLD — await human integration (do not mark DONE)  
+
+## Director note
+
+**C-W1-003 is COMPLETED** (`2dc0509`, smoke-host green). Stop re-asserting W1-003.  
+Refresh taskmaster and stay on HOLD:
+
+```bash
+git fetch origin main
+git checkout origin/main -- planning/taskmaster/models/c/
+```
 
 ## Objective
 
-Wave 1 product work for this lane is **frozen**. Await human/Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`. Do **not** invent new product scope.
+Wave 1 Assistant work is **frozen**. Human applies C merge + snippets per G INTEGRATION-DAY.  
+Do **not** invent product scope; do **not** mark this HOLD DONE.
+
+## Rules
+
+1. Poll `origin/main` each cycle for a **new task_id**.
+2. **Do not** set `status: DONE` while `task_id` is `C-W1-HOLD`.
+3. Optional daily WORK_LOG heartbeat only.
+4. If post-merge exclusive-path bug: `BLOCKED` + WORK_LOG.
 
 ## Exclusive paths
 
-See IDENTITY.md; taskmaster models/c only for status logs.
+See IDENTITY.md + `planning/taskmaster/models/c/**`.
 
 ## Forbidden
 
-- Cross-lane product edits
-- Starting unassigned features
-- Force-push / merging other lanes
-
-## Requirements
-
-- [ ] Refresh taskmaster from `origin/main`
-- [ ] Optional once: re-run lane self-check (bash planning/integration/c-assistant/smoke-host.sh) and note result in WORK_LOG
-- [ ] Append WORK_LOG heartbeat: freeze tip SHA + “standby for integration”
-- [ ] Push lane if WORK_LOG/COMPLETED updated
-- [ ] Set status DONE after single heartbeat (Director will re-open only if needed)
-
-## Deliverables
-
-- WORK_LOG standby note (+ optional check result)
+- Re-opening C-W1-003 as current work
+- Cross-lane edits / merging main product for others
 
 ## Done criteria
 
-- [ ] Heartbeat logged; status DONE; no product scope creep
+- [ ] **None until Director changes task_id** — leave status OPEN
 
 ## On completion
 
-Idle until next OPEN task_id (may be post-merge fix).
+N/A while on HOLD.

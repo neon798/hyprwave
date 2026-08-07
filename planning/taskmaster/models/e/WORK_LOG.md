@@ -55,3 +55,10 @@
 - README indexes INTEGRATION-DAY; links SESSION-SMOKE, KEYBIND-MAP, HANDOFF
 - No skel/bind changes; Assistant remains commented
 - Idle awaiting next OPEN task
+
+## 2026-08-07T05:40Z — E-W1-006 (heartbeat)
+
+- Branch: `lane/e-hyprland` — freeze tip `935fd96` (`935fd96267f0cdf856a6430923c450591ad8c224`)
+- Status → DONE (standby for integration; no product scope)
+- Self-check: skel CLEAN (no wofi/swaybg/rofi); INTEGRATION-DAY.md + SESSION-SMOKE + KEYBIND-MAP present; Assistant bind remains commented
+- Awaiting human/Director serial merge; idle until next OPEN task_id

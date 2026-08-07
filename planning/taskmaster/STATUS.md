@@ -1,44 +1,45 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** 1 → **INTEGRATION_READY** (docs complete; human merge pending)  
-**Updated:** 2026-08-07T05:25:00Z  
+**Director wave:** 1 complete → **HUMAN INTEGRATION**  
+**Updated:** 2026-08-07T05:35:00Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
 |---|---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | A-W1-004 | OPEN (re-nudged; last missing integration-day card) |
-| B | Docs / handbook | `lane/b-docs` | B-W1-006 | OPEN (standby) |
-| C | Hyprwave Assistant | `lane/c-assistant` | C-W1-004 | OPEN (standby) |
-| D | Duress / security packaging | `lane/d-duress` | D-W1-006 | OPEN (standby) |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-006 | OPEN (standby) |
-| F | COSMIC variant | `lane/f-cosmic` | F-W1-006 | OPEN (standby) |
-| G | QA automation / integration prep | `lane/g-qa` | G-W1-005 | OPEN (program closeout matrix) |
+| A | Build / CI / pins / release | `lane/a-stabilize` | A-W1-HOLD | OPEN (hold) |
+| B | Docs / handbook | `lane/b-docs` | B-W1-HOLD | OPEN (hold) |
+| C | Hyprwave Assistant | `lane/c-assistant` | C-W1-HOLD | OPEN (hold; was lagging task refresh) |
+| D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN (hold) |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-HOLD | OPEN (hold) |
+| F | COSMIC variant | `lane/f-cosmic` | F-W1-HOLD | OPEN (hold) |
+| G | QA automation / integration prep | `lane/g-qa` | G-W1-HOLD | OPEN (hold) |
 
 ## Verified this check-in
 
 | Task | Tip | Notes |
 |---|---|---|
-| B-W1-005 | `e6cad8e` | POST-MERGE-DOC-FLIP.md |
-| C-W1-003 | `2dc0509` | smoke-host.sh exit 0; coverage logged |
-| D-W1-005 | `c8ea0ae` | INTEGRATION-DAY; validate PASSED |
-| E-W1-005 | `0897db4` | INTEGRATION-DAY smoke card |
-| F-W1-005 | `06a9051` | INTEGRATION-DAY; check-vendor-paths 0 |
-| G-W1-004 | `a4562aa` | master INTEGRATION-DAY.md (417 lines) |
+| A-W1-004 | `435c39b` | INTEGRATION-DAY.md one-page pin merge card |
+| B-W1-006 | `2ddbd23` | standby heartbeat; links clean |
+| D-W1-006 | validate still green | freeze tip adbb4f4 |
+| E-W1-006 | `c722fd5` | skel clean; INTEGRATION-DAY present |
+| F-W1-006 | check-vendor-paths 0 | freeze tip 7b19270 |
+| G-W1-005 | `fb18b31` | PROGRAM-CLOSEOUT.md ENDPOINT matrix |
+| C-W1-003 | already verified prior | lane re-assert only; HOLD issued |
 
-## Integration readiness
+## Integration readiness — GO for human
 
 | Gate | Status |
 |---|---|
-| Product freeze A–G (depth) | **GO** (A missing only INTEGRATION-DAY one-pager; MERGE-READY already exists) |
-| G master runbook | **GO** on `lane/g-qa` |
-| Product merge-tree vs main | **GO** (prior G probe) |
-| Pins on main | **NO-GO** until A merges |
-| C/D in image | **NO-GO** until merge + snippets |
-| GHCR publish | **NO-GO** until post-merge smoke §9 |
+| All A–G Wave 1 depth + integration-day docs | **GO** on lanes |
+| G INTEGRATION-DAY + PROGRAM-CLOSEOUT | **GO** |
+| Pins on main | **NO-GO** until merge A |
+| Publish GHCR | **NO-GO** until post-merge §9 smoke |
 
-**Next human action:** Follow `origin/lane/g-qa:planning/integration/g-qa/INTEGRATION-DAY.md` serial A→G merge (can start once A-W1-004 lands or using MERGE-READY alone).
+**Human next step:**  
+`git show origin/lane/g-qa:planning/integration/g-qa/INTEGRATION-DAY.md`  
+Serial merge **A→B→C→D→E→F→G** + C/D snippets; update PROGRAM-CLOSEOUT.
 
 ## Program state
 
-`INTEGRATION_READY` — Wave 1 lane deliverables complete enough to merge; models on standby/closeout.
+`AWAITING_HUMAN_INTEGRATION` — models on HOLD; no further Wave 1 product tasks.

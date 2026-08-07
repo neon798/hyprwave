@@ -65,3 +65,16 @@
 - **A-W1-004** still no pickup (lane on W1-003 DONE) — re-nudged OPEN with fetch instructions.
 - Program flag: **INTEGRATION_READY** (pins/snippet/publish still post-merge gates).
 - Taskmaster-only via worktree.
+
+## 2026-08-07T05:35:00Z — Director check-in
+
+- Verified DONE:
+  - **A-W1-004** `435c39b` INTEGRATION-DAY pin card → **A-W1-HOLD**
+  - **B-W1-006** standby heartbeat → **B-W1-HOLD**
+  - **D-W1-006** standby + validate green → **D-W1-HOLD**
+  - **E-W1-006** standby → **E-W1-HOLD**
+  - **F-W1-006** standby → **F-W1-HOLD**
+  - **G-W1-005** PROGRAM-CLOSEOUT → **G-W1-HOLD**
+- **C:** still re-asserting W1-003 DONE; did not pick C-W1-004 — issued **C-W1-HOLD** with fetch instructions (do not mark DONE).
+- All models on long-lived HOLD (explicit: do not close HOLD as DONE).
+- Program: **AWAITING_HUMAN_INTEGRATION** — Wave 1 lane deliverables complete.

@@ -59,3 +59,13 @@
 - README indexes INTEGRATION-DAY; validate gates presence/content.
 - Commits: c8ea0ae (+ DONE meta).
 - `snippet-selftest.sh` + `validate.sh` → PASSED.
+
+## 2026-08-07 — D-W1-006 (integration standby heartbeat)
+
+- Wave 1 product scope for Model D **frozen**; standby for human/Director serial merge
+  (`planning/integration/g-qa/INTEGRATION-DAY.md`). No new product work invented.
+- Freeze tip SHA: `adbb4f4` (`adbb4f4b4c01a63f9b4fc31464ce99628b0261f8`) — tip of `lane/d-duress`
+  after D-W1-005 DONE meta.
+- Optional self-check (re-run): `bash planning/integration/d-duress/validate.sh` → **PASSED**;
+  `snippet-selftest.sh` → **PASSED**; zero `*.sha256` under packaging paths.
+- Status: **standby for integration** — await merge of D packaging (assets only; PAM OFF).

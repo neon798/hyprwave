@@ -7,3 +7,4 @@ D-W1-002 | 2026-08-07 | Negative validate fixtures, FAQ, OPERATOR-RUNBOOK, snipp
 D-W1-003 | 2026-08-07 | SIGNING.md, RESIDUALS.md, snippet-selftest, README severity/links | 240b4e5
 D-W1-004 | 2026-08-07 | INTEGRATOR-CHECKLIST freeze; README full index; validate gates | f88bb3d
 D-W1-005 | 2026-08-07 | INTEGRATION-DAY one-page gate card (merge → validate → no PAM) | c8ea0ae
+D-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip adbb4f4; validate still green | adbb4f4
