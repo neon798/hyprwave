@@ -26,8 +26,65 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Fast, non-matrix guards: pin hygiene + shell syntax. Fail before the heavy
+  # image build when someone reintroduces /releases/latest or breaks bash.
+  pin_guards:
+    name: Pin and shell syntax guards
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Forbid releases/latest in build.sh
+        run: |
+          set -euo pipefail
+          if grep -n 'releases/latest' build_files/build.sh; then
+            echo "::error::build_files/build.sh must not use GitHub /releases/latest — pin via build_files/versions.env"
+            exit 1
+          fi
+          echo "OK: no releases/latest in build_files/build.sh"
+
+      - name: bash -n on build_files scripts
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(find build_files -name '*.sh' -type f -print0 | sort -z)
+          if [[ "${#files[@]}" -eq 0 ]]; then
+            echo "::error::no build_files/**/*.sh found"
+            exit 1
+          fi
+          for f in "${files[@]}"; do
+            echo "bash -n ${f}"
+            bash -n "${f}"
+          done
+          echo "OK: bash -n passed on ${#files[@]} script(s)"
+
+      - name: versions.env required keys
+        run: |
+          set -euo pipefail
+          # shellcheck source=/dev/null
+          . build_files/versions.env
+          required=(
+            YAZI_VERSION YAZI_URL YAZI_SHA256
+            NEONWOLF_VERSION NEONWOLF_URL NEONWOLF_SHA256
+            FLATARCADE_VERSION FLATARCADE_URL FLATARCADE_SHA256
+            FLATARCADE_SVG_URL FLATARCADE_SVG_SHA256
+          )
+          for v in "${required[@]}"; do
+            if [[ -z "${!v:-}" ]]; then
+              echo "::error::versions.env missing or empty: ${v}"
+              exit 1
+            fi
+            echo "OK ${v}=${!v}"
+          done
+
+      - name: Verify pin URLs reachable
+        run: bash planning/integration/a-stabilize/scripts/verify-pins.sh
+
   build_push:
     name: Build and push image
+    needs: pin_guards
     runs-on: ubuntu-24.04
 
     strategy:

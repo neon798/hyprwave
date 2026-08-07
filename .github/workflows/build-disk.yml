@@ -91,6 +91,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
+      # Surgical pin hygiene (mirrors build.yml pin_guards; disk builds pull GHCR
+      # images that must have been built without /releases/latest drift).
+      - name: Pin guard — forbid releases/latest
+        run: |
+          set -euo pipefail
+          if grep -n 'releases/latest' build_files/build.sh; then
+            echo "::error::build_files/build.sh must not use GitHub /releases/latest"
+            exit 1
+          fi
+          echo "OK: no releases/latest in build_files/build.sh"
+
       - name: Build disk images
         id: build
         uses: osbuild/bootc-image-builder-action@main
