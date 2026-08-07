@@ -1,0 +1,6 @@
+# Optional theme component exceptions for check-themes.sh
+# Format: theme-name:relative-path
+# Lines starting with # are comments.
+#
+# Example (do not enable without justification):
+# experimental-theme:walker/style.css
