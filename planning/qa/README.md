@@ -132,6 +132,10 @@ Endpoint residual tracker (human-maintained from harness + `git ls-tree`):
 
 - `planning/integration/g-qa/ENDPOINT-RESIDUALS.md`
 
+Integration day (human master procedure):
+
+- `planning/integration/g-qa/INTEGRATION-DAY.md`
+
 Pre-merge conflict dry-run (integrator):
 
 - `planning/integration/g-qa/PRE-MERGE-DRY-RUN.md`

@@ -4,6 +4,9 @@
 **Audience:** Director / human integrator performing a serial morning merge onto `main`.  
 **Prerequisite:** Each `lane/*` has been pushed; Wave 1 Done criteria met (or residuals listed).
 
+**Start here on the day of:** [INTEGRATION-DAY.md](./INTEGRATION-DAY.md) (time-boxed master procedure).  
+Also: [PRE-MERGE-DRY-RUN.md](./PRE-MERGE-DRY-RUN.md) · [SMOKE-MATRIX.md](./SMOKE-MATRIX.md) §9 · [ENDPOINT-RESIDUALS.md](./ENDPOINT-RESIDUALS.md).
+
 ---
 
 ## 1. Goals

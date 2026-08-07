@@ -1,10 +1,9 @@
 # Smoke matrix — Hyprland + COSMIC
 
 **Owner:** Model G (matrix + links). Manual execution is Director/integrator/operator.  
-**Related:** `planning/qa/run-all.sh` (host packaging checks) · `MERGE-PLAYBOOK.md` (merge order).
+**Related:** `planning/qa/run-all.sh` (host packaging checks) · `MERGE-PLAYBOOK.md` (merge order) · **`INTEGRATION-DAY.md` (master day-of procedure)** · `PRE-MERGE-DRY-RUN.md`.
 
 This matrix ties **session-level** smokes from lanes E/F (when present) to a single day-of-integration checklist. If a linked file is missing, use the **fallback** column — do not skip the row silently.
-
 ---
 
 ## 0. Artifacts this matrix expects
@@ -234,4 +233,4 @@ Do **not** push/sign a “Wave 1 integrated” image to GHCR until **all** hard 
 [ ] Cosign sign per a-stabilize RELEASE/COSIGN
 ```
 
-Related: `PRE-MERGE-DRY-RUN.md` (go/no-go), `MERGE-PLAYBOOK.md` (order), `ENDPOINT-RESIDUALS.md` (program closeout).
+Related: `INTEGRATION-DAY.md` (day-of master), `PRE-MERGE-DRY-RUN.md` (go/no-go), `MERGE-PLAYBOOK.md` (order), `ENDPOINT-RESIDUALS.md` (program closeout).
