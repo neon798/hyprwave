@@ -16,24 +16,35 @@ requires pins + static checks; use this list when a machine is free.
 
 ## Pre-flight (host)
 
-- [ ] `just lint` and `just check` clean
+- [ ] `just lint` and `just check` clean (or note known pre-existing noise)
 - [ ] `grep -n 'releases/latest' build_files/build.sh` empty
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` OK
 - [ ] Image built: `just build hyprwave latest` and/or `just build-cosmic`
 - [ ] Optional VM: `just run-vm-qcow2` (needs sudo + KVM)
 
 ## GHCR public pull (status snapshot)
 
 Recorded during lane A stabilize (2026-08-06). **Does not block other lanes.**
+See also `RELEASE.md` for the visibility fix checklist.
 
 | Image | Result | Notes |
 |-------|--------|-------|
 | `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` / cannot pull without auth — package may be private or unpublished |
 | `ghcr.io/neon798/hyprwave-cosmic:latest` | **FAIL** | `403 Forbidden` on bearer token — same |
 
-Action for maintainer (not this lane): make packages public (or document auth),
-confirm CI push on `main` succeeds, then re-check anonymous pull.
+Action for maintainer: make packages public (or document auth), confirm CI push
+on `main` succeeds, then re-check anonymous pull.
 
 Local-only validation remains valid: build from this tree and boot a qcow2/ISO.
+
+## Out of scope (do not block first-boot “usable”)
+
+| Item | Why out of scope |
+|------|------------------|
+| NVIDIA proprietary drivers / hybrid GPU | Needs physical hardware; document “not certified” only |
+| Secure Boot enrollment edge cases | Distro/base dependent |
+| Full theming polish | Frozen skel/themes in Wave 1–2 |
+| Assistant / Duress features | Other lanes; dormant until integrator hooks |
 
 ## Hyprland first boot
 
@@ -76,19 +87,92 @@ Build-time failure modes to watch on the next full build:
 - curl 404 after a bad pin URL
 - `sha256sum -c` failure if asset rotated under the same tag (rare) or pin typo
 
-## CI sanity (no code change expected in lane A unless broken)
+## CI sanity
 
-Workflows already matrix both variants:
+Workflows:
 
-- `.github/workflows/build.yml` — `matrix.de: [hyprland, cosmic]`
-- `.github/workflows/build-disk.yml` — hyprland qcow2/iso + cosmic iso
-
-Lane A inspected both; no structural fix required for the matrix. Revisit only
-if CI starts failing for unrelated reasons after merge.
+- `.github/workflows/build.yml` — job **`pin_guards`** then matrix `de: [hyprland, cosmic]`
+- `.github/workflows/build-disk.yml` — hyprland qcow2/iso + cosmic iso; light pin grep step
 
 ## Handoff notes for integrator
 
 - Pins: `build_files/versions.env` + download block in `build_files/build.sh`
 - Bump process: `planning/integration/a-stabilize/BUMP.md`
+- Release/GHCR: `planning/integration/a-stabilize/RELEASE.md`
 - Models C/D must **not** reintroduce `/releases/latest`; use snippets only
 - After merge: run dual `just build` / `just build-cosmic`, then optional VM path
+
+---
+
+## Pass/fail run log template
+
+Copy a block per validation session. Fill **PASS** / **FAIL** / **SKIP** and short notes.
+Do not delete historical blocks — append new ones under the template.
+
+### Template (copy below)
+
+```
+### Run log
+- Date (UTC): YYYY-MM-DD
+- Operator:
+- Branch / commit:
+- Artifact: (localhost/hyprwave:latest | qcow2 | iso | ghcr.io/... )
+- Variant: hyprland | cosmic
+- Host notes: (KVM y/n, nested, cloud VM, …)
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS/FAIL/SKIP | |
+| verify-pins.sh | PASS/FAIL/SKIP | |
+| image/disk build | PASS/FAIL/SKIP | |
+| greeter appears | PASS/FAIL/SKIP | |
+| new-user login / skel | PASS/FAIL/SKIP | |
+| session + wallpaper | PASS/FAIL/SKIP | |
+| Ghostty | PASS/FAIL/SKIP | |
+| Walker / launcher | PASS/FAIL/SKIP | |
+| Yazi | PASS/FAIL/SKIP | |
+| Neonwolf | PASS/FAIL/SKIP | |
+| FlatArcade + Flathub | PASS/FAIL/SKIP | |
+| hyprwave-theme | PASS/FAIL/SKIP | |
+| NetworkManager | PASS/FAIL/SKIP | |
+| GHCR anonymous pull | PASS/FAIL/SKIP | |
+| Cosign verify | PASS/FAIL/SKIP | |
+
+Overall: PASS / FAIL
+Blockers for ship:
+Follow-ups:
+```
+
+### Filled logs
+
+```
+### Run log
+- Date (UTC): 2026-08-07
+- Operator: Model A Wave 2 (overnight)
+- Branch / commit: lane/a-stabilize (see git log; Wave 2 pin_guards + docs)
+- Artifact: none (no full image/VM this run)
+- Variant: n/a
+- Host notes: static validation only
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS | no releases/latest |
+| verify-pins.sh | PASS | all four URLs HTTP 200 |
+| image/disk build | SKIP | overnight: no full build required |
+| greeter appears | SKIP | needs VM |
+| new-user login / skel | SKIP | |
+| session + wallpaper | SKIP | |
+| Ghostty | SKIP | |
+| Walker / launcher | SKIP | |
+| Yazi | SKIP | |
+| Neonwolf | SKIP | |
+| FlatArcade + Flathub | SKIP | |
+| hyprwave-theme | SKIP | |
+| NetworkManager | SKIP | |
+| GHCR anonymous pull | FAIL | private/403 as of 2026-08-06; see RELEASE.md |
+| Cosign verify | SKIP | needs public pull + published digest |
+
+Overall: FAIL (GHCR visibility) / static pins PASS
+Blockers for ship: make GHCR packages public; morning dual-variant build + one VM first-boot
+Follow-ups: integrator merge A→B→C→D; re-run this log on qcow2
+```
