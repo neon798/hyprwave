@@ -5,4 +5,4 @@
 F-W1-001 | 2026-08-07 | COSMIC vendor inventory, session smoke, greeter docs, Mode/favorites/ISO notes | d047a4c
 F-W1-002 | 2026-08-07 | Theme COSMIC matrix, wallpaper proofs, smoke/greeter, check-vendor-paths.sh | c589a7a
 F-W1-003 | 2026-08-07 | Declutter docs, iso-cosmic notes, FlatArcade smoke, greeter day-1 | 9394a09
-F-W1-004 | 2026-08-07 | Integrator checklist, README index, freeze status (paths+ISO green) | PENDING
+F-W1-004 | 2026-08-07 | Integrator checklist, README index, freeze status (paths+ISO green) | 95ba576
