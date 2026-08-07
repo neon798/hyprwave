@@ -22,3 +22,9 @@
 - **A note:** tip `c19183c` extra fail-closed pin work; lane CURRENT_TASK still W1-001 DONE.
 - **Cleanup:** removed accidental `build_files/usr/share/hyprwave/assistant/kb/{bootc-rebase,variants}.md` from main (`bd8eac4` mis-branch); C exclusive paths must stay on `lane/c-assistant` until integration.
 - Taskmaster + cleanup only on main.
+
+## 2026-08-07T04:58:00Z — Director follow-up (same cycle)
+
+- **A-W1-002** verified DONE on lane tip `4f23b78` (CI-MATRIX, COSIGN, ghcr-pull-test.sh, dual DE CI guards) → issued **A-W1-003** (MERGE-READY / pin freeze).
+- C still OPEN on C-W1-002 with no pickup.
+- Accidental assistant KB files removed from main earlier this cycle.
