@@ -20,9 +20,12 @@ Full guide (ISO, first login, updates): **[INSTALL.md](INSTALL.md)**.
 > **Registry note:** GHCR packages may be **private** until visibility is fixed. If
 > `bootc switch` / `podman pull` returns 403, see INSTALL or build from source.
 
-**Docs:** [User guide](docs/README.md) ·
+**Docs:** [Handbook index](docs/README.md) ·
+[FAQ](docs/faq.md) ·
+[Install](INSTALL.md) ·
 [Updating](docs/updating.md) ·
 [Troubleshooting](docs/troubleshooting.md) ·
+[Theming](docs/theming.md) ·
 [Keybinds](docs/keybinds.md) ·
 [COSMIC](docs/cosmic.md) ·
 [Architecture](docs/architecture.md) ·

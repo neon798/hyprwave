@@ -66,21 +66,22 @@ onboarding without requiring readers to open `planning/`.
 - CI matrix: hyprland + cosmic; Cosign sign on push to `main` (PRs build only).
 - Install / update docs: [INSTALL.md](INSTALL.md), [docs/updating.md](docs/updating.md).
 
-### Documentation (this lane)
+### Documentation (this lane — handbook)
 
-- [INSTALL.md](INSTALL.md) — dual path Atomic rebase vs ISO; GHCR private warning;
-  post-install themes / FlatArcade / Neonwolf.
-- [docs/](docs/README.md) — troubleshooting, architecture, updating, security, cosmic,
-  keybinds, index.
-- Screenshot checklist with status + alt-text (captures still TODO).
+- [INSTALL.md](INSTALL.md) — Atomic rebase + ISO; private GHCR contingency; first hour.
+- [docs/README.md](docs/README.md) — full handbook index.
+- Operator pages: troubleshooting, architecture, updating, security, cosmic, theming,
+  keybinds, [faq.md](docs/faq.md) (≥12 Q&As), [contributor-notes.md](docs/contributor-notes.md).
+- [ACCURACY-AUDIT.md](planning/integration/b-docs/ACCURACY-AUDIT.md) — sources checked.
+- Screenshot checklist: purpose + alt text + capture notes (binaries still TODO).
 
 ### Parallel lanes (not claimed shipped on main until merge)
 
 | Lane | Feature | Docs stance |
 |------|---------|-------------|
-| A | Pinned Yazi/Neonwolf/FlatArcade URLs | Good for reproducible builds; user still uses `bootc upgrade` |
-| C | Hyprwave Assistant (Go TUI) | **Upcoming / dormant** until integrator hooks image |
-| D | pam-duress packaging | **Optional, off by default** — see [docs/security.md](docs/security.md) |
+| A | Pinned Yazi/Neonwolf/FlatArcade (`versions.env` on `lane/a-stabilize`) | **Pending merge to main**; users still `bootc upgrade` published images |
+| C | Hyprwave Assistant (Go TUI) | **Pending merge / dormant** until integrator hooks image |
+| D | pam-duress packaging | **Pending merge**; **optional, off by default** — [docs/security.md](docs/security.md) |
 
 ### Removed vs older plans
 

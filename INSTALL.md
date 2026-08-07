@@ -185,9 +185,11 @@ reset `~/.config`. Details: [docs/architecture.md](docs/architecture.md).
    hyprwave-theme list
    hyprwave-theme set vaporwave
    ```
-   Eleven packs under `/usr/share/hyprwave/themes/`.
+   Eleven packs under `/usr/share/hyprwave/themes/` — full guide:
+   [docs/theming.md](docs/theming.md).
 6. **Terminal:** Ghostty (Super+Return / Super+T on Hyprland)
-7. **Updates later:** [docs/updating.md](docs/updating.md)
+7. **FAQ / help:** [docs/faq.md](docs/faq.md) · [docs/troubleshooting.md](docs/troubleshooting.md)
+8. **Updates later:** [docs/updating.md](docs/updating.md)
 
 | Role | Hyprland | COSMIC |
 |------|----------|--------|
@@ -228,7 +230,9 @@ Full index: [docs/troubleshooting.md](docs/troubleshooting.md).
 
 ## See also
 
-- [docs/README.md](docs/README.md) — all end-user docs  
+- [docs/README.md](docs/README.md) — handbook index  
+- [docs/faq.md](docs/faq.md) — common questions  
 - [docs/keybinds.md](docs/keybinds.md) — Hyprland shortcuts  
+- [docs/theming.md](docs/theming.md) — theme packs  
 - [docs/security.md](docs/security.md) — immutability, duress off by default  
 - [CHANGELOG.md](CHANGELOG.md) · [README.md](README.md) · `just --list`
