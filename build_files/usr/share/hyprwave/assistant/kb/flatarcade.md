@@ -1,19 +1,31 @@
 # FlatArcade vs Hyprwave Assistant
 
-Both are TUI tools; they solve different jobs.
+Both are terminal-friendly tools on Hyprwave. They **complement** each other; neither replaces the other.
 
-## FlatArcade
+## FlatArcade (full app store)
 
-- Full **Flathub browser** / app store experience.
-- Search the entire Flathub catalog, install, remove, update apps.
-- Best when you know the app name or want to explore.
+- Flathub **browser** / app store TUI: search, browse categories, install, remove, update.
+- Best when you know an app name, want to explore the whole catalog, or manage apps outside the curated list.
+- Launched from the menu or as `flatarcade` (exact command may be a Ghostty wrapper depending on image version).
 
-## Hyprwave Assistant
+Typical jobs:
 
-- **Curated** short list of popular software (Installer tab).
-- **Base image** updates via bootc (with reboot warnings).
-- **Knowledge Base** for how Hyprwave works.
-- Not a replacement for FlatArcade’s full store UI.
+- “Install Spotify / Discord / a niche IDE from Flathub”
+- “What Flatpaks do I have, and which need updates?”
+- “Remove an app I no longer use”
+
+## Hyprwave Assistant (system companion)
+
+- **Updater** — base image (`bootc`) + Flatpak updates with dry-run and double-confirm.
+- **Installer** — short **curated** catalog (`catalog.toml`), not all of Flathub.
+- **Knowledge Base** — how Hyprwave works (bootc, themes, dual DE, Walker, …).
+- Never reboots the host; stages base upgrades and tells you to reboot yourself.
+
+Typical jobs:
+
+- “Is my base image current? Stage an upgrade safely.”
+- “Install LibreOffice / Steam / Bitwarden from the shortlist.”
+- “How do I switch themes or rebase to COSMIC?”
 
 ## When to use which
 
@@ -21,6 +33,33 @@ Both are TUI tools; they solve different jobs.
 |------|------|
 | Browse all of Flathub | FlatArcade |
 | One-click curated apps | Assistant → Installer |
-| Update OS image | Assistant → Updater |
+| Update OS image (bootc) | Assistant → Updater |
 | Learn the distro | Assistant → Knowledge Base |
 | Update only Flatpaks | Either (Assistant or `flatpak update`) |
+| Remove / manage arbitrary Flatpaks | FlatArcade or `flatpak` CLI |
+
+## CLI quick reference
+
+```bash
+# Assistant — safe first
+hyprwave-assistant update --dry-run
+hyprwave-assistant list
+hyprwave-assistant install libreoffice --dry-run
+hyprwave-assistant kb flatarcade
+
+# FlatArcade — full store UI (image-dependent launcher)
+flatarcade
+```
+
+## Offline behavior
+
+| Capability | Offline |
+|------------|---------|
+| Assistant KB browse/search | Works |
+| Assistant catalog list / dry-run plans | Works |
+| Assistant live update/install | Blocked with clear banner |
+| FlatArcade remote search/install | Needs network |
+
+## Design intent
+
+Hyprwave prefers **immutable base + Flatpak apps**. FlatArcade is the day-to-day store. Assistant is the **safe systems + curated shortcuts + docs** surface so first-boot and maintenance stay simple without inventing package paths.

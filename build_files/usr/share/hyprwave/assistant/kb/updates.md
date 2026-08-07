@@ -1,6 +1,6 @@
 # How Updates Work
 
-Hyprwave separates **base image** updates from **app** updates.
+Hyprwave separates **base image** updates from **app** updates. Prefer Flatpak for apps; leave the base image immutable.
 
 ## Base system (bootc)
 
@@ -12,16 +12,28 @@ sudo systemctl reboot # apply staged deployment
 
 - Changes are **staged** until reboot.
 - Previous deployments remain available for rollback.
-- The Assistant **Updater** tab runs status + upgrade with a reboot warning.
+- The Assistant **Updater** tab runs status + upgrade with dry-run / double-confirm and a reboot reminder.
+- Assistant **never** reboots the host.
+
+CLI:
+
+```bash
+hyprwave-assistant status --check
+hyprwave-assistant update --base --dry-run
+hyprwave-assistant update --base --yes --confirm   # mutates when online + privileged
+```
 
 ## Flatpak apps
 
 ```bash
 flatpak update
+# or
+hyprwave-assistant update --flatpak --dry-run
+hyprwave-assistant update --flatpak --yes --confirm
 ```
 
 - No reboot required for most apps.
-- User and system Flatpaks can both be present; the Assistant uses `flatpak update -y`.
+- User and system Flatpaks can both be present; Assistant uses non-interactive Flatpak flags in its plan.
 
 ## Update all (recommended order)
 
@@ -29,7 +41,14 @@ flatpak update
 2. Upgrade the base image.
 3. Reboot when bootc reports a staged deployment.
 
+```bash
+hyprwave-assistant update --all --dry-run
+hyprwave-assistant update --all --yes --confirm
+```
+
 ## Rebase (switch Hyprland ↔ COSMIC)
+
+Rebase is **not** the same as upgrade. Full user story: open article **`bootc-rebase`**.
 
 ```bash
 # Example — use your registry/owner if different
@@ -39,6 +58,16 @@ sudo systemctl reboot
 ```
 
 Rebase is a full image switch, not a package toggle. Your home directory is kept; greeter and session defaults follow the image.
+
+## Offline
+
+| Works offline | Needs network |
+|---------------|---------------|
+| `status` of local tools | `bootc upgrade` / `switch` |
+| KB + catalog | `flatpak update` / install |
+| `--dry-run` plans | live remote operations |
+
+When offline, Assistant shows a clear **OFFLINE** banner and refuses remote mutations.
 
 ## Rollback
 

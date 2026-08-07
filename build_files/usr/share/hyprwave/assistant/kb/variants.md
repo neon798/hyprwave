@@ -26,6 +26,7 @@ Both variants aim to ship the same companion story:
 | Notifications | Mako | COSMIC notifications |
 | Theming | Full theme pack (hypr/waybar/walker/…) | `cosmic/config` + wallpaper |
 | Lock / idle | hyprlock / hypridle | COSMIC session tools |
+| Suggested Assistant keybind | Super+Shift+A → Ghostty | Pin desktop entry / menu |
 
 ## Choosing
 
@@ -33,6 +34,8 @@ Both variants aim to ship the same companion story:
 - Prefer **COSMIC** for a more traditional desktop shell while keeping Hyprwave branding and tools.
 
 ## Switching (rebase)
+
+Do **not** try to install both DEs side-by-side on one immutable root as a day-to-day workflow. Use bootc switch:
 
 ```bash
 # Example registry/owner — use your published refs
@@ -42,8 +45,16 @@ sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest
 sudo systemctl reboot
 ```
 
+Full walkthrough: KB article **`bootc-rebase`**.
+
 Rebase is a full image switch. Your home directory is kept; greeter and session defaults follow the image.
 
 ## Assistant on both
 
-Updater / Installer / KB work the same on both variants. Theme accent detection is best-effort; COSMIC themes apply via `hyprwave-theme` copy into `~/.config/cosmic/`.
+Updater / Installer / KB work the same on both variants:
+
+- Binary: `/usr/bin/hyprwave-assistant`
+- Data: `/usr/share/hyprwave/assistant/{catalog.toml,kb/*.md}`
+- Desktop: `hyprwave-assistant.desktop` (Exec via Ghostty)
+
+Theme accent detection is best-effort; COSMIC themes apply via `hyprwave-theme` copy into `~/.config/cosmic/`.
