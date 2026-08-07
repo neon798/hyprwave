@@ -35,6 +35,7 @@ type Config struct {
 	KB      *kb.Store
 	DataDir string
 	Version string
+	Theme   string // best-effort active theme name
 }
 
 // Model is the root multi-tab application.
@@ -308,26 +309,32 @@ func (m Model) handleUpdaterKey(key string) (tea.Model, tea.Cmd) {
 		m.busyLabel = "Refreshing status…"
 		return m, m.refreshStatus()
 	case "b", "B":
+		plan, _ := system.PlanUpdate(system.TargetBase, false)
 		m.confirm = &confirmState{
-			title:   "Update base system (bootc)",
-			message: "This runs `bootc upgrade` and may require root.\nA reboot is usually needed afterward to boot the new image.\n\nProceed?",
-			action:  actionUpdateBase,
-			danger:  true,
+			title: "Update base system (bootc)",
+			message: "This stages a new deployment. Reboot is NEVER forced.\n\n" +
+				system.FormatPlan(plan) + "\nMay need root/sudo/polkit. Proceed?",
+			action: actionUpdateBase,
+			danger: true,
 		}
 		return m, nil
 	case "f", "F":
+		plan, _ := system.PlanUpdate(system.TargetFlatpak, false)
 		m.confirm = &confirmState{
-			title:   "Update Flatpaks",
-			message: "This runs `flatpak update -y` for all installed Flatpaks.\nNo reboot required for most apps.\n\nProceed?",
-			action:  actionUpdateFlatpaks,
+			title: "Update Flatpaks",
+			message: "Updates installed Flatpaks (usually no reboot).\n\n" +
+				system.FormatPlan(plan) + "\nProceed?",
+			action: actionUpdateFlatpaks,
 		}
 		return m, nil
 	case "a", "A":
+		plan, _ := system.PlanUpdate(system.TargetAll, false)
 		m.confirm = &confirmState{
-			title:   "Update all",
-			message: "This will:\n  1. flatpak update -y\n  2. bootc upgrade\n\nBase updates usually need a reboot afterward.\n\nProceed?",
-			action:  actionUpdateAll,
-			danger:  true,
+			title: "Update all",
+			message: "Flatpaks first, then base image. Reboot is NEVER forced.\n\n" +
+				system.FormatPlan(plan) + "\nProceed?",
+			action: actionUpdateAll,
+			danger: true,
 		}
 		return m, nil
 	case "o", "O":
@@ -494,33 +501,15 @@ func (m Model) startConfirmed(act confirmAction) (Model, tea.Cmd) {
 	case actionUpdateBase:
 		m.busy = true
 		m.busyLabel = "Running bootc upgrade…"
-		return m, runCmd("bootc upgrade", true, func(ctx context.Context) (string, error) {
-			return system.BootcUpgrade(ctx, r)
-		})
+		return m, runPlanCmd(r, system.TargetBase)
 	case actionUpdateFlatpaks:
 		m.busy = true
 		m.busyLabel = "Running flatpak update…"
-		return m, runCmd("flatpak update", false, func(ctx context.Context) (string, error) {
-			return system.FlatpakUpdate(ctx, r)
-		})
+		return m, runPlanCmd(r, system.TargetFlatpak)
 	case actionUpdateAll:
 		m.busy = true
 		m.busyLabel = "Updating Flatpaks then base…"
-		return m, runCmd("update all", true, func(ctx context.Context) (string, error) {
-			var b strings.Builder
-			out, err := system.FlatpakUpdate(ctx, r)
-			b.WriteString("=== flatpak update ===\n")
-			b.WriteString(out)
-			if err != nil {
-				b.WriteString("\n")
-				b.WriteString(err.Error())
-				return b.String(), err
-			}
-			b.WriteString("\n\n=== bootc upgrade ===\n")
-			out2, err2 := system.BootcUpgrade(ctx, r)
-			b.WriteString(out2)
-			return b.String(), err2
-		})
+		return m, runPlanCmd(r, system.TargetAll)
 	case actionInstall:
 		items := m.visibleInstallItems()
 		if len(items) == 0 || m.instCursor >= len(items) {
@@ -536,19 +525,26 @@ func (m Model) startConfirmed(act confirmAction) (Model, tea.Cmd) {
 		m.busy = true
 		m.busyLabel = "Installing " + it.Name + "…"
 		appID := it.Flatpak
-		return m, runCmd("flatpak install "+appID, false, func(ctx context.Context) (string, error) {
-			return system.FlatpakInstall(ctx, r, appID)
-		})
+		return m, func() tea.Msg {
+			ctx, cancel := context.WithTimeout(context.Background(), system.LongTimeout)
+			defer cancel()
+			out, err := system.FlatpakInstall(ctx, r, appID)
+			return cmdDoneMsg{label: "flatpak install " + appID, output: out, err: err}
+		}
 	}
 	return m, nil
 }
 
-func runCmd(label string, rebootHint bool, fn func(context.Context) (string, error)) tea.Cmd {
+func runPlanCmd(r system.Runner, target system.Target) tea.Cmd {
 	return func() tea.Msg {
+		cmds, err := system.PlanUpdate(target, false)
+		if err != nil {
+			return cmdDoneMsg{label: string(target), err: err}
+		}
 		ctx, cancel := context.WithTimeout(context.Background(), system.LongTimeout)
 		defer cancel()
-		out, err := fn(ctx)
-		return cmdDoneMsg{label: label, output: out, err: err, reboot: rebootHint}
+		out, reboot, err := system.RunPlan(ctx, r, cmds)
+		return cmdDoneMsg{label: string(target), output: out, err: err, reboot: reboot}
 	}
 }
 
@@ -587,7 +583,11 @@ func (m Model) View() string {
 		m.height = 24
 	}
 
-	header := style.Title.Render("◈ Hyprwave Assistant") + " " + style.Muted.Render("v"+m.cfg.Version)
+	themeBit := ""
+	if m.cfg.Theme != "" {
+		themeBit = " · " + m.cfg.Theme
+	}
+	header := style.Title.Render("◈ Hyprwave Assistant") + " " + style.Muted.Render("v"+m.cfg.Version+themeBit)
 	tabs := style.RenderTabs(tabNames, m.active)
 
 	var body string
@@ -633,7 +633,7 @@ func (m Model) viewConfirm() string {
 	msg := style.Body.Render(c.message)
 	warn := ""
 	if c.danger {
-		warn = "\n" + style.Warning.Render("⚠ REBOOT WARNING: base image changes apply on next boot.")
+		warn = "\n" + style.Warning.Render("⚠ REBOOT WARNING: base changes apply on next boot — never forced here.")
 	}
 	prompt := "\n\n" + style.Success.Render("[Y]") + " yes   " + style.Error.Render("[N]") + " no / Esc"
 	return title + "\n\n" + msg + warn + prompt
@@ -653,19 +653,31 @@ func (m Model) viewUpdater() string {
 		return b.String()
 	}
 
+	// Preflight strip
+	pf := m.status.Preflight
+	b.WriteString(style.Highlight.Render("Preflight") + "  ")
+	b.WriteString(style.Muted.Render(fmt.Sprintf("online=%s  root=%s  bootc=%s  flatpak=%s",
+		boolYN(pf.Online), boolYN(pf.IsRoot), boolYN(pf.HasBootc), boolYN(pf.HasFlatpak))) + "\n")
+	if len(pf.Warnings) > 0 {
+		for _, w := range pf.Warnings {
+			b.WriteString(style.Warning.Render("  ⚠ "+w) + "\n")
+		}
+	}
+	b.WriteString("\n")
+
 	// bootc
 	b.WriteString(style.Highlight.Render("Base (bootc)") + "\n")
 	if m.status.BootcAvailable {
 		if m.status.BootcError != "" {
 			b.WriteString(style.Error.Render(m.status.BootcError) + "\n")
 		} else {
-			b.WriteString(style.Muted.Render(truncateLines(m.status.BootcStatus, 12)) + "\n")
+			b.WriteString(style.Muted.Render(truncateLines(m.status.BootcStatus, 10)) + "\n")
 		}
 		if m.status.NeedsReboot {
-			b.WriteString(style.Warning.Render("⚠ Staged/pending changes detected — a reboot may be required.") + "\n")
+			b.WriteString(style.Warning.Render("⚠ Staged/pending changes — reboot yourself when ready (never forced).") + "\n")
 		}
 	} else {
-		b.WriteString(style.Muted.Render(m.status.BootcError) + "\n")
+		b.WriteString(style.Muted.Render(emptyOr(m.status.BootcError, "bootc unavailable")) + "\n")
 	}
 
 	b.WriteString("\n" + style.Highlight.Render("Flatpak") + "\n")
@@ -673,10 +685,10 @@ func (m Model) viewUpdater() string {
 		if m.status.FlatpakError != "" {
 			b.WriteString(style.Error.Render(m.status.FlatpakError) + "\n")
 		} else {
-			b.WriteString(style.Muted.Render(truncateLines(m.status.FlatpakStatus, 10)) + "\n")
+			b.WriteString(style.Muted.Render(truncateLines(m.status.FlatpakStatus, 8)) + "\n")
 		}
 	} else {
-		b.WriteString(style.Muted.Render(m.status.FlatpakError) + "\n")
+		b.WriteString(style.Muted.Render(emptyOr(m.status.FlatpakError, "flatpak unavailable")) + "\n")
 	}
 
 	if m.lastErr != "" {
@@ -687,12 +699,19 @@ func (m Model) viewUpdater() string {
 
 	b.WriteString("\n" + style.Muted.Render("Actions: ") +
 		"[r] refresh  [b] update base  [f] update flatpaks  [a] update all  [o] output")
+	b.WriteString("\n" + style.Muted.Render("CLI: hyprwave-assistant update --dry-run | --check | --yes"))
 	return b.String()
 }
 
 func (m Model) viewInstaller() string {
 	var b strings.Builder
 	b.WriteString(style.Title.Render("Software installer") + "\n")
+	if len(m.flatItems) == 0 {
+		b.WriteString("\n" + style.Warning.Render("Catalog empty") + "\n")
+		b.WriteString(style.Muted.Render("No catalog.toml loaded from:\n  "+m.cfg.DataDir+"\n") + "\n")
+		b.WriteString(style.Muted.Render("Set HYPRWAVE_ASSISTANT_DATA or rebuild the image with assistant data."))
+		return b.String()
+	}
 	if m.filtering {
 		b.WriteString(style.CyanSearch("Filter: "+m.instFilter+"█") + "\n\n")
 	} else if m.instFilter != "" {
@@ -703,7 +722,7 @@ func (m Model) viewInstaller() string {
 
 	items := m.visibleInstallItems()
 	if len(items) == 0 {
-		b.WriteString(style.Muted.Render("(no matching packages)"))
+		b.WriteString(style.Muted.Render("(no packages match filter — Esc to clear)"))
 		return b.String()
 	}
 
@@ -747,6 +766,11 @@ func (m Model) viewInstaller() string {
 func (m Model) viewKBList() string {
 	var b strings.Builder
 	b.WriteString(style.Title.Render("Knowledge Base") + "\n")
+	if m.cfg.KB == nil || len(m.cfg.KB.Articles) == 0 {
+		b.WriteString("\n" + style.Warning.Render("No articles loaded") + "\n")
+		b.WriteString(style.Muted.Render("Expected kb/*.md under:\n  "+m.cfg.DataDir+"\n"))
+		return b.String()
+	}
 	if m.kbSearch {
 		b.WriteString(style.CyanSearch("Search: "+m.kbQuery+"█") + "\n\n")
 	} else if m.kbQuery != "" {
@@ -756,7 +780,7 @@ func (m Model) viewKBList() string {
 	}
 
 	if len(m.kbResults) == 0 {
-		b.WriteString(style.Muted.Render("(no articles found)"))
+		b.WriteString(style.Muted.Render("(no articles match — Esc to clear search)"))
 		return b.String()
 	}
 	if m.kbCursor >= len(m.kbResults) {
@@ -789,19 +813,24 @@ func (m Model) viewAbout() string {
 	var b strings.Builder
 	b.WriteString(style.Title.Render("About Hyprwave Assistant") + "\n\n")
 	b.WriteString(style.Body.Render("Version: ") + m.cfg.Version + "\n")
-	b.WriteString(style.Body.Render("Data:    ") + style.Muted.Render(m.cfg.DataDir) + "\n\n")
+	b.WriteString(style.Body.Render("Data:    ") + style.Muted.Render(m.cfg.DataDir) + "\n")
+	theme := m.cfg.Theme
+	if theme == "" {
+		theme = "synthwave (default)"
+	}
+	b.WriteString(style.Body.Render("Theme:   ") + theme + "\n\n")
 	b.WriteString("A single TUI for updates, curated installs, and distro knowledge.\n")
-	b.WriteString("Built with Go + Bubble Tea + Lip Gloss.\n\n")
-	b.WriteString(style.Highlight.Render("Palette") + "  synthwave  ")
+	b.WriteString("Built with Go + Bubble Tea + Lip Gloss.\n")
+	b.WriteString(style.Muted.Render("Never forces reboot. Confirmations for base upgrades.\n\n"))
+	b.WriteString(style.Highlight.Render("Palette") + "  ")
 	b.WriteString(lipgloss.NewStyle().Foreground(style.Pink).Render("■pink ") +
 		lipgloss.NewStyle().Foreground(style.Cyan).Render("■cyan ") +
 		lipgloss.NewStyle().Foreground(style.Purple).Render("■purple") + "\n\n")
-	b.WriteString(style.Muted.Render("Base image is immutable (bootc). Apps: Flatpak preferred.\n"))
-	b.WriteString(style.Muted.Render("Theme switcher: hyprwave-theme (system tool).\n"))
-	b.WriteString(style.Muted.Render("App store TUI: FlatArcade (Flathub browser).\n\n"))
-	tools := system.Which(m.cfg.Runner, "bootc", "flatpak", "ghostty")
+	b.WriteString(style.Muted.Render("CLI: status | update | install | list | kb | version\n"))
+	b.WriteString(style.Muted.Render("Theme switcher: hyprwave-theme · App store: FlatArcade\n\n"))
+	tools := system.Which(m.cfg.Runner, "bootc", "flatpak", "ghostty", "sudo")
 	b.WriteString(style.Highlight.Render("Host tools") + "\n")
-	for _, name := range []string{"bootc", "flatpak", "ghostty"} {
+	for _, name := range []string{"bootc", "flatpak", "ghostty", "sudo"} {
 		if tools[name] {
 			b.WriteString("  " + style.Success.Render("●") + " " + name + "\n")
 		} else {
@@ -852,4 +881,18 @@ func min(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func boolYN(v bool) string {
+	if v {
+		return "yes"
+	}
+	return "no"
+}
+
+func emptyOr(s, fallback string) string {
+	if strings.TrimSpace(s) == "" {
+		return fallback
+	}
+	return s
 }

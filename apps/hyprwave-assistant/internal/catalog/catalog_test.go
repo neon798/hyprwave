@@ -63,3 +63,55 @@ func TestLoadFromDirs(t *testing.T) {
 		t.Fatal("missing item")
 	}
 }
+
+func TestShippedCatalog(t *testing.T) {
+	// Resolve repo asset from module location.
+	candidates := []string{
+		filepath.Join("..", "..", "..", "build_files", "usr", "share", "hyprwave", "assistant", "catalog.toml"),
+		filepath.Join("build_files", "usr", "share", "hyprwave", "assistant", "catalog.toml"),
+	}
+	var c *Catalog
+	var err error
+	for _, p := range candidates {
+		c, err = Load(p)
+		if err == nil {
+			break
+		}
+	}
+	if err != nil {
+		t.Skip("shipped catalog not found from test cwd:", err)
+	}
+	if len(c.Categories) < 5 {
+		t.Fatalf("expected expanded catalog, cats=%d", len(c.Categories))
+	}
+	for _, row := range c.FlatList() {
+		it := row.Item
+		if it.ID == "" || it.Name == "" {
+			t.Fatalf("empty id/name: %+v", it)
+		}
+		switch it.Source {
+		case SourceFlatpak:
+			if it.Flatpak == "" || !containsDot(it.Flatpak) {
+				t.Fatalf("bad flatpak id for %s: %q", it.ID, it.Flatpak)
+			}
+		case SourceLayer:
+			if len(it.Packages) == 0 {
+				t.Fatalf("layer with no packages: %s", it.ID)
+			}
+		default:
+			t.Fatalf("unknown source %q on %s", it.Source, it.ID)
+		}
+	}
+	if c.Find("libreoffice") == nil || c.Find("gimp") == nil {
+		t.Fatal("expected libreoffice and gimp entries")
+	}
+}
+
+func containsDot(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] == '.' {
+			return true
+		}
+	}
+	return false
+}
