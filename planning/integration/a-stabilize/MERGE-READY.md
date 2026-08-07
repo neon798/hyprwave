@@ -130,6 +130,7 @@ See `COSIGN.md` and `RELEASE.md` for failure modes and private-registry continge
 
 | Doc | Role |
 |-----|------|
+| **`INTEGRATION-DAY.md`** | **One-page ordered run sheet for merge day** |
 | `BUMP.md` | How to change pins after freeze |
 | `CI-MATRIX.md` | Dual-image CI audit |
 | `COSIGN.md` | Signature verify |

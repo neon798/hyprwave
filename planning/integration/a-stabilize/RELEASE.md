@@ -209,6 +209,7 @@ commit `versions.env` only, let `pin_guards` pass, dual-variant image build.
 | Doc / script | Role |
 |--------------|------|
 | `MERGE-READY.md` | Pre-merge green gate for `lane/a-stabilize` |
+| `INTEGRATION-DAY.md` | One-page ordered merge/verify run sheet |
 | `CI-MATRIX.md` | Dual-image CI audit + gaps |
 | `COSIGN.md` | Verify / rotate / failure modes |
 | `scripts/verify-pins.sh` | Companion pin HEAD/checksum |
