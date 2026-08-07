@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: B-W1-002  
+status: OPEN  
+task_id: B-W1-003  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
-title: Keybind accuracy sync, first-boot handbook chapter, release notes polish  
+issued: 2026-08-07T04:55:00Z  
+title: Security/docs alignment + screenshot ops + dual-variant troubleshooting  
 
 ## Objective
 
-Drive docs toward ENDPOINT accuracy: keybinds match Hyprland reality (read E’s KEYBIND-MAP / skel on `origin/lane/e-hyprland` **read-only**), a complete first-boot chapter, and CHANGELOG/INSTALL that reflect **pending multi-lane merge** honestly.
+Close remaining handbook gaps toward ENDPOINT: security docs match duress packaging truth (read D lane), screenshot ops are executable notes, troubleshooting covers both DE variants cleanly.
 
 ## Exclusive paths
 
@@ -22,26 +22,25 @@ Drive docs toward ENDPOINT accuracy: keybinds match Hyprland reality (read E’s
 - Editing `build_files/**`
 - Claiming duress enabled by default
 - Claiming GHCR public unless verified
-- Inventing binds not present in skel (prefer `git show origin/lane/e-hyprland:…`)
+- Product code outside docs
 
 ## Requirements
 
-- [x] `docs/keybinds.md` reconciled against `origin/lane/e-hyprland` `bindings.conf` + `planning/integration/e-hyprland/KEYBIND-MAP.md` (read-only); note COSMIC differences
-- [x] New or expanded `docs/first-boot.md` — login → wallpaper/bar/launcher → terminal/browser/store → theme switcher → update story; link A’s FIRST-BOOT-CHECKLIST
-- [x] INSTALL.md: dual-variant (Hyprland vs COSMIC) decision tree + ISO vs rebase; private GHCR contingency still accurate
-- [x] CHANGELOG Unreleased: list Wave-1 lane deliverables as **pending merge** where not on main; no false “shipped on main” claims
-- [x] `docs/cosmic.md` cross-links F greeter/session smoke when present on `origin/lane/f-cosmic` (paths as “on lane” if not merged)
-- [x] Update `planning/integration/b-docs/ACCURACY-AUDIT.md` with keybind + first-boot sources checked
-- [x] Relative link check remains clean
-- [x] ≥3 commits; push `lane/b-docs`
+- [ ] `docs/security.md` aligned with `origin/lane/d-duress` ENABLE/FAQ/THREAT-MODEL (read-only): off-by-default, residual risks, no LUKS claims
+- [ ] Expand `docs/troubleshooting.md` dual-variant matrix (Hyprland greeter/session vs COSMIC; Walker vs cosmic launcher; theme switcher both)
+- [ ] `planning/integration/b-docs/screenshot-checklist.md`: every item has purpose + alt text + **exact capture command** (grim/hyprshot notes); mark blockers if host has no compositor
+- [ ] Optional short `docs/screenshots.md` index linking checklist + where assets will live (`docs/assets/` reserved, do not commit huge binaries unless tiny placeholders)
+- [ ] README “Docs” section lists first-boot + keybinds + security
+- [ ] Relative link check clean; ACCURACY-AUDIT updated
+- [ ] ≥3 commits; push `lane/b-docs`
 
 ## Deliverables
 
-- first-boot chapter, keybind sync, CHANGELOG/INSTALL honesty pass, audit update
+- Security/troubleshooting polish, screenshot ops readiness, audit update
 
 ## Done criteria
 
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
