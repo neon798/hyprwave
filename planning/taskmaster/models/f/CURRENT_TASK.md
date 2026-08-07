@@ -1,17 +1,37 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: F-W1-004  
+status: OPEN  
+task_id: F-W1-005  
 wave: 1  
-completed: 2026-08-07T05:25:00Z  
-title: Pre-merge COSMIC freeze + integrator checklist  
+issued: 2026-08-07T05:15:00Z  
+title: Integration-day COSMIC smoke card  
 
-## Summary
+## Objective
 
-- INTEGRATOR-CHECKLIST.md — merge gate (vendor, ISO, declutter, smoke links)
-- README.md — support pack index
-- FREEZE-STATUS.md — check-vendor-paths exit 0; iso-cosmic ref confirmed
-- No vendor/build.sh churn required for freeze
+One-page integration-day card for COSMIC: check-vendor-paths + condensed SESSION-SMOKE + declutter do-not-regress.
+
+## Exclusive paths
+
+- F IDENTITY paths (cosmic vendor, iso-cosmic, theme cosmic configs, integration/f-cosmic)
+- `planning/taskmaster/models/f/**`
+
+## Forbidden
+
+- Hyprland skel, pins, duress, Assistant
+
+## Requirements
+
+- [ ] `planning/integration/f-cosmic/INTEGRATION-DAY.md` — ordered gates + link INTEGRATOR-CHECKLIST/DECLUTTER/SESSION-SMOKE
+- [ ] `check-vendor-paths.sh` still exit 0
+- [ ] ≥2 commits; push `lane/f-cosmic`
+
+## Deliverables
+
+- INTEGRATION-DAY.md
+
+## Done criteria
+
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
