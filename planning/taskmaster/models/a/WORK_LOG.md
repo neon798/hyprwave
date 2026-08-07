@@ -117,3 +117,19 @@ floating token grep → clean
 
 - Lane A is merge-ready on pins/CI docs; GHCR public still maintainer action.
 - Integrator: follow MERGE-READY minimum green before merge to main.
+
+## 2026-08-07 — A-W1-003 reconfirm (Task Master still OPEN on main)
+
+**status:** DONE (no new product work)  
+**branch:** `lane/a-stabilize`
+
+Re-synced `models/a` from `origin/main` which still listed A-W1-003 OPEN.
+Re-validated all requirements already landed on this lane:
+
+- MERGE-READY.md present
+- verify-pins --head exit 0; --checksum --light exit 0
+- build.yml + build-disk.yml both block floating-release token
+- versions.env points at MERGE-READY / CI-MATRIX / COSIGN
+- check-upstream-pins.sh present (advisory)
+
+No invented follow-up work. Status remains DONE; idle for next OPEN task id.
