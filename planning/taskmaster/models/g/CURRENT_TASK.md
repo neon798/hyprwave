@@ -1,25 +1,40 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: G-W1-004  
+status: OPEN  
+task_id: G-W1-005  
 wave: 1  
-issued: 2026-08-07T05:15:00Z  
-title: Integration-day master runbook for human integrator  
+issued: 2026-08-07T05:25:00Z  
+title: Program closeout matrix — ENDPOINT verification after merge  
 
 ## Objective
 
-Single INTEGRATION-DAY.md the human/Director follows — G does **not** merge.
+Produce a Director-facing closeout matrix: each ENDPOINT product item → exact verification command/evidence after serial merge, so program can reach `PROGRAM_COMPLETE` without guesswork. Still **do not merge** lanes.
+
+## Exclusive paths
+
+- `planning/qa/**`
+- `planning/integration/g-qa/**`
+- `planning/taskmaster/models/g/**`
+
+## Forbidden
+
+- Merging product lanes
+- Editing A–F exclusive product paths
 
 ## Requirements
 
-- [x] INTEGRATION-DAY.md — time-boxed procedure
-- [x] Refresh ENDPOINT-RESIDUALS tip SHAs
-- [x] Cross-link MERGE-PLAYBOOK, PRE-MERGE-DRY-RUN, SMOKE-MATRIX §9, lane checklists
-- [x] ≥3 commits; push lane/g-qa
+- [ ] `planning/integration/g-qa/PROGRAM-CLOSEOUT.md` — table ENDPOINT §Product 1–10 → status (open/lane/main) → verify command → owner lane
+- [ ] Link INTEGRATION-DAY, ENDPOINT-RESIDUALS, SMOKE-MATRIX §9
+- [ ] Note pre-merge baseline: pins fail on main until A; C/D need snippets
+- [ ] ≥2 commits; push `lane/g-qa`
+
+## Deliverables
+
+- PROGRAM-CLOSEOUT.md
 
 ## Done criteria
 
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
