@@ -1,15 +1,14 @@
 # CURRENT_TASK
 
 status: DONE  
-task_id: C-W1-001  
+task_id: C-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Production-harden Assistant (tests, offline UX, safer system ops)  
-completed: 2026-08-07  
+issued: 2026-08-07T04:45:00Z  
+title: Integrator-ready package surface + offline UX polish + versioned release notes  
 
 ## Objective
 
-Take the existing Assistant from “Wave 2 feature-complete skeleton” to **production-hardened**: high test coverage on pure logic, bulletproof dry-run, excellent offline KB UX, and integration snippets that an integrator can apply without guessing.
+Make Assistant **drop-in ready** for the integration wave: complete data install tree, versioned binary story, offline-first UX polish, and handoff that an integrator can apply in one pass without inventing paths.
 
 ## Exclusive paths
 
@@ -17,6 +16,7 @@ Take the existing Assistant from “Wave 2 feature-complete skeleton” to **pro
 - `build_files/usr/share/hyprwave/assistant/**`
 - `build_files/usr/share/applications/hyprwave-assistant.desktop`
 - `planning/integration/c-assistant/**`
+- `planning/taskmaster/models/c/**`
 
 ## Forbidden
 
@@ -27,19 +27,23 @@ Take the existing Assistant from “Wave 2 feature-complete skeleton” to **pro
 
 ## Requirements
 
-- [x] `go test ./...` passes; ≥70% coverage on catalog (~90%), kb (~73%), system (~82%)
-- [x] Every destructive path has dry-run and double-confirm in TUI (Y twice) and CLI (`--yes --confirm`)
-- [x] Offline mode: KB + catalog work offline; updater shows OFFLINE / cannot reach
-- [x] Expand KB: first-boot, walker, hyprpaper, dual-variant, troubleshooting
-- [x] Catalog: ValidFlatpakID + Validate() on shipped catalog
-- [x] Containerfile.snippet static build -trimpath + ldflags; build.sh.snippet installs data + desktop
-- [x] HANDOFF-WAVE2.md exact Super+Shift+A bind line
-- [x] README covers CLI, env, data paths, testing
+- [x] Ensure KB + catalog data under `build_files/usr/share/hyprwave/assistant/` is complete and matches what the binary expects (document install layout in README)
+- [x] Desktop file: sensible Name/Comment/Exec/Categories/Terminal if TUI; Icon if available or HANDOFF for icon asset
+- [x] Snippets: `build.sh.snippet` + `Containerfile.snippet` install binary **and** data + desktop in one documented flow; version via ldflags; `-trimpath`
+- [x] `HANDOFF.md` / `HANDOFF-WAVE2.md`: exact Super+Shift+A bind line for E; package deps if any; post-install smoke (`hyprwave-assistant --help`, kb list)
+- [x] CLI: `--version` works; help text lists update/install/kb/dry-run/confirm flags; destructive ops still require dry-run + double-confirm
+- [x] ≥2 new or substantially expanded KB articles (e.g. FlatArcade, theming, dual DE, bootc rebase user story)
+- [x] `go test ./...` still passes; keep coverage discipline on catalog/kb/system
+- [x] `planning/integration/c-assistant/RELEASE-NOTES-0.2.md` (or similar) for integrator CHANGELOG blurb
 - [x] ≥3 commits; push `lane/c-assistant`
+
+## Deliverables
+
+- Complete share tree + snippets + handoff + KB expansions + tests green
 
 ## Done criteria
 
-- [x] `cd apps/hyprwave-assistant && go test ./... && go build -o /tmp/hyprwave-assistant .` succeeds
+- [x] `cd apps/hyprwave-assistant && go test ./... && go build -ldflags "-X main.version=test" -o /tmp/hyprwave-assistant .` succeeds
 - [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
