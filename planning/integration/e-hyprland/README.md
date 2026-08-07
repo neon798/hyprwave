@@ -2,9 +2,10 @@
 
 | Doc | Purpose |
 |-----|---------|
-| [AUTOSTART.md](./AUTOSTART.md) | First-session start order and races fixed |
+| [INTEGRATION-DAY.md](./INTEGRATION-DAY.md) | **One-page operator card** — condensed 1–30 + run log |
+| [SESSION-SMOKE.md](./SESSION-SMOKE.md) | Full post-merge gate (detail) |
 | [KEYBIND-MAP.md](./KEYBIND-MAP.md) | Frozen bind map (E-W1-004) — 86 active + 1 commented |
-| [SESSION-SMOKE.md](./SESSION-SMOKE.md) | **Post-merge gate** — items 1–30 minimum PASS |
+| [AUTOSTART.md](./AUTOSTART.md) | First-session start order and races fixed |
 | [THEME-SYMLINKS.md](./THEME-SYMLINKS.md) | `hyprwave/theme` indirection and per-app links |
 | [HANDOFF.md](./HANDOFF.md) | Residuals only (Assistant uncomment) |
 
