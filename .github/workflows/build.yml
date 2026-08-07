@@ -76,6 +76,21 @@ jobs:
             echo "OK build.sh references \${${key}}"
           done
 
+      # Dual-image hygiene: both DE legs must remain in the matrix so PRs never
+      # ship a single-variant-only CI gate by accident (see CI-MATRIX.md).
+      - name: Dual DE matrix (hyprland + cosmic) still declared
+        run: |
+          set -euo pipefail
+          if ! grep -nE 'de:[[:space:]]*\[hyprland,[[:space:]]*cosmic\]' .github/workflows/build.yml; then
+            echo "::error::build.yml must keep matrix.de = [hyprland, cosmic] — see planning/integration/a-stabilize/CI-MATRIX.md"
+            exit 1
+          fi
+          if ! grep -n 'iso-cosmic.toml' .github/workflows/build-disk.yml; then
+            echo "::error::build-disk.yml must retain cosmic ISO matrix entry (iso-cosmic.toml)"
+            exit 1
+          fi
+          echo "OK: dual-image matrix declarations present"
+
       - name: bash -n on build_files + verify-pins
         run: |
           set -euo pipefail

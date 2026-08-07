@@ -134,6 +134,13 @@ jobs:
           fi
           echo "OK: versions.env keys present; bash -n clean"
 
+      # Network pin HEAD check (mirrors build.yml pin_guards). Disk jobs pull
+      # GHCR images built from this tree; fail before BIB if pins already 404.
+      - name: Pin guard — verify-pins HEAD
+        run: |
+          set -euo pipefail
+          bash planning/integration/a-stabilize/scripts/verify-pins.sh --head
+
       - name: Build disk images
         id: build
         uses: osbuild/bootc-image-builder-action@main
