@@ -1,48 +1,50 @@
 # CURRENT_TASK
 
 status: DONE  
-task_id: E-W1-001  
+task_id: E-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Hyprland first-session reliability and keybind coherence  
+issued: 2026-08-07T04:45:00Z  
+title: Lock/idle/theme symlink integrity and session edge cases  
 
 ## Objective
 
-Make a **new user’s first Hyprland session** reliable: autostart order, wallpaper, bar, notifications, launcher, sensible binds, and a written map of every bind. This is UX engineering depth — audit, fix, document.
-
-## Branch setup
-
-```bash
-git fetch origin
-git checkout -B lane/e-hyprland origin/main   # if branch does not exist yet
-```
+Second depth pass on Hyprland session reliability: hyprlock/hypridle coherence, theme indirection symlinks, HiDPI/monitor notes, and edge-case binds — still exclusive to skel + e-hyprland integration docs.
 
 ## Exclusive paths
 
-See IDENTITY.md (skel hypr/waybar/walker/mako/ghostty/yazi/autostart/systemd user).
+- `build_files/etc/skel/.config/hypr/**`
+- `build_files/etc/skel/.config/waybar/**`
+- `build_files/etc/skel/.config/walker/**`
+- `build_files/etc/skel/.config/mako/**`
+- `build_files/etc/skel/.config/ghostty/**` (Hyprland-facing only)
+- `build_files/etc/skel/.config/yazi/**`
+- `build_files/etc/skel/.config/autostart/**`
+- `build_files/etc/skel/.config/systemd/user/**`
+- `build_files/etc/skel/.config/hyprwave/**` (theme indirection if present)
+- `planning/integration/e-hyprland/**`
+- `planning/taskmaster/models/e/**`
 
 ## Forbidden
 
-- COSMIC vendor trees
+- COSMIC vendor trees (F)
 - Duress/Assistant code
-- Mass theme pack regeneration
-- build.sh package installs (file HANDOFF in `planning/integration/e-hyprland/HANDOFF.md`)
+- Mass theme pack rewrites under `usr/share/hyprwave/themes` (fix skel symlinks only; HANDOFF for theme pack bugs)
+- `build.sh` package installs (HANDOFF only)
 
 ## Requirements
 
-- [x] Audit `autostart.conf` + walker autostart + hyprpaper: document start order in `planning/integration/e-hyprland/AUTOSTART.md`
-- [x] Fix real bugs found (race, missing exec, obsolete swaybg/wofi references)
-- [x] `bindings.conf`: ensure Walker, terminal, yazi, screenshots, theme GUI binds exist and do not conflict; comment sections
-- [x] Produce `planning/integration/e-hyprland/KEYBIND-MAP.md` — every bind → action (machine-readable table)
-- [x] `windowrules.conf`: walker namespace no-anim rule present; add rules only with rationale comments
-- [x] Waybar: modules list documented; no dead modules; style still theme-symlink friendly if applicable
-- [x] Ghostty/yazi: defaults match “default apps” story (Neonwolf is browser — don’t break)
-- [x] `planning/integration/e-hyprland/SESSION-SMOKE.md` — 15 manual checks after login
+- [x] Audit `hyprlock.conf` + `hypridle.conf`: lock keybind exists, idle → lock → DPMS chain documented; no broken paths
+- [x] Document theme symlink layout (`~/.config/hyprwave/theme` and per-app links) in `planning/integration/e-hyprland/THEME-SYMLINKS.md`; fix broken skel links if any
+- [x] `monitors.conf`: sensible default + comments for multi-monitor / scaling; do not hardcode one user’s layout as silent default if risky
+- [x] Walker/mako/waybar: confirm theme-friendly paths; no stale wofi/swaybg
+- [x] Expand SESSION-SMOKE.md with lock/idle/theme-switch checks (≥5 new items)
+- [x] KEYBIND-MAP.md regenerated/updated if binds change
+- [x] HANDOFF.md: any package gaps (hyprshot, etc.) listed for integrator
 - [x] ≥3 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
-- Skel fixes + AUTOSTART/KEYBIND-MAP/SESSION-SMOKE docs under integration/e-hyprland
+- Skel lock/idle/theme fixes + THEME-SYMLINKS + smoke/map updates
 
 ## Done criteria
 

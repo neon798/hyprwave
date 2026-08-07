@@ -15,3 +15,17 @@
 - Fixes: env export before portals; elephant→Walker exec-once; mkdir Pictures; dwindle binds; Super+Shift+E exit; ThemeSwitcher float; full docs
 - HANDOFF: no package list changes required
 - Idle awaiting next OPEN task (10m poll of `planning/taskmaster/models/e/`)
+
+## 2026-08-07T05:00Z — E-W1-002
+
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
+- Status → DONE
+- Commits:
+  - `959f9c0` hyprland: lock before DPMS; loginctl lock keybind
+  - `87a16bb` hyprland: document HiDPI/multi-monitor without hardcoding
+  - `1b25a22` docs(e-hyprland): theme symlinks, lock/idle smoke, handoff
+  - (taskmaster DONE tip recorded in following commit)
+- Fixes: hypridle ladder dim→lock→DPMS→suspend; Super+SHIFT+L → loginctl; hyprlock path comments; monitors HiDPI notes; THEME-SYMLINKS; SESSION-SMOKE +12 checks; no skel symlink repairs needed
+- Confirmed: walker/mako/waybar theme-friendly; no wofi/swaybg
+- HANDOFF: no package installs; optional theme-aware hyprlock wallpaper is switcher-side
+- Idle awaiting next OPEN task
