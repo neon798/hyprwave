@@ -2,7 +2,7 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **HUMAN INTEGRATION**  
-**Updated:** 2026-08-07T07:25:00Z  
+**Updated:** 2026-08-07T07:35:00Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
@@ -10,14 +10,14 @@
 | A | Build / CI / pins / release | `lane/a-stabilize` | A-W1-HOLD | OPEN — ack |
 | B | Docs / handbook | `lane/b-docs` | B-W1-HOLD | OPEN — ack |
 | C | Hyprwave Assistant | `lane/c-assistant` | C-W1-HOLD | OPEN — ack (heartbeat) |
-| D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN — ack |
+| D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN — ack (heartbeat) |
 | E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-HOLD | OPEN — ack (heartbeat) |
 | F | COSMIC variant | `lane/f-cosmic` | F-W1-HOLD | OPEN — ack |
 | G | QA automation / integration prep | `lane/g-qa` | G-W1-HOLD | OPEN — ack |
 
 ## This check-in
 
-- **A–G** HOLD OPEN; heartbeats: C `9db3aad`, E `61c80a0`.
+- **A–G** HOLD OPEN; heartbeats: C `ffd24ce`, D `3c059e2`, E `5f11fca`.
 - Still **no** product merge to main.
 - No new tasks; no BLOCKED; no DONE→next.
 
