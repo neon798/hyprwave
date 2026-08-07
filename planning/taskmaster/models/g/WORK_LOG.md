@@ -101,3 +101,22 @@ Harness still **FAIL** only on `pins-static` until A merges (expected).
 
 **Status:** idle / reaffirm DONE  
 **Note:** `origin/main` still listed G-W1-003 as OPEN (director task file lag). Lane deliverables already shipped; re-ran `probe-merge-conflicts.sh --product-only` vs main `371ea34` — all seven lanes **product-clean**. Refreshed tip SHAs in PRE-MERGE-DRY-RUN + ENDPOINT-RESIDUALS (A `3022cfc`, B `6be80a8`, E `b9a218f`, …). No new product work.
+
+## G-W1-004 — 2026-08-07
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** Integration-day master runbook for human integrator
+
+### Work performed
+
+1. `planning/integration/g-qa/INTEGRATION-DAY.md` — half-day schedule T0–T8; non-negotiables; conflict policy (product vs taskmaster); per-lane merge + gates; C/D snippet steps; GHCR go/no-go (SMOKE §9); abort/rollback; log template; cross-links to A MERGE-READY, B POST-MERGE, C HANDOFF, D/F INTEGRATOR-CHECKLIST, E INTEGRATION-DAY.
+2. Refreshed ENDPOINT-RESIDUALS + PRE-MERGE-DRY-RUN tips vs main `6c5da71` / current lanes; re-probe product-clean.
+3. Cross-linked MERGE-PLAYBOOK, SMOKE-MATRIX, QA README.
+
+### Commits
+
+- INTEGRATION-DAY.md
+- residuals + dry-run tips
+- cross-links
+- taskmaster DONE
