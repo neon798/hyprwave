@@ -1,6 +1,7 @@
-# --- Model C Wave 2: Hyprwave Assistant (integrator → build_files/build.sh) ---
+# --- Model C (C-W1-001): Hyprwave Assistant (integrator → build_files/build.sh) ---
 # Prerequisites:
 #   - Containerfile multi-stage builds static binary (Containerfile.snippet)
+#     with CGO_ENABLED=0 -trimpath -ldflags="-s -w -X main.version=..."
 #   - Catalog + KB at build_files/usr/share/hyprwave/assistant/
 #   - Desktop entry at build_files/usr/share/applications/hyprwave-assistant.desktop
 #
@@ -15,11 +16,10 @@ ASSISTANT_DESKTOP_SRC="${ASSISTANT_SRC}/usr/share/applications/hyprwave-assistan
 if [[ -d "${ASSISTANT_DATA_SRC}" ]]; then
   install -d /usr/share/hyprwave/assistant
   cp -a "${ASSISTANT_DATA_SRC}/." /usr/share/hyprwave/assistant/
-  # ensure world-readable for non-root users of the TUI
   chmod -R a+rX /usr/share/hyprwave/assistant
 fi
 
-# Desktop entry (this file only — do not touch other .desktop files)
+# Desktop entry (this file only)
 if [[ -f "${ASSISTANT_DESKTOP_SRC}" ]]; then
   install -d /usr/share/applications
   install -m 0644 "${ASSISTANT_DESKTOP_SRC}" /usr/share/applications/hyprwave-assistant.desktop
@@ -27,13 +27,10 @@ fi
 
 # Binary: prefer COPY --from=assistant-builder in Containerfile:
 #   COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant
-# Fallback if pre-staged in build context:
 if [[ -x /tmp/hyprwave-assistant && ! -x /usr/bin/hyprwave-assistant ]]; then
   install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
 fi
 
-# Optional desktop database refresh
-# update-desktop-database /usr/share/applications 2>/dev/null || true
-
-# Keybind is NOT applied here — see HANDOFF-WAVE2.md (Super+Shift+A → skel bindings).
-# --- end Model C Wave 2 snippet ---
+# Keybind is NOT applied here — see HANDOFF-WAVE2.md:
+#   bind = SUPER SHIFT, A, exec, ghostty -e hyprwave-assistant
+# --- end Model C snippet ---

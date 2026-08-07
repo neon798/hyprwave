@@ -1,4 +1,4 @@
-# --- Model C Wave 2: multi-stage Go build for hyprwave-assistant ---
+# --- Model C (C-W1-001): multi-stage Go build for hyprwave-assistant ---
 # Merge into Containerfile. Independent of hyprbuilder; usable for hyprland + cosmic.
 # Build context must include apps/hyprwave-assistant/.
 
@@ -7,8 +7,8 @@ WORKDIR /src
 COPY apps/hyprwave-assistant/go.mod apps/hyprwave-assistant/go.sum ./
 RUN go mod download
 COPY apps/hyprwave-assistant/ ./
-# Static binary; version stamped for About / --version
-ARG ASSISTANT_VERSION=0.2.0
+# Static-ish binary; version stamped for About / --version
+ARG ASSISTANT_VERSION=0.2.1
 ENV CGO_ENABLED=0
 RUN go test ./... \
  && go build -trimpath \

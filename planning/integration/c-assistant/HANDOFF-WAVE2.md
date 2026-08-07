@@ -21,12 +21,14 @@
 
 ## Integrator: Super+Shift+A keybind (skel — Model C must NOT edit skel)
 
-Add to Hyprland bindings (e.g. `build_files/etc/skel/.config/hypr/bindings.conf`):
+**Exact line** for Hyprland bindings (e.g. `build_files/etc/skel/.config/hypr/bindings.conf`):
 
 ```conf
 # Hyprwave Assistant
 bind = SUPER SHIFT, A, exec, ghostty -e hyprwave-assistant
 ```
+
+Copy that `bind = …` line only; do not invent alternate modifiers unless product decides otherwise.
 
 COSMIC: users can pin the desktop entry; no skel change required for basic menu launch.
 
