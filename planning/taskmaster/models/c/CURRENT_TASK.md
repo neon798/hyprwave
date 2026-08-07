@@ -1,60 +1,41 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: C-W1-003  
+task_id: C-W1-004  
 wave: 1  
-issued: 2026-08-07T05:05:00Z  
-reissued: 2026-08-07T05:15:00Z  
-title: Pre-merge Assistant freeze + integrator smoke script  
-
-## Director note
-
-**C-W1-002 is COMPLETED** (tip `b7aff65`). This is a **new** task. Refresh from main:
-
-```bash
-git fetch origin main
-git checkout origin/main -- planning/taskmaster/models/c/
-```
-
-Do **not** re-assert W1-002 DONE; implement W1-003 below.
+issued: 2026-08-07T05:25:00Z  
+title: Integration standby — heartbeat only  
 
 ## Objective
 
-Freeze Assistant for integration wave: packaging self-check script, coverage snapshot, final HANDOFF one-pager, no new feature sprawl.
+Wave 1 product work for this lane is **frozen**. Await human/Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`. Do **not** invent new product scope.
 
 ## Exclusive paths
 
-- `apps/hyprwave-assistant/**`
-- `build_files/usr/share/hyprwave/assistant/**`
-- `build_files/usr/share/applications/hyprwave-assistant.desktop`
-- `planning/integration/c-assistant/**`
-- `planning/taskmaster/models/c/**`
+See IDENTITY.md; taskmaster models/c only for status logs.
 
 ## Forbidden
 
-- Editing skel (E owns Super+Shift+A uncomment)
-- Editing production build.sh/Containerfile (snippets only)
-- Duress/PAM
-- Network in `go test`
+- Cross-lane product edits
+- Starting unassigned features
+- Force-push / merging other lanes
 
 ## Requirements
 
-- [ ] `planning/integration/c-assistant/smoke-host.sh` — runs `go test ./...`, builds with ldflags, runs `--help`/`--version`/`kb`/`list`/`update --dry-run` (exit 0)
-- [ ] `HANDOFF.md` one-pass: snippet apply order, data paths, Super+Shift+A line for E, package deps if any
-- [ ] Coverage snapshot in WORK_LOG for catalog/kb/system (or `go test -cover`)
-- [ ] Confirm desktop + catalog.toml + all KB files listed in README install layout
-- [ ] Version string / RELEASE-NOTES consistent (0.2.2 or bump if needed)
-- [ ] ≥3 commits; push `lane/c-assistant`
+- [ ] Refresh taskmaster from `origin/main`
+- [ ] Optional once: re-run lane self-check (bash planning/integration/c-assistant/smoke-host.sh) and note result in WORK_LOG
+- [ ] Append WORK_LOG heartbeat: freeze tip SHA + “standby for integration”
+- [ ] Push lane if WORK_LOG/COMPLETED updated
+- [ ] Set status DONE after single heartbeat (Director will re-open only if needed)
 
 ## Deliverables
 
-- smoke-host.sh + HANDOFF freeze + tests green
+- WORK_LOG standby note (+ optional check result)
 
 ## Done criteria
 
-- [ ] `bash planning/integration/c-assistant/smoke-host.sh` exits 0
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Heartbeat logged; status DONE; no product scope creep
 
 ## On completion
 
-Idle for next OPEN task.
+Idle until next OPEN task_id (may be post-merge fix).

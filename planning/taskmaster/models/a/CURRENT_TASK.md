@@ -4,7 +4,19 @@ status: OPEN
 task_id: A-W1-004  
 wave: 1  
 issued: 2026-08-07T05:15:00Z  
+reissued: 2026-08-07T05:25:00Z  
 title: Integration-day pin gate card + post-merge verify sheet  
+
+## Director note
+
+**A-W1-003 is COMPLETED** (`d41dfd9`). Lane still shows W1-003 DONE — refresh taskmaster from main and implement **W1-004**:
+
+```bash
+git fetch origin main
+git checkout origin/main -- planning/taskmaster/models/a/
+```
+
+Other lanes are integration-ready; A’s INTEGRATION-DAY card is the remaining stabilize doc.
 
 ## Objective
 

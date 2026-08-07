@@ -1,43 +1,41 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: B-W1-005  
+task_id: B-W1-006  
 wave: 1  
-issued: 2026-08-07T05:15:00Z  
-title: Post-merge doc flip checklist (integrator-facing)  
+issued: 2026-08-07T05:25:00Z  
+title: Integration standby — heartbeat only  
 
 ## Objective
 
-Provide a single checklist the integrator (or B after merge) uses to flip handbook language from “pending merge” to “on main” without inventing product facts.
+Wave 1 product work for this lane is **frozen**. Await human/Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`. Do **not** invent new product scope.
 
 ## Exclusive paths
 
-- `INSTALL.md`, `CHANGELOG.md`, `README.md`
-- `docs/**`
-- `planning/integration/b-docs/**`
-- `planning/taskmaster/models/b/**`
+See IDENTITY.md; taskmaster models/b only for status logs.
 
 ## Forbidden
 
-- Editing build_files
-- Claiming GHCR public unless verified
-- Claiming duress on by default
+- Cross-lane product edits
+- Starting unassigned features
+- Force-push / merging other lanes
 
 ## Requirements
 
-- [ ] `planning/integration/b-docs/POST-MERGE-DOC-FLIP.md` — exact files/sections to edit after A–G land; CHANGELOG Released subsection steps; honesty rules
-- [ ] Optional stub section in CHANGELOG already points at this file
-- [ ] ACCURACY-AUDIT note for post-merge pass
-- [ ] ≥2 commits; push `lane/b-docs`
+- [ ] Refresh taskmaster from `origin/main`
+- [ ] Optional once: re-run lane self-check (relative link check or doc presence only) and note result in WORK_LOG
+- [ ] Append WORK_LOG heartbeat: freeze tip SHA + “standby for integration”
+- [ ] Push lane if WORK_LOG/COMPLETED updated
+- [ ] Set status DONE after single heartbeat (Director will re-open only if needed)
 
 ## Deliverables
 
-- POST-MERGE-DOC-FLIP.md
+- WORK_LOG standby note (+ optional check result)
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Heartbeat logged; status DONE; no product scope creep
 
 ## On completion
 
-Idle for next OPEN task.
+Idle until next OPEN task_id (may be post-merge fix).

@@ -52,3 +52,16 @@
   - **G-W1-003** `1c8822d` dry-run + probe (product clean) → **G-W1-004** master INTEGRATION-DAY
 - **C:** lane still DONE on W1-002 only; re-nudged **C-W1-003** OPEN with fetch instructions (do not re-close W1-002).
 - Synced WORK_LOG/COMPLETED from lanes; taskmaster-only push via worktree.
+
+## 2026-08-07T05:25:00Z — Director check-in
+
+- Verified DONE:
+  - **B-W1-005** POST-MERGE-DOC-FLIP → **B-W1-006** standby
+  - **C-W1-003** smoke-host exit 0 → **C-W1-004** standby
+  - **D-W1-005** INTEGRATION-DAY + validate → **D-W1-006** standby
+  - **E-W1-005** INTEGRATION-DAY → **E-W1-006** standby
+  - **F-W1-005** INTEGRATION-DAY → **F-W1-006** standby
+  - **G-W1-004** master INTEGRATION-DAY → **G-W1-005** PROGRAM-CLOSEOUT matrix
+- **A-W1-004** still no pickup (lane on W1-003 DONE) — re-nudged OPEN with fetch instructions.
+- Program flag: **INTEGRATION_READY** (pins/snippet/publish still post-merge gates).
+- Taskmaster-only via worktree.

@@ -47,3 +47,11 @@
 - HANDOFF: package residual none; only Assistant uncomment for C
 - No bind behavior changes; freeze ready for integrator merge
 - Idle awaiting next OPEN task
+
+## 2026-08-07T05:30Z — E-W1-005
+
+- Branch: `lane/e-hyprland` — Status → DONE
+- Added planning/integration/e-hyprland/INTEGRATION-DAY.md (condensed 1–30 + fill-in log)
+- README indexes INTEGRATION-DAY; links SESSION-SMOKE, KEYBIND-MAP, HANDOFF
+- No skel/bind changes; Assistant remains commented
+- Idle awaiting next OPEN task

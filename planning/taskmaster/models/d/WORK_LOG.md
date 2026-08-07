@@ -51,3 +51,11 @@
 - Freeze reaffirm: zero `*.sha256`; snippet-selftest PAM-inert; no accidental enable path.
 - Commits: 99dad80, f67ffb9, f88bb3d (+ DONE meta).
 - `snippet-selftest.sh` + `validate.sh` → PASSED.
+
+## 2026-08-07 — D-W1-005
+
+- Integration-day one-page gate card on `lane/d-duress`.
+- Added `planning/integration/d-duress/INTEGRATION-DAY.md` (merge D → snippets → snippet-selftest + validate → no PAM; links INTEGRATOR-CHECKLIST + SIGNING do-not-commit).
+- README indexes INTEGRATION-DAY; validate gates presence/content.
+- Commits: c8ea0ae (+ DONE meta).
+- `snippet-selftest.sh` + `validate.sh` → PASSED.

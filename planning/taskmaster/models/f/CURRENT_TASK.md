@@ -1,38 +1,41 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: F-W1-005  
+task_id: F-W1-006  
 wave: 1  
-issued: 2026-08-07T05:15:00Z  
-title: Integration-day COSMIC smoke card  
+issued: 2026-08-07T05:25:00Z  
+title: Integration standby — heartbeat only  
 
 ## Objective
 
-One-page integration-day card for COSMIC: check-vendor-paths + condensed SESSION-SMOKE + declutter do-not-regress.
+Wave 1 product work for this lane is **frozen**. Await human/Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`. Do **not** invent new product scope.
 
 ## Exclusive paths
 
-- F IDENTITY paths (cosmic vendor, iso-cosmic, theme cosmic configs, integration/f-cosmic)
-- `planning/taskmaster/models/f/**`
+See IDENTITY.md; taskmaster models/f only for status logs.
 
 ## Forbidden
 
-- Hyprland skel, pins, duress, Assistant
+- Cross-lane product edits
+- Starting unassigned features
+- Force-push / merging other lanes
 
 ## Requirements
 
-- [ ] `planning/integration/f-cosmic/INTEGRATION-DAY.md` — ordered gates + link INTEGRATOR-CHECKLIST/DECLUTTER/SESSION-SMOKE
-- [ ] `check-vendor-paths.sh` still exit 0
-- [ ] ≥2 commits; push `lane/f-cosmic`
+- [ ] Refresh taskmaster from `origin/main`
+- [ ] Optional once: re-run lane self-check (bash planning/integration/f-cosmic/check-vendor-paths.sh) and note result in WORK_LOG
+- [ ] Append WORK_LOG heartbeat: freeze tip SHA + “standby for integration”
+- [ ] Push lane if WORK_LOG/COMPLETED updated
+- [ ] Set status DONE after single heartbeat (Director will re-open only if needed)
 
 ## Deliverables
 
-- INTEGRATION-DAY.md
+- WORK_LOG standby note (+ optional check result)
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Heartbeat logged; status DONE; no product scope creep
 
 ## On completion
 
-Idle for next OPEN task.
+Idle until next OPEN task_id (may be post-merge fix).
