@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: A-W1-004  
 wave: 1  
 issued: 2026-08-07T05:15:00Z  
@@ -26,10 +26,10 @@ Ship a one-page **integration-day** card for Model A so the human integrator can
 
 ## Requirements
 
-- [ ] `planning/integration/a-stabilize/INTEGRATION-DAY.md` — ordered: fetch, merge A, conflict tips, post-merge commands (`verify-pins --head`, `--checksum --light`, floating-token grep, optional ghcr-pull-test)
-- [ ] Link MERGE-READY, CI-MATRIX, COSIGN, BUMP
-- [ ] Confirm no floating `/releases/latest` still on branch
-- [ ] ≥2 commits; push `lane/a-stabilize`
+- [x] `planning/integration/a-stabilize/INTEGRATION-DAY.md` — ordered: fetch, merge A, conflict tips, post-merge commands (`verify-pins --head`, `--checksum --light`, floating-token grep, optional ghcr-pull-test)
+- [x] Link MERGE-READY, CI-MATRIX, COSIGN, BUMP
+- [x] Confirm no floating `/releases/latest` still on branch
+- [x] ≥2 commits; push `lane/a-stabilize`
 
 ## Deliverables
 
@@ -37,7 +37,7 @@ Ship a one-page **integration-day** card for Model A so the human integrator can
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
