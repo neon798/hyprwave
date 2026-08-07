@@ -1,0 +1,20 @@
+# REFERENCE ONLY — do not install as a full replacement for /etc/pam.d/sddm
+# without merging with the distro's current stack (session, account, etc.).
+#
+# Minimal auth pattern from pam-duress docs (Debian-style jump counts):
+#
+#   auth     [success=2 default=ignore]      pam_unix.so
+#   auth     [success=1 default=ignore]      pam_duress.so
+#   auth     requisite                       pam_deny.so
+#
+# On Fedora Atomic / ublue, SDDM often includes system-auth. Prefer enabling
+# once in system-auth (see system-auth.snippet) so hyprlock and other services
+# stay consistent — OR add only to sddm if you want greeter-only duress.
+#
+# Do NOT ship this file over the top of vendor /etc/pam.d/sddm blindly.
+
+#%PAM-1.0
+auth     [success=2 default=ignore]      pam_unix.so
+auth     [success=1 default=ignore]      pam_duress.so
+auth     requisite                       pam_deny.so
+# ... keep vendor account/password/session lines ...
