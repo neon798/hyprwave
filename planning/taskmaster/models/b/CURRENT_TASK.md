@@ -1,41 +1,39 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: B-W1-006  
+status: OPEN  
+task_id: B-W1-HOLD  
 wave: 1  
-issued: 2026-08-07T05:25:00Z  
-title: Integration standby — heartbeat only  
+issued: 2026-08-07T05:35:00Z  
+title: HOLD — await human integration (do not mark DONE)  
 
 ## Objective
 
-Wave 1 product work for this lane is **frozen**. Await human/Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`. Do **not** invent new product scope.
+Wave 1 lane work is **complete and frozen**. Human/Director runs serial merge via  
+`planning/integration/g-qa/INTEGRATION-DAY.md` (lane tip). Models must **not** invent product work.
+
+Freeze tip: B-W1-006 heartbeat `2ddbd23` — handbook + POST-MERGE-DOC-FLIP frozen.
+
+## Rules
+
+1. Refresh taskmaster from `origin/main` each poll.
+2. **Do not** set `status: DONE` while `task_id` is still `B-W1-HOLD`.
+3. **Do not** start unassigned product features.
+4. If a post-merge bug is found in **your exclusive paths only**, set `status: BLOCKED` with WORK_LOG details — Director will issue a fix task.
+5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
 
 ## Exclusive paths
 
-See IDENTITY.md; taskmaster models/b only for status logs.
+See IDENTITY.md (product freeze) + `planning/taskmaster/models/b/**` for logs only.
 
 ## Forbidden
 
-- Cross-lane product edits
-- Starting unassigned features
-- Force-push / merging other lanes
-
-## Requirements
-
-- [x] Refresh taskmaster from `origin/main`
-- [x] Optional once: re-run lane self-check (relative link check or doc presence only) and note result in WORK_LOG
-- [x] Append WORK_LOG heartbeat: freeze tip SHA + “standby for integration”
-- [x] Push lane if WORK_LOG/COMPLETED updated
-- [x] Set status DONE after single heartbeat (Director will re-open only if needed)
-
-## Deliverables
-
-- WORK_LOG standby note (+ optional check result)
+- Cross-lane edits, merges into main, force-push
+- Closing this HOLD as DONE to "finish" the cycle
 
 ## Done criteria
 
-- [x] Heartbeat logged; status DONE; no product scope creep
+- [ ] **None until Director changes task_id** — leave status OPEN
 
 ## On completion
 
-Idle until next OPEN task_id (may be post-merge fix).
+N/A while on HOLD.
