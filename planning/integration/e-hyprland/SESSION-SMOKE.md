@@ -58,6 +58,16 @@ Timeouts live in `~/.config/hypr/hypridle.conf` (dim 300s → lock 600s → DPMS
 26. [ ] **Theme switch** — `hyprwave-theme set <other>` updates indirection; waybar/mako colors change; hyprpaper wallpaper updates.  
 27. [ ] **No stale launchers** — no wofi/rofi/swaybg processes or binds; wallpaper is hyprpaper; launcher is Walker.
 
+## Window rules & hyprpaper (E-W1-003)
+
+28. [ ] **Walker no-anim** — Super+D opens without a slide/fade fight over tiles (`layerrule` namespace walker).  
+29. [ ] **ThemeSwitcher float** — Super+SHIFT+T window floats and centers (class `dev.hyprwave.ThemeSwitcher`).  
+30. [ ] **pavucontrol float** — Waybar pulse click opens floating centered volume UI.  
+31. [ ] **hyprpaper alive** — `pgrep -a hyprpaper`; wallpaper path in `~/.config/hypr/hyprpaper.conf` exists on disk.  
+32. [ ] **Multi-monitor wallpaper (if ≥2 outputs)** — both show art; empty `wallpaper = ,` covers all (or per-output lines if user customized).  
+33. [ ] **hyprpaper restart** — `pkill -x hyprpaper; hyprctl dispatch exec hyprpaper` restores wallpaper without logout.  
+34. [ ] **Assistant bind inactive** — Super+SHIFT+A does **nothing** (or no Assistant) until C enables; Super+A still FlatArcade. Confirm commented line exists in `bindings.conf`.
+
 ## Extra checks (optional but useful)
 
 - [ ] **Super+SHIFT+E** exits session (confirm you can log back in). Super+M alone must **not** exit.  
@@ -83,6 +93,8 @@ Timeouts live in `~/.config/hypr/hypridle.conf` (dim 300s → lock 600s → DPMS
 | Lock does nothing | hypridle/hyprlock missing | `pgrep hypridle`; `command -v hyprlock`; try `loginctl lock-session` |
 | Blank screen, unlocked | DPMS before lock (old conf) | ensure lock listener timeout &lt; DPMS timeout |
 | Double lock UI | keybind execs hyprlock twice | keybind must be `loginctl lock-session` |
+| Second monitor black | hyprpaper only bound one output | use `wallpaper = , path` or per-name lines; restart hyprpaper |
+| Theme GUI tiles | missing float rule | class `dev.hyprwave.ThemeSwitcher` in windowrules.conf |
 
 ## Sign-off
 

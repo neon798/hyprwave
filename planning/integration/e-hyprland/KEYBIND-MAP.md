@@ -31,6 +31,15 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 |------|------------|------|-------|
 | SUPER+SHIFT+T | exec | hyprwave-theme-gui | theme picker GUI |
 
+## Future / commented binds (not active in skel)
+
+These lines exist as **comments** in `bindings.conf` so integrators can enable
+them after the binary ships. They are **not** active keybinds.
+
+| keys | intended dispatcher | args | status | owner |
+|------|---------------------|------|--------|-------|
+| SUPER+SHIFT+A | exec | hyprwave-assistant | commented out | Model C + HANDOFF |
+
 ## Window management
 
 | keys | dispatcher | args | notes |
@@ -154,6 +163,14 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 |--------|--------|-------|-----|
 | Lock keybind | `hyprlock` direct | `loginctl lock-session` | Same path as idle/sleep; single instance via hypridle `lock_cmd` |
 | Idle ladder | dim → DPMS → lock → suspend | dim → **lock** → DPMS → suspend | Never blank an unlocked session |
+
+## Conflicts / intentional changes (E-W1-003)
+
+| Change | Before | After | Why |
+|--------|--------|-------|-----|
+| Assistant bind | (none) | commented `SUPER+SHIFT+A` → `hyprwave-assistant` | Reserve chord; Super+A stays FlatArcade; C owns binary |
+| Windowrules | sparse comments | rationale on every rule | QA / future edits |
+| hyprpaper | minimal header | multi-output `,` docs | Dual-monitor wallpaper clarity |
 
 ## Walker in-app prefixes (not Hypr binds)
 

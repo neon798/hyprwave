@@ -30,14 +30,14 @@ start from the generator (when present) is harmless.
 | 5 | `autostart.conf` | `hyprpaper` | Wallpaper (`hyprpaper.conf` → default or theme) |
 | 6 | `autostart.conf` | `mako` | Notifications (config via theme symlink) |
 | 7 | `autostart.conf` | `waybar` | Status bar |
-| 8 | `autostart.conf` | `hypridle` | Idle → dim → DPMS → lock → suspend |
+| 8 | `autostart.conf` | `hypridle` | Idle → dim → lock → DPMS → suspend |
 | 9 | `autostart.conf` | `/usr/libexec/xdg-desktop-portal-hyprland` | Wayland portal (needs #1–2) |
 | 10 | `autostart.conf` | `elephant` | Walker provider backend |
 | 11 | `autostart.conf` | `walker --gapplication-service` | Launcher daemon |
 | — | XDG autostart (optional) | `walker.desktop` → same Walker service | Backup if generator runs |
 | — | systemd drop-in | `app-walker@autostart.service.d/restart.conf` | `Restart=always` when unit is used |
 
-## Wallpaper path
+## Wallpaper path (hyprpaper, not swaybg)
 
 Skel `hyprpaper.conf`:
 
@@ -46,9 +46,13 @@ preload = /usr/share/hyprwave/wallpapers/default.png
 wallpaper = , /usr/share/hyprwave/wallpapers/default.png
 ```
 
-`hyprwave-theme set <name>` regenerates `~/.config/hypr/hyprpaper.conf` with a theme
-wallpaper and restarts hyprpaper (see `/usr/bin/hyprwave-theme`). First boot does **not**
-require a theme switch to show a background.
+- Empty monitor field (`,`) applies the same image to **all** connected outputs
+  (single or multi-monitor). Per-output lines use the name from `hyprctl monitors`
+  (e.g. `wallpaper = eDP-1, /path`). See comments in skel `hyprpaper.conf`.
+- `hyprwave-theme set <name>` regenerates `~/.config/hypr/hyprpaper.conf` with a
+  theme wallpaper and restarts hyprpaper (see `/usr/bin/hyprwave-theme`). First boot
+  does **not** require a theme switch to show a background.
+- Hotplug blank screen: `pkill -x hyprpaper; hyprctl dispatch exec hyprpaper`.
 
 ## Explicit non-goals / removed patterns
 
