@@ -40,3 +40,15 @@
 - **Still OPEN (no pickup):** A-W1-003, G-W1-003 — leave OPEN.
 - Synced WORK_LOG/COMPLETED for B/C/D/E/F from lanes.
 - Taskmaster-only on main (via clean worktree).
+
+## 2026-08-07T05:15:00Z — Director check-in
+
+- Verified DONE:
+  - **A-W1-003** `d41dfd9` MERGE-READY + advisory upstream pins → issued **A-W1-004**
+  - **B-W1-004** `6892b17` handbook freeze → **B-W1-005** post-merge doc flip
+  - **D-W1-004** `f88bb3d` validate PASSED → **D-W1-005** integration-day card
+  - **E-W1-004** `446af16` map/smoke freeze → **E-W1-005**
+  - **F-W1-004** `95ba576` integrator checklist → **F-W1-005**
+  - **G-W1-003** `1c8822d` dry-run + probe (product clean) → **G-W1-004** master INTEGRATION-DAY
+- **C:** lane still DONE on W1-002 only; re-nudged **C-W1-003** OPEN with fetch instructions (do not re-close W1-002).
+- Synced WORK_LOG/COMPLETED from lanes; taskmaster-only push via worktree.

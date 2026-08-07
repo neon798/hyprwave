@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: G-W1-003  
+task_id: G-W1-004  
 wave: 1  
-issued: 2026-08-07T04:55:00Z  
-title: Pre-integration dry-run report + conflict hotspot probe  
+issued: 2026-08-07T05:15:00Z  
+title: Integration-day master runbook for human integrator  
 
 ## Objective
 
-Produce an actionable **pre-merge dry-run** for the integrator: simulate merge order A→G with conflict probes, refresh endpoint residuals after W1-002/003 lane tips, and document go/no-go gates — still **do not merge** product lanes.
+Single **INTEGRATION-DAY.md** the human/Director follows: serial A→G merges, probe after each step, run-all expectations, snippet apply for C/D, go/no-go for GHCR publish — still **do not merge** yourself unless task explicitly says (it does not).
 
 ## Exclusive paths
 
@@ -18,22 +18,19 @@ Produce an actionable **pre-merge dry-run** for the integrator: simulate merge o
 
 ## Forbidden
 
-- Force-merging other lanes into main
-- Editing exclusive product paths of A–F
-- Enabling features in build.sh
+- Merging product lanes into main
+- Editing A–F product exclusive paths
 
 ## Requirements
 
-- [ ] `planning/integration/g-qa/PRE-MERGE-DRY-RUN.md` — for each lane tip SHA, list unique paths vs `origin/main`, predicted conflict files (esp. `build.sh`, README, workflows, skel)
-- [ ] Optional script `planning/qa/probe-merge-conflicts.sh` that uses `git merge-tree` (or equivalent) against `origin/main` for each `origin/lane/*` **read-only**; prints conflict paths; exit 0 even if conflicts found (report mode) unless `--fail-on-conflict`
-- [ ] Refresh `ENDPOINT-RESIDUALS.md` against current `origin/main` + latest lane tips
-- [ ] Expand SMOKE-MATRIX with “minimum green before GHCR publish” gate list
-- [ ] `run-all.sh` still works; document any new check
+- [ ] `planning/integration/g-qa/INTEGRATION-DAY.md` — time-boxed procedure: fetch, merge order, conflict policy (taskmaster vs product), after-each-lane `run-all` / probe commands, C/D snippet apply, smoke matrix P1 gates, abort criteria
+- [ ] Refresh ENDPOINT-RESIDUALS.md tip SHAs once more
+- [ ] Cross-link MERGE-PLAYBOOK, PRE-MERGE-DRY-RUN, SMOKE-MATRIX §9, each lane INTEGRATION-DAY if present
 - [ ] ≥3 commits; push `lane/g-qa`
 
 ## Deliverables
 
-- PRE-MERGE-DRY-RUN.md (+ optional probe script), updated residuals/smoke
+- INTEGRATION-DAY.md + residuals refresh
 
 ## Done criteria
 

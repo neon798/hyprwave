@@ -4,7 +4,19 @@ status: OPEN
 task_id: C-W1-003  
 wave: 1  
 issued: 2026-08-07T05:05:00Z  
+reissued: 2026-08-07T05:15:00Z  
 title: Pre-merge Assistant freeze + integrator smoke script  
+
+## Director note
+
+**C-W1-002 is COMPLETED** (tip `b7aff65`). This is a **new** task. Refresh from main:
+
+```bash
+git fetch origin main
+git checkout origin/main -- planning/taskmaster/models/c/
+```
+
+Do **not** re-assert W1-002 DONE; implement W1-003 below.
 
 ## Objective
 

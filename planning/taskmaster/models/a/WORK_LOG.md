@@ -80,3 +80,56 @@ bash …/ghcr-pull-test.sh → exit 1 (hyprwave unauthorized; cosmic may inspect
 
 - Maintainer still must flip GHCR packages Public (or document private PAT install).
 - Disk workflow cannot `needs:` container build across workflows; operators publish images first.
+
+## 2026-08-07 — A-W1-003
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`  
+**tip:** (see COMPLETED.md after push)
+
+### Work done
+
+- `MERGE-READY.md`: why A first, conflict risks, pin freeze table, container vs disk
+  pin_guards agreement (light checksum intentional disk gap only), min green local+CI
+- Re-ran `verify-pins.sh --head` and `--checksum --light` → exit 0
+- Confirmed both workflows block floating-release token; disk adds cosmic matrix assert
+- `versions.env` header → MERGE-READY / CI-MATRIX / COSIGN / verify + advisory scripts
+- `scripts/check-upstream-pins.sh` advisory (all pins current vs GitHub latest)
+- RELEASE + CI-MATRIX link MERGE-READY
+
+### Validation
+
+```
+verify-pins --head → 0
+verify-pins --checksum --light → 0
+check-upstream-pins → 0 (yazi/neonwolf/flatarcade all current)
+floating token grep → clean
+```
+
+### Commits
+
+1. `docs(a-stabilize): MERGE-READY pre-merge pin freeze gate`
+2. `pins: freeze comments + advisory check-upstream-pins.sh`
+3. `ci/docs: disk cosmic matrix guard; link MERGE-READY`
+4. taskmaster DONE + WORK_LOG/COMPLETED
+
+### Notes for Director
+
+- Lane A is merge-ready on pins/CI docs; GHCR public still maintainer action.
+- Integrator: follow MERGE-READY minimum green before merge to main.
+
+## 2026-08-07 — A-W1-003 reconfirm (Task Master still OPEN on main)
+
+**status:** DONE (no new product work)  
+**branch:** `lane/a-stabilize`
+
+Re-synced `models/a` from `origin/main` which still listed A-W1-003 OPEN.
+Re-validated all requirements already landed on this lane:
+
+- MERGE-READY.md present
+- verify-pins --head exit 0; --checksum --light exit 0
+- build.yml + build-disk.yml both block floating-release token
+- versions.env points at MERGE-READY / CI-MATRIX / COSIGN
+- check-upstream-pins.sh present (advisory)
+
+No invented follow-up work. Status remains DONE; idle for next OPEN task id.

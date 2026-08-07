@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: B-W1-004  
+task_id: B-W1-005  
 wave: 1  
-issued: 2026-08-07T05:05:00Z  
-title: Pre-merge handbook freeze + post-merge CHANGELOG template  
+issued: 2026-08-07T05:15:00Z  
+title: Post-merge doc flip checklist (integrator-facing)  
 
 ## Objective
 
-Freeze user docs for integration: honest pending-merge table final pass, CHANGELOG template ready for integrator after serial merge, architecture note covering Assistant + duress as optional/pending image features.
+Provide a single checklist the integrator (or B after merge) uses to flip handbook language from “pending merge” to “on main” without inventing product facts.
 
 ## Exclusive paths
 
@@ -19,21 +19,20 @@ Freeze user docs for integration: honest pending-merge table final pass, CHANGEL
 
 ## Forbidden
 
-- Editing `build_files/**`
-- Claiming features on main that only exist on lanes
-- Enabling or implying duress on by default
+- Editing build_files
+- Claiming GHCR public unless verified
+- Claiming duress on by default
 
 ## Requirements
 
-- [ ] CHANGELOG Unreleased: final A–G pending-merge honesty table; add “Post-merge template” subsection with bullets integrator can flip to Released
-- [ ] `docs/architecture.md`: bootc + dual DE + theme store + (lane) Assistant/duress packaging boundaries
-- [ ] `docs/contributor-notes.md`: how to refresh handbook after lane merges; link Task Master PROTOCOL
-- [ ] Relative link check clean; ACCURACY-AUDIT freeze note (date + main tip)
-- [ ] ≥3 commits; push `lane/b-docs`
+- [ ] `planning/integration/b-docs/POST-MERGE-DOC-FLIP.md` — exact files/sections to edit after A–G land; CHANGELOG Released subsection steps; honesty rules
+- [ ] Optional stub section in CHANGELOG already points at this file
+- [ ] ACCURACY-AUDIT note for post-merge pass
+- [ ] ≥2 commits; push `lane/b-docs`
 
 ## Deliverables
 
-- Handbook freeze docs + CHANGELOG post-merge template
+- POST-MERGE-DOC-FLIP.md
 
 ## Done criteria
 

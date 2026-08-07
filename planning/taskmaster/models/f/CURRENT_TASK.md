@@ -1,41 +1,33 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: F-W1-004  
+task_id: F-W1-005  
 wave: 1  
-issued: 2026-08-07T05:05:00Z  
-title: Pre-merge COSMIC freeze + integrator checklist  
+issued: 2026-08-07T05:15:00Z  
+title: Integration-day COSMIC smoke card  
 
 ## Objective
 
-Freeze COSMIC variant for integration: INTEGRATOR-CHECKLIST, check-vendor-paths green, SESSION-SMOKE/DECLUTTER/GREETER cross-linked as the support pack.
+One-page integration-day card for COSMIC: check-vendor-paths + condensed SESSION-SMOKE + declutter do-not-regress.
 
 ## Exclusive paths
 
-- `build_files/usr/share/cosmic/**`
-- `disk_config/iso-cosmic.toml`
-- COSMIC-only `build_files/build.sh` `cosmic)` arm only if essential
-- `planning/bin/generate-cosmic-themes.sh` / `planning/bin/themegen/**` (no huge `target/`)
-- `build_files/usr/share/hyprwave/themes/*/cosmic/**`
-- `planning/integration/f-cosmic/**`
+- F IDENTITY paths (cosmic vendor, iso-cosmic, theme cosmic configs, integration/f-cosmic)
 - `planning/taskmaster/models/f/**`
 
 ## Forbidden
 
-- Hyprland skel, pins (A), duress, Assistant app code
-- Breaking cosmic-session package set
+- Hyprland skel, pins, duress, Assistant
 
 ## Requirements
 
-- [ ] `planning/integration/f-cosmic/INTEGRATOR-CHECKLIST.md` — merge vendor tree + iso notes; run check-vendor-paths; do not reintroduce cosmic-store; smoke link
-- [ ] `check-vendor-paths.sh` exit 0
-- [ ] README or index under integration/f-cosmic listing DECLUTTER, GREETER, SESSION-SMOKE, THEME-COSMIC-MATRIX, REGENERATE
-- [ ] Confirm iso-cosmic.toml bootc ref still `hyprwave-cosmic` story
-- [ ] ≥3 commits; push `lane/f-cosmic`
+- [ ] `planning/integration/f-cosmic/INTEGRATION-DAY.md` — ordered gates + link INTEGRATOR-CHECKLIST/DECLUTTER/SESSION-SMOKE
+- [ ] `check-vendor-paths.sh` still exit 0
+- [ ] ≥2 commits; push `lane/f-cosmic`
 
 ## Deliverables
 
-- INTEGRATOR-CHECKLIST + freeze validation
+- INTEGRATION-DAY.md
 
 ## Done criteria
 

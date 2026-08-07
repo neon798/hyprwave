@@ -35,3 +35,12 @@
 - README Docs bar emphasizes first-boot + keybinds + security
 - ACCURACY-AUDIT B-W1-003 addendum; relative links 205/0 missing
 - Product commits: security, troubleshooting, screenshots, README/audit
+
+## 2026-08-07 — B-W1-004
+
+- status OPEN → IN_PROGRESS → DONE
+- CHANGELOG: final A–G pending-merge table + Post-merge template for integrator
+- architecture.md: bootc + dual DE + theme store + Assistant/duress packaging boundaries
+- contributor-notes.md: refresh handbook after merges; PROTOCOL link
+- ACCURACY-AUDIT freeze note (main tip 371ea34); links 220/0 missing
+- ≥3 product commits; push lane/b-docs

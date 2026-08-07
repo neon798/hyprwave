@@ -44,3 +44,14 @@
   - check-vendor-paths.sh: favorites flatarcade/neonwolf/hyprwave-theme + wallpaper story
 - build.sh: **no edit** (read-only audit)
 - Forbidden paths untouched.
+
+## 2026-08-07 — F-W1-004 Pre-merge COSMIC freeze
+
+- Branch: `lane/f-cosmic`
+- Deliverables:
+  - `planning/integration/f-cosmic/INTEGRATOR-CHECKLIST.md`
+  - `planning/integration/f-cosmic/README.md` (doc index)
+  - `planning/integration/f-cosmic/FREEZE-STATUS.md` (validation stamp)
+- Validation: `check-vendor-paths.sh` exit 0; iso-cosmic bootc → hyprwave-cosmic:latest
+- No build_files/usr/share/cosmic or build.sh changes (already frozen content)
+- Forbidden paths untouched.
