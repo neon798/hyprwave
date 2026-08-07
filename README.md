@@ -2,6 +2,23 @@
 
 Hyprwave is a modern, privacy- and security-first Linux distribution based on Fedora Atomic, featuring Hyprland as the default desktop environment. It combines an immutable, container-friendly core with a fast, composited Wayland desktop to deliver a safe, polished, and highly tweakable experience.
 
+## Install
+
+| Variant | Image | Greeter |
+|---------|-------|---------|
+| **Hyprland** (default) | `ghcr.io/neon798/hyprwave:latest` | SDDM |
+| **COSMIC** | `ghcr.io/neon798/hyprwave-cosmic:latest` | cosmic-greeter |
+
+```bash
+sudo bootc switch ghcr.io/neon798/hyprwave:latest && sudo systemctl reboot
+# or COSMIC:
+sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest && sudo systemctl reboot
+```
+
+Full guide (ISO, first login, updates): **[INSTALL.md](INSTALL.md)**.  
+Hyprland keybinds: **[docs/keybinds.md](docs/keybinds.md)**.  
+Changelog: **[CHANGELOG.md](CHANGELOG.md)**.
+
 ## Companion apps
 
 Hyprwave ships with a small suite of synthwave-themed apps that share its `synthwave84` look:
