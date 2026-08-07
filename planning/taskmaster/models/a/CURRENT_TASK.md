@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: A-W1-002  
+status: OPEN  
+task_id: A-W1-003  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
-title: Dual-image CI matrix, cosign verify runbook, GHCR visibility path  
+issued: 2026-08-07T04:58:00Z  
+title: Pre-merge pin freeze + dual-image build gate notes  
 
 ## Objective
 
-Close remaining **release/reproducibility** gaps from ENDPOINT: dual Hyprland+COSMIC build matrix hygiene, operator cosign verification, and a concrete GHCR public/private contingency that does not leave `:latest` floating downloads.
+Last stabilize depth before integration: freeze operator pin-bump SOP against live GHCR/cosign docs, ensure disk+container workflows agree on pin_guards, and document the **minimum green** gate for merging `lane/a-stabilize` first.
 
 ## Exclusive paths (only these)
 
@@ -16,41 +16,32 @@ Close remaining **release/reproducibility** gaps from ENDPOINT: dual Hyprland+CO
 - `build_files/build.sh` (pin/checksum sourcing only)
 - `.github/workflows/*`
 - `planning/integration/a-stabilize/**`
-- `planning/taskmaster/models/a/**` (WORK_LOG, COMPLETED, CURRENT_TASK status only)
+- `planning/taskmaster/models/a/**`
 
 ## Forbidden
 
 - Wiring Assistant or Duress into `build.sh`
-- Rewriting README/INSTALL (Model B)
+- Handbook rewrites (B)
 - Enabling duress PAM
-- Editing other models’ exclusive paths
+- Other models’ exclusive paths
 
 ## Requirements
 
-- [x] Audit `.github/workflows/build*.yml` for both image names (`hyprwave` / `hyprwave-cosmic` or DE matrix); document gaps in `planning/integration/a-stabilize/CI-MATRIX.md`
-- [x] Add or tighten workflow so pin_guards (or equivalent) still runs on PRs; note any disk-image workflow that should depend on pins
-- [x] `planning/integration/a-stabilize/COSIGN.md` — verify signed image steps (cosign verify with `cosign.pub`), failure modes, key rotation notes (no private keys)
-- [x] Expand `RELEASE.md`: GHCR package visibility fix path (Settings → packages), anonymous pull test command, private-registry install contingency already hinted in FIRST-BOOT
-- [x] Confirm zero `releases/latest` still holds; `verify-pins.sh --head` exit 0
-- [x] Optional: small `scripts/ghcr-pull-test.sh` that attempts anonymous pull and exits non-zero with clear message (no secrets)
-- [x] ≥3 commits on `lane/a-stabilize`; push origin
+- [ ] `planning/integration/a-stabilize/MERGE-READY.md` — why A merges first; conflict risks; post-merge verify commands (`verify-pins.sh --head`, pin_guards expectations, `just build` note)
+- [ ] Re-run / document `verify-pins.sh --head` and `--checksum --light` still green on branch
+- [ ] Confirm `build.yml` + `build-disk.yml` both block floating `/releases/latest` (or document intentional gap)
+- [ ] `versions.env` comments point at CI-MATRIX + COSIGN + MERGE-READY
+- [ ] Optional: pin age / upstream release-check script (advisory only, not CI-fail)
+- [ ] ≥3 commits; push `lane/a-stabilize`
 
 ## Deliverables
 
-- CI-MATRIX.md + COSIGN.md (+ optional ghcr-pull-test.sh)
-- RELEASE.md updates for GHCR visibility
-- Workflow fixes only if needed for dual-image / pin gates
+- MERGE-READY.md + workflow/docs consistency pass
 
 ## Done criteria
 
-- [x] All Requirements satisfied
-- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head` documented as still green
-- [x] `git push origin lane/a-stabilize`
-- [x] WORK_LOG + COMPLETED updated; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
-1. Set `status: DONE`  
-2. Append WORK_LOG.md  
-3. Append COMPLETED.md  
-4. Idle until Task Master issues next OPEN task  
+Idle for next OPEN task.
