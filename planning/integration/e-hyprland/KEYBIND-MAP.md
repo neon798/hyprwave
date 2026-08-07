@@ -1,0 +1,204 @@
+# Hyprland keybind map (frozen E-W1-004)
+
+**Source of truth:** `build_files/etc/skel/.config/hypr/bindings.conf`  
+**Modifier:** `$mainMod = SUPER`  
+**Layout assumption:** `dwindle` (theme `looknfeel.conf`)  
+**Audit:** 2026-08-07 — every active `bind`/`binde`/`bindm` line counted (**86** active + **1** commented). Map matches skel; do not ship silent drift.
+
+Machine-readable table. Columns: `keys | dispatcher | args | notes`
+
+## Apps
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+Return | exec | ghostty | default terminal |
+| SUPER+T | exec | ghostty | same terminal (alt muscle memory) |
+| SUPER+E | exec | ghostty -e yazi | file manager |
+| SUPER+B | exec | neonwolf | default browser |
+| SUPER+A | exec | ghostty -e flatarcade | app store TUI |
+
+## Launcher
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+D | exec | walker | default providers |
+| SUPER+Space | exec | walker | same |
+| SUPER+R | exec | walker --prefix ">" | runner mode |
+| XF86Search | exec | walker | hardware search key |
+
+## Theme
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+SHIFT+T | exec | hyprwave-theme-gui | theme picker GUI |
+
+## Future / commented binds (not active in skel)
+
+These lines exist as **comments** in `bindings.conf` so integrators can enable
+them after the binary ships. They are **not** active keybinds.
+
+| keys | intended dispatcher | args | status | owner |
+|------|---------------------|------|--------|-------|
+| SUPER+SHIFT+A | exec | hyprwave-assistant | commented out | Model C + HANDOFF |
+
+Skel line:
+
+```
+# bind = $mainMod SHIFT, A, exec, hyprwave-assistant
+```
+
+## Window management
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+Q | killactive | | close focused |
+| SUPER+SHIFT+E | exit | | leave Hyprland (Shift required; Super+M is **not** bound) |
+| SUPER+W | togglefloating | | |
+| SUPER+F | fullscreen | | |
+| SUPER+P | pseudo | | dwindle pseudo |
+| SUPER+V | togglegroup | | tab group |
+| SUPER+Tab | changegroupactive | f | next in group |
+| SUPER+SHIFT+Tab | changegroupactive | b | prev in group |
+
+## Focus
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+Left | movefocus | l | |
+| SUPER+Right | movefocus | r | |
+| SUPER+Up | movefocus | u | |
+| SUPER+Down | movefocus | d | |
+| SUPER+H | movefocus | l | vim (lowercase key) |
+| SUPER+L | movefocus | r | vim — not the lock bind |
+| SUPER+K | movefocus | u | vim |
+| SUPER+J | movefocus | d | vim |
+
+## Move window
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+SHIFT+Left | movewindow | l | |
+| SUPER+SHIFT+Right | movewindow | r | |
+| SUPER+SHIFT+Up | movewindow | u | |
+| SUPER+SHIFT+Down | movewindow | d | |
+| SUPER+SHIFT+H | movewindow | l | vim lowercase |
+| SUPER+SHIFT+L | movewindow | r | vim lowercase `l` — **≠** SUPER+SHIFT+**L** (lock) |
+| SUPER+SHIFT+K | movewindow | u | vim |
+| SUPER+SHIFT+J | movewindow | d | vim |
+
+## Workspaces
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+1 | workspace | 1 | |
+| SUPER+2 | workspace | 2 | |
+| SUPER+3 | workspace | 3 | |
+| SUPER+4 | workspace | 4 | |
+| SUPER+5 | workspace | 5 | |
+| SUPER+6 | workspace | 6 | |
+| SUPER+7 | workspace | 7 | |
+| SUPER+8 | workspace | 8 | |
+| SUPER+9 | workspace | 9 | |
+| SUPER+0 | workspace | 10 | |
+| SUPER+SHIFT+1 | movetoworkspace | 1 | |
+| SUPER+SHIFT+2 | movetoworkspace | 2 | |
+| SUPER+SHIFT+3 | movetoworkspace | 3 | |
+| SUPER+SHIFT+4 | movetoworkspace | 4 | |
+| SUPER+SHIFT+5 | movetoworkspace | 5 | |
+| SUPER+SHIFT+6 | movetoworkspace | 6 | |
+| SUPER+SHIFT+7 | movetoworkspace | 7 | |
+| SUPER+SHIFT+8 | movetoworkspace | 8 | |
+| SUPER+SHIFT+9 | movetoworkspace | 9 | |
+| SUPER+SHIFT+0 | movetoworkspace | 10 | |
+| SUPER+mouse_down | workspace | e+1 | scroll next |
+| SUPER+mouse_up | workspace | e-1 | scroll prev |
+
+## Dwindle split / resize
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+equal | layoutmsg | togglesplit | dwindle only |
+| SUPER+minus | splitratio | -0.05 | shrink split |
+| SUPER+SHIFT+equal | splitratio | +0.05 | grow split (`+` key) |
+| SUPER+ALT+Left | resizeactive | -40 0 | |
+| SUPER+ALT+Right | resizeactive | 40 0 | |
+| SUPER+ALT+Up | resizeactive | 0 -40 | |
+| SUPER+ALT+Down | resizeactive | 0 40 | |
+| SUPER+ALT+H | resizeactive | -40 0 | vim |
+| SUPER+ALT+L | resizeactive | 40 0 | vim |
+| SUPER+ALT+K | resizeactive | 0 -40 | vim |
+| SUPER+ALT+J | resizeactive | 0 40 | vim |
+
+## Monitors
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+period | focusmonitor | + | next |
+| SUPER+comma | focusmonitor | - | prev |
+
+## Session / tools
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+SHIFT+L | exec | loginctl lock-session | uppercase **L**; via hypridle `lock_cmd` |
+| SUPER+SHIFT+P | exec | hyprpicker -a | color pick → clipboard |
+
+## Screenshots (hyprshot)
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+S | exec | hyprshot -m region --clipboard-only | region → clipboard |
+| SUPER+SHIFT+S | exec | hyprshot -m region -o ~/Pictures | region → file |
+| SUPER+CTRL+S | exec | hyprshot -m output --clipboard-only | output → clipboard |
+| SUPER+CTRL+SHIFT+S | exec | hyprshot -m output -o ~/Pictures | output → file |
+
+## Media / hardware
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| XF86AudioRaiseVolume | exec | wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ | bind |
+| XF86AudioLowerVolume | exec | wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%- | bind |
+| XF86AudioMute | exec | wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle | bind |
+| XF86AudioMicMute | exec | wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle | bind |
+| XF86MonBrightnessUp | exec | brightnessctl s 5%+ | bind |
+| XF86MonBrightnessDown | exec | brightnessctl s 5%- | bind |
+| XF86AudioNext | exec | playerctl next | **binde** (repeat) |
+| XF86AudioPrev | exec | playerctl previous | **binde** |
+| XF86AudioPlay | exec | playerctl play-pause | **binde** |
+
+## Mouse (bindm)
+
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+mouse:272 | movewindow | | LMB drag |
+| SUPER+mouse:273 | resizewindow | | RMB drag |
+
+## Intentional absences
+
+| keys | why not bound |
+|------|----------------|
+| SUPER+M | formerly exit; removed — fat-finger risk; exit is SUPER+SHIFT+E |
+| SUPER+SHIFT+A | reserved (commented) for Assistant — see HANDOFF |
+
+## Walker in-app prefixes (not Hypr binds)
+
+Configured in `walker/config.toml`:
+
+| prefix | provider |
+|--------|----------|
+| `/` | providerlist |
+| `.` | files |
+| `:` | symbols |
+| `=` | calc |
+| `@` | websearch |
+| `$` | clipboard |
+| `>` | runner (via Super+R) |
+
+## Wave 1 change log (historical)
+
+| Wave | Change | Why |
+|------|--------|-----|
+| E-W1-001 | exit SUPER+SHIFT+E; dwindle binds; Walker exec-once | first session |
+| E-W1-002 | lock via loginctl; idle lock before DPMS | security / single hyprlock |
+| E-W1-003 | commented SUPER+SHIFT+A; windowrule/hyprpaper docs | C HANDOFF |
+| E-W1-004 | map/smoke freeze; explicit workspace/resize rows | pre-merge gate |
