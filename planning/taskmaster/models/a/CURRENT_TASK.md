@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: A-W1-001  
+task_id: A-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Deepen pin verification, CI fail-gates, and release automation docs  
+issued: 2026-08-07T04:45:00Z  
+title: Dual-image CI matrix, cosign verify runbook, GHCR visibility path  
 
 ## Objective
 
-Make external binary pins **CI-enforced** and **operator-bumpable**, with a release/publish path that a human can follow without guessing. This is multi-hour depth — not a drive-by edit.
+Close remaining **release/reproducibility** gaps from ENDPOINT: dual Hyprland+COSMIC build matrix hygiene, operator cosign verification, and a concrete GHCR public/private contingency that does not leave `:latest` floating downloads.
 
 ## Exclusive paths (only these)
 
@@ -16,37 +16,36 @@ Make external binary pins **CI-enforced** and **operator-bumpable**, with a rele
 - `build_files/build.sh` (pin/checksum sourcing only)
 - `.github/workflows/*`
 - `planning/integration/a-stabilize/**`
+- `planning/taskmaster/models/a/**` (WORK_LOG, COMPLETED, CURRENT_TASK status only)
 
 ## Forbidden
 
 - Wiring Assistant or Duress into `build.sh`
 - Rewriting README/INSTALL (Model B)
 - Enabling duress PAM
-- Marking DONE under 30 minutes of real work unless all Done criteria are truly met
+- Editing other models’ exclusive paths
 
 ## Requirements
 
-- [ ] `build.sh` sources `versions.env` and verifies sha256 for Yazi, Neonwolf, FlatArcade (fail closed on mismatch)
-- [ ] Zero matches for `releases/latest` in `build_files/build.sh`
-- [ ] Script `planning/integration/a-stabilize/scripts/verify-pins.sh` downloads (or curl -I + sha256 if full download too heavy) and validates pins; documented usage
-- [ ] CI workflow step fails PRs if `releases/latest` reappears or if `verify-pins.sh` fails (where network allowed) OR a static job that at least greps + bash -n + checks versions.env keys exist
-- [ ] `planning/integration/a-stabilize/RELEASE.md` covers: version tags, GHCR package visibility, cosign, when to bump pins, rollback
-- [ ] `FIRST-BOOT-CHECKLIST.md` includes a fill-in log template (date, image digest, pass/fail per item)
-- [ ] `BUMP.md` includes a worked example of bumping one component end-to-end
-- [ ] At least **3 commits** on `lane/a-stabilize` for this task (incremental)
-- [ ] Branch pushed to origin
+- [ ] Audit `.github/workflows/build*.yml` for both image names (`hyprwave` / `hyprwave-cosmic` or DE matrix); document gaps in `planning/integration/a-stabilize/CI-MATRIX.md`
+- [ ] Add or tighten workflow so pin_guards (or equivalent) still runs on PRs; note any disk-image workflow that should depend on pins
+- [ ] `planning/integration/a-stabilize/COSIGN.md` — verify signed image steps (cosign verify with `cosign.pub`), failure modes, key rotation notes (no private keys)
+- [ ] Expand `RELEASE.md`: GHCR package visibility fix path (Settings → packages), anonymous pull test command, private-registry install contingency already hinted in FIRST-BOOT
+- [ ] Confirm zero `releases/latest` still holds; `verify-pins.sh --head` exit 0
+- [ ] Optional: small `scripts/ghcr-pull-test.sh` that attempts anonymous pull and exits non-zero with clear message (no secrets)
+- [ ] ≥3 commits on `lane/a-stabilize`; push origin
 
 ## Deliverables
 
-- Updated pin pipeline + CI guards
-- verify-pins.sh + docs under `planning/integration/a-stabilize/`
-- RELEASE.md + expanded checklist
+- CI-MATRIX.md + COSIGN.md (+ optional ghcr-pull-test.sh)
+- RELEASE.md updates for GHCR visibility
+- Workflow fixes only if needed for dual-image / pin gates
 
 ## Done criteria
 
-- [ ] All Requirements checkboxes satisfied
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` documented; script exits 0 or clear skip reason
-- [ ] `git push -u origin lane/a-stabilize`
+- [ ] All Requirements satisfied
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head` documented as still green
+- [ ] `git push origin lane/a-stabilize`
 - [ ] WORK_LOG + COMPLETED updated; status DONE
 
 ## On completion

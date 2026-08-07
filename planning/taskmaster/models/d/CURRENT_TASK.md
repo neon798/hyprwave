@@ -1,43 +1,43 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: D-W1-001  
+task_id: D-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Security review pack + extra templates + validate expansion  
+issued: 2026-08-07T04:45:00Z  
+title: Negative-path validate, operator FAQ, packaging dry-run proof  
 
 ## Objective
 
-Harden duress beyond Wave 2: formal threat model, more safe-by-default tooling, expanded automated guards, and operator drills — **without ever enabling PAM by default**.
+Harden duress packaging toward ENDPOINT residual confidence: automated **negative** tests, operator FAQ for enable/disable/recovery, and proof that stock image path remains PAM-off — still **never** enable PAM by default.
 
 ## Exclusive paths
 
 - `build_files/duress/**`
 - `build_files/build-duress.sh`
 - `planning/integration/d-duress/**`
+- `planning/taskmaster/models/d/**`
 
 ## Forbidden
 
 - Enabling pam_duress in shipped PAM configs
 - Pre-signed `*.sha256` in repo
-- Skel / assistant / README product docs
-- “Quick” DONE without validate.sh green
+- Skel / assistant / product README handbook (B)
+- Marking DONE without validate.sh green
 
 ## Requirements
 
-- [ ] `build_files/duress/THREAT-MODEL.md` — assets, adversaries, residual risks, explicit non-goals (LUKS, forensics)
-- [ ] New template `20-decoy-notice.sh` **or** `20-local-only-clear.sh` that only clears browser session caches under a single path — still mild/unsigned; document severity table update in README
-- [ ] Setup tool: `--verify` mode that checks modes + presence of matching `.sha256` for scripts in target dir (read-only)
-- [ ] `validate.sh` gains: forbids `required pam_duress` in any snippet that claims to be default; ensures THREAT-MODEL exists; ensures no `*.sha256`; runs `--verify` dry paths
-- [ ] `planning/integration/d-duress/DRILL.md` — step-by-step disposable VM drill (30–45 min operator procedure)
-- [ ] ENABLE.md: recovery if locked out; bootc upgrade PAM drift warning expanded with example commands
-- [ ] build-duress.sh: print pin + date; optional `PAM_DURESS_COMMIT` env documented in BUMP-style comment block
+- [ ] Expand `validate.sh` with **negative fixtures** (temp dirs): e.g. planted `*.sha256` must fail; snippet with `required pam_duress` must fail; missing THREAT-MODEL must fail — then clean up
+- [ ] `planning/integration/d-duress/FAQ.md` — ≥10 Q&As (what it is/isn’t, off by default, signing scripts, greeter/hyprlock, lockout recovery, bootc drift, residual risk vs LUKS)
+- [ ] `OPERATOR-RUNBOOK.md` — enable → test in disposable VM → disable/rollback ordered steps (link DRILL.md)
+- [ ] Audit all snippets: no path writes under `/etc/pam.d` in build hooks; document in WORK_LOG
+- [ ] Optional mild template or setup flag only if justified; keep severity table accurate
+- [ ] Confirm `build-duress.sh` still prints pin+date; pin format full SHA
 - [ ] ≥3 commits; push `lane/d-duress`
 - [ ] `bash planning/integration/d-duress/validate.sh` exits 0
 
 ## Deliverables
 
-- Threat model, drill, verify mode, extra template, stronger validate
+- Stronger validate negatives, FAQ, operator runbook
 
 ## Done criteria
 

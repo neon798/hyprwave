@@ -1,49 +1,46 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: F-W1-001  
+task_id: F-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: COSMIC vendor-default audit and greeter/session cohesion  
+issued: 2026-08-07T04:45:00Z  
+title: Theme-store COSMIC configs audit + wallpaper path proofs  
 
 ## Objective
 
-Verify and improve the **COSMIC** variant’s Hyprwave identity: dock favorites, wallpaper, theme keys, declutter story, and greeter expectations — with written proof of what the image should contain.
-
-## Branch setup
-
-```bash
-git fetch origin
-git checkout -B lane/f-cosmic origin/main
-```
+Ensure every Hyprwave theme that ships COSMIC config is coherent, wallpapers resolve, and greeter/session docs match vendor keys — toward ENDPOINT “COSMIC feels on-brand.”
 
 ## Exclusive paths
 
-See IDENTITY.md.
+- `build_files/usr/share/cosmic/**`
+- `disk_config/iso-cosmic.toml`
+- COSMIC-only `build_files/build.sh` `cosmic)` arm only if essential (prefer docs/snippets)
+- `planning/bin/generate-cosmic-themes.sh` / `planning/bin/themegen/**` (no huge `target/` commits)
+- `build_files/usr/share/hyprwave/themes/*/cosmic/**` (theme cosmic configs only — not Hyprland skel)
+- `planning/integration/f-cosmic/**`
+- `planning/taskmaster/models/f/**`
 
 ## Forbidden
 
 - Hyprland skel rewrites
-- Removing packages that break cosmic-session (e.g. cosmic-term hard dep)
-- Enabling duress
-- Touching Yazi/Neonwolf pin URLs (A)
+- Shared pin URLs (A)
+- Duress / Assistant
+- Removing packages that break cosmic-session
 
 ## Requirements
 
-- [ ] Inventory every file under `build_files/usr/share/cosmic/` in `planning/integration/f-cosmic/VENDOR-INVENTORY.md` (path → purpose)
-- [ ] Confirm favorites include Neonwolf, FlatArcade, Ghostty, CosmicFiles, CosmicSettings (or document intentional diffs)
-- [ ] Background/wallpaper keys point at Hyprwave wallpaper paths that exist in repo
-- [ ] Theme Dark keys match Hyprwave palette (document hex vs RON fields)
-- [ ] `planning/integration/f-cosmic/SESSION-SMOKE.md` — COSMIC first-login checklist (≥12 items)
-- [ ] `planning/integration/f-cosmic/GREETER.md` — cosmic-greeter expectations, wallpaper, known limits
-- [ ] iso-cosmic.toml reviewed; comments for image name / kickstart-like notes if applicable
-- [ ] If build.sh cosmic case needs a fix: either minimal edit only in `cosmic)` arm **or** snippet + HANDOFF — note choice in WORK_LOG
-- [ ] Optional: regenerate notes for themegen without committing `target/`
+- [ ] Inventory which themes under `build_files/usr/share/hyprwave/themes/*` include `cosmic/config/`; table in `planning/integration/f-cosmic/THEME-COSMIC-MATRIX.md`
+- [ ] For default/system vendor path: prove wallpaper file(s) exist in repo; fix broken references
+- [ ] Spot-check 2–3 non-default themes’ cosmic configs for required keys (Mode, Background, dock favorites or document intentional minimal sets)
+- [ ] If themegen needed: document regenerate steps in REGENERATE.md; commit only generated configs (not `target/`)
+- [ ] Expand SESSION-SMOKE.md with theme-switch / wallpaper checks for COSMIC
+- [ ] GREETER.md: confirm wallpaper/branding expectations vs what greeter can show
+- [ ] Optional: small shell check script under `planning/integration/f-cosmic/check-vendor-paths.sh` (wallpaper exists, favorites IDs non-empty)
 - [ ] ≥3 commits; push `lane/f-cosmic`
 
 ## Deliverables
 
-- Inventory, smoke, greeter docs; any justified vendor file fixes
+- THEME-COSMIC-MATRIX, path proofs, any justified config fixes, smoke/greeter updates
 
 ## Done criteria
 
