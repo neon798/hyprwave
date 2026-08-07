@@ -1,15 +1,16 @@
-# Product / ops issues found while writing docs (Model B)
+# Product / ops issues (Model B)
 
-Docs lane does **not** fix product code. Record gaps here for stabilizer / integrator.
+Docs lane does **not** fix product code. Gaps for stabilizer / integrator.
 
 | ID | Severity | Issue | Notes |
 |----|----------|--------|-------|
-| B-1 | Ops | GHCR public pull not proven in this lane | INSTALL documents `ghcr.io/neon798/hyprwave:latest` and `-cosmic`; switch may fail if packages are private. Model A first-boot / pull checklist. |
-| B-2 | Build | External apps still use `/releases/latest` | Yazi, Neonwolf, FlatArcade in `build_files/build.sh`. Reproducibility risk; owned by Model A pins. |
-| B-3 | Docs/UX | README is developer-heavy | Long SDDM QML detail; weak top-level Hyprland install. Proposed fix in `README-sections.md` — not applied wholesale in wave 1. |
-| B-4 | Product | First-boot “proven usable” still open | Code exists; E2E VM proof both DEs not done by docs lane. |
-| B-5 | Product | Assistant / Duress not in image | Planning only; do not document as shipped. CHANGELOG marks them not present. |
-| B-6 | Minor | Justfile default `IMAGE_NAME=image-template` | Local `just build` without override does not tag `hyprwave`. INSTALL calls this out; CI sets repo name. |
+| B-1 | Ops | GHCR may be private (403) | INSTALL + troubleshooting document this; A/RELEASE should fix visibility |
+| B-2 | Build | External app pins | Owned by lane A (`versions.env`); docs point at philosophy only |
+| B-3 | Docs/UX | README still long on SDDM QML | Wave 2 proposes sections in README-sections.md; partial install links applied |
+| B-4 | Product | E2E first-boot both DEs | Still ops proof; not docs-blocked |
+| B-5 | Product | Assistant / Duress | Document as upcoming / off-by-default only until merge |
+| B-6 | Minor | Justfile default `IMAGE_NAME=image-template` | INSTALL notes; CI sets repo name |
+| B-7 | Docs | Screenshots | All TODO; checklist + alt-text ready in screenshot-checklist.md |
 
-No blockers found that prevent shipping INSTALL/CHANGELOG language for the **current**
-desktop design (Walker, hyprpaper, 11 themes, COSMIC, companions).
+No docs blocker for describing current desktop design (Walker, hyprpaper, 11 themes,
+COSMIC, companions).
