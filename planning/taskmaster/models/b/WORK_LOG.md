@@ -44,3 +44,11 @@
 - contributor-notes.md: refresh handbook after merges; PROTOCOL link
 - ACCURACY-AUDIT freeze note (main tip 371ea34); links 220/0 missing
 - ≥3 product commits; push lane/b-docs
+
+## 2026-08-07 — B-W1-005
+
+- status OPEN → IN_PROGRESS → DONE
+- Added planning/integration/b-docs/POST-MERGE-DOC-FLIP.md (integrator checklist)
+- CHANGELOG Post-merge template links to flip file
+- contributor-notes + ACCURACY-AUDIT post-merge pass stub
+- Links 245/0 missing; ≥2 commits; push lane/b-docs

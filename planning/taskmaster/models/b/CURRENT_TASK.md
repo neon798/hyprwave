@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: B-W1-005  
 wave: 1  
 issued: 2026-08-07T05:15:00Z  
@@ -25,10 +25,10 @@ Provide a single checklist the integrator (or B after merge) uses to flip handbo
 
 ## Requirements
 
-- [ ] `planning/integration/b-docs/POST-MERGE-DOC-FLIP.md` — exact files/sections to edit after A–G land; CHANGELOG Released subsection steps; honesty rules
-- [ ] Optional stub section in CHANGELOG already points at this file
-- [ ] ACCURACY-AUDIT note for post-merge pass
-- [ ] ≥2 commits; push `lane/b-docs`
+- [x] `planning/integration/b-docs/POST-MERGE-DOC-FLIP.md` — exact files/sections to edit after A–G land; CHANGELOG Released subsection steps; honesty rules
+- [x] Optional stub section in CHANGELOG already points at this file
+- [x] ACCURACY-AUDIT note for post-merge pass
+- [x] ≥2 commits; push `lane/b-docs`
 
 ## Deliverables
 
@@ -36,7 +36,7 @@ Provide a single checklist the integrator (or B after merge) uses to flip handbo
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
