@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: A-W1-002  
 wave: 1  
 issued: 2026-08-07T04:45:00Z  
@@ -27,13 +27,13 @@ Close remaining **release/reproducibility** gaps from ENDPOINT: dual Hyprland+CO
 
 ## Requirements
 
-- [ ] Audit `.github/workflows/build*.yml` for both image names (`hyprwave` / `hyprwave-cosmic` or DE matrix); document gaps in `planning/integration/a-stabilize/CI-MATRIX.md`
-- [ ] Add or tighten workflow so pin_guards (or equivalent) still runs on PRs; note any disk-image workflow that should depend on pins
-- [ ] `planning/integration/a-stabilize/COSIGN.md` — verify signed image steps (cosign verify with `cosign.pub`), failure modes, key rotation notes (no private keys)
-- [ ] Expand `RELEASE.md`: GHCR package visibility fix path (Settings → packages), anonymous pull test command, private-registry install contingency already hinted in FIRST-BOOT
-- [ ] Confirm zero `releases/latest` still holds; `verify-pins.sh --head` exit 0
-- [ ] Optional: small `scripts/ghcr-pull-test.sh` that attempts anonymous pull and exits non-zero with clear message (no secrets)
-- [ ] ≥3 commits on `lane/a-stabilize`; push origin
+- [x] Audit `.github/workflows/build*.yml` for both image names (`hyprwave` / `hyprwave-cosmic` or DE matrix); document gaps in `planning/integration/a-stabilize/CI-MATRIX.md`
+- [x] Add or tighten workflow so pin_guards (or equivalent) still runs on PRs; note any disk-image workflow that should depend on pins
+- [x] `planning/integration/a-stabilize/COSIGN.md` — verify signed image steps (cosign verify with `cosign.pub`), failure modes, key rotation notes (no private keys)
+- [x] Expand `RELEASE.md`: GHCR package visibility fix path (Settings → packages), anonymous pull test command, private-registry install contingency already hinted in FIRST-BOOT
+- [x] Confirm zero `releases/latest` still holds; `verify-pins.sh --head` exit 0
+- [x] Optional: small `scripts/ghcr-pull-test.sh` that attempts anonymous pull and exits non-zero with clear message (no secrets)
+- [x] ≥3 commits on `lane/a-stabilize`; push origin
 
 ## Deliverables
 
@@ -43,10 +43,10 @@ Close remaining **release/reproducibility** gaps from ENDPOINT: dual Hyprland+CO
 
 ## Done criteria
 
-- [ ] All Requirements satisfied
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head` documented as still green
-- [ ] `git push origin lane/a-stabilize`
-- [ ] WORK_LOG + COMPLETED updated; status DONE
+- [x] All Requirements satisfied
+- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head` documented as still green
+- [x] `git push origin lane/a-stabilize`
+- [x] WORK_LOG + COMPLETED updated; status DONE
 
 ## On completion
 

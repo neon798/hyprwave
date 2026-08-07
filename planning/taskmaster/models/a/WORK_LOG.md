@@ -40,3 +40,43 @@ shellcheck verify-pins.sh → clean
 
 - GHCR anonymous pull still FAIL (private/403) — tracked in RELEASE.md; not a pin code defect.
 - Full Neonwolf `--checksum` (no --light) not required in CI; operators can run it pre-release.
+
+## 2026-08-07 — A-W1-002
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`  
+**tip:** (see COMPLETED.md after push)
+
+### Work done
+
+- Audited `build.yml` / `build-disk.yml` dual-image matrix; wrote `CI-MATRIX.md`
+  (job graph, image names, PR vs publish, gaps).
+- Tightened CI:
+  - `pin_guards`: assert `matrix.de: [hyprland, cosmic]` + disk `iso-cosmic.toml`
+  - `build-disk.yml`: `verify-pins.sh --head` before BIB
+  - pin_guards already runs on all PRs (documented)
+- `COSIGN.md`: verify both images, digest path, failure modes, key rotation (no private keys)
+- `RELEASE.md`: GHCR Settings → Public path, `ghcr-pull-test.sh`, private-registry contingency
+- `scripts/ghcr-pull-test.sh`: empty authfile dual-image anonymous probe
+- FIRST-BOOT GHCR section points at the probe
+
+### Validation
+
+```
+token=$(printf '%s/%s' releases latest)
+grep -nF "$token" build_files/build.sh versions.env → clean
+bash …/verify-pins.sh --head → exit 0
+bash …/ghcr-pull-test.sh → exit 1 (hyprwave unauthorized; cosmic may inspect — fail closed)
+```
+
+### Commits
+
+1. `ci: dual DE matrix guard + disk verify-pins HEAD`
+2. `docs(a-stabilize): CI matrix audit and cosign verify runbook`
+3. `docs(a-stabilize): GHCR visibility path and anonymous pull probe`
+4. taskmaster DONE + WORK_LOG/COMPLETED
+
+### Notes for Director
+
+- Maintainer still must flip GHCR packages Public (or document private PAT install).
+- Disk workflow cannot `needs:` container build across workflows; operators publish images first.
