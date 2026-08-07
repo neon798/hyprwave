@@ -11,15 +11,16 @@ matter more than classic tarball semver.
 
 ## [Unreleased]
 
-### Status (honest merge state)
+### Status (honest merge state — pre-merge freeze)
 
 Desktop features below describe the **product on `main` at base `8a623a2`** plus work
-finished on **parallel Wave-1 lanes**. Lane deliverables are **pending merge to
-`main` / published GHCR `:latest`** until the integrator lands them. Do **not** treat
-this Unreleased section as “already on the public image.”
+finished on **parallel Wave-1 lanes**. Lane deliverables remain **pending merge to
+`main` / published GHCR `:latest`** until the integrator lands them (see G
+`MERGE-PLAYBOOK` when present). Do **not** treat this Unreleased section as “already
+on the public image.”
 
-Docs on `lane/b-docs` (INSTALL, `docs/**`, this file) track that reality for
-onboarding without requiring readers to open `planning/`.
+Docs on `lane/b-docs` (INSTALL, `docs/**`, this file) are frozen for integration
+accuracy: claims distinguish **on main today** vs **lane-only until merge**.
 
 ### Desktop — Hyprland (default image; base on main)
 
@@ -80,17 +81,62 @@ onboarding without requiring readers to open `planning/`.
 - [ACCURACY-AUDIT.md](planning/integration/b-docs/ACCURACY-AUDIT.md) — sources checked.
 - Screenshot binaries still TODO (ops notes ready; not blocking).
 
-### Wave-1 lane deliverables (**pending merge** — not claimed on main GHCR)
+### Wave-1 lane deliverables (**pending merge** — final honesty table)
 
-| Lane | Branch | Deliverable (summary) | Docs stance |
-|------|--------|----------------------|-------------|
-| A | `lane/a-stabilize` | Pinned companions (`versions.env`), pin guards, FIRST-BOOT-CHECKLIST, RELEASE notes | **Pending merge**; pins not assumed on published `:latest` |
-| B | `lane/b-docs` | Operator handbook, first-boot chapter, keybind/INSTALL honesty | This branch — merge with other lanes via integrator |
-| C | `lane/c-assistant` | Hyprwave Assistant (Go TUI / KB) | **Pending merge** until image hook |
-| D | `lane/d-duress` | pam-duress packaging + setup tooling | **Pending merge**; **optional, off by default** — [docs/security.md](docs/security.md) |
-| E | `lane/e-hyprland` | Keybind map (exit Super+Shift+E, vim focus/move/resize, dwindle splitratio), autostart/session smoke | **Pending merge**; handbook documents E map with merge note |
-| F | `lane/f-cosmic` | Vendor Mode/dark, dock order, GREETER.md + SESSION-SMOKE | **Pending merge**; greeter limits called out in cosmic/first-boot |
-| G | `lane/g-qa` | QA scripts, SMOKE-MATRIX, MERGE-PLAYBOOK | **Pending merge**; integration only |
+Snapshot for integrators. **None of these rows are claimed shipped on main GHCR** until
+their branch merges and CI publishes a new `:latest`.
+
+| Lane | Branch | Deliverable (summary) | On main today? | Docs stance |
+|------|--------|----------------------|----------------|-------------|
+| A | `lane/a-stabilize` | Companion pins (`versions.env`), pin_guards CI, FIRST-BOOT-CHECKLIST, RELEASE/BUMP notes | **No** (pins still floating on main until A merges) | Pending merge; users upgrade published images only |
+| B | `lane/b-docs` | Operator handbook (INSTALL, first-boot, keybinds, security, dual-variant TS, screenshots ops) | **No** (docs live on this lane until merge) | Merge with product lanes; then drop “pending” language |
+| C | `lane/c-assistant` | Hyprwave Assistant (Go TUI / offline KB) | **No** | Pending image hook; optional, not stock UX |
+| D | `lane/d-duress` | pam-duress **assets** + setup tooling + ENABLE/THREAT-MODEL | **No** | Pending merge; **optional, PAM off by default** — [docs/security.md](docs/security.md) |
+| E | `lane/e-hyprland` | Keybind ENDPOINT (Super+Shift+E exit, vim move/resize, dwindle splitratio), autostart/session smoke | **No** (main still older binds) | Handbook documents E map + merge note |
+| F | `lane/f-cosmic` | Vendor Mode/dark, dock order, GREETER.md, SESSION-SMOKE, declutter notes | **No** (partial base on main; F polish pending) | Greeter limits called out in cosmic/first-boot |
+| G | `lane/g-qa` | QA scripts, SMOKE-MATRIX, MERGE-PLAYBOOK | **No** | Integration-only; not end-user surface |
+
+### Post-merge template (for integrator)
+
+After serial merge + green CI + (optional) GHCR publish, create a dated release section
+and **flip** Unreleased language. Copy and edit:
+
+```markdown
+## [YYYY-MM-DD] — Wave 1 integration
+
+### Merged from lanes
+
+- [ ] A — companion pins + pin_guards (`versions.env`)
+- [ ] B — operator handbook (`docs/**`, INSTALL, CHANGELOG honesty → this release)
+- [ ] C — Hyprwave Assistant binary/package **if** image-hooked (else omit or “assets only”)
+- [ ] D — duress **packaging only**; PAM remains **off by default**
+- [ ] E — Hyprland skel keybinds / autostart ENDPOINT
+- [ ] F — COSMIC vendor / greeter / session smoke docs
+- [ ] G — QA scripts + smoke matrix (contributor path)
+
+### Image refs
+
+- `ghcr.io/neon798/hyprwave:<tag>`
+- `ghcr.io/neon798/hyprwave-cosmic:<tag>`
+- Digest / Cosign: (fill when public)
+
+### Handbook cleanup after merge
+
+- [ ] Remove “pending merge / lane-only” banners that no longer apply
+- [ ] Keybinds: drop Super+M merge note if E is on the booted image
+- [ ] Security: keep duress **off by default** even if assets shipped
+- [ ] Assistant: only claim installed if `/usr/bin/hyprwave-assistant` is on the image
+- [ ] ACCURACY-AUDIT: record merge commit + re-run link check
+- [ ] Move remaining Unreleased bullets that still are not on the image back under Unreleased
+
+### Known still-open (do not mark shipped)
+
+- [ ] GHCR anonymous public pull (if still 403)
+- [ ] Marketing screenshot binaries (`docs/assets/`)
+- [ ] Full dual-variant E2E first-boot sign-off
+```
+
+Integrator also runs G’s merge playbook / smoke matrix when those files land on main.
 
 ### Removed vs older plans
 
@@ -99,12 +145,13 @@ onboarding without requiring readers to open `planning/`.
 - Thunar as default → Yazi  
 - Stock Firefox → Neonwolf  
 
-### Known gaps
+### Known gaps (pre-merge)
 
 - GHCR may be **private** (403) until visibility is fixed — INSTALL calls this out;
   A’s first-boot logs still record anonymous pull **FAIL** as of 2026-08-06.
-- Marketing screenshots not captured yet (checklist only).
+- Marketing screenshots not captured yet (checklist + commands ready; no binaries).
 - E2E “public pull + first boot both DEs” remains an ops / integrator proof item.
+- Assistant + duress are **optional / packaging** features — never implied stock-on.
 
 ---
 
@@ -114,4 +161,5 @@ onboarding without requiring readers to open `planning/`.
 - hyprlock Pango/label fix  
 - Thunar → Yazi  
 
-Add dated `## [YYYY-MM-DD]` sections when cutting published image milestones.
+Add dated `## [YYYY-MM-DD]` sections when cutting published image milestones
+(use the **Post-merge template** above).
