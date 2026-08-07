@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: F-W1-001  
 wave: 1  
 issued: 2026-08-07T03:50:00Z  
@@ -30,16 +30,16 @@ See IDENTITY.md.
 
 ## Requirements
 
-- [ ] Inventory every file under `build_files/usr/share/cosmic/` in `planning/integration/f-cosmic/VENDOR-INVENTORY.md` (path → purpose)
-- [ ] Confirm favorites include Neonwolf, FlatArcade, Ghostty, CosmicFiles, CosmicSettings (or document intentional diffs)
-- [ ] Background/wallpaper keys point at Hyprwave wallpaper paths that exist in repo
-- [ ] Theme Dark keys match Hyprwave palette (document hex vs RON fields)
-- [ ] `planning/integration/f-cosmic/SESSION-SMOKE.md` — COSMIC first-login checklist (≥12 items)
-- [ ] `planning/integration/f-cosmic/GREETER.md` — cosmic-greeter expectations, wallpaper, known limits
-- [ ] iso-cosmic.toml reviewed; comments for image name / kickstart-like notes if applicable
-- [ ] If build.sh cosmic case needs a fix: either minimal edit only in `cosmic)` arm **or** snippet + HANDOFF — note choice in WORK_LOG
-- [ ] Optional: regenerate notes for themegen without committing `target/`
-- [ ] ≥3 commits; push `lane/f-cosmic`
+- [x] Inventory every file under `build_files/usr/share/cosmic/` in `planning/integration/f-cosmic/VENDOR-INVENTORY.md` (path → purpose)
+- [x] Confirm favorites include Neonwolf, FlatArcade, Ghostty, CosmicFiles, CosmicSettings (or document intentional diffs)
+- [x] Background/wallpaper keys point at Hyprwave wallpaper paths that exist in repo
+- [x] Theme Dark keys match Hyprwave palette (document hex vs RON fields)
+- [x] `planning/integration/f-cosmic/SESSION-SMOKE.md` — COSMIC first-login checklist (≥12 items)
+- [x] `planning/integration/f-cosmic/GREETER.md` — cosmic-greeter expectations, wallpaper, known limits
+- [x] iso-cosmic.toml reviewed; comments for image name / kickstart-like notes if applicable
+- [x] If build.sh cosmic case needs a fix: either minimal edit only in `cosmic)` arm **or** snippet + HANDOFF — note choice in WORK_LOG
+- [x] Optional: regenerate notes for themegen without committing `target/`
+- [x] ≥3 commits; push `lane/f-cosmic`
 
 ## Deliverables
 
@@ -47,7 +47,7 @@ See IDENTITY.md.
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
