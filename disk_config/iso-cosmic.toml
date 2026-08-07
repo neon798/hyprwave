@@ -1,3 +1,23 @@
+# Hyprwave COSMIC installable ISO — bootc-image-builder config
+#
+# Image name / registry (CI and Justfile):
+#   Container:  hyprwave-cosmic  (DE=cosmic; Just `build-cosmic`, workflow IMAGE_NAME suffix)
+#   Local tag:  localhost/hyprwave-cosmic:<tag>
+#   Published:  ghcr.io/neon798/hyprwave-cosmic:latest
+#
+# Build:
+#   just build-iso-cosmic
+#   # or: bib with --type iso and this file (see Justfile _build-bib)
+#
+# Kickstart note:
+#   After Anaconda installs the live/bootc base, %post mutates the system to track
+#   the COSMIC image (not ghcr.io/neon798/hyprwave:latest — that is the Hyprland ISO).
+#   Keep the bootc switch transport/ref in sync with GHCR publish names.
+#
+# Sibling configs:
+#   disk_config/iso.toml     → Hyprland variant (hyprwave:latest)
+#   disk_config/disk.toml    → shared qcow2/raw customizations (user, filesystem)
+
 [customizations.installer.kickstart]
 contents = """
 %post
@@ -5,6 +25,8 @@ bootc switch --mutate-in-place --transport registry ghcr.io/neon798/hyprwave-cos
 %end
 """
 
+# Anaconda module set: storage/runtime/network/security/services/users/timezone.
+# Subscription module disabled (not a RHEL subscription flow).
 [customizations.installer.modules]
 enable = [
   "org.fedoraproject.Anaconda.Modules.Storage",
