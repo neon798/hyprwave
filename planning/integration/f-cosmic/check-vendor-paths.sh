@@ -127,5 +127,24 @@ else
   [[ "$theme_count" -ge 1 ]] && ok "scanned $theme_count theme pack(s)" || err "no theme packs found"
 fi
 
+
+# --- Favorites claim: declutter replacements on dock (DECLUTTER.md) ---
+if [[ -f "$FAV_KEY" ]]; then
+  for need in flatarcade neonwolf hyprwave-theme; do
+    if grep -q "\"$need\"" "$FAV_KEY"; then
+      ok "favorites includes declutter replacement/tooling id $need"
+    else
+      err "favorites missing expected id $need (see DECLUTTER.md)"
+    fi
+  done
+fi
+
+# --- Wallpaper claim for declutter (cosmic-wallpapers replaced by hyprwave default) ---
+if [[ -f "$WP_SRC" && -f "$BG_KEY" ]] && grep -q 'backgrounds/hyprwave/default.png' "$BG_KEY"; then
+  ok "declutter wallpaper story: vendor Background + source PNG aligned"
+else
+  err "declutter wallpaper story misaligned (source or Background path)"
+fi
+
 echo "== done (fail=$fail) =="
 exit "$fail"

@@ -123,3 +123,34 @@ Cross-check with `THEME-COSMIC-MATRIX.md` path proofs (2026-08-07).
 No greeter wallpaper fix in this task: still **no stable in-tree cosmic-greeter theme API**. Session path proofs pass; greeter branding remains a **documented gap**, not a silent regression. Prefer investing in session `hyprwave-theme` + vendor Dark (already shipped) over speculative greeter hacks.
 
 If upstream later documents e.g. `/usr/share/cosmic-greeter/` vendor keys, add a subsection here and a SESSION-SMOKE greeter visual item.
+
+---
+
+## Day-1 COSMIC vs Hyprland (support one-pager) — F-W1-003
+
+Use this section when answering “what should first boot look like?” for each variant.
+Model B may deep-link docs; this file stays the COSMIC greeter + day-1 expectation source.
+
+| Concern | Hyprwave **Hyprland** | Hyprwave **COSMIC** |
+|---|---|---|
+| Display manager | SDDM (`sddm.service`) | **cosmic-greeter** (`display-manager` → greeter) |
+| Login branding | SDDM theme `hyprwave` (synthwave) | **Stock / best-effort** greeter (not SDDM theme) |
+| Session after login | Hyprland + waybar/walker/mako | COSMIC panel/dock/notifications |
+| Default terminal | Ghostty | Ghostty (dock); `cosmic-term` installed but not promoted |
+| Browser | Neonwolf | Neonwolf (same shared install) |
+| App store story | FlatArcade | FlatArcade; **cosmic-store removed** |
+| Wallpaper first boot | hyprpaper / theme store | Vendor `CosmicBackground` → `default.png` |
+| Theme switcher | `hyprwave-theme` (Hyprland path) | `hyprwave-theme` (COSMIC path → `~/.config/cosmic`) |
+| Installable ISO config | `disk_config/iso.toml` → `hyprwave:latest` | `disk_config/iso-cosmic.toml` → **`hyprwave-cosmic:latest`** |
+
+### Day-1 support answers (COSMIC)
+
+1. **“Greeter isn’t pink/synthwave”** — Expected. Greeter is not Hyprland SDDM. Session wallpaper/theme is branded after login. See known limits above.  
+2. **“No COSMIC Store”** — Expected declutter; use FlatArcade from dock (`ghostty -e flatarcade`). See `DECLUTTER.md`.  
+3. **“cosmic-term is installed but Ghostty is on the dock”** — Expected; session hard-dep vs default UX.  
+4. **“Wrong desktop after ISO install”** — Verify kickstart switched to `ghcr.io/neon798/hyprwave-cosmic:latest`, not `hyprwave:latest`.  
+5. **“Black screen after password”** — Fail session smoke #8; check `cosmic-session` / greeter logs — not a greeter wallpaper issue.
+
+### Pass criterion (day-1 product)
+
+Greeter logs the user into a COSMIC session with Hyprwave vendor chrome (wallpaper, dark theme, dock favorites). Greeter visual parity with Hyprland SDDM is **not** required for PASS.

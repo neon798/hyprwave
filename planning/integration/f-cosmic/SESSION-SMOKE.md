@@ -157,3 +157,54 @@ Both files must exist on the installed image. Smoke **#5** covers staged default
 | 25, 29–30, 32 | Nice-to-have / extended |
 
 Update sign-off Result if any of 23–28 fail.
+
+---
+
+## Day-1 apps: FlatArcade / Ghostty / Neonwolf (F-W1-003)
+
+Refined launch + network checks for the COSMIC dock story. Cross-ref `DECLUTTER.md`
+(store → FlatArcade) and vendor favorites order.
+
+### Binaries and desktop files (guest CLI)
+
+33. **FlatArcade on PATH** — `command -v flatarcade` → `/usr/bin/flatarcade`; binary executable.  
+34. **FlatArcade desktop entry** — `test -f /usr/share/applications/flatarcade.desktop` and  
+    `grep -E '^Exec='` shows `ghostty -e flatarcade` (TUI in Ghostty, not cosmic-store).  
+35. **Neonwolf launcher** — `command -v neonwolf`; `test -x /usr/lib/neonwolf/AppRun` (extracted AppImage).  
+36. **Neonwolf desktop entry** — `neonwolf.desktop` exists; `Exec=neonwolf`.  
+37. **Ghostty package + desktop** — `rpm -q ghostty`; `command -v ghostty`; desktop ID  
+    `com.mitchellh.ghostty` resolvable (`gtk-launch` or desktop-file-validate if available).
+
+### Dock / launcher UX
+
+38. **FlatArcade from dock** — Click FlatArcade favorite → Ghostty window opens running FlatArcade  
+    (ratatui Flathub browser). No cosmic-store window; no “command not found”.  
+    - *Network:* listing Flathub may need working DNS/HTTPS (item 43). Offline: binary still starts UI.  
+39. **Ghostty from dock** — Opens a terminal with shell prompt; skel config under `~/.config/ghostty` if new user.  
+40. **Neonwolf from dock** — Browser window appears (extracted AppRun). First run may show profile chrome; must not depend on FUSE (`AppImage` already extracted at build).  
+41. **COSMIC Settings from dock** — Opens; Appearance shows dark theme active (hyprwave-dark / user override).  
+42. **COSMIC Files from dock** — Opens file manager; home directory listing works.
+
+### Network (install + session)
+
+43. **NetworkManager up** — `nmcli general status` shows state connected (or Wi-Fi radio available in VM).  
+    - *ISO note:* Anaconda Network module configures install-time NIC; post-boot NM owns the stack.  
+44. **DNS / HTTPS smoke** — `curl -fsSIL https://flathub.org | head -1` returns HTTP headers **or** document  
+    SKIP if VM is offline; FlatArcade browse features need this for full PASS.  
+45. **No cosmic-store residual** — `command -v cosmic-store` empty; launcher search does not offer COSMIC Store.
+
+### Theme switch (refined app-preserving)
+
+46. **Theme switch keeps apps** — `hyprwave-theme set vaporwave` then re-open Neonwolf + Ghostty from dock  
+    (favorites unchanged; only colors/wallpaper change).  
+47. **FlatArcade after theme switch** — Still launches via Ghostty; wallpaper may be vaporwave art underneath.
+
+### Criticality (F-W1-003)
+
+| Items | Priority |
+|---|---|
+| 33–37, 38–42, 45 | **Critical** day-1 app story |
+| 43–44 | Critical if claiming online Flatpak UX; else SKIP with note |
+| 46–47 | Regression / nice-to-have |
+
+Sign-off: day-1 COSMIC ship bar includes declutter (#3) + these critical app items.
