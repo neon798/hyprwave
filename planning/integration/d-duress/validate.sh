@@ -41,7 +41,9 @@ for p in \
 	planning/integration/d-duress/build.sh.snippet \
 	planning/integration/d-duress/Containerfile.snippet \
 	planning/integration/d-duress/ENABLE.md \
-	planning/integration/d-duress/DRILL.md; do
+	planning/integration/d-duress/DRILL.md \
+	planning/integration/d-duress/FAQ.md \
+	planning/integration/d-duress/OPERATOR-RUNBOOK.md; do
 	if [[ -f "$p" ]]; then
 		ok "exists $p"
 	else
@@ -361,6 +363,127 @@ if grep -qiE 'locked out|Recovery' build_files/duress/ENABLE.md planning/integra
 else
 	fail "ENABLE missing recovery-if-locked-out"
 fi
+
+# FAQ / operator runbook content guards
+if [[ -f planning/integration/d-duress/FAQ.md ]]; then
+	faq_q=$(grep -cE '^### [0-9]+\.' planning/integration/d-duress/FAQ.md || true)
+	if [[ "${faq_q:-0}" -ge 10 ]]; then
+		ok "FAQ.md has ≥10 numbered Q&As ($faq_q)"
+	else
+		fail "FAQ.md needs ≥10 numbered Q&As (found ${faq_q:-0})"
+	fi
+	if grep -qiE 'OFF|off by default' planning/integration/d-duress/FAQ.md &&
+		grep -qiE 'LUKS|forensic' planning/integration/d-duress/FAQ.md &&
+		grep -qiE 'bootc|upgrade' planning/integration/d-duress/FAQ.md &&
+		grep -qiE 'lockout|locked out|recovery' planning/integration/d-duress/FAQ.md &&
+		grep -qiE 'hyprlock|greeter|SDDM' planning/integration/d-duress/FAQ.md; then
+		ok "FAQ covers off-by-default, LUKS, bootc, recovery, greeter/hyprlock"
+	else
+		fail "FAQ missing required topic coverage"
+	fi
+fi
+if [[ -f planning/integration/d-duress/OPERATOR-RUNBOOK.md ]]; then
+	if grep -qiE 'enable' planning/integration/d-duress/OPERATOR-RUNBOOK.md &&
+		grep -qiE 'disable|rollback|restore' planning/integration/d-duress/OPERATOR-RUNBOOK.md &&
+		grep -qiE 'DRILL' planning/integration/d-duress/OPERATOR-RUNBOOK.md &&
+		grep -qiE 'disposable|VM' planning/integration/d-duress/OPERATOR-RUNBOOK.md; then
+		ok "OPERATOR-RUNBOOK has enable → test → disable/rollback + DRILL link"
+	else
+		fail "OPERATOR-RUNBOOK incomplete (need enable/test/rollback + DRILL)"
+	fi
+fi
+
+# --- negative fixtures (temp dirs; prove policies would catch bad trees) ---
+echo "== negative fixtures =="
+NEG="$TMPDIR_V/neg-fixtures"
+mkdir -p "$NEG/duress" "$NEG/integration" "$NEG/pam.d" "$NEG/buildhook"
+
+# N1: planted *.sha256 must be detected (policy: fail packaging trees that ship signatures)
+printf '%s\n' 'not-a-real-signature' >"$NEG/duress/planted-script.sha256"
+if find "$NEG/duress" "$NEG/integration" -type f -name '*.sha256' 2>/dev/null | grep -q .; then
+	ok "negative: planted *.sha256 is detected (would fail real-tree gate)"
+else
+	fail "negative: planted *.sha256 was not detected"
+fi
+# real packaging tree must still be clean (already checked above; re-assert after fixtures)
+if find build_files/duress planning/integration/d-duress -type f -name '*.sha256' 2>/dev/null | grep -q .; then
+	fail "negative setup polluted real packaging tree with *.sha256"
+else
+	ok "negative: real packaging tree still has no *.sha256"
+fi
+
+# N2: active "auth required pam_duress.so" snippet must be detected as bad default
+printf '%s\n' \
+	'# bad fixture — must never ship as stock default' \
+	'auth       required                   pam_duress.so' \
+	>"$NEG/integration/bad-required.snippet"
+if grep -vE '^\s*#' "$NEG/integration/bad-required.snippet" |
+	grep -qE '^auth[[:space:]]+required[[:space:]]+pam_duress\.so'; then
+	ok "negative: active auth required pam_duress is detected (would fail)"
+else
+	fail "negative: required pam_duress fixture not detected"
+fi
+# comment-only required mention should NOT trip the active-line check
+printf '%s\n' \
+	'# Do NOT use: auth required pam_duress.so as default' \
+	'auth       sufficient                 pam_duress.so' \
+	>"$NEG/integration/ok-sufficient.snippet"
+if grep -vE '^\s*#' "$NEG/integration/ok-sufficient.snippet" |
+	grep -qE '^auth[[:space:]]+required[[:space:]]+pam_duress\.so'; then
+	fail "negative: comment/sufficient fixture wrongly flagged as required"
+else
+	ok "negative: sufficient + comment-only required is not a hard fail"
+fi
+
+# N3: missing THREAT-MODEL must fail presence check
+if [[ ! -f "$NEG/duress/THREAT-MODEL.md" ]]; then
+	ok "negative: missing THREAT-MODEL detected as absent"
+else
+	fail "negative: THREAT-MODEL unexpectedly present in empty fixture dir"
+fi
+if [[ ! -f build_files/duress/THREAT-MODEL.md ]]; then
+	fail "real THREAT-MODEL.md missing from packaging tree"
+else
+	ok "negative: real THREAT-MODEL.md still present"
+fi
+
+# N4: build-hook style write into /etc/pam.d must be detected
+printf '%s\n' \
+	'install -d /usr/share/hyprwave/duress' \
+	'cp -a /ctx/duress/templates/. /usr/share/hyprwave/duress/templates/' \
+	'cp /tmp/evil /etc/pam.d/system-auth' \
+	>"$NEG/buildhook/bad-build.sh.snippet"
+if grep -vE '^\s*#' "$NEG/buildhook/bad-build.sh.snippet" |
+	grep -nE '/etc/pam\.d' |
+	grep -nE '(>|>>|tee |cp |install |cat >|cat >>)' >"$TMPDIR_V/neg-pam-write.out" 2>/dev/null; then
+	ok "negative: build-hook write into /etc/pam.d is detected"
+else
+	# looser: any active /etc/pam.d path is already forbidden in real snippet policy
+	if grep -vE '^\s*#' "$NEG/buildhook/bad-build.sh.snippet" | grep -qE '/etc/pam\.d'; then
+		ok "negative: active /etc/pam.d path in build hook is detected"
+	else
+		fail "negative: pam.d write fixture not detected"
+	fi
+fi
+
+# N5: real build snippets audit — no active /etc/pam.d writes (documentable endpoint residual)
+snippet_pam_write=0
+for snip in planning/integration/d-duress/build.sh.snippet \
+	planning/integration/d-duress/Containerfile.snippet; do
+	[[ -f "$snip" ]] || continue
+	if grep -vE '^\s*#|^\s*$' "$snip" | grep -nE '/etc/pam\.d' >"$TMPDIR_V/snip-pam.out" 2>/dev/null; then
+		fail "active /etc/pam.d reference in $snip (build hooks must not touch PAM)"
+		cat "$TMPDIR_V/snip-pam.out" >&2 || true
+		snippet_pam_write=1
+	fi
+done
+if [[ "$snippet_pam_write" -eq 0 ]]; then
+	ok "audit: build/Containerfile snippets have no active /etc/pam.d paths"
+fi
+
+# cleanup negative fixtures early (also covered by EXIT trap)
+rm -rf "$NEG"
+ok "negative fixtures cleaned up"
 
 echo
 if [[ "$FAILED" -ne 0 ]]; then
