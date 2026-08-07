@@ -86,3 +86,10 @@
 - Lane lag (still prior DONE, not yet HOLD file): **C** (C-W1-004 DONE), **D/E/F** (W1-006 DONE) — leave HOLD on main; no re-issue.
 - **main** product tree unchanged — human integration not started.
 - No new tasks; no DONE→next transitions this cycle.
+
+## 2026-08-07T05:55:00Z — Director check-in
+
+- HOLD poll only; main product still unmerged.
+- Lane HOLD ack: A, B, C (`f1e48a5`), G.
+- Lane lag 2+ cycles without HOLD refresh: **D, E, F** — main still issues D/E/F-W1-HOLD OPEN; no re-issue of product work.
+- No new tasks. Human integration remains the blocker to ENDPOINT.

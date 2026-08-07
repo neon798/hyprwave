@@ -44,3 +44,7 @@
 - Freeze tip: 2dc0509 (smoke-host.sh / C-W1-003 package); lane HEAD 2dafc3b
 - smoke-host.sh exit 0
 - Standby for integration (no product scope); await serial merge per INTEGRATION-DAY
+
+## 2026-08-07 — C-W1-HOLD
+
+- HOLD: await human integration; freeze tip 2dc0509; no product work; status left OPEN
