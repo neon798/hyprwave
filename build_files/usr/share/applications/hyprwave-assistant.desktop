@@ -1,7 +1,9 @@
 [Desktop Entry]
 Name=Hyprwave Assistant
-Comment=Updater, Installer & Knowledge Base
+GenericName=System Assistant
+Comment=Update base & Flatpaks, install curated apps, browse Hyprwave docs
 Exec=ghostty -e hyprwave-assistant
+TryExec=hyprwave-assistant
 Icon=utilities-system-monitor
 Terminal=false
 Type=Application

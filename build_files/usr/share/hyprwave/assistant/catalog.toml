@@ -1,7 +1,9 @@
 # Hyprwave Assistant — curated software catalog
-# Easy to extend. Used by the Installer tab.
+# Easy to extend. Used by the Installer tab and `hyprwave-assistant install|list`.
 # source = "flathub" → flatpak install -y flathub <flatpak>
 # source = "layer"   → show manual layering notes (not auto-applied)
+#
+# Flatpak IDs below are well-known Flathub application IDs. Do not invent IDs.
 
 [[category]]
 name = "Office & Productivity"
@@ -9,6 +11,7 @@ items = [
   { id = "libreoffice", name = "LibreOffice", source = "flathub", flatpak = "org.libreoffice.LibreOffice", description = "Full office suite (Writer, Calc, Impress)" },
   { id = "onlyoffice", name = "OnlyOffice", source = "flathub", flatpak = "org.onlyoffice.desktopeditors", description = "Lightweight office alternative" },
   { id = "obsidian", name = "Obsidian", source = "flathub", flatpak = "md.obsidian.Obsidian", description = "Markdown knowledge base / notes" },
+  { id = "joplin", name = "Joplin", source = "flathub", flatpak = "net.cozic.joplin_desktop", description = "Open-source notes with sync" },
 ]
 
 [[category]]
@@ -18,7 +21,7 @@ items = [
   { id = "heroic", name = "Heroic Games Launcher", source = "flathub", flatpak = "com.heroicgameslauncher.hgl", description = "Epic, GOG, Amazon launcher" },
   { id = "lutris", name = "Lutris", source = "flathub", flatpak = "net.lutris.Lutris", description = "Game manager for many platforms" },
   { id = "bottles", name = "Bottles", source = "flathub", flatpak = "com.usebottles.bottles", description = "Run Windows software easily" },
-  { id = "gamemode", name = "GameMode + MangoHud", source = "layer", packages = ["gamemode", "mangohud"], description = "Performance tools + overlay (reboot after layer)" },
+  { id = "gamemode", name = "GameMode + MangoHud", source = "layer", packages = ["gamemode", "mangohud"], description = "Performance tools + overlay (manual layer)" },
 ]
 
 [[category]]
@@ -26,6 +29,7 @@ name = "Networking & Remote Access"
 items = [
   { id = "tailscale", name = "Tailscale", source = "flathub", flatpak = "io.tailscale.ipn", description = "Zero-config VPN / mesh networking" },
   { id = "syncthing", name = "Syncthing", source = "flathub", flatpak = "com.github.zocker_160.SyncThingy", description = "Continuous file synchronization" },
+  { id = "remmina", name = "Remmina", source = "flathub", flatpak = "org.remmina.Remmina", description = "Remote desktop client (RDP/VNC/SSH)" },
 ]
 
 [[category]]
@@ -34,6 +38,7 @@ items = [
   { id = "librewolf", name = "LibreWolf", source = "flathub", flatpak = "io.gitlab.librewolf-community", description = "Firefox fork focused on privacy" },
   { id = "mullvad-browser", name = "Mullvad Browser", source = "flathub", flatpak = "net.mullvad.MullvadBrowser", description = "Privacy browser from Mullvad" },
   { id = "tor-browser", name = "Tor Browser", source = "flathub", flatpak = "org.torproject.torbrowser-launcher", description = "Anonymous browsing via Tor" },
+  { id = "firefox", name = "Firefox", source = "flathub", flatpak = "org.mozilla.firefox", description = "Mozilla Firefox browser" },
 ]
 
 [[category]]
@@ -41,6 +46,7 @@ name = "Development"
 items = [
   { id = "vscodium", name = "VSCodium", source = "flathub", flatpak = "com.vscodium.codium", description = "VS Code without Microsoft telemetry" },
   { id = "zed", name = "Zed", source = "flathub", flatpak = "dev.zed.Zed", description = "Fast collaborative code editor" },
+  { id = "podman-desktop", name = "Podman Desktop", source = "flathub", flatpak = "io.podman_desktop.PodmanDesktop", description = "Containers GUI for Podman" },
   { id = "distrobox", name = "Distrobox", source = "layer", packages = ["distrobox"], description = "Mutable pet containers (prefer for dev stacks)" },
 ]
 
@@ -58,5 +64,17 @@ name = "Communication & Media"
 items = [
   { id = "element", name = "Element", source = "flathub", flatpak = "im.riot.Riot", description = "Matrix chat client" },
   { id = "signal", name = "Signal Desktop", source = "flathub", flatpak = "org.signal.Signal", description = "Private messaging" },
+  { id = "telegram", name = "Telegram Desktop", source = "flathub", flatpak = "org.telegram.desktop", description = "Telegram messenger" },
   { id = "jellyfin-mp", name = "Jellyfin Media Player", source = "flathub", flatpak = "com.github.iwalton3.jellyfin-media-player", description = "Play from your Jellyfin server" },
+  { id = "vlc", name = "VLC", source = "flathub", flatpak = "org.videolan.VLC", description = "Media player" },
+  { id = "obs", name = "OBS Studio", source = "flathub", flatpak = "com.obsproject.Studio", description = "Streaming and recording" },
+]
+
+[[category]]
+name = "Creative"
+items = [
+  { id = "gimp", name = "GIMP", source = "flathub", flatpak = "org.gimp.GIMP", description = "Image editor" },
+  { id = "inkscape", name = "Inkscape", source = "flathub", flatpak = "org.inkscape.Inkscape", description = "Vector graphics editor" },
+  { id = "krita", name = "Krita", source = "flathub", flatpak = "org.kde.krita", description = "Digital painting" },
+  { id = "blender", name = "Blender", source = "flathub", flatpak = "org.blender.Blender", description = "3D creation suite" },
 ]

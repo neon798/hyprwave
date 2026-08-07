@@ -1,20 +1,20 @@
 # Duress Password
 
-**Status: coming soon**
+**Status: optional, off by default — not enabled in the stock image.**
 
-A duress password is planned as an optional security feature for Hyprwave. It is **not** enabled in the base image until packaging and security review land.
+Duress is a separate packaging workstream. After integrator merge, operator docs live under the duress integration tree (see `ENABLE.md` / `build_files/duress/` once present on `main`).
 
-## What it will do (design)
+## Design (summary)
 
 - Normal password → normal session.
-- Duress password → session that looks normal while running operator-defined scripts (for example wiping sensitive paths).
+- Duress password → session that looks normal while running operator-defined scripts.
 
 ## What to do today
 
-- Do not rely on duress until the setup tool ships and you have tested it on a disposable account.
-- Keep sensitive data encrypted and minimize what is stored unlocked at rest.
+- Do **not** rely on duress until the setup tool ships and you have tested it on a disposable account.
+- Keep sensitive data encrypted; minimize unlocked secrets at rest.
 - Prefer Flatpak sandboxing and the immutable base for day-to-day hardening.
 
-## Tracking
+## This Assistant
 
-Implementation is tracked as a separate workstream (PAM module + setup tool). When available, setup will be documented here and linked from the Assistant.
+This Knowledge Base entry is informational only. The Assistant does **not** configure PAM or duress passwords.
