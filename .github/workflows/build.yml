@@ -37,16 +37,46 @@ jobs:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
-      - name: Forbid releases/latest in build.sh
+      - name: Forbid floating GitHub release redirects in pins
         run: |
           set -euo pipefail
-          if grep -n 'releases/latest' build_files/build.sh; then
-            echo "::error::build_files/build.sh must not use GitHub /releases/latest — pin via build_files/versions.env"
+          # Construct token so this workflow file is not a false positive source.
+          token="$(printf '%s/%s' releases latest)"
+          bad=0
+          if grep -nF "${token}" build_files/build.sh; then
+            echo "::error::build_files/build.sh must not use floating GitHub release redirects — pin via build_files/versions.env"
+            bad=1
+          fi
+          if grep -nF "${token}" build_files/versions.env; then
+            echo "::error::build_files/versions.env must not use floating GitHub release redirects"
+            bad=1
+          fi
+          if [[ "${bad}" -ne 0 ]]; then
             exit 1
           fi
-          echo "OK: no releases/latest in build_files/build.sh"
+          echo "OK: no floating-release token in build.sh or versions.env"
 
-      - name: bash -n on build_files scripts
+      - name: build.sh must source versions.env and verify digests
+        run: |
+          set -euo pipefail
+          if ! grep -qE '\. /ctx/versions\.env|versions\.env' build_files/build.sh; then
+            echo "::error::build_files/build.sh must source /ctx/versions.env"
+            exit 1
+          fi
+          if ! grep -q 'verify_sha256' build_files/build.sh; then
+            echo "::error::build_files/build.sh must call verify_sha256 on pinned downloads"
+            exit 1
+          fi
+          # Ensure each companion binary path still goes through verify_sha256
+          for key in YAZI_SHA256 NEONWOLF_SHA256 FLATARCADE_SHA256 FLATARCADE_SVG_SHA256; do
+            if ! grep -q "\${${key}}" build_files/build.sh; then
+              echo "::error::build_files/build.sh does not reference \${${key}}"
+              exit 1
+            fi
+            echo "OK build.sh references \${${key}}"
+          done
+
+      - name: bash -n on build_files + verify-pins
         run: |
           set -euo pipefail
           mapfile -d '' files < <(find build_files -name '*.sh' -type f -print0 | sort -z)
@@ -58,9 +88,12 @@ jobs:
             echo "bash -n ${f}"
             bash -n "${f}"
           done
-          echo "OK: bash -n passed on ${#files[@]} script(s)"
+          VP=planning/integration/a-stabilize/scripts/verify-pins.sh
+          echo "bash -n ${VP}"
+          bash -n "${VP}"
+          echo "OK: bash -n passed on ${#files[@]} build script(s) + verify-pins.sh"
 
-      - name: versions.env required keys
+      - name: versions.env required keys + sha256 shape
         run: |
           set -euo pipefail
           # shellcheck source=/dev/null
@@ -78,6 +111,13 @@ jobs:
             fi
             echo "OK ${v}=${!v}"
           done
+          for v in YAZI_SHA256 NEONWOLF_SHA256 FLATARCADE_SHA256 FLATARCADE_SVG_SHA256; do
+            if [[ ! "${!v}" =~ ^[0-9a-fA-F]{64}$ ]]; then
+              echo "::error::${v} is not a 64-char hex digest"
+              exit 1
+            fi
+          done
+          echo "OK: all companion sha256 digests are well-formed"
 
       - name: Verify pin URLs reachable (HEAD)
         run: bash planning/integration/a-stabilize/scripts/verify-pins.sh --head

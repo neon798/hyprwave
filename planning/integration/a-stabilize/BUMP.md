@@ -65,14 +65,19 @@ each download with `sha256sum -c` before installing.
    Pin companion apps: yazi vX, neonwolf vY, flatarcade vZ
    ```
 
-## CI guards (Wave 2)
+## CI guards (Wave 2 / A-W1-001)
 
 `.github/workflows/build.yml` job **`pin_guards`** fails the pipeline if:
 
-- `build_files/build.sh` contains `releases/latest`
-- any `build_files/**/*.sh` fails `bash -n`
-- required keys are missing from `versions.env`
-- `verify-pins.sh` cannot HEAD the versioned URLs
+- `build_files/build.sh` or `versions.env` contains `releases/latest`
+- `build.sh` no longer sources `versions.env` / `verify_sha256` / `${*_SHA256}`
+- any `build_files/**/*.sh` (or `verify-pins.sh`) fails `bash -n`
+- required keys are missing from `versions.env`, or sha256 is not 64 hex
+- `verify-pins.sh --head` cannot reach versioned URLs
+- `verify-pins.sh --checksum --light` digest mismatch (Yazi + FlatArcade assets)
+
+Disk workflow (`.github/workflows/build-disk.yml`) also greps for floating tags
+and checks keys + `bash -n` before building ISOs/qcow2.
 
 After a bump, open a PR (or push a branch that runs the workflow) and confirm
 `pin_guards` is green before relying on a full image build.

@@ -38,11 +38,36 @@ without removing the dated tags.
 
 On **push to default branch** (not PRs):
 
-1. Job **`pin_guards`** — pin hygiene + `bash -n` + URL HEAD checks.
-2. Job **`build_push`** (matrix: hyprland, cosmic) — buildah build.
+1. Job **`pin_guards`** — pin hygiene + `bash -n` + versions.env key/sha shape +
+   `verify-pins.sh --head` + light checksum (`--checksum --light`).
+2. Job **`build_push`** (matrix: hyprland, cosmic) — buildah build (`needs: pin_guards`).
 3. Login to GHCR → push tags → Cosign sign with `SIGNING_SECRET`.
 
-PRs build both variants but **do not** push or sign.
+PRs build both variants but **do not** push or sign. `pin_guards` still runs on
+PRs so floating tags and bad digests fail before review merges.
+
+### Manual re-publish (`workflow_dispatch`)
+
+1. GitHub → Actions → **Build container image** → Run workflow (default branch).
+2. Wait for `pin_guards` + both matrix legs green.
+3. Confirm new dated tags appear on GHCR packages.
+4. Anonymous pull + `cosign verify` (below).
+
+### Digest-pinned install (preferred for “known good”)
+
+After a green publish:
+
+```bash
+# Resolve digest for a dated tag
+skopeo inspect docker://ghcr.io/<owner>/hyprwave:YYYYMMDD | jq -r .Digest
+# or
+podman pull ghcr.io/<owner>/hyprwave:YYYYMMDD
+podman image inspect ghcr.io/<owner>/hyprwave:YYYYMMDD --format '{{index .RepoDigests 0}}'
+```
+
+Document `ghcr.io/<owner>/hyprwave@sha256:…` (digest form) in CHANGELOG when
+cutting a release note. Consumers on bootc can switch to the digest ref so a
+later retag of `YYYYMMDD` cannot silently change bits.
 
 ## GHCR visibility (must-fix for public install)
 

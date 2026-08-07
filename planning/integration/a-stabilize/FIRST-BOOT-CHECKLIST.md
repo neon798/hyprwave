@@ -17,8 +17,9 @@ requires pins + static checks; use this list when a machine is free.
 ## Pre-flight (host)
 
 - [ ] `just lint` and `just check` clean (or note known pre-existing noise)
-- [ ] `grep -n 'releases/latest' build_files/build.sh` empty
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` OK
+- [ ] `token=$(printf '%s/%s' releases latest); grep -nF "$token" build_files/build.sh build_files/versions.env` empty
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` OK (static + HEAD)
+- [ ] optional: `bash planning/integration/a-stabilize/scripts/verify-pins.sh --checksum --light`
 - [ ] Image built: `just build hyprwave latest` and/or `just build-cosmic`
 - [ ] Optional VM: `just run-vm-qcow2` (needs sudo + KVM)
 
@@ -169,7 +170,7 @@ podman image inspect ghcr.io/<owner>/hyprwave:latest --format '{{index .RepoDige
 
 | Check | Result | Notes |
 |-------|--------|-------|
-| pin grep clean (build.sh) | PASS | no releases/latest |
+| pin grep clean (build.sh) | PASS | no floating-release token |
 | verify-pins.sh (--head) | PASS | all four URLs HTTP 200 |
 | verify-pins.sh --checksum [--light] | PASS | --checksum --light (Yazi+FlatArcade digests) |
 | image/disk build | SKIP | not required for A-W1-001 static done criteria |
@@ -189,4 +190,39 @@ podman image inspect ghcr.io/<owner>/hyprwave:latest --format '{{index .RepoDige
 Overall: static pins PASS; GHCR public pull still FAIL (maintainer visibility)
 Blockers for ship: GHCR public packages; integrator dual-variant build + one VM first-boot
 Follow-ups: re-run this log on qcow2 with digest filled
+```
+
+```
+### Run log
+- Date (UTC): 2026-08-07
+- Operator: Model A (A-W1-001 deepen #2)
+- Branch / commit: lane/a-stabilize (fail-closed pins + CI static guards)
+- Artifact: none (static + network pin validation only)
+- Image digest: n/a
+- Image ID / RepoDigest: n/a
+- Variant: n/a
+- Host notes: scheduled tick; no VM
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS | build.sh + versions.env free of floating token |
+| verify-pins.sh (--head) | PASS | static keys/sha/source + 4× HTTP 200 |
+| verify-pins.sh --checksum [--light] | PASS | Yazi + FlatArcade + SVG digests match |
+| image/disk build | SKIP | A-W1-001 done criteria are pin/CI/docs |
+| greeter appears | SKIP | |
+| new-user login / skel | SKIP | |
+| session + wallpaper | SKIP | |
+| Ghostty | SKIP | |
+| Walker / launcher | SKIP | |
+| Yazi | SKIP | |
+| Neonwolf | SKIP | |
+| FlatArcade + Flathub | SKIP | |
+| hyprwave-theme | SKIP | |
+| NetworkManager | SKIP | |
+| GHCR anonymous pull | FAIL | still private/403; RELEASE.md maintainer fix |
+| Cosign verify (digest/tag) | SKIP | |
+
+Overall: PASS for pin pipeline; ship still blocked on GHCR public visibility
+Blockers for ship: GHCR public packages; dual-variant image + one filled VM log
+Follow-ups: none on lane A exclusive paths
 ```

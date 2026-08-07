@@ -93,14 +93,46 @@ jobs:
 
       # Surgical pin hygiene (mirrors build.yml pin_guards; disk builds pull GHCR
       # images that must have been built without /releases/latest drift).
-      - name: Pin guard — forbid releases/latest
+      - name: Pin guard — forbid floating GitHub release redirects
         run: |
           set -euo pipefail
-          if grep -n 'releases/latest' build_files/build.sh; then
-            echo "::error::build_files/build.sh must not use GitHub /releases/latest"
+          token="$(printf '%s/%s' releases latest)"
+          bad=0
+          if grep -nF "${token}" build_files/build.sh; then
+            echo "::error::build_files/build.sh must not use floating GitHub release redirects"
+            bad=1
+          fi
+          if grep -nF "${token}" build_files/versions.env; then
+            echo "::error::build_files/versions.env must not use floating GitHub release redirects"
+            bad=1
+          fi
+          if [[ "${bad}" -ne 0 ]]; then
             exit 1
           fi
-          echo "OK: no releases/latest in build_files/build.sh"
+          echo "OK: no floating-release token in build.sh or versions.env"
+
+      - name: Pin guard — versions.env keys + bash -n
+        run: |
+          set -euo pipefail
+          # shellcheck source=/dev/null
+          . build_files/versions.env
+          required=(
+            YAZI_VERSION YAZI_URL YAZI_SHA256
+            NEONWOLF_VERSION NEONWOLF_URL NEONWOLF_SHA256
+            FLATARCADE_VERSION FLATARCADE_URL FLATARCADE_SHA256
+            FLATARCADE_SVG_URL FLATARCADE_SVG_SHA256
+          )
+          for v in "${required[@]}"; do
+            if [[ -z "${!v:-}" ]]; then
+              echo "::error::versions.env missing or empty: ${v}"
+              exit 1
+            fi
+          done
+          bash -n build_files/build.sh
+          if [[ -f planning/integration/a-stabilize/scripts/verify-pins.sh ]]; then
+            bash -n planning/integration/a-stabilize/scripts/verify-pins.sh
+          fi
+          echo "OK: versions.env keys present; bash -n clean"
 
       - name: Build disk images
         id: build
