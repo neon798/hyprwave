@@ -78,6 +78,6 @@
 
 ## 2026-08-07 — D-W1-HOLD (poll heartbeat)
 
-- Polled `origin/main` (director check-in 07:35Z; D task_id unchanged).
+- Polled `origin/main` (director check-in 07:45Z; D task_id unchanged).
 - Refreshed `planning/taskmaster/models/d/` — still `D-W1-HOLD` OPEN. Freeze tip `adbb4f4`.
 - No product work; will not mark HOLD DONE. Awaiting serial merge.
