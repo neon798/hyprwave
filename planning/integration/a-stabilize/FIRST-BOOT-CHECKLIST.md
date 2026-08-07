@@ -25,13 +25,19 @@ requires pins + static checks; use this list when a machine is free.
 
 ## GHCR public pull (status snapshot)
 
-Recorded during lane A stabilize (2026-08-06). **Does not block other lanes.**
-See also `RELEASE.md` for the visibility fix checklist.
+Recorded during lane A stabilize (2026-08-06; re-probe with
+`scripts/ghcr-pull-test.sh` on 2026-08-07). **Does not block other lanes.**
+See also `RELEASE.md` for the visibility fix checklist and private contingency.
 
 | Image | Result | Notes |
 |-------|--------|-------|
-| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` / cannot pull without auth — package may be private or unpublished |
-| `ghcr.io/neon798/hyprwave-cosmic:latest` | **FAIL** | `403 Forbidden` on bearer token — same |
+| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` / cannot pull without auth — package private or unpublished |
+| `ghcr.io/neon798/hyprwave-cosmic:latest` | **FAIL / mixed** | previously 403; re-check both with empty authfile via `ghcr-pull-test.sh` |
+
+```bash
+bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh
+# exit 0 only when both packages are anonymously readable
+```
 
 Action for maintainer: make packages public (or document auth), confirm CI push
 on `main` succeeds, then re-check anonymous pull.
