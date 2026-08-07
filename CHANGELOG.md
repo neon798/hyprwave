@@ -98,6 +98,9 @@ their branch merges and CI publishes a new `:latest`.
 
 ### Post-merge template (for integrator)
 
+**Full doc flip checklist (files, greps, honesty rules):**
+[planning/integration/b-docs/POST-MERGE-DOC-FLIP.md](planning/integration/b-docs/POST-MERGE-DOC-FLIP.md)
+
 After serial merge + green CI + (optional) GHCR publish, create a dated release section
 and **flip** Unreleased language. Copy and edit:
 
