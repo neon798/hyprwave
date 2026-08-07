@@ -2,16 +2,16 @@
 
 **Owner:** Model G (read-only inspection + tracking; does not merge product lanes).  
 **Source of truth for “finished”:** `planning/taskmaster/ENDPOINT.md` product items 1–10.  
-**Inspection date:** 2026-08-07 (UTC) — refresh after G-W1-003  
-**Baseline refs:** `origin/main` @ `2eed66f` + remote-tracking `origin/lane/*` after `git fetch`.
+**Inspection date:** 2026-08-07 (UTC) — G-W1-003 + poll refresh  
+**Baseline refs:** `origin/main` @ `371ea34` + remote-tracking `origin/lane/*` after `git fetch`.
 
 | Lane | Tip (short) |
 |---|---|
-| a-stabilize | `a9c3ded` |
-| b-docs | `f21b6c2` |
+| a-stabilize | `3022cfc` |
+| b-docs | `6be80a8` |
 | c-assistant | `0c9838a` |
 | d-duress | `b69a474` |
-| e-hyprland | `747b995` |
+| e-hyprland | `b9a218f` |
 | f-cosmic | `799d952` |
 | g-qa | this branch |
 

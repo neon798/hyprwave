@@ -96,3 +96,8 @@ Harness still **FAIL** only on `pins-static` until A merges (expected).
 - PRE-MERGE-DRY-RUN.md
 - ENDPOINT-RESIDUALS + SMOKE-MATRIX §9
 - taskmaster DONE record
+
+## Poll — 2026-08-07 (post G-W1-003)
+
+**Status:** idle / reaffirm DONE  
+**Note:** `origin/main` still listed G-W1-003 as OPEN (director task file lag). Lane deliverables already shipped; re-ran `probe-merge-conflicts.sh --product-only` vs main `371ea34` — all seven lanes **product-clean**. Refreshed tip SHAs in PRE-MERGE-DRY-RUN + ENDPOINT-RESIDUALS (A `3022cfc`, B `6be80a8`, E `b9a218f`, …). No new product work.
