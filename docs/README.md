@@ -1,57 +1,57 @@
-# Hyprwave documentation
+# Hyprwave documentation (handbook)
 
-End-user docs for installing, using, and understanding Hyprwave.
-You should not need the `planning/` directory or repo build internals for daily use.
+End-user and light contributor docs. You should not need `planning/` theory files for
+daily install and use.
 
 ## Start here
 
 | Doc | Description |
 |-----|-------------|
-| [../INSTALL.md](../INSTALL.md) | Install via `bootc switch` or ISO; first login; post-install apps |
-| [../README.md](../README.md) | Product overview, companions, themes |
-| [../CHANGELOG.md](../CHANGELOG.md) | What ships / what changed |
+| [../INSTALL.md](../INSTALL.md) | Atomic `bootc switch` + ISO paths; private GHCR; first hour |
+| [../README.md](../README.md) | Product overview, stack, companions, themes |
+| [../CHANGELOG.md](../CHANGELOG.md) | What ships / Unreleased lane reality |
+| [faq.md](faq.md) | ≥12 frequent questions |
 
 ## Using the desktop
 
 | Doc | Description |
 |-----|-------------|
-| [keybinds.md](keybinds.md) | Hyprland keyboard shortcuts (Walker, terminal, themes, …) |
+| [keybinds.md](keybinds.md) | Hyprland shortcuts (from skel `bindings.conf`) |
+| [theming.md](theming.md) | 11 themes, GUI/CLI switcher, palette |
 | [cosmic.md](cosmic.md) | COSMIC variant differences |
-| [updating.md](updating.md) | `bootc upgrade`, reboot, Flatpak updates |
-| [troubleshooting.md](troubleshooting.md) | Black screen, Walker empty, GHCR auth, wallpaper, … |
+| [updating.md](updating.md) | `bootc upgrade`, reboot, Flatpak |
+| [troubleshooting.md](troubleshooting.md) | Pull failures, black screen, Walker, wallpaper |
 
 ## Understanding the system
 
 | Doc | Description |
 |-----|-------------|
 | [architecture.md](architecture.md) | bootc, skel caveat, theme store, two DE images |
-| [security.md](security.md) | Immutable core, privacy defaults, duress off-by-default |
+| [security.md](security.md) | Immutable core; duress **off by default** |
+| [contributor-notes.md](contributor-notes.md) | Lanes, Task Master PROTOCOL, where not to edit |
 
-## Screenshots (not blocking)
-
-Capture checklist and alt-text for future marketing shots:
-
-- [../planning/integration/b-docs/screenshot-checklist.md](../planning/integration/b-docs/screenshot-checklist.md)
-
-No screenshots are required to follow the install guide.
-
-## Contributor-oriented (optional)
+## Integration / media (not required to install)
 
 | Doc | Description |
 |-----|-------------|
-| [../CLAUDE.md](../CLAUDE.md) | Build commands and image layout for contributors |
-| [../AGENTS.md](../AGENTS.md) | Deeper packaging patterns and gotchas |
-| [../Justfile](../Justfile) | `just --list` for build/ISO/VM recipes |
+| [../planning/integration/b-docs/screenshot-checklist.md](../planning/integration/b-docs/screenshot-checklist.md) | Planned shots, alt text, capture notes |
+| [../planning/integration/b-docs/ACCURACY-AUDIT.md](../planning/integration/b-docs/ACCURACY-AUDIT.md) | Sources checked for handbook accuracy |
+| [../planning/integration/b-docs/ISSUES.md](../planning/integration/b-docs/ISSUES.md) | Product gaps filed by docs lane |
 
 ## Image refs (quick)
 
-```bash
-# Hyprland (default)
+```text
 ghcr.io/neon798/hyprwave:latest
-
-# COSMIC
 ghcr.io/neon798/hyprwave-cosmic:latest
 ```
 
-> Packages may be **private** on GHCR until visibility is fixed — see INSTALL and
-> troubleshooting if pulls return 403.
+> GHCR may be **private** (403) until package visibility is fixed — see INSTALL.
+
+## Contributor build references
+
+| Doc | Description |
+|-----|-------------|
+| [../CLAUDE.md](../CLAUDE.md) | Build commands and image layout |
+| [../AGENTS.md](../AGENTS.md) | Packaging patterns |
+| [../Justfile](../Justfile) | `just --list` |
+| [../planning/taskmaster/PROTOCOL.md](../planning/taskmaster/PROTOCOL.md) | Multi-model task protocol |
