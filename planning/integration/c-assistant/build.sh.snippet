@@ -1,0 +1,40 @@
+# --- Model C: Hyprwave Assistant (integrator applies into build_files/build.sh) ---
+# Prerequisites:
+#   - Containerfile multi-stage builds the binary (see Containerfile.snippet)
+#     OR a prebuilt binary is COPY'd into the image at /usr/bin/hyprwave-assistant
+#   - Catalog + KB already live at build_files/usr/share/hyprwave/assistant/
+#     (copied by the existing skel/share rsync patterns if present; otherwise add below)
+#   - Desktop entry at build_files/usr/share/applications/hyprwave-assistant.desktop
+#
+# Place AFTER package installs; BEFORE final cleanup. Does not enable any network
+# services. Safe to gate with DE if desired (works on both hyprland and cosmic).
+
+# Install assistant data (if not already covered by a blanket copy of build_files/usr)
+if [[ -d /ctx/build_files/usr/share/hyprwave/assistant ]]; then
+  install -d /usr/share/hyprwave/assistant
+  cp -a /ctx/build_files/usr/share/hyprwave/assistant/. /usr/share/hyprwave/assistant/
+fi
+
+# Desktop entry (file-only; do not touch other .desktop files)
+if [[ -f /ctx/build_files/usr/share/applications/hyprwave-assistant.desktop ]]; then
+  install -d /usr/share/applications
+  install -m 0644 \
+    /ctx/build_files/usr/share/applications/hyprwave-assistant.desktop \
+    /usr/share/applications/hyprwave-assistant.desktop
+fi
+
+# Binary: either COPY --from=assistant-builder in Containerfile, or:
+# install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
+#
+# Optional convenience symlink (CLI name "hyprwave" may already exist for themes —
+# only add if free):
+# if [[ ! -e /usr/bin/hyprwave ]]; then
+#   ln -s hyprwave-assistant /usr/bin/hyprwave
+# fi
+
+# Optional: refresh desktop database if the image uses it
+# update-desktop-database /usr/share/applications 2>/dev/null || true
+
+# Suggested Walker note for integrator (DO NOT edit bindings.conf in this lane):
+#   Super+Shift+A → ghostty -e hyprwave-assistant
+# --- end Model C snippet ---

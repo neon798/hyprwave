@@ -1,0 +1,62 @@
+# Hyprwave Assistant — curated software catalog
+# Easy to extend. Used by the Installer tab.
+# source = "flathub" → flatpak install -y flathub <flatpak>
+# source = "layer"   → show manual layering notes (not auto-applied)
+
+[[category]]
+name = "Office & Productivity"
+items = [
+  { id = "libreoffice", name = "LibreOffice", source = "flathub", flatpak = "org.libreoffice.LibreOffice", description = "Full office suite (Writer, Calc, Impress)" },
+  { id = "onlyoffice", name = "OnlyOffice", source = "flathub", flatpak = "org.onlyoffice.desktopeditors", description = "Lightweight office alternative" },
+  { id = "obsidian", name = "Obsidian", source = "flathub", flatpak = "md.obsidian.Obsidian", description = "Markdown knowledge base / notes" },
+]
+
+[[category]]
+name = "Gaming"
+items = [
+  { id = "steam", name = "Steam", source = "flathub", flatpak = "com.valvesoftware.Steam", description = "Steam client + Proton" },
+  { id = "heroic", name = "Heroic Games Launcher", source = "flathub", flatpak = "com.heroicgameslauncher.hgl", description = "Epic, GOG, Amazon launcher" },
+  { id = "lutris", name = "Lutris", source = "flathub", flatpak = "net.lutris.Lutris", description = "Game manager for many platforms" },
+  { id = "bottles", name = "Bottles", source = "flathub", flatpak = "com.usebottles.bottles", description = "Run Windows software easily" },
+  { id = "gamemode", name = "GameMode + MangoHud", source = "layer", packages = ["gamemode", "mangohud"], description = "Performance tools + overlay (reboot after layer)" },
+]
+
+[[category]]
+name = "Networking & Remote Access"
+items = [
+  { id = "tailscale", name = "Tailscale", source = "flathub", flatpak = "io.tailscale.ipn", description = "Zero-config VPN / mesh networking" },
+  { id = "syncthing", name = "Syncthing", source = "flathub", flatpak = "com.github.zocker_160.SyncThingy", description = "Continuous file synchronization" },
+]
+
+[[category]]
+name = "Privacy & Browsers"
+items = [
+  { id = "librewolf", name = "LibreWolf", source = "flathub", flatpak = "io.gitlab.librewolf-community", description = "Firefox fork focused on privacy" },
+  { id = "mullvad-browser", name = "Mullvad Browser", source = "flathub", flatpak = "net.mullvad.MullvadBrowser", description = "Privacy browser from Mullvad" },
+  { id = "tor-browser", name = "Tor Browser", source = "flathub", flatpak = "org.torproject.torbrowser-launcher", description = "Anonymous browsing via Tor" },
+]
+
+[[category]]
+name = "Development"
+items = [
+  { id = "vscodium", name = "VSCodium", source = "flathub", flatpak = "com.vscodium.codium", description = "VS Code without Microsoft telemetry" },
+  { id = "zed", name = "Zed", source = "flathub", flatpak = "dev.zed.Zed", description = "Fast collaborative code editor" },
+  { id = "distrobox", name = "Distrobox", source = "layer", packages = ["distrobox"], description = "Mutable pet containers (prefer for dev stacks)" },
+]
+
+[[category]]
+name = "Security & Passwords"
+items = [
+  { id = "mullvad-vpn", name = "Mullvad VPN", source = "flathub", flatpak = "net.mullvad.MullvadVPN", description = "Privacy-focused VPN client" },
+  { id = "protonvpn", name = "Proton VPN", source = "flathub", flatpak = "com.protonvpn.www", description = "Proton VPN client" },
+  { id = "bitwarden", name = "Bitwarden", source = "flathub", flatpak = "com.bitwarden.desktop", description = "Password manager" },
+  { id = "keepassxc", name = "KeePassXC", source = "flathub", flatpak = "org.keepassxc.KeePassXC", description = "Local password database" },
+]
+
+[[category]]
+name = "Communication & Media"
+items = [
+  { id = "element", name = "Element", source = "flathub", flatpak = "im.riot.Riot", description = "Matrix chat client" },
+  { id = "signal", name = "Signal Desktop", source = "flathub", flatpak = "org.signal.Signal", description = "Private messaging" },
+  { id = "jellyfin-mp", name = "Jellyfin Media Player", source = "flathub", flatpak = "com.github.iwalton3.jellyfin-media-player", description = "Play from your Jellyfin server" },
+]
