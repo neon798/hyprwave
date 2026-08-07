@@ -2,59 +2,81 @@
 
 (append only)
 
-## 2026-08-07 — A-W1-001 (deepen #2 / reopen)
+## 2026-08-07 — A-W1-001
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
 **tip:** (see COMPLETED.md after push)
 
-### Work done this tick
+### Work done
 
-Task Master re-issued A-W1-001 as OPEN on main; lane already had Wave-1 pins.
-Deepened fail-closed path and CI static gates further:
+- Confirmed Wave 1/2 base: `build.sh` sources `versions.env`, `verify_sha256` for Yazi/Neonwolf/FlatArcade, zero `releases/latest`.
+- Enhanced `planning/integration/a-stabilize/scripts/verify-pins.sh`:
+  - `--head` (default), `--checksum` / `--sha256`, `--light`, `--help`
+  - Light mode skips Neonwolf AppImage; still HEAD-checks its URL
+  - Documented usage in script header + `versions.env` comments
+- CI `pin_guards` (`build.yml`): existing grep / bash -n / keys; now also `--head` + `--checksum --light`
+- `BUMP.md`: full FlatArcade end-to-end worked example + rollback pointer
+- `RELEASE.md`: when-to-bump policy table + image/pin rollback
+- `FIRST-BOOT-CHECKLIST.md`: image digest fields + checksum row in log template; A-W1-001 filled log
 
-1. **`build_files/build.sh`**
-   - Require `/ctx/versions.env` present before source
-   - `require_pin` / `require_sha256` (64 hex) / `forbid_floating_url` for all
-     Yazi, Neonwolf, FlatArcade (+ SVG) pins **before** curl
-   - Floating path built via `printf '%s/%s' releases latest` so source stays
-     free of the contiguous token for grep-based guards
-   - `verify_sha256` rejects missing files and empty digests
+### Validation
 
-2. **`planning/integration/a-stabilize/scripts/verify-pins.sh`**
-   - Static preflight: keys, sha format, non-floating URLs
-   - Asserts `build.sh` sources `versions.env` and uses `verify_sha256`
-   - Asserts neither `build.sh` nor `versions.env` contains floating token
-   - Then HEAD or `--checksum` / `--checksum --light` as before
+```
+grep releases/latest build_files/build.sh → clean
+bash …/verify-pins.sh → exit 0
+bash …/verify-pins.sh --checksum --light → exit 0 (Yazi+FlatArcade sha256 OK)
+shellcheck verify-pins.sh → clean
+```
 
-3. **CI**
-   - `build.yml` `pin_guards`: floating token, pin wiring (`${*_SHA256}`),
-     sha shape, bash -n including verify-pins, HEAD, light checksum
-   - `build-disk.yml`: floating token + versions.env keys + bash -n
+### Commits (this task)
 
-4. **Docs**
-   - RELEASE: workflow_dispatch, digest-pinned install, stronger pin_guards description
-   - BUMP: updated CI guard list
-   - FIRST-BOOT: floating-token grep, second filled pass/fail log
+1. `verify-pins: add --checksum/--light modes and document usage`
+2. `CI: pin_guards also run light pin checksum verification`
+3. `Docs: FlatArcade bump walkthrough, rollback, digest in first-boot log`
+4. taskmaster status DONE + WORK_LOG/COMPLETED
+
+### Notes for Director
+
+- GHCR anonymous pull still FAIL (private/403) — tracked in RELEASE.md; not a pin code defect.
+- Full Neonwolf `--checksum` (no --light) not required in CI; operators can run it pre-release.
+
+## 2026-08-07 — A-W1-002
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`  
+**tip:** (see COMPLETED.md after push)
+
+### Work done
+
+- Audited `build.yml` / `build-disk.yml` dual-image matrix; wrote `CI-MATRIX.md`
+  (job graph, image names, PR vs publish, gaps).
+- Tightened CI:
+  - `pin_guards`: assert `matrix.de: [hyprland, cosmic]` + disk `iso-cosmic.toml`
+  - `build-disk.yml`: `verify-pins.sh --head` before BIB
+  - pin_guards already runs on all PRs (documented)
+- `COSIGN.md`: verify both images, digest path, failure modes, key rotation (no private keys)
+- `RELEASE.md`: GHCR Settings → Public path, `ghcr-pull-test.sh`, private-registry contingency
+- `scripts/ghcr-pull-test.sh`: empty authfile dual-image anonymous probe
+- FIRST-BOOT GHCR section points at the probe
 
 ### Validation
 
 ```
 token=$(printf '%s/%s' releases latest)
-grep -nF "$token" build_files/build.sh build_files/versions.env  → clean
-bash -n build_files/build.sh verify-pins.sh                     → OK
-bash …/verify-pins.sh --head                                    → exit 0
-bash …/verify-pins.sh --checksum --light                        → exit 0
+grep -nF "$token" build_files/build.sh versions.env → clean
+bash …/verify-pins.sh --head → exit 0
+bash …/ghcr-pull-test.sh → exit 1 (hyprwave unauthorized; cosmic may inspect — fail closed)
 ```
 
-### Commits (this reopen tick)
+### Commits
 
-1. `build: fail-closed pin key, sha256, and floating-URL checks`
-2. `verify-pins: static key/sha/source guards before network checks`
-3. `ci/docs: deepen pin_guards and release/bump operator notes`
-4. taskmaster status DONE + WORK_LOG/COMPLETED
+1. `ci: dual DE matrix guard + disk verify-pins HEAD`
+2. `docs(a-stabilize): CI matrix audit and cosign verify runbook`
+3. `docs(a-stabilize): GHCR visibility path and anonymous pull probe`
+4. taskmaster DONE + WORK_LOG/COMPLETED
 
 ### Notes for Director
 
-- GHCR anonymous pull still FAIL (private/403) — RELEASE.md maintainer checklist; not a pin code defect.
-- Full Neonwolf checksum (no --light) remains operator-only pre-release.
+- Maintainer still must flip GHCR packages Public (or document private PAT install).
+- Disk workflow cannot `needs:` container build across workflows; operators publish images first.

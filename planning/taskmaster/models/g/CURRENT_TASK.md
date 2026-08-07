@@ -1,42 +1,39 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: G-W1-002  
+task_id: G-W1-003  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
-title: Multi-lane fetch checks, endpoint residual tracker, CI harness snippet  
+issued: 2026-08-07T04:55:00Z  
+title: Pre-integration dry-run report + conflict hotspot probe  
 
 ## Objective
 
-Deepen QA toward ENDPOINT: optional multi-ref checks against remote lanes, residual tracker for program closeout, and a CI-ready harness snippet — still **no** merging product lanes.
+Produce an actionable **pre-merge dry-run** for the integrator: simulate merge order A→G with conflict probes, refresh endpoint residuals after W1-002/003 lane tips, and document go/no-go gates — still **do not merge** product lanes.
 
 ## Exclusive paths
 
 - `planning/qa/**`
 - `planning/integration/g-qa/**`
 - `planning/taskmaster/models/g/**`
-- Optional additive Justfile fragment under `planning/qa/` only (not root Justfile unless purely additive and risk-free)
 
 ## Forbidden
 
-- Implementing Assistant/Duress/desktop features
-- Force-merging other lanes
+- Force-merging other lanes into main
 - Editing exclusive product paths of A–F
+- Enabling features in build.sh
 
 ## Requirements
 
-- [ ] `planning/qa/check-lane-artifacts.sh` — given `git` available, can `git ls-tree`/`git show` **optional** `ORIGIN_LANE_*` refs or default `origin/lane/*` to verify expected paths exist (soft-WARN if refs missing; FAIL only when ref present but artifact missing)
-- [ ] `planning/integration/g-qa/ENDPOINT-RESIDUALS.md` — checklist mapped from `ENDPOINT.md` product items 1–10 with status (met on main / met on lane / open) based on read-only inspection
-- [ ] Expand MERGE-PLAYBOOK with pre-merge `run-all.sh` gates and post-merge expected flips (pins FAIL→PASS after A, etc.)
-- [ ] `planning/qa/ci-snippet.yml` or markdown embedding for a GH workflow job (A may copy later) — no secrets
-- [ ] `run-all.sh` includes new check (or documents why separate); summary table still clear
-- [ ] Theme exceptions list remains accurate
+- [ ] `planning/integration/g-qa/PRE-MERGE-DRY-RUN.md` — for each lane tip SHA, list unique paths vs `origin/main`, predicted conflict files (esp. `build.sh`, README, workflows, skel)
+- [ ] Optional script `planning/qa/probe-merge-conflicts.sh` that uses `git merge-tree` (or equivalent) against `origin/main` for each `origin/lane/*` **read-only**; prints conflict paths; exit 0 even if conflicts found (report mode) unless `--fail-on-conflict`
+- [ ] Refresh `ENDPOINT-RESIDUALS.md` against current `origin/main` + latest lane tips
+- [ ] Expand SMOKE-MATRIX with “minimum green before GHCR publish” gate list
+- [ ] `run-all.sh` still works; document any new check
 - [ ] ≥3 commits; push `lane/g-qa`
-- [ ] `bash planning/qa/run-all.sh` runs; document exit semantics
 
 ## Deliverables
 
-- Lane artifact checker, endpoint residuals tracker, CI snippet, playbook updates
+- PRE-MERGE-DRY-RUN.md (+ optional probe script), updated residuals/smoke
 
 ## Done criteria
 
