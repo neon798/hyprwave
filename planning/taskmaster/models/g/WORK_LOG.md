@@ -70,3 +70,29 @@
 - After A merge, re-run: pins FAIL→PASS.
 - CI: copy `planning/qa/ci-snippet.yml` into workflows when ready.
 - Refresh ENDPOINT-RESIDUALS after each serial merge; G still does not merge lanes.
+
+## G-W1-003 — 2026-08-07
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** Pre-integration dry-run + conflict hotspot probe
+
+### Work performed
+
+1. `planning/qa/probe-merge-conflicts.sh` — read-only `git merge-tree --write-tree` per lane; report mode exit 0; `--product-only` / `--fail-on-conflict` / `--lanes`.
+2. `planning/integration/g-qa/PRE-MERGE-DRY-RUN.md` — tips, inventories, go/no-go: **product merges clean** vs main; taskmaster conflicts expected; C/D snippets remain post-merge work.
+3. Refreshed `ENDPOINT-RESIDUALS.md` for main `2eed66f` + current lane tips.
+4. SMOKE-MATRIX **§9** minimum green before GHCR publish (hard P1–P7 + soft S1–S5).
+5. README: probe not in `run-all` (integration-time advisory).
+
+### Probe result (product-only)
+
+All seven lanes **PASS** (taskmaster-only noise filtered).  
+Harness still **FAIL** only on `pins-static` until A merges (expected).
+
+### Commits
+
+- probe script + README
+- PRE-MERGE-DRY-RUN.md
+- ENDPOINT-RESIDUALS + SMOKE-MATRIX §9
+- taskmaster DONE record
