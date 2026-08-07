@@ -93,3 +93,10 @@
 - Lane HOLD ack: A, B, C (`f1e48a5`), G.
 - Lane lag 2+ cycles without HOLD refresh: **D, E, F** — main still issues D/E/F-W1-HOLD OPEN; no re-issue of product work.
 - No new tasks. Human integration remains the blocker to ENDPOINT.
+
+## 2026-08-07T06:05:00Z — Director check-in
+
+- No product integration; all main tasks remain HOLD OPEN.
+- A/B/C/G still acked HOLD on lanes.
+- **D/E/F** still on W1-006 DONE tips (3+ cycles) — reissued HOLD with fetch instructions; no product tasks.
+- Human merge remains required for ENDPOINT progress.

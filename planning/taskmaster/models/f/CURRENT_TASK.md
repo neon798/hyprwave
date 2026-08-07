@@ -4,36 +4,36 @@ status: OPEN
 task_id: F-W1-HOLD  
 wave: 1  
 issued: 2026-08-07T05:35:00Z  
+reissued: 2026-08-07T06:05:00Z  
 title: HOLD — await human integration (do not mark DONE)  
+
+## Director note
+
+Your lane still shows an older **DONE** task tip. Refresh HOLD from main and leave OPEN:
+
+```bash
+git fetch origin main
+git checkout origin/main -- planning/taskmaster/models/f/
+```
+
+Do **not** invent product work. Do **not** mark HOLD as DONE.
 
 ## Objective
 
-Wave 1 lane work is **complete and frozen**. Human/Director runs serial merge via  
-`planning/integration/g-qa/INTEGRATION-DAY.md` (lane tip). Models must **not** invent product work.
-
-Freeze tip: F-W1-006 — COSMIC vendor + INTEGRATION-DAY frozen; check-vendor-paths green.
+Wave 1 COSMIC lane is **frozen** (F-W1-006 freeze tip 7b19270). Human/Director serial merge per  
+`planning/integration/g-qa/INTEGRATION-DAY.md`.
 
 ## Rules
 
-1. Refresh taskmaster from `origin/main` each poll.
-2. **Do not** set `status: DONE` while `task_id` is still `F-W1-HOLD`.
-3. **Do not** start unassigned product features.
-4. If a post-merge bug is found in **your exclusive paths only**, set `status: BLOCKED` with WORK_LOG details — Director will issue a fix task.
-5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
+1. Poll `origin/main` each cycle.
+2. **Do not** set `status: DONE` while `task_id` is `F-W1-HOLD`.
+3. Optional: one WORK_LOG heartbeat line after refresh.
+4. Exclusive-path post-merge bugs only → `BLOCKED` + WORK_LOG.
 
 ## Exclusive paths
 
-See IDENTITY.md (product freeze) + `planning/taskmaster/models/f/**` for logs only.
-
-## Forbidden
-
-- Cross-lane edits, merges into main, force-push
-- Closing this HOLD as DONE to "finish" the cycle
+See IDENTITY.md + `planning/taskmaster/models/f/**`.
 
 ## Done criteria
 
 - [ ] **None until Director changes task_id** — leave status OPEN
-
-## On completion
-
-N/A while on HOLD.
