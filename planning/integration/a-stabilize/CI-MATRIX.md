@@ -116,6 +116,7 @@ bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh
 
 ## Related docs
 
+- `MERGE-READY.md` — minimum green gate before merging `lane/a-stabilize`
 - `RELEASE.md` — publish path, GHCR visibility, rollback
 - `COSIGN.md` — verify / rotate / failure modes
 - `BUMP.md` — companion app pins

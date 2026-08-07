@@ -208,9 +208,11 @@ commit `versions.env` only, let `pin_guards` pass, dual-variant image build.
 
 | Doc / script | Role |
 |--------------|------|
+| `MERGE-READY.md` | Pre-merge green gate for `lane/a-stabilize` |
 | `CI-MATRIX.md` | Dual-image CI audit + gaps |
 | `COSIGN.md` | Verify / rotate / failure modes |
 | `scripts/verify-pins.sh` | Companion pin HEAD/checksum |
+| `scripts/check-upstream-pins.sh` | Advisory upstream tag compare (not CI) |
 | `scripts/ghcr-pull-test.sh` | Anonymous dual-image GHCR probe |
 | `BUMP.md` | Pin bump worked example |
 | `FIRST-BOOT-CHECKLIST.md` | Post-boot validation log |

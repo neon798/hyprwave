@@ -136,10 +136,24 @@ jobs:
 
       # Network pin HEAD check (mirrors build.yml pin_guards). Disk jobs pull
       # GHCR images built from this tree; fail before BIB if pins already 404.
+      # Light checksum intentionally omitted here — container pin_guards owns digests.
       - name: Pin guard — verify-pins HEAD
         run: |
           set -euo pipefail
           bash planning/integration/a-stabilize/scripts/verify-pins.sh --head
+
+      - name: Pin guard — cosmic ISO matrix entry present
+        run: |
+          set -euo pipefail
+          if ! grep -n 'iso-cosmic.toml' .github/workflows/build-disk.yml; then
+            echo "::error::build-disk.yml must keep cosmic ISO matrix (iso-cosmic.toml)"
+            exit 1
+          fi
+          if ! grep -nE 'de:[[:space:]]*cosmic' .github/workflows/build-disk.yml; then
+            echo "::error::build-disk.yml must keep a matrix.de cosmic leg"
+            exit 1
+          fi
+          echo "OK: disk workflow dual-image (cosmic) matrix present"
 
       - name: Build disk images
         id: build
