@@ -6,3 +6,4 @@ D-W1-001 | 2026-08-07 | Security pack: threat model, local-clear template, --ver
 D-W1-002 | 2026-08-07 | Negative validate fixtures, FAQ, OPERATOR-RUNBOOK, snippet PAM-off audit | 7d35112
 D-W1-003 | 2026-08-07 | SIGNING.md, RESIDUALS.md, snippet-selftest, README severity/links | 240b4e5
 D-W1-004 | 2026-08-07 | INTEGRATOR-CHECKLIST freeze; README full index; validate gates | f88bb3d
+D-W1-005 | 2026-08-07 | INTEGRATION-DAY one-page gate card (merge → validate → no PAM) | c8ea0ae

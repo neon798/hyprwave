@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: D-W1-005  
 wave: 1  
 issued: 2026-08-07T05:15:00Z  
@@ -25,9 +25,9 @@ One-page integration-day card: merge D → apply snippets → validate green →
 
 ## Requirements
 
-- [ ] `planning/integration/d-duress/INTEGRATION-DAY.md` — short ordered gate linking INTEGRATOR-CHECKLIST, validate, snippet-selftest, SIGNING “do not commit”
-- [ ] validate.sh + snippet-selftest still exit 0
-- [ ] ≥2 commits; push `lane/d-duress`
+- [x] `planning/integration/d-duress/INTEGRATION-DAY.md` — short ordered gate linking INTEGRATOR-CHECKLIST, validate, snippet-selftest, SIGNING “do not commit”
+- [x] validate.sh + snippet-selftest still exit 0
+- [x] ≥2 commits; push `lane/d-duress`
 
 ## Deliverables
 
@@ -35,7 +35,7 @@ One-page integration-day card: merge D → apply snippets → validate green →
 
 ## Done criteria
 
-- [ ] validate green; push; WORK_LOG + COMPLETED; status DONE
+- [x] validate green; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
