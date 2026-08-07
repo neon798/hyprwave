@@ -19,6 +19,15 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build-hypr-utils.sh
 
+# Duress builder stage. Compiles nuvious/pam-duress (pam_duress.so + duress_sign)
+# from a pinned commit and stages into /install. OFF BY DEFAULT: only binaries are
+# staged; no /etc/pam.d edits happen here. PAM enablement is a human post-boot step.
+FROM ghcr.io/ublue-os/base-main:latest AS duressbuilder
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/build-duress.sh
+
 # Hyprwave Assistant builder stage. Independent of hyprbuilder; usable for both
 # the hyprland and cosmic variants. Builds a static Go binary (CGO_ENABLED=0).
 # The heavy golang toolchain never reaches the final image.
@@ -74,6 +83,11 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     DE=${DE} /ctx/build.sh
+
+# Duress runtime tooling (pam_duress.so, duress_sign) — shared by both variants.
+# Templates/docs/empty /etc/duress.d are installed by build.sh (build.sh.snippet).
+COPY --from=duressbuilder /install/ /
+RUN ldconfig
 
 ### Hyprland utilities built from source in the hyprbuilder stage above
 ### Only the de-hyprland alias includes the COPY from the (possibly-skipped) builder.
