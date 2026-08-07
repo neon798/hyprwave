@@ -266,12 +266,24 @@ dnf5 remove -y firefox firefox-langpacks
 ### Guarded so the build doesn't fail if a future base stops shipping it.
 rpm -q xterm &>/dev/null && dnf5 remove -y xterm || true
 
-### Install Yazi — Hyprwave's default file manager (terminal-based, latest release).
+### Pinned external companion apps (Yazi / Neonwolf / FlatArcade).
+### Versions + sha256 live in /ctx/versions.env (build_files/versions.env).
+### See planning/integration/a-stabilize/BUMP.md for how to bump pins.
+# shellcheck source=/dev/null
+. /ctx/versions.env
+
+### curl dest, then fail the build if sha256 does not match the pin.
+verify_sha256() {
+	local file="$1"
+	local expected="$2"
+	echo "${expected}  ${file}" | sha256sum -c -
+}
+
+### Install Yazi — Hyprwave's default file manager (terminal-based, pinned release).
 ### Not packaged in Fedora, so we pull the upstream prebuilt binaries (yazi + the
-### `ya` helper) from GitHub's /releases/latest/download/ redirect, same pattern as
-### the apps below. Launched inside Ghostty from the keybind / .desktop.
-curl -fsSL -o /tmp/yazi.zip \
-	https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip
+### `ya` helper) from a versioned GitHub release URL. Launched inside Ghostty.
+curl -fsSL -o /tmp/yazi.zip "${YAZI_URL}"
+verify_sha256 /tmp/yazi.zip "${YAZI_SHA256}"
 mkdir -p /tmp/yazi
 unzip -q /tmp/yazi.zip -d /tmp/yazi
 install -m0755 /tmp/yazi/*/yazi /usr/bin/yazi
@@ -292,13 +304,11 @@ StartupNotify=true
 Terminal=false
 EOF
 
-### Install Neonwolf — Hyprwave's default web browser (latest stable release).
-### Built in its own repo (neon798/neonwolf) and shipped as an AppImage. We track
-### the latest *stable* release via GitHub's /releases/latest/download/ redirect
-### (excludes pre-releases, no API rate limits). The AppImage is extracted at build
+### Install Neonwolf — Hyprwave's default web browser (pinned AppImage release).
+### Built in its own repo (neon798/neonwolf). The AppImage is extracted at build
 ### time so the deployed image needs no FUSE at runtime; /usr/bin/neonwolf launches it.
-curl -fsSL -o /tmp/neonwolf.AppImage \
-	https://github.com/neon798/neonwolf/releases/latest/download/Neonwolf-x86_64.AppImage
+curl -fsSL -o /tmp/neonwolf.AppImage "${NEONWOLF_URL}"
+verify_sha256 /tmp/neonwolf.AppImage "${NEONWOLF_SHA256}"
 chmod +x /tmp/neonwolf.AppImage
 (cd /tmp && ./neonwolf.AppImage --appimage-extract >/dev/null)
 rm -rf /usr/lib/neonwolf
@@ -325,17 +335,17 @@ StartupWMClass=neonwolf
 Terminal=false
 EOF
 
-### Install FlatArcade — Hyprwave's default "app store" (Flathub TUI, latest release).
+### Install FlatArcade — Hyprwave's default "app store" (Flathub TUI, pinned release).
 ### Also its own repo (neon798/flatarcade): a Rust/ratatui TUI for browsing Flathub
 ### and managing Flatpaks. Flatpak + the Flathub remote already come from the base
 ### image (at /etc/flatpak/remotes.d/flathub.flatpakrepo); no GUI store ships, so this
 ### TUI is the front-end. It's launched inside Ghostty from graphical launchers.
-curl -fsSL -o /usr/bin/flatarcade \
-	https://github.com/neon798/flatarcade/releases/latest/download/flatarcade
+curl -fsSL -o /usr/bin/flatarcade "${FLATARCADE_URL}"
+verify_sha256 /usr/bin/flatarcade "${FLATARCADE_SHA256}"
 chmod +x /usr/bin/flatarcade
 mkdir -p /usr/share/icons/hicolor/scalable/apps
-curl -fsSL -o /usr/share/icons/hicolor/scalable/apps/flatarcade.svg \
-	https://github.com/neon798/flatarcade/releases/latest/download/flatarcade.svg
+curl -fsSL -o /usr/share/icons/hicolor/scalable/apps/flatarcade.svg "${FLATARCADE_SVG_URL}"
+verify_sha256 /usr/share/icons/hicolor/scalable/apps/flatarcade.svg "${FLATARCADE_SVG_SHA256}"
 cat >/usr/share/applications/flatarcade.desktop <<'EOF'
 [Desktop Entry]
 Name=FlatArcade
