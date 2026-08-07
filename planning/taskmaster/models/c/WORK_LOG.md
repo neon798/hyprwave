@@ -25,3 +25,12 @@
 ## 2026-08-07 — poll re-assert
 
 - main still OPEN for C-W1-002; lane already complete (tip b7aff65 / mark 0f4ec1b). Re-assert DONE; no re-implement. Tests green.
+
+## 2026-08-07 — C-W1-003
+
+- smoke-host.sh: go test + ldflags build + --help/--version/kb/list/update --dry-run (exit 0)
+- HANDOFF.md freeze one-pager (apply order, paths, Super+Shift+A, deps)
+- README install layout lists desktop + catalog.toml + all 13 kb/*.md
+- Version/RELEASE-NOTES consistent at 0.2.2
+- Coverage snapshot: catalog 90.1%, kb 73.5%, system 82.2%
+- Validate: bash planning/integration/c-assistant/smoke-host.sh
