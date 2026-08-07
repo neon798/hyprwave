@@ -418,6 +418,29 @@ StartupNotify=true
 Terminal=false
 EOF
 
+### Hyprwave Assistant — data + desktop entry (binary built in the
+### assistant-builder stage of the Containerfile and COPYed into the final image).
+### Runtime deps are already on the image (ghostty, flatpak, bootc). No network
+### services. Safe on both DE=hyprland and DE=cosmic.
+ASSISTANT_SRC="${ASSISTANT_SRC:-/ctx/build_files}"
+ASSISTANT_DATA_SRC="${ASSISTANT_SRC}/usr/share/hyprwave/assistant"
+ASSISTANT_DESKTOP_SRC="${ASSISTANT_SRC}/usr/share/applications/hyprwave-assistant.desktop"
+
+if [[ -d "${ASSISTANT_DATA_SRC}" ]]; then
+	install -d /usr/share/hyprwave/assistant
+	cp -a "${ASSISTANT_DATA_SRC}/." /usr/share/hyprwave/assistant/
+	chmod -R a+rX /usr/share/hyprwave/assistant
+fi
+
+if [[ -f "${ASSISTANT_DESKTOP_SRC}" ]]; then
+	install -d /usr/share/applications
+	install -m 0644 "${ASSISTANT_DESKTOP_SRC}" /usr/share/applications/hyprwave-assistant.desktop
+fi
+
+if [[ -x /tmp/hyprwave-assistant && ! -x /usr/bin/hyprwave-assistant ]]; then
+	install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
+fi
+
 ### Refresh the hicolor icon cache so GTK launchers (Walker) pick up the icons we
 ### just added (flatarcade.svg). The base image ships a prebuilt icon-theme.cache;
 ### without regenerating it, GTK reads the stale cache and the new icon is missing.

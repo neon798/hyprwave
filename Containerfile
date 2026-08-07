@@ -19,6 +19,21 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build-hypr-utils.sh
 
+# Hyprwave Assistant builder stage. Independent of hyprbuilder; usable for both
+# the hyprland and cosmic variants. Builds a static Go binary (CGO_ENABLED=0).
+# The heavy golang toolchain never reaches the final image.
+FROM docker.io/library/golang:1.23-bookworm AS assistant-builder
+WORKDIR /src
+COPY apps/hyprwave-assistant/go.mod apps/hyprwave-assistant/go.sum ./
+RUN go mod download
+COPY apps/hyprwave-assistant/ ./
+ARG ASSISTANT_VERSION=0.2.2
+ENV CGO_ENABLED=0
+RUN go test ./... \
+ && go build -trimpath \
+      -ldflags="-s -w -X main.version=${ASSISTANT_VERSION}" \
+      -o /out/hyprwave-assistant .
+
 # Global build arg (must be before any FROM that uses it in FROM).
 # DE=hyprland keeps full backward compat and current behavior.
 ARG DE=hyprland
@@ -73,6 +88,10 @@ FROM base AS de-cosmic
 ### execute the referenced final stage + its dependencies. DE=hyprland includes
 ### the hyprbuilder work; DE=cosmic does not.
 FROM de-${DE}
+
+### Hyprwave Assistant binary (data + desktop entry installed via build.sh snippet)
+COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant
+RUN chmod 0755 /usr/bin/hyprwave-assistant
 
 ### LINTING
 ## Verify final image and contents are correct.
