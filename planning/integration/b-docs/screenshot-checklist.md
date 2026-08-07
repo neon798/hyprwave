@@ -1,10 +1,10 @@
-# Screenshot checklist (Wave 2 progress)
+# Screenshot checklist (handbook media)
 
-**Status:** no binary screenshots in-repo yet — **all captures remain TODO**.  
-Do **not** block INSTALL/CHANGELOG on images. Capture after green VM first-boot.
+**Status:** no binary screenshots in-repo — **all captures remain TODO**.  
+Do **not** block INSTALL or the handbook on images.
 
 Suggested resolution: **2560×1440** or **1920×1080**. Default theme **hyprwave**
-unless the shot is a theme pack demo.
+unless the shot demos another pack.
 
 Progress legend: `TODO` | `CAPTURED` | `IN_README`
 
@@ -12,59 +12,64 @@ Progress legend: `TODO` | `CAPTURED` | `IN_README`
 
 ## Hyprland image
 
-| # | Status | Shot | Suggested file | Alt text (for when captured) |
-|---|--------|------|----------------|------------------------------|
-| H1 | TODO | SDDM greeter | `docs/images/hyprland-sddm.png` | Hyprwave SDDM login screen with deep purple panel, chromatic HYPRWAVE title, user and password fields; no real password visible |
-| H2 | TODO | Empty desktop | `docs/images/hyprland-desktop.png` | Hyprland desktop with synthwave wallpaper, Waybar along the edge, no open windows |
-| H3 | TODO | Walker open | `docs/images/hyprland-walker.png` | Walker application launcher centered over the desktop showing a list of installed apps in synthwave colors |
-| H4 | TODO | Ghostty | `docs/images/hyprland-ghostty.png` | Ghostty terminal window with a shell prompt on the Hyprwave desktop |
-| H5 | TODO | Neonwolf | `docs/images/hyprland-neonwolf.png` | Neonwolf browser window with neutral start page; no personal accounts |
-| H6 | TODO | Yazi in Ghostty | `docs/images/hyprland-yazi.png` | Yazi file manager TUI running inside Ghostty |
-| H7 | TODO | FlatArcade | `docs/images/hyprland-flatarcade.png` | FlatArcade Flathub TUI with arcade-style chrome listing applications |
-| H8 | TODO | Themes GUI | `docs/images/hyprland-themes-gui.png` | Hyprwave Themes GUI listing multiple theme packs with Apply control |
-| H9 | TODO | Theme variety | `docs/images/hyprland-theme-vaporwave.png` (etc.) | Same desktop layout under vaporwave / fjord-dark / verdant-haven wallpapers and accents |
-| H10 | TODO | Waybar crop | `docs/images/hyprland-waybar.png` | Close-up of Waybar modules: workspaces, network, clock |
-| H11 | TODO | Mako notify | `docs/images/hyprland-mako.png` | Desktop with a Mako notification bubble matching the theme |
+| # | Status | Shot | Purpose | Suggested file | Alt text | Capture notes |
+|---|--------|------|---------|----------------|----------|---------------|
+| H1 | TODO | SDDM greeter | Prove first-boot brand | `docs/images/hyprland-sddm.png` | Hyprwave SDDM login: deep purple panel, chromatic HYPRWAVE title, user/password fields; no real password | Boot Hyprland image; before login; crop cleanly |
+| H2 | TODO | Empty desktop | Default skel look | `docs/images/hyprland-desktop.png` | Hyprland desktop with synthwave wallpaper and Waybar; no open windows | Fresh user; wait for waybar/hyprpaper |
+| H3 | TODO | Walker open | Launcher is Walker | `docs/images/hyprland-walker.png` | Walker launcher centered listing apps in synthwave CSS | Super+D; type nothing or one letter |
+| H4 | TODO | Ghostty | Default terminal | `docs/images/hyprland-ghostty.png` | Ghostty terminal with shell prompt on Hyprwave | Super+Return |
+| H5 | TODO | Neonwolf | Default browser | `docs/images/hyprland-neonwolf.png` | Neonwolf browser with neutral page; no personal accounts | Super+B |
+| H6 | TODO | Yazi | Default file manager | `docs/images/hyprland-yazi.png` | Yazi TUI inside Ghostty | Super+E |
+| H7 | TODO | FlatArcade | App install path | `docs/images/hyprland-flatarcade.png` | FlatArcade Flathub TUI arcade chrome | Super+A |
+| H8 | TODO | Themes GUI | Theme product | `docs/images/hyprland-themes-gui.png` | Hyprwave Themes GUI listing packs | Super+Shift+T |
+| H9 | TODO | Theme variety | Multi-pack proof | `docs/images/hyprland-theme-*.png` | Desktop under vaporwave / fjord-dark / verdant-haven | `hyprwave-theme set …` then H2-style shot |
+| H10 | TODO | Waybar crop | Bar modules | `docs/images/hyprland-waybar.png` | Close-up Waybar: workspaces, network, clock | Region capture Super+Shift+S |
+| H11 | TODO | Mako | Notifications | `docs/images/hyprland-mako.png` | Mako notification bubble themed | `notify-send 'Hyprwave' 'Test'` if available |
 
 ## COSMIC image
 
-| # | Status | Shot | Suggested file | Alt text |
-|---|--------|------|----------------|----------|
-| C1 | TODO | cosmic-greeter | `docs/images/cosmic-greeter.png` | COSMIC greeter login screen on hyprwave-cosmic |
-| C2 | TODO | COSMIC desktop | `docs/images/cosmic-desktop.png` | COSMIC desktop with Hyprwave wallpaper and dock favorites (Neonwolf, Files, Ghostty, FlatArcade, Settings) |
-| C3 | TODO | Ghostty + FlatArcade | `docs/images/cosmic-companions.png` | Ghostty and FlatArcade open on COSMIC |
-| C4 | TODO | Theme switcher | `docs/images/cosmic-themes.png` | Hyprwave Themes UI or desktop after theme apply on COSMIC |
-| C5 | TODO | Cosmic Settings | `docs/images/cosmic-settings.png` | COSMIC Settings reflecting Hyprwave accent colors |
+| # | Status | Shot | Purpose | Suggested file | Alt text | Capture notes |
+|---|--------|------|---------|----------------|----------|---------------|
+| C1 | TODO | cosmic-greeter | Greeter differs from SDDM | `docs/images/cosmic-greeter.png` | cosmic-greeter login on hyprwave-cosmic | Boot cosmic image |
+| C2 | TODO | COSMIC desktop | Dock + wallpaper | `docs/images/cosmic-desktop.png` | COSMIC desktop Hyprwave wallpaper and dock favorites | Fresh session |
+| C3 | TODO | Companions | Shared apps | `docs/images/cosmic-companions.png` | Ghostty and FlatArcade on COSMIC | From dock/launcher |
+| C4 | TODO | Theme switcher | Themes on COSMIC | `docs/images/cosmic-themes.png` | Theme UI or post-apply desktop | `hyprwave-theme-gui` |
+| C5 | TODO | Settings | Accent identity | `docs/images/cosmic-settings.png` | Cosmic Settings with Hyprwave colors | Optional |
 
 ## Optional motion
 
-| # | Status | Asset | Alt / caption |
-|---|--------|-------|---------------|
-| M1 | TODO | Short GIF/WebM | Screen recording: open Walker, launch terminal, switch theme with Super+Shift+T |
-| M2 | TODO | Install flow | Terminal showing `bootc switch` success, then greeter (no secrets) |
+| # | Status | Asset | Purpose | Alt / caption | Capture notes |
+|---|--------|-------|---------|---------------|---------------|
+| M1 | TODO | GIF/WebM | Walker → terminal → theme | Recording of Super+D, Super+Return, Super+Shift+T | Keep under ~15s |
+| M2 | TODO | Install flow | bootc path | Terminal `bootc switch` success then greeter | No tokens/passwords |
 
 ---
 
-## Wiring into docs (when files exist)
+## Capture commands (Hyprland skel)
 
-1. Place PNGs under `docs/images/`.  
-2. Reference from [README.md](../../../README.md) and [docs/README.md](../../../docs/README.md)
-   with the alt text above.  
-3. Flip Status → `CAPTURED` then `IN_README`.  
-4. Until then, keep prose-only install docs (current state).
+From `build_files/etc/skel/.config/hypr/bindings.conf`:
 
-## Capture tips
+| Goal | Input |
+|------|--------|
+| Region → `~/Pictures` | Super+Shift+S (`hyprshot -m region -o ~/Pictures`) |
+| Region → clipboard | Super+S |
+| Full output → file | Super+Ctrl+Shift+S |
+| Walker | Super+D |
+| Themes GUI | Super+Shift+T |
 
-- Fresh VM user so `/etc/skel` defaults match docs.  
-- Hide host-specific names, email, bookmarks.  
-- Hyprland region capture: Super+Shift+S → `~/Pictures`.  
-- Note scale/resolution in a one-line caption if UI differs from bare metal.  
-- Prefer lostless PNG for UI chrome; JPEG only for large wallpapers if needed.
+COSMIC: use COSMIC screenshot tooling or `grim` if installed.
 
-## Wave 2 docs progress (this lane)
+---
 
-| Deliverable | Done |
-|-------------|------|
-| Checklist + alt-text table | yes |
-| Actual screenshot files | **no** (not blocking) |
-| README image embeds | **no** (wait for files) |
+## Wiring when files exist
+
+1. Add PNGs under `docs/images/`.  
+2. Embed in README / docs with **alt text** from tables.  
+3. Flip Status → `CAPTURED` → `IN_README`.  
+
+## Wave progress
+
+| Item | Done |
+|------|------|
+| Purpose + alt text + capture notes for each shot | **yes** |
+| Binary assets | **no** (not blocking handbook) |
