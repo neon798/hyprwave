@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: E-W1-003  
+status: OPEN  
+task_id: E-W1-004  
 wave: 1  
-issued: 2026-08-07T04:55:00Z  
-title: Window rules, hyprpaper multi-output, and assistant bind HANDOFF  
+issued: 2026-08-07T05:05:00Z  
+title: Pre-merge Hyprland session freeze + bind map audit  
 
 ## Objective
 
-Polish remaining Hyprland session edges: windowrules rationale completeness, multi-monitor wallpaper notes, and a clear **commented** HANDOFF for Super+Shift+A (Assistant) without implementing Assistant.
+Freeze Hyprland skel for integration: KEYBIND-MAP matches bindings exactly, SESSION-SMOKE is the operator gate, HANDOFF lists only real residuals (Assistant uncomment).
 
 ## Exclusive paths
 
@@ -26,28 +26,25 @@ Polish remaining Hyprland session edges: windowrules rationale completeness, mul
 
 ## Forbidden
 
-- COSMIC vendor (F), duress, apps/**
+- COSMIC vendor, duress, apps/**
 - Mass theme pack rewrites
-- `build.sh` package installs (HANDOFF only)
-- Enabling live Assistant package — only bind comment + HANDOFF line for integrator/C
+- Enabling live Assistant bind without binary on image (keep commented)
 
 ## Requirements
 
-- [x] `windowrules.conf`: every rule has rationale comment; walker no-anim present; ThemeSwitcher float preserved
-- [x] `hyprpaper.conf` (+ AUTOSTART/THEME notes): multi-monitor wallpaper behavior documented; no swaybg
-- [x] `bindings.conf`: add **commented** optional Super+Shift+A → hyprwave-assistant line + pointer to C HANDOFF; do not require binary present
-- [x] Update KEYBIND-MAP.md (include commented future bind section)
-- [x] SESSION-SMOKE: + multi-monitor / hyprpaper reload / windowrule spot-checks if practical
-- [x] HANDOFF.md: list integrator steps for Assistant bind uncomment after C merge
-- [x] ≥3 commits; push `lane/e-hyprland`
+- [ ] Diff KEYBIND-MAP.md against `bindings.conf` — zero silent drift; include commented Super+Shift+A section
+- [ ] SESSION-SMOKE.md: numbered final gate (≥20 items) suitable for post-merge VM
+- [ ] HANDOFF.md: only Assistant uncomment + any package residual (or “none”)
+- [ ] Grep skel for wofi/swaybg/rofi — must be clean
+- [ ] ≥3 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
-- Skel polish + map/smoke/handoff updates
+- Frozen map/smoke/handoff (+ tiny skel fixes only if audit finds bugs)
 
 ## Done criteria
 
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
