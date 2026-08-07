@@ -10,10 +10,11 @@
 
 set -euo pipefail
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 TEMPLATE_DIR="${HYPRWAVE_DURESS_TEMPLATE_DIR:-/usr/share/hyprwave/duress/templates}"
 WIPE_TEMPLATE="00-wipe-sensitive.sh"
 MILD_TEMPLATE="10-clear-histories.sh"
+LOCAL_CLEAR_TEMPLATE="20-local-only-clear.sh"
 USER_DURESS_DIR="${HOME}/.duress"
 
 # Accepted script modes for pam-duress (octal).
@@ -38,21 +39,25 @@ It does NOT:
   - ship or create pre-signed .sha256 files in the OS image
 
 Templates (unsigned in the image; severity):
-  00-wipe-sensitive.sh   AGGRESSIVE — keys, browsers, common secrets
-  10-clear-histories.sh  MILD       — shell histories + clipboard only
+  00-wipe-sensitive.sh     AGGRESSIVE — keys, browsers, common secrets
+  10-clear-histories.sh    MILD       — shell histories + clipboard only
+  20-local-only-clear.sh   MILD       — browser session caches under ~/.cache only
 
 Options:
-  --wipe-template   Install and sign the AGGRESSIVE wipe template
-  --mild-template   Install and sign the MILD histories/clipboard template
-  --script PATH     Sign an existing script (copied into target dir if needed)
-  --system          Operate on /etc/duress.d (requires root); still no PAM enable
-  --dry-run         Print planned actions; do not copy/sign/remove anything
-  --list            List scripts and signatures in the target directory
-  --remove NAME     Remove script NAME and its .sha256 from the target directory
-  --status          Show whether pam_duress appears enabled (best-effort)
-  --json            With --status: machine-readable JSON on stdout
-  -h, --help        Show this help
-  -V, --version     Show version
+  --wipe-template         Install and sign the AGGRESSIVE wipe template
+  --mild-template         Install and sign the MILD histories/clipboard template
+  --local-clear-template  Install and sign the MILD local cache-clear template
+  --script PATH           Sign an existing script (copied into target dir if needed)
+  --system                Operate on /etc/duress.d (requires root); still no PAM enable
+  --dry-run               Print planned actions; do not copy/sign/remove anything
+  --list                  List scripts and signatures in the target directory
+  --remove NAME           Remove script NAME and its .sha256 from the target directory
+  --verify [DIR]          Read-only: check modes + matching .sha256 for scripts
+                          (default DIR: ~/.duress or /etc/duress.d with --system)
+  --status                Show whether pam_duress appears enabled (best-effort)
+  --json                  With --status or --verify: machine-readable JSON on stdout
+  -h, --help              Show this help
+  -V, --version           Show version
 
 Environment:
   HYPRWAVE_DURESS_TEMPLATE_DIR   Override template directory
@@ -197,6 +202,105 @@ cmd_list() {
 		fi
 	done
 	shopt -u nullglob
+}
+
+# Read-only integrity check: script modes + presence of matching .sha256.
+# Does not call duress_sign, does not write, does not enable PAM.
+cmd_verify() {
+	local dir=${1:-}
+	local issues=0 scripts=0 ok_count=0
+	local -a report_lines=()
+
+	if [[ -z "$dir" ]]; then
+		dir="$(target_dir)"
+	fi
+
+	if [[ ! -d "$dir" ]]; then
+		# Missing dir is fine for stock / pre-opt-in (nothing to verify).
+		if [[ "${JSON_OUT:-0}" == "1" ]]; then
+			cat <<EOF
+{"version":"$VERSION","dir":"$dir","exists":false,"scripts":0,"ok":0,"issues":0,"read_only":true,"stock_default":"OFF"}
+EOF
+			return 0
+		fi
+		echo "verify: directory missing: $dir (OK for stock / pre-opt-in)"
+		echo "verify: RESULT OK (empty)"
+		return 0
+	fi
+
+	local f base sig mode
+	shopt -s nullglob
+	for f in "$dir"/*; do
+		[[ -f "$f" ]] || continue
+		[[ "$f" == *.sha256 ]] && continue
+		scripts=$((scripts + 1))
+		base="$(basename "$f")"
+		sig="$dir/${base}.sha256"
+		mode="$(stat -c '%a' "$f" 2>/dev/null || stat -f '%OLp' "$f" 2>/dev/null || echo '?')"
+
+		local line_ok=1
+		if ! mode_ok "$f"; then
+			report_lines+=("BAD mode=$mode (need 500/540/550) $f")
+			line_ok=0
+			issues=$((issues + 1))
+		fi
+		if [[ ! -f "$sig" ]]; then
+			report_lines+=("MISSING signature ${base}.sha256 for $f")
+			line_ok=0
+			issues=$((issues + 1))
+		elif [[ ! -r "$sig" ]]; then
+			report_lines+=("UNREADABLE signature $sig")
+			line_ok=0
+			issues=$((issues + 1))
+		fi
+		if [[ "$line_ok" -eq 1 ]]; then
+			report_lines+=("OK mode=$mode sig=present $f")
+			ok_count=$((ok_count + 1))
+		fi
+	done
+	shopt -u nullglob
+
+	if [[ "${JSON_OUT:-0}" == "1" ]]; then
+		local results="["
+		local i=0
+		local line
+		for line in "${report_lines[@]+"${report_lines[@]}"}"; do
+			[[ -n "$line" ]] || continue
+			[[ $i -gt 0 ]] && results+=","
+			results+="\"${line//\"/\\\"}\""
+			i=$((i + 1))
+		done
+		results+="]"
+		cat <<EOF
+{"version":"$VERSION","dir":"$dir","exists":true,"scripts":$scripts,"ok":$ok_count,"issues":$issues,"read_only":true,"stock_default":"OFF","results":$results}
+EOF
+		[[ "$issues" -eq 0 && "$scripts" -gt 0 ]] && return 0
+		[[ "$scripts" -eq 0 ]] && return 0
+		return 1
+	fi
+
+	echo "hyprwave-duress-setup --verify (read-only)"
+	echo "directory: $dir"
+	echo "scripts: $scripts  ok: $ok_count  issues: $issues"
+	echo "stock default: PAM OFF (this command does not enable PAM)"
+	echo
+	if [[ "$scripts" -eq 0 ]]; then
+		echo "  (no scripts found — empty dir is OK for stock / pre-opt-in)"
+		echo "verify: RESULT OK (empty)"
+		return 0
+	fi
+	local line
+	for line in "${report_lines[@]+"${report_lines[@]}"}"; do
+		[[ -n "$line" ]] || continue
+		echo "  $line"
+	done
+	echo
+	if [[ "$issues" -eq 0 ]]; then
+		echo "verify: RESULT OK"
+		return 0
+	fi
+	echo "verify: RESULT FAIL"
+	return 1
 }
 
 cmd_remove() {
@@ -368,18 +472,20 @@ pick_template_interactive() {
 	cat <<'EOF'
 Choose a template severity:
   1) MILD       — 10-clear-histories.sh (histories + clipboard)
-  2) AGGRESSIVE — 00-wipe-sensitive.sh (keys, browsers, secrets)
-  3) Cancel
+  2) MILD       — 20-local-only-clear.sh (browser session caches under ~/.cache)
+  3) AGGRESSIVE — 00-wipe-sensitive.sh (keys, browsers, secrets)
+  4) Cancel
 EOF
 	local choice
 	if [[ "${DRY_RUN:-0}" == "1" ]]; then
 		echo "[dry-run] would wait for template choice"
 		return 1
 	fi
-	read -r -p "Choice [1/2/3]: " choice || true
+	read -r -p "Choice [1/2/3/4]: " choice || true
 	case "$choice" in
 	1) echo "$MILD_TEMPLATE" ;;
-	2) echo "$WIPE_TEMPLATE" ;;
+	2) echo "$LOCAL_CLEAR_TEMPLATE" ;;
+	3) echo "$WIPE_TEMPLATE" ;;
 	*) return 1 ;;
 	esac
 }
@@ -443,6 +549,7 @@ ACTION=""
 SCRIPT_PATH=""
 REMOVE_NAME=""
 TEMPLATE_CHOICE=""
+VERIFY_DIR=""
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -476,6 +583,11 @@ while [[ $# -gt 0 ]]; do
 		TEMPLATE_CHOICE="$MILD_TEMPLATE"
 		shift
 		;;
+	--local-clear-template)
+		ACTION="template"
+		TEMPLATE_CHOICE="$LOCAL_CLEAR_TEMPLATE"
+		shift
+		;;
 	--script)
 		ACTION="script"
 		SCRIPT_PATH=${2:-}
@@ -491,6 +603,16 @@ while [[ $# -gt 0 ]]; do
 		REMOVE_NAME=${2:-}
 		[[ -n "$REMOVE_NAME" ]] || die "--remove requires a name"
 		shift 2
+		;;
+	--verify)
+		ACTION="verify"
+		# Optional directory argument (not starting with -).
+		if [[ -n "${2:-}" && "${2:0:1}" != "-" ]]; then
+			VERIFY_DIR=$2
+			shift 2
+		else
+			shift
+		fi
 		;;
 	--status)
 		ACTION="status"
@@ -511,6 +633,9 @@ status)
 	;;
 list)
 	cmd_list
+	;;
+verify)
+	cmd_verify "$VERIFY_DIR"
 	;;
 remove)
 	ensure_target_dir

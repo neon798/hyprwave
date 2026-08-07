@@ -15,18 +15,24 @@ set -ouex pipefail
 DESTROOT="${DESTROOT:-/install}"
 JOBS="$(nproc)"
 
-### Pin — update this SHA deliberately; do not track floating main.
+### Pin — update this SHA deliberately; do not track floating main. (BUMP block)
 ### Source: https://github.com/nuvious/pam-duress
 ### Recorded tip of main as of 2026-07-16 (post-Sonar config merge).
 ###
-### How to bump:
+### How to bump (BUMP):
 ###   1. Pick a commit:  git ls-remote https://github.com/nuvious/pam-duress.git HEAD
 ###   2. Set PAM_DURESS_COMMIT below (full 40-char SHA only — no branches/tags).
 ###   3. Rebuild the duressbuilder stage; confirm BUILD-INFO.txt in the image.
-###   4. Re-test ENABLE.md matrix in a disposable VM (do not enable in CI).
-### Override at build time without editing this file:
-###   podman build --build-arg not used here; pass env into RUN if needed, e.g.
-###   PAM_DURESS_COMMIT=... /ctx/build-duress.sh
+###   4. Re-test ENABLE.md / DRILL.md in a disposable VM (do not enable in CI).
+###
+### Optional env override (no edit of this file required):
+###   PAM_DURESS_COMMIT=<40-char-sha> /ctx/build-duress.sh
+###   PAM_DURESS_REPO=https://github.com/nuvious/pam-duress.git   # rare
+### Example Containerfile RUN:
+###   RUN PAM_DURESS_COMMIT=1f699c157fbafd03c48032661d5f15f87e8efd13 \
+###       /ctx/build_files/build-duress.sh
+### podman: pass -e PAM_DURESS_COMMIT=... into the builder stage if desired.
+### (ARG/ENV wiring is integrator-owned; this script only reads the env.)
 PAM_DURESS_REPO="${PAM_DURESS_REPO:-https://github.com/nuvious/pam-duress.git}"
 PAM_DURESS_COMMIT="${PAM_DURESS_COMMIT:-1f699c157fbafd03c48032661d5f15f87e8efd13}"
 
@@ -34,7 +40,10 @@ PAM_DURESS_COMMIT="${PAM_DURESS_COMMIT:-1f699c157fbafd03c48032661d5f15f87e8efd13
 PAM_DIR_REL="${PAM_DIR_REL:-usr/lib64/security}"
 BIN_DIR_REL="${BIN_DIR_REL:-usr/bin}"
 
-echo "==> build-duress: repo=${PAM_DURESS_REPO} commit=${PAM_DURESS_COMMIT}"
+BUILD_DATE_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+echo "==> build-duress: pin=${PAM_DURESS_COMMIT}"
+echo "==> build-duress: date=${BUILD_DATE_UTC}"
+echo "==> build-duress: repo=${PAM_DURESS_REPO}"
 echo "==> build-duress: DESTROOT=${DESTROOT} PAM_DIR_REL=${PAM_DIR_REL}"
 
 ### Build-time deps (throwaway stage only)
@@ -78,7 +87,7 @@ install -m0755 bin/pam_test "$DESTROOT/$BIN_DIR_REL/pam_test"
 mkdir -p "$DESTROOT/usr/share/hyprwave/duress"
 {
 	echo "pam-duress commit=${PAM_DURESS_COMMIT}"
-	echo "built=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+	echo "built=${BUILD_DATE_UTC}"
 	echo "pam_duress.so -> /$PAM_DIR_REL/pam_duress.so"
 	echo "duress_sign   -> /$BIN_DIR_REL/duress_sign"
 	echo "pam_test      -> /$BIN_DIR_REL/pam_test"
@@ -87,4 +96,4 @@ mkdir -p "$DESTROOT/usr/share/hyprwave/duress"
 echo "==> build-duress: staged tree:"
 find "$DESTROOT" -type f | sort
 
-echo "==> build-duress: OK"
+echo "==> build-duress: OK pin=${PAM_DURESS_COMMIT} date=${BUILD_DATE_UTC}"
