@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: D-W1-004  
 wave: 1  
 issued: 2026-08-07T05:05:00Z  
@@ -25,11 +25,11 @@ Freeze duress packaging for merge: single INTEGRATOR-CHECKLIST, validate+snippet
 
 ## Requirements
 
-- [ ] `planning/integration/d-duress/INTEGRATOR-CHECKLIST.md` — ordered steps: merge tree → apply snippets → do **not** enable PAM → run validate → document operator ENABLE path only
-- [ ] README index links SIGNING, RESIDUALS, FAQ, OPERATOR-RUNBOOK, DRILL, checklist
-- [ ] `validate.sh` + `snippet-selftest.sh` exit 0
-- [ ] Confirm zero `*.sha256` in tree; no active pam.d writes in snippets
-- [ ] ≥3 commits; push `lane/d-duress`
+- [x] `planning/integration/d-duress/INTEGRATOR-CHECKLIST.md` — ordered steps: merge tree → apply snippets → do **not** enable PAM → run validate → document operator ENABLE path only
+- [x] README index links SIGNING, RESIDUALS, FAQ, OPERATOR-RUNBOOK, DRILL, checklist
+- [x] `validate.sh` + `snippet-selftest.sh` exit 0
+- [x] Confirm zero `*.sha256` in tree; no active pam.d writes in snippets
+- [x] ≥3 commits; push `lane/d-duress`
 
 ## Deliverables
 
@@ -37,7 +37,7 @@ Freeze duress packaging for merge: single INTEGRATOR-CHECKLIST, validate+snippet
 
 ## Done criteria
 
-- [ ] validate + snippet-selftest green; push; WORK_LOG + COMPLETED; status DONE
+- [x] validate + snippet-selftest green; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 

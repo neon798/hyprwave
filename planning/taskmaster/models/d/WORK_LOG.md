@@ -41,3 +41,13 @@
 - Packaging + integration READMEs: severity tables for all three templates; doc index polish.
 - Commits: 2733afe, 8f8d2cc, 240b4e5 (+ DONE meta).
 - `bash planning/integration/d-duress/validate.sh` → PASSED; `snippet-selftest.sh` → PASSED.
+
+## 2026-08-07 — D-W1-004
+
+- Pre-merge duress packaging freeze on `lane/d-duress`.
+- Added `planning/integration/d-duress/INTEGRATOR-CHECKLIST.md` (merge tree → snippets → **do not enable PAM** → validate → operator ENABLE docs only).
+- Integration + packaging READMEs index SIGNING, RESIDUALS, FAQ, OPERATOR-RUNBOOK, DRILL, INTEGRATOR-CHECKLIST.
+- `validate.sh` gates checklist content + full README doc index.
+- Freeze reaffirm: zero `*.sha256`; snippet-selftest PAM-inert; no accidental enable path.
+- Commits: 99dad80, f67ffb9, f88bb3d (+ DONE meta).
+- `snippet-selftest.sh` + `validate.sh` → PASSED.
