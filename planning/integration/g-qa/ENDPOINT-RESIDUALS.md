@@ -2,18 +2,19 @@
 
 **Owner:** Model G (read-only inspection + tracking; does not merge product lanes).  
 **Source of truth for “finished”:** `planning/taskmaster/ENDPOINT.md` product items 1–10.  
-**Inspection date:** 2026-08-07 (UTC) — G-W1-003 + poll refresh  
-**Baseline refs:** `origin/main` @ `371ea34` + remote-tracking `origin/lane/*` after `git fetch`.
+**Inspection date:** 2026-08-07 (UTC) — G-W1-004 refresh  
+**Baseline refs:** `origin/main` @ `6c5da71` + remote-tracking `origin/lane/*` after `git fetch`.  
+**Master human procedure:** [INTEGRATION-DAY.md](./INTEGRATION-DAY.md)
 
-| Lane | Tip (short) |
-|---|---|
-| a-stabilize | `3022cfc` |
-| b-docs | `6be80a8` |
-| c-assistant | `0c9838a` |
-| d-duress | `b69a474` |
-| e-hyprland | `b9a218f` |
-| f-cosmic | `799d952` |
-| g-qa | this branch |
+| Lane | Tip (short) | Notes |
+|---|---|---|
+| a-stabilize | `94f08d6` | MERGE-READY on lane |
+| b-docs | `fb3eb36` | POST-MERGE-DOC-FLIP on lane |
+| c-assistant | `92a1a89` | snippets + HANDOFF |
+| d-duress | `4bb5b55` | INTEGRATOR-CHECKLIST |
+| e-hyprland | `935fd96` | INTEGRATION-DAY VM card |
+| f-cosmic | `7b19270` | INTEGRATOR-CHECKLIST + vendor script |
+| g-qa | this branch | harness + integration-day master |
 
 Status vocabulary:
 
@@ -22,12 +23,18 @@ Status vocabulary:
 | **met on main** | Artifact / property present on `origin/main` |
 | **met on lane** | Present on the owning `origin/lane/*` tip, **not** yet on main |
 | **partial** | Some sub-criteria met; residual noted |
-| **open** | Not met on main or the expected lane (or requires merge + manual snippet apply) |
-| **deferred** | Explicitly out of program scope (see ENDPOINT non-goals) |
+| **open** | Not met on main (or requires merge + manual snippet apply) |
+| **deferred** | Explicitly out of program scope (ENDPOINT non-goals) |
 
-Re-run: `git fetch origin && bash planning/qa/run-all.sh && bash planning/qa/probe-merge-conflicts.sh --product-only`
+Re-run:
 
-Pre-merge narrative: `PRE-MERGE-DRY-RUN.md`.
+```bash
+git fetch origin
+bash planning/qa/probe-merge-conflicts.sh --product-only
+test -f planning/qa/run-all.sh && bash planning/qa/run-all.sh || true
+```
+
+Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only conflicts filtered).
 
 ---
 
@@ -37,107 +44,103 @@ Pre-merge narrative: `PRE-MERGE-DRY-RUN.md`.
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| Pins / stabilize (A) on main | **open** | `versions.env` absent on main; **met on lane** A |
-| Docs (B) on main | **open** | INSTALL/CHANGELOG/docs **met on lane** B |
-| Assistant (C) on main | **open** | app + share **met on lane** C; snippets not applied |
-| Duress packaging (D) on main | **open** | **met on lane** D |
-| Hyprland polish (E) on main | **partial** | baseline skel on main; E polish/docs **met on lane** |
-| COSMIC vendor (F) on main | **partial** | vendor baseline on main; F docs/fixes **met on lane** |
-| QA harness (G) on main | **open** | **met on lane** G only |
+| A pins on main | **open** | `versions.env` absent; **met on lane** A |
+| B docs on main | **open** | **met on lane** B |
+| C assistant on main | **open** | **met on lane** C; snippets post-merge |
+| D duress on main | **open** | **met on lane** D |
+| E Hyprland polish | **partial** | baseline skel on main; E polish **met on lane** |
+| F COSMIC | **partial** | baseline vendor on main; F freeze **met on lane** |
+| G QA on main | **open** | **met on lane** G |
 
-**Residual:** Serial merge A→G; C/D snippet apply. Product pairwise merge-tree: **clean** (taskmaster-only conflicts).
-
----
-
-### 2. Hyprland image builds with pinned binaries (no `/releases/latest`)
-
-| Criterion | Status | Evidence / residual |
-|---|---|---|
-| No `/releases/latest` on main `build.sh` | **open** | main: **6** hits; `pins-static` FAIL |
-| Pins on A lane | **met on lane** | A tip: **0** hits; `versions.env` present |
-| `just build` green post-A | **open** | Integrator/CI |
+**Residual:** Follow INTEGRATION-DAY.md serial A→G + C/D snippets.
 
 ---
 
-### 3. COSMIC image builds with vendor defaults intact
+### 2. Hyprland image builds with pinned binaries
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| Packaging path `DE=cosmic` | **partial** | on main; F smoke/inventory on lane |
-| Vendor under `build_files/usr/share/cosmic/` | **met on main** + F delta on lane | favorites / `is_dark` on F |
-| `just build-cosmic` green | **open** | Integrator/CI |
+| No `/releases/latest` on main | **open** | main still **6** hits; pins-static FAIL |
+| A lane pinned | **met on lane** | 0 hits + versions.env |
+| `just build` green | **open** | integrator T8 |
 
 ---
 
-### 4. Assistant built into image (or gated) + offline KB/catalog
+### 3. COSMIC image builds with vendor defaults
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| App sources + tests | **met on lane** C | `apps/hyprwave-assistant` |
-| Image install stages | **open** | snippets only |
-| Desktop + KB share | **met on lane** C | note: accidental main KB paths removed in `121ea50` |
-| Super+Shift+A | **open** | E reserves bind **commented** until C in image |
+| DE=cosmic path | **partial** | on main; F checklist on lane |
+| Vendor + Mode dark / favorites | **met on main** + F delta **met on lane** | |
+| `just build-cosmic` | **open** | T8 |
 
 ---
 
-### 5. Duress packaged, OFF by default; ENABLE; validate; no pre-signed scripts
+### 4. Assistant in image + offline KB
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| Packaging + ENABLE | **met on lane** D | |
-| `validate.sh` | **met on lane** D | |
+| Sources/tests | **met on lane** C | |
+| Image stages | **open** | snippet apply |
+| Super+Shift+A | **open** | E card / C HANDOFF |
+
+---
+
+### 5. Duress packaged OFF by default
+
+| Criterion | Status | Evidence |
+|---|---|---|
+| Packaging + validate | **met on lane** D | |
 | No `*.sha256` | **met on lane** | |
-| OFF by default in shipped image | **open** until merge + snippet verify | |
+| OFF in shipped image | **open** until merge verify | |
 
 ---
 
-### 6. Desktop (Hyprland skel) coherent
+### 6. Desktop Hyprland coherent
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| Walker / waybar / mako / hyprpaper | **met on main** + E polish on lane | `no-wofi-swaybg` PASS on G tree |
-| Keybinds doc vs reality | **partial** | B docs + E KEYBIND-MAP on lanes |
-| Theme pack structure | **met on main** | `themes` PASS (11); exceptions empty |
+| Walker/waybar/hyprpaper stack | **met on main** + E on lane | no-wofi PASS on G tree |
+| Themes structure | **met on main** | themes PASS (11) |
+| Keybinds docs | **partial** | B+E on lanes |
 
 ---
 
-### 7. COSMIC greeter/session on-brand; FlatArcade; no store regression
+### 7. COSMIC on-brand / FlatArcade store
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| Greeter / inventory docs | **met on lane** F | |
-| Favorites / theme mode | **met on lane** F (delta) | |
+| Greeter/inventory/checklist | **met on lane** F | |
 | Session smoke | **open** | VM |
 
 ---
 
-### 8. Docs: INSTALL, CHANGELOG, troubleshooting, architecture, keybinds
+### 8. Docs handbook
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| Handbook set | **met on lane** B | not on main |
-| Accuracy vs final tree | **open** | re-audit after A–F merge |
+| INSTALL/CHANGELOG/docs | **met on lane** B | not on main |
+| Accuracy post-merge | **open** | B POST-MERGE-DOC-FLIP |
 
 ---
 
-### 9. QA automated checks documented and runnable
+### 9. QA automated + integration procedure
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| Harness + lane-artifacts + CI snippet | **met on lane** G | |
-| Pre-merge probe script | **met on lane** G | `probe-merge-conflicts.sh` (not in run-all) |
-| Dry-run + publish gates | **met on lane** G | PRE-MERGE-DRY-RUN + SMOKE-MATRIX §9 |
-| On main | **open** | merge G last |
+| Harness, probe, CI snippet, dry-run | **met on lane** G | |
+| INTEGRATION-DAY master runbook | **met on lane** G | this task |
+| On main | **open** | merge G |
 
 ---
 
-### 10. Release path: GHCR, first-boot, no silent latest downloads
+### 10. Release path / GHCR
 
-| Criterion | Status | Evidence / residual |
+| Criterion | Status | Evidence |
 |---|---|---|
-| RELEASE / FIRST-BOOT / COSIGN docs | **met on lane** A | |
-| Pin discipline on main | **open** | item 2 |
-| GHCR publish minimum green | **open** | SMOKE-MATRIX §9 |
+| RELEASE/COSIGN/FIRST-BOOT | **met on lane** A | |
+| Publish minimum green | **open** | SMOKE-MATRIX §9 + INTEGRATION-DAY §8 |
+| Pins on main | **open** | item 2 |
 
 ---
 
@@ -145,22 +148,18 @@ Pre-merge narrative: `PRE-MERGE-DRY-RUN.md`.
 
 | Item | Status |
 |---|---|
-| Ownership A–G clear | **met** |
+| Ownership clear | **met** |
 | Residuals listed | **this file** |
-| PROGRAM_COMPLETE | **open** (Director) |
+| PROGRAM_COMPLETE | **open** (Director after integration day) |
 | Non-goals | **deferred** |
 
 ---
 
-## Expected harness flips after merges
+## Expected harness flips
 
-| After | Check | Before | After |
-|---|---|---|---|
-| A | `pins-static` | FAIL | PASS |
-| C + snippets | `assistant` | WARN | PASS |
-| D + snippets | `duress-safety` | WARN | PASS |
-| E/F | themes / no-wofi | PASS | PASS |
-| G on main | full harness | absent | runnable |
-| any (fetched) | `lane-artifacts` | PASS if refs present | PASS |
-
-Publish gates: **SMOKE-MATRIX §9**. Conflict narrative: **PRE-MERGE-DRY-RUN.md**.
+| After | Check | Flip |
+|---|---|---|
+| A | pins-static | FAIL→PASS |
+| C+snippets | assistant | WARN→PASS |
+| D+snippets | duress-safety | WARN→PASS |
+| G | full run-all | present + RESULT OK |

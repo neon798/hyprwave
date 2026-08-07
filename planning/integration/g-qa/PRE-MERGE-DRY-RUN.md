@@ -2,9 +2,10 @@
 
 **Owner:** Model G — **read-only** analysis; does **not** merge product lanes.  
 **Generated:** 2026-08-07 (UTC)  
-**Refreshed:** 2026-08-07 poll (base + lane tips)  
-**Base:** `origin/main` @ `371ea34`  
-**Tooling:** `bash planning/qa/probe-merge-conflicts.sh` (`git merge-tree --write-tree`)
+**Refreshed:** 2026-08-07 (G-W1-004)  
+**Base:** `origin/main` @ `6c5da71`  
+**Tooling:** `bash planning/qa/probe-merge-conflicts.sh` (`git merge-tree --write-tree`)  
+**Day-of procedure:** [INTEGRATION-DAY.md](./INTEGRATION-DAY.md)
 
 Re-run after any lane tip moves:
 
@@ -36,12 +37,12 @@ bash planning/qa/probe-merge-conflicts.sh --product-only
 
 | Lane | Ref | Tip SHA | Merge-base w/ main | Product files* |
 |---|---|---|---|---|
-| A stabilize | `origin/lane/a-stabilize` | `3022cfc` | (see merge-base on probe) | 13 |
-| B docs | `origin/lane/b-docs` | `6be80a8` | | 19 |
-| C assistant | `origin/lane/c-assistant` | `0c9838a` | | 45 |
-| D duress | `origin/lane/d-duress` | `b69a474` | | 23 |
-| E hyprland | `origin/lane/e-hyprland` | `b9a218f` | | 18 |
-| F cosmic | `origin/lane/f-cosmic` | `799d952` | | 11 |
+| A stabilize | `origin/lane/a-stabilize` | `94f08d6` | (probe merge-base) | 13 |
+| B docs | `origin/lane/b-docs` | `fb3eb36` | | 20 |
+| C assistant | `origin/lane/c-assistant` | `92a1a89` | | 46 |
+| D duress | `origin/lane/d-duress` | `4bb5b55` | | 24 |
+| E hyprland | `origin/lane/e-hyprland` | `935fd96` | | 19 |
+| F cosmic | `origin/lane/f-cosmic` | `7b19270` | | 15 |
 | G qa | `origin/lane/g-qa` | *(this branch tip)* | | 16+ |
 
 \*Product = paths outside `planning/taskmaster/**` changed since merge-base.
