@@ -105,4 +105,9 @@ for lawful use. Do not enable on multi-user machines without clear policy.
 - https://github.com/nuvious/pam-duress
 - `planning/DURESS-PASSWORD.md`
 - `planning/integration/d-duress/ENABLE.md`
+- `planning/integration/d-duress/FAQ.md`
+- `planning/integration/d-duress/OPERATOR-RUNBOOK.md`
+- `planning/integration/d-duress/SIGNING.md` — local sign/verify; never commit `*.sha256`
+- `planning/integration/d-duress/RESIDUALS.md` — residual operator duties
+- `planning/integration/d-duress/DRILL.md`
 - `planning/PARALLEL-WAVE2-OVERNIGHT.md` § MODEL D

@@ -12,7 +12,20 @@
 | `DRILL.md` | 30–45 min disposable VM operator procedure |
 | `FAQ.md` | Operator Q&A (off by default, signing, greeter/lock, lockout, bootc, LUKS residual) |
 | `OPERATOR-RUNBOOK.md` | Ordered enable → VM test → disable/rollback (links DRILL) |
+| `SIGNING.md` | Local sign / verify workflow; **never** commit `*.sha256`; disposable lab path |
+| `RESIDUALS.md` | What packaging does **not** solve (LUKS, physical access, trust root, bootc drift) |
+| `snippet-selftest.sh` | Asserts build/Containerfile snippets stay PAM-inert |
 | `validate.sh` | Packaging safety gates + negative fixtures (no `.sha256`, no pam.d writes, threat model) |
+
+## Templates (severity — must match `build_files/duress/README.md`)
+
+| File | Severity | Setup flag |
+|---|---|---|
+| `templates/00-wipe-sensitive.sh` | **AGGRESSIVE** | `--wipe-template` |
+| `templates/10-clear-histories.sh` | **MILD** | `--mild-template` |
+| `templates/20-local-only-clear.sh` | **MILD** | `--local-clear-template` |
+
+Operator docs: [FAQ.md](./FAQ.md) · [OPERATOR-RUNBOOK.md](./OPERATOR-RUNBOOK.md) · [SIGNING.md](./SIGNING.md) · [RESIDUALS.md](./RESIDUALS.md) · [DRILL.md](./DRILL.md)
 
 ## Setup tool
 
@@ -28,6 +41,7 @@ hyprwave-duress-setup --status --json
 ## Validate
 
 ```bash
+bash planning/integration/d-duress/snippet-selftest.sh
 bash planning/integration/d-duress/validate.sh
 ```
 
