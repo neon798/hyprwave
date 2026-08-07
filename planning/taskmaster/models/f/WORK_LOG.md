@@ -55,3 +55,10 @@
 - Validation: `check-vendor-paths.sh` exit 0; iso-cosmic bootc → hyprwave-cosmic:latest
 - No build_files/usr/share/cosmic or build.sh changes (already frozen content)
 - Forbidden paths untouched.
+
+## 2026-08-07 — F-W1-005 Integration-day smoke card
+
+- Branch: `lane/f-cosmic`
+- Deliverables: `INTEGRATION-DAY.md`; README index link
+- Validation: `check-vendor-paths.sh` exit 0
+- Forbidden paths untouched.
