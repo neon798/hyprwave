@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: D-W1-003  
 wave: 1  
 issued: 2026-08-07T04:55:00Z  
@@ -25,12 +25,12 @@ Final packaging confidence before integration: document **how operators sign** w
 
 ## Requirements
 
-- [ ] `planning/integration/d-duress/SIGNING.md` — generate checksums locally, install to target dir, `--verify` success path, **never** commit signatures; worked example with disposable path
-- [ ] `snippet-selftest.sh` (or validate.sh section): asserts `build.sh.snippet` / `Containerfile.snippet` do not enable PAM / write pam.d; exit 0 on current tree
-- [ ] README severity table still matches all templates; link FAQ + OPERATOR-RUNBOOK + SIGNING
-- [ ] `RESIDUALS.md` — what packaging does **not** solve (disk encryption, physical access, signed-script trust root, bootc PAM drift) for integrator/B
-- [ ] validate.sh still green including negatives
-- [ ] ≥3 commits; push `lane/d-duress`
+- [x] `planning/integration/d-duress/SIGNING.md` — generate checksums locally, install to target dir, `--verify` success path, **never** commit signatures; worked example with disposable path
+- [x] `snippet-selftest.sh` (or validate.sh section): asserts `build.sh.snippet` / `Containerfile.snippet` do not enable PAM / write pam.d; exit 0 on current tree
+- [x] README severity table still matches all templates; link FAQ + OPERATOR-RUNBOOK + SIGNING
+- [x] `RESIDUALS.md` — what packaging does **not** solve (disk encryption, physical access, signed-script trust root, bootc PAM drift) for integrator/B
+- [x] validate.sh still green including negatives
+- [x] ≥3 commits; push `lane/d-duress`
 
 ## Deliverables
 
@@ -38,8 +38,8 @@ Final packaging confidence before integration: document **how operators sign** w
 
 ## Done criteria
 
-- [ ] `bash planning/integration/d-duress/validate.sh` exits 0
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] `bash planning/integration/d-duress/validate.sh` exits 0
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
