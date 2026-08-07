@@ -69,6 +69,24 @@ Integrator installs a **fixed tree**. The binary resolves data in this order:
     *.md                # knowledge base articles (id = filename stem)
 ```
 
+Inventoried share tree (repo → image):
+
+- `build_files/usr/share/applications/hyprwave-assistant.desktop`
+- `build_files/usr/share/hyprwave/assistant/catalog.toml`
+  - `kb/bootc-rebase.md`
+  - `kb/duress.md`
+  - `kb/extending.md`
+  - `kb/first-boot.md`
+  - `kb/flatarcade.md`
+  - `kb/hyprpaper.md`
+  - `kb/keybindings.md`
+  - `kb/philosophy.md`
+  - `kb/theming.md`
+  - `kb/troubleshooting.md`
+  - `kb/updates.md`
+  - `kb/variants.md`
+  - `kb/walker.md`
+
 Repo sources that map 1:1:
 
 | Source | Install target |
@@ -77,7 +95,7 @@ Repo sources that map 1:1:
 | `build_files/usr/share/hyprwave/assistant/` | `/usr/share/hyprwave/assistant/` |
 | `build_files/usr/share/applications/hyprwave-assistant.desktop` | `/usr/share/applications/…` |
 
-See `planning/integration/c-assistant/` for `Containerfile.snippet` + `build.sh.snippet` (one-pass wire-up).
+See `planning/integration/c-assistant/` for `Containerfile.snippet` + `build.sh.snippet` + **`smoke-host.sh`** (one-pass wire-up + freeze smoke).
 
 ### Environment & flags
 
