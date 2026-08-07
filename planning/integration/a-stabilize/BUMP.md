@@ -52,6 +52,9 @@ each download with `sha256sum -c` before installing.
    just check
    grep -n 'releases/latest' build_files/build.sh   # must stay empty
 
+   # HEAD-check versioned URLs (no full download)
+   bash planning/integration/a-stabilize/scripts/verify-pins.sh
+
    # full rebuild when you can afford it
    just build hyprwave latest
    ```
@@ -61,6 +64,18 @@ each download with `sha256sum -c` before installing.
    ```
    Pin companion apps: yazi vX, neonwolf vY, flatarcade vZ
    ```
+
+## CI guards (Wave 2)
+
+`.github/workflows/build.yml` job **`pin_guards`** fails the pipeline if:
+
+- `build_files/build.sh` contains `releases/latest`
+- any `build_files/**/*.sh` fails `bash -n`
+- required keys are missing from `versions.env`
+- `verify-pins.sh` cannot HEAD the versioned URLs
+
+After a bump, open a PR (or push a branch that runs the workflow) and confirm
+`pin_guards` is green before relying on a full image build.
 
 ## Rules
 
