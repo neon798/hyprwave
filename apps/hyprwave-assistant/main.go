@@ -2,7 +2,7 @@
 //
 // Build: go build -o hyprwave-assistant .
 // Data:  /usr/share/hyprwave/assistant/ (catalog.toml + kb/*.md)
-//        override with HYPRWAVE_ASSISTANT_DATA
+//        override with HYPRWAVE_ASSISTANT_DATA or --data
 package main
 
 import (
@@ -10,45 +10,90 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 
 	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/catalog"
+	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/cli"
 	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/kb"
+	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/style"
 	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/system"
 	"github.com/neon798/hyprwave/apps/hyprwave-assistant/internal/ui"
 )
 
 // version is overridden at link time: -ldflags "-X main.version=1.0.0"
-var version = "0.1.0"
+var version = "0.2.0"
 
 func main() {
-	showVersion := flag.Bool("version", false, "print version and exit")
-	dataDir := flag.String("data", "", "path to assistant data dir (catalog.toml + kb/)")
-	flag.Parse()
+	// Global flags work before subcommands: hyprwave-assistant --data DIR status
+	fs := flag.NewFlagSet("hyprwave-assistant", flag.ContinueOnError)
+	fs.SetOutput(os.Stderr)
+	showVersion := fs.Bool("version", false, "print version and exit")
+	dataDir := fs.String("data", "", "path to assistant data dir (catalog.toml + kb/)")
+	// Parse only known global flags; leave subcommand args.
+	args := os.Args[1:]
+	var global []string
+	var rest []string
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		switch {
+		case a == "-version" || a == "--version":
+			global = append(global, "-version")
+		case a == "-data" || a == "--data":
+			global = append(global, "-data")
+			if i+1 < len(args) {
+				i++
+				global = append(global, args[i])
+			}
+		case a == "-h" || a == "--help" || a == "help":
+			// defer to CLI help if no other command; if alone, help
+			if len(rest) == 0 && i == len(args)-1 {
+				rest = []string{"help"}
+			} else if a == "help" {
+				rest = append(rest, a)
+			} else {
+				rest = append(rest, "help")
+			}
+		case len(a) > 0 && a[0] == '-' && (a == "-v"):
+			global = append(global, "-version")
+		default:
+			rest = append(rest, args[i:]...)
+			i = len(args)
+		}
+	}
+	_ = fs.Parse(global)
 
 	if *showVersion {
 		fmt.Println("hyprwave-assistant", version)
 		os.Exit(0)
 	}
 
-	// Optional CLI subcommands (non-TUI fallbacks).
-	args := flag.Args()
-	if len(args) > 0 {
-		if err := runCLI(args); err != nil {
+	dirs := dataDirs(*dataDir)
+	cat, catErr := catalog.LoadFromDirs(dirs)
+	store, kbErr := kb.LoadFromDirs(dirs)
+	resolved := firstExisting(dirs)
+
+	if len(rest) > 0 {
+		if catErr != nil {
+			cat = &catalog.Catalog{}
+		}
+		if kbErr != nil {
+			store = &kb.Store{}
+		}
+		err := cli.Run(cli.Config{
+			Runner:  system.ExecRunner{},
+			Catalog: cat,
+			KB:      store,
+			Version: version,
+		}, rest)
+		if err != nil {
 			fmt.Fprintln(os.Stderr, "hyprwave-assistant:", err)
 			os.Exit(1)
 		}
 		return
 	}
 
-	dirs := dataDirs(*dataDir)
-	cat, catErr := catalog.LoadFromDirs(dirs)
-	store, kbErr := kb.LoadFromDirs(dirs)
-
-	resolved := firstExisting(dirs)
-
+	// TUI path
 	if catErr != nil {
 		fmt.Fprintln(os.Stderr, "warning: catalog:", catErr)
 		cat = &catalog.Catalog{}
@@ -58,12 +103,15 @@ func main() {
 		store = &kb.Store{}
 	}
 
+	theme := style.InitFromEnv()
+
 	m := ui.New(ui.Config{
 		Runner:  system.ExecRunner{},
 		Catalog: cat,
 		KB:      store,
 		DataDir: resolved,
 		Version: version,
+		Theme:   theme.Name,
 	})
 
 	p := tea.NewProgram(m, tea.WithAltScreen())
@@ -83,14 +131,11 @@ func dataDirs(flagDir string) []string {
 	}
 	dirs = append(dirs,
 		"/usr/share/hyprwave/assistant",
-		// Dev / repo checkout: assets shipped for the image live here.
 		filepath.Join("build_files", "usr", "share", "hyprwave", "assistant"),
 		filepath.Join("..", "..", "build_files", "usr", "share", "hyprwave", "assistant"),
-		// Local testdata next to module.
 		"testdata",
 		filepath.Join("apps", "hyprwave-assistant", "testdata"),
 	)
-	// Also try relative to executable.
 	if exe, err := os.Executable(); err == nil {
 		dirs = append(dirs, filepath.Join(filepath.Dir(exe), "data"))
 	}
@@ -104,61 +149,4 @@ func firstExisting(dirs []string) string {
 		}
 	}
 	return "(none found — using empty catalog/KB)"
-}
-
-func runCLI(args []string) error {
-	r := system.ExecRunner{}
-	switch args[0] {
-	case "version":
-		fmt.Println("hyprwave-assistant", version)
-		return nil
-	case "status":
-		st := system.CollectStatus(r)
-		fmt.Println("=== bootc ===")
-		if st.BootcError != "" {
-			fmt.Println(st.BootcError)
-		} else {
-			fmt.Println(st.BootcStatus)
-		}
-		if st.NeedsReboot {
-			fmt.Println("\nWARNING: reboot may be required to apply staged changes.")
-		}
-		fmt.Println("\n=== flatpak ===")
-		if st.FlatpakError != "" {
-			fmt.Println(st.FlatpakError)
-		} else {
-			fmt.Println(st.FlatpakStatus)
-		}
-		return nil
-	case "help", "-h", "--help":
-		printHelp()
-		return nil
-	default:
-		return fmt.Errorf("unknown command %q (try: status, version, help — or no args for TUI)", args[0])
-	}
-}
-
-func printHelp() {
-	fmt.Print(strings.TrimSpace(`
-hyprwave-assistant — Hyprwave updater, installer & knowledge base
-
-Usage:
-  hyprwave-assistant              Launch TUI
-  hyprwave-assistant status       Print bootc + flatpak status
-  hyprwave-assistant version      Print version
-  hyprwave-assistant --data DIR   Override data directory
-  hyprwave-assistant --version
-
-Environment:
-  HYPRWAVE_ASSISTANT_DATA   Directory with catalog.toml and kb/
-
-TUI keys:
-  Tab / h l     Switch tabs
-  1-4           Jump to Updater / Installer / KB / About
-  r             Refresh status (Updater)
-  b / f / a     Update base / Flatpaks / all (with confirm)
-  Enter         Install selected / open article
-  /             Filter or search
-  q             Quit
-`) + "\n")
 }

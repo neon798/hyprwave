@@ -1,6 +1,6 @@
 # hyprwave-assistant
 
-Go + Bubble Tea TUI for Hyprwave: **Updater**, **Installer**, **Knowledge Base**, **About**.
+Go + Bubble Tea TUI and CLI for Hyprwave: **Updater**, **Installer**, **Knowledge Base**, **About**.
 
 ## Build
 
@@ -8,33 +8,36 @@ Go + Bubble Tea TUI for Hyprwave: **Updater**, **Installer**, **Knowledge Base**
 cd apps/hyprwave-assistant
 go test ./...
 go build -o hyprwave-assistant .
+# release-ish:
+CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=0.2.0" -o hyprwave-assistant .
 ```
 
-Static-ish release build:
+## CLI
 
 ```bash
-CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=0.1.0" -o hyprwave-assistant .
+hyprwave-assistant status [--check]
+hyprwave-assistant update [--base|--flatpak|--all] [--dry-run|--check|--yes]
+hyprwave-assistant install <id> [--dry-run|--yes]
+hyprwave-assistant list [--source flathub|layer]
+hyprwave-assistant kb [query|id]
+hyprwave-assistant version
 ```
 
-## Data
+Mutating `update` / `install` require `--yes` (or use the TUI confirmations).  
+**Never reboots** the host.
 
-Runtime assets (not compiled in):
+## Data
 
 - `/usr/share/hyprwave/assistant/catalog.toml`
 - `/usr/share/hyprwave/assistant/kb/*.md`
 
-Override:
+Override: `HYPRWAVE_ASSISTANT_DATA` or `--data DIR`.
 
-```bash
-export HYPRWAVE_ASSISTANT_DATA=/path/to/assistant
-# or
-./hyprwave-assistant --data /path/to/assistant
-```
+## Theme
 
-In a git checkout, the binary also probes
-`build_files/usr/share/hyprwave/assistant`.
+Best-effort accent from `HYPRWAVE_THEME` or `~/.config/hyprwave/theme`.
 
-## Keys
+## TUI keys
 
 | Key | Action |
 |-----|--------|
@@ -45,10 +48,3 @@ In a git checkout, the binary also probes
 | Enter | Install / open article |
 | / | Filter or search |
 | q | Quit |
-
-## CLI
-
-```bash
-hyprwave-assistant status
-hyprwave-assistant version
-```

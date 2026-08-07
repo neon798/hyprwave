@@ -31,6 +31,7 @@ func (ExecRunner) Run(ctx context.Context, name string, args ...string) (string,
 	var buf bytes.Buffer
 	cmd.Stdout = &buf
 	cmd.Stderr = &buf
+	// Inherit a minimal env; do not force interactive sudo.
 	err := cmd.Run()
 	out := strings.TrimSpace(buf.String())
 	if err != nil {
@@ -48,6 +49,9 @@ const DefaultTimeout = 60 * time.Second
 // LongTimeout for upgrades/installs.
 const LongTimeout = 30 * time.Minute
 
+// CheckTimeout for --check / remote-ls style probes.
+const CheckTimeout = 120 * time.Second
+
 // Status gathers bootc + flatpak availability and status text.
 type Status struct {
 	BootcAvailable   bool
@@ -57,18 +61,21 @@ type Status struct {
 	FlatpakStatus    string
 	FlatpakError     string
 	NeedsReboot      bool
+	Preflight        Preflight
 }
 
 // CollectStatus runs bootc status and a flatpak summary.
 func CollectStatus(r Runner) Status {
 	var s Status
+	s.Preflight = CollectPreflight(r)
+
 	if _, err := r.LookPath("bootc"); err == nil {
 		s.BootcAvailable = true
 		ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeout)
 		defer cancel()
 		out, err := r.Run(ctx, "bootc", "status")
 		if err != nil {
-			s.BootcError = err.Error()
+			s.BootcError = ClassifyError(err, "bootc status").Error()
 		} else {
 			s.BootcStatus = out
 			s.NeedsReboot = DetectNeedsReboot(out)
@@ -81,10 +88,9 @@ func CollectStatus(r Runner) Status {
 		s.FlatpakAvailable = true
 		ctx, cancel := context.WithTimeout(context.Background(), DefaultTimeout)
 		defer cancel()
-		// List remotes + brief update check summary without applying.
 		out, err := r.Run(ctx, "flatpak", "list", "--columns=application,version,origin")
 		if err != nil {
-			s.FlatpakError = err.Error()
+			s.FlatpakError = ClassifyError(err, "flatpak list").Error()
 		} else {
 			lines := strings.Split(out, "\n")
 			n := len(lines)
@@ -132,51 +138,16 @@ func truncate(s string, maxLines int) string {
 	return strings.Join(lines[:maxLines], "\n") + fmt.Sprintf("\n… (%d more lines)", len(lines)-maxLines)
 }
 
-// BootcUpgrade runs `bootc upgrade` (may need root). Prefer `bootc upgrade` over deprecated `bootc update`.
-func BootcUpgrade(ctx context.Context, r Runner) (string, error) {
-	if _, err := r.LookPath("bootc"); err != nil {
-		return "", fmt.Errorf("bootc not available: %w", err)
-	}
-	// Try without sudo first; many systems need elevated privileges.
-	out, err := r.Run(ctx, "bootc", "upgrade")
-	if err != nil && !isRoot() {
-		// Retry via sudo -n if available (non-interactive).
-		if _, e := r.LookPath("sudo"); e == nil {
-			return r.Run(ctx, "sudo", "-n", "bootc", "upgrade")
-		}
-	}
-	return out, err
-}
-
-// FlatpakUpdate runs `flatpak update -y`.
-func FlatpakUpdate(ctx context.Context, r Runner) (string, error) {
-	if _, err := r.LookPath("flatpak"); err != nil {
-		return "", fmt.Errorf("flatpak not available: %w", err)
-	}
-	return r.Run(ctx, "flatpak", "update", "-y")
-}
-
-// FlatpakInstall installs a Flathub app id with -y.
-func FlatpakInstall(ctx context.Context, r Runner, appID string) (string, error) {
-	if _, err := r.LookPath("flatpak"); err != nil {
-		return "", fmt.Errorf("flatpak not available: %w", err)
-	}
-	if strings.TrimSpace(appID) == "" {
-		return "", fmt.Errorf("empty flatpak id")
-	}
-	// Ensure flathub exists is best-effort; install will fail clearly otherwise.
-	return r.Run(ctx, "flatpak", "install", "-y", "flathub", appID)
-}
-
 // LayerNote explains that layering is not automated from the TUI yet.
 func LayerNote(packages []string) string {
 	return fmt.Sprintf(
 		"Layered packages require a bootc/rpm-ostree layer and reboot.\n"+
 			"This Assistant does not auto-layer yet.\n\n"+
 			"Suggested (review before running):\n"+
-			"  sudo bootc usroverlay   # or your image rebuild workflow\n"+
-			"  # packages: %s\n\n"+
-			"Prefer Flatpaks when possible to keep the base immutable.",
+			"  # packages: %s\n"+
+			"  # Prefer rebuilding the image or using Distrobox for dev tools.\n\n"+
+			"Prefer Flatpaks when possible to keep the base immutable.\n"+
+			"This tool never reboots automatically.",
 		strings.Join(packages, ", "),
 	)
 }
