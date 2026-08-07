@@ -43,7 +43,10 @@ for p in \
 	planning/integration/d-duress/ENABLE.md \
 	planning/integration/d-duress/DRILL.md \
 	planning/integration/d-duress/FAQ.md \
-	planning/integration/d-duress/OPERATOR-RUNBOOK.md; do
+	planning/integration/d-duress/OPERATOR-RUNBOOK.md \
+	planning/integration/d-duress/SIGNING.md \
+	planning/integration/d-duress/RESIDUALS.md \
+	planning/integration/d-duress/snippet-selftest.sh; do
 	if [[ -f "$p" ]]; then
 		ok "exists $p"
 	else
@@ -78,6 +81,20 @@ if bash -n planning/integration/d-duress/validate.sh; then
 	ok "bash -n validate.sh"
 else
 	fail "bash -n validate.sh"
+fi
+
+if bash -n planning/integration/d-duress/snippet-selftest.sh; then
+	ok "bash -n snippet-selftest.sh"
+else
+	fail "bash -n snippet-selftest.sh"
+fi
+
+# --- snippet self-test (PAM-inert build hooks) ---
+if bash planning/integration/d-duress/snippet-selftest.sh >"$TMPDIR_V/snippet-selftest.out" 2>&1; then
+	ok "snippet-selftest.sh PASSED"
+else
+	fail "snippet-selftest.sh FAILED"
+	cat "$TMPDIR_V/snippet-selftest.out" >&2 || true
 fi
 
 # --- no pre-signed secrets in-tree (entire exclusive packaging areas) ---
@@ -391,6 +408,56 @@ if [[ -f planning/integration/d-duress/OPERATOR-RUNBOOK.md ]]; then
 	else
 		fail "OPERATOR-RUNBOOK incomplete (need enable/test/rollback + DRILL)"
 	fi
+fi
+
+# SIGNING.md — never commit signatures + dry-run / verify / disposable path
+if [[ -f planning/integration/d-duress/SIGNING.md ]]; then
+	if grep -qiE 'never.*commit|do not commit|\*\.sha256' planning/integration/d-duress/SIGNING.md &&
+		grep -qiE 'duress_sign|--verify|dry-run' planning/integration/d-duress/SIGNING.md &&
+		grep -qiE 'disposable|TMPDIR|/tmp/' planning/integration/d-duress/SIGNING.md; then
+		ok "SIGNING.md covers no-commit, sign/verify, disposable path"
+	else
+		fail "SIGNING.md incomplete (need no-commit signatures + verify + lab path)"
+	fi
+fi
+
+# RESIDUALS.md — operator-owned gaps packaging does not close
+if [[ -f planning/integration/d-duress/RESIDUALS.md ]]; then
+	if grep -qiE 'LUKS|disk encryption|encryption' planning/integration/d-duress/RESIDUALS.md &&
+		grep -qiE 'physical|evil maid|root' planning/integration/d-duress/RESIDUALS.md &&
+		grep -qiE 'bootc|PAM drift|drift' planning/integration/d-duress/RESIDUALS.md &&
+		grep -qiE 'sign|trust|script' planning/integration/d-duress/RESIDUALS.md; then
+		ok "RESIDUALS.md covers LUKS, physical/root, bootc drift, signed-script trust"
+	else
+		fail "RESIDUALS.md incomplete residual coverage"
+	fi
+fi
+
+# README severity table matches all three templates + links operator docs
+if grep -q '00-wipe-sensitive' build_files/duress/README.md &&
+	grep -q '10-clear-histories' build_files/duress/README.md &&
+	grep -q '20-local-only-clear' build_files/duress/README.md &&
+	grep -qi 'AGGRESSIVE' build_files/duress/README.md &&
+	grep -qi 'MILD' build_files/duress/README.md; then
+	ok "packaging README severity table lists all templates"
+else
+	fail "packaging README severity table missing a template"
+fi
+if grep -q 'SIGNING.md' build_files/duress/README.md &&
+	grep -q 'FAQ.md' build_files/duress/README.md &&
+	grep -q 'OPERATOR-RUNBOOK.md' build_files/duress/README.md; then
+	ok "packaging README links FAQ + OPERATOR-RUNBOOK + SIGNING"
+else
+	fail "packaging README missing FAQ/OPERATOR-RUNBOOK/SIGNING links"
+fi
+if grep -q '00-wipe-sensitive' planning/integration/d-duress/README.md &&
+	grep -q '10-clear-histories' planning/integration/d-duress/README.md &&
+	grep -q '20-local-only-clear' planning/integration/d-duress/README.md &&
+	grep -q 'SIGNING.md' planning/integration/d-duress/README.md &&
+	grep -q 'RESIDUALS.md' planning/integration/d-duress/README.md; then
+	ok "integration README severity table + SIGNING/RESIDUALS index"
+else
+	fail "integration README missing severity table or SIGNING/RESIDUALS"
 fi
 
 # --- negative fixtures (temp dirs; prove policies would catch bad trees) ---
