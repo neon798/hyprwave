@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: A-W1-003  
 wave: 1  
 issued: 2026-08-07T04:58:00Z  
@@ -27,12 +27,12 @@ Last stabilize depth before integration: freeze operator pin-bump SOP against li
 
 ## Requirements
 
-- [ ] `planning/integration/a-stabilize/MERGE-READY.md` — why A merges first; conflict risks; post-merge verify commands (`verify-pins.sh --head`, pin_guards expectations, `just build` note)
-- [ ] Re-run / document `verify-pins.sh --head` and `--checksum --light` still green on branch
-- [ ] Confirm `build.yml` + `build-disk.yml` both block floating `/releases/latest` (or document intentional gap)
-- [ ] `versions.env` comments point at CI-MATRIX + COSIGN + MERGE-READY
-- [ ] Optional: pin age / upstream release-check script (advisory only, not CI-fail)
-- [ ] ≥3 commits; push `lane/a-stabilize`
+- [x] `planning/integration/a-stabilize/MERGE-READY.md` — why A merges first; conflict risks; post-merge verify commands (`verify-pins.sh --head`, pin_guards expectations, `just build` note)
+- [x] Re-run / document `verify-pins.sh --head` and `--checksum --light` still green on branch
+- [x] Confirm `build.yml` + `build-disk.yml` both block floating `/releases/latest` (or document intentional gap)
+- [x] `versions.env` comments point at CI-MATRIX + COSIGN + MERGE-READY
+- [x] Optional: pin age / upstream release-check script (advisory only, not CI-fail)
+- [x] ≥3 commits; push `lane/a-stabilize`
 
 ## Deliverables
 
@@ -40,7 +40,7 @@ Last stabilize depth before integration: freeze operator pin-bump SOP against li
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
