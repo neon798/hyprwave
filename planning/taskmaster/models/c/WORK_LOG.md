@@ -52,4 +52,4 @@
 ## 2026-08-07 — C-W1-HOLD poll
 
 - Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; await Director new task_id or human integration
-- Recovered worktree main→lane/c-assistant; merged origin/main (7654966 director check-in)
+- Recovered worktree main→lane/c-assistant; merged origin/main (88fe6b3 director check-in)
