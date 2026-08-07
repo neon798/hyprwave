@@ -1,8 +1,8 @@
 [
     "neonwolf",
-    "com.system76.CosmicFiles",
-    "com.mitchellh.ghostty",
     "flatarcade",
+    "com.mitchellh.ghostty",
+    "com.system76.CosmicFiles",
     "hyprwave-theme",
     "com.system76.CosmicSettings",
 ]
