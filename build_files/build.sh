@@ -269,13 +269,72 @@ rpm -q xterm &>/dev/null && dnf5 remove -y xterm || true
 ### Pinned external companion apps (Yazi / Neonwolf / FlatArcade).
 ### Versions + sha256 live in /ctx/versions.env (build_files/versions.env).
 ### See planning/integration/a-stabilize/BUMP.md for how to bump pins.
+### Fail closed: missing file, empty keys, non-hex sha256, or floating GitHub
+### release redirects abort before any network download.
+if [[ ! -f /ctx/versions.env ]]; then
+	echo "ERROR: missing /ctx/versions.env (build_files/versions.env must be in the ctx stage)" >&2
+	exit 1
+fi
 # shellcheck source=/dev/null
 . /ctx/versions.env
+
+require_pin() {
+	local name="$1"
+	local value="${2:-}"
+	if [[ -z "${value}" ]]; then
+		echo "ERROR: versions.env pin empty or unset: ${name}" >&2
+		exit 1
+	fi
+}
+
+require_sha256() {
+	local name="$1"
+	local value="${2:-}"
+	require_pin "${name}" "${value}"
+	if [[ ! "${value}" =~ ^[0-9a-fA-F]{64}$ ]]; then
+		echo "ERROR: ${name} is not a 64-char hex sha256: ${value}" >&2
+		exit 1
+	fi
+}
+
+forbid_floating_url() {
+	local name="$1"
+	local url="${2:-}"
+	# Build the forbidden path without a contiguous "releases"+"/"+"latest" token
+	# so pin_guards can grep the source tree for accidental floating URLs.
+	local floating
+	floating="$(printf '%s/%s' releases latest)"
+	require_pin "${name}" "${url}"
+	if [[ "${url}" == *"/${floating}"* ]]; then
+		echo "ERROR: ${name} must not use floating GitHub release redirects (got: ${url})" >&2
+		exit 1
+	fi
+}
+
+require_pin YAZI_VERSION "${YAZI_VERSION:-}"
+require_pin NEONWOLF_VERSION "${NEONWOLF_VERSION:-}"
+require_pin FLATARCADE_VERSION "${FLATARCADE_VERSION:-}"
+forbid_floating_url YAZI_URL "${YAZI_URL:-}"
+forbid_floating_url NEONWOLF_URL "${NEONWOLF_URL:-}"
+forbid_floating_url FLATARCADE_URL "${FLATARCADE_URL:-}"
+forbid_floating_url FLATARCADE_SVG_URL "${FLATARCADE_SVG_URL:-}"
+require_sha256 YAZI_SHA256 "${YAZI_SHA256:-}"
+require_sha256 NEONWOLF_SHA256 "${NEONWOLF_SHA256:-}"
+require_sha256 FLATARCADE_SHA256 "${FLATARCADE_SHA256:-}"
+require_sha256 FLATARCADE_SVG_SHA256 "${FLATARCADE_SVG_SHA256:-}"
 
 ### curl dest, then fail the build if sha256 does not match the pin.
 verify_sha256() {
 	local file="$1"
 	local expected="$2"
+	if [[ ! -f "${file}" ]]; then
+		echo "ERROR: verify_sha256: missing file ${file}" >&2
+		exit 1
+	fi
+	if [[ -z "${expected}" ]]; then
+		echo "ERROR: verify_sha256: empty expected digest for ${file}" >&2
+		exit 1
+	fi
 	echo "${expected}  ${file}" | sha256sum -c -
 }
 

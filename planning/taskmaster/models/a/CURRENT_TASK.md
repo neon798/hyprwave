@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: DONE  
+status: OPEN  
 task_id: A-W1-001  
 wave: 1  
 issued: 2026-08-07T03:50:00Z  
@@ -26,15 +26,15 @@ Make external binary pins **CI-enforced** and **operator-bumpable**, with a rele
 
 ## Requirements
 
-- [x] `build.sh` sources `versions.env` and verifies sha256 for Yazi, Neonwolf, FlatArcade (fail closed on mismatch)
-- [x] Zero matches for `releases/latest` in `build_files/build.sh`
-- [x] Script `planning/integration/a-stabilize/scripts/verify-pins.sh` downloads (or curl -I + sha256 if full download too heavy) and validates pins; documented usage
-- [x] CI workflow step fails PRs if `releases/latest` reappears or if `verify-pins.sh` fails (where network allowed) OR a static job that at least greps + bash -n + checks versions.env keys exist
-- [x] `planning/integration/a-stabilize/RELEASE.md` covers: version tags, GHCR package visibility, cosign, when to bump pins, rollback
-- [x] `FIRST-BOOT-CHECKLIST.md` includes a fill-in log template (date, image digest, pass/fail per item)
-- [x] `BUMP.md` includes a worked example of bumping one component end-to-end
-- [x] At least **3 commits** on `lane/a-stabilize` for this task (incremental)
-- [x] Branch pushed to origin
+- [ ] `build.sh` sources `versions.env` and verifies sha256 for Yazi, Neonwolf, FlatArcade (fail closed on mismatch)
+- [ ] Zero matches for `releases/latest` in `build_files/build.sh`
+- [ ] Script `planning/integration/a-stabilize/scripts/verify-pins.sh` downloads (or curl -I + sha256 if full download too heavy) and validates pins; documented usage
+- [ ] CI workflow step fails PRs if `releases/latest` reappears or if `verify-pins.sh` fails (where network allowed) OR a static job that at least greps + bash -n + checks versions.env keys exist
+- [ ] `planning/integration/a-stabilize/RELEASE.md` covers: version tags, GHCR package visibility, cosign, when to bump pins, rollback
+- [ ] `FIRST-BOOT-CHECKLIST.md` includes a fill-in log template (date, image digest, pass/fail per item)
+- [ ] `BUMP.md` includes a worked example of bumping one component end-to-end
+- [ ] At least **3 commits** on `lane/a-stabilize` for this task (incremental)
+- [ ] Branch pushed to origin
 
 ## Deliverables
 
@@ -44,10 +44,10 @@ Make external binary pins **CI-enforced** and **operator-bumpable**, with a rele
 
 ## Done criteria
 
-- [x] All Requirements checkboxes satisfied
-- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` documented; script exits 0 or clear skip reason
-- [x] `git push -u origin lane/a-stabilize`
-- [x] WORK_LOG + COMPLETED updated; status DONE
+- [ ] All Requirements checkboxes satisfied
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` documented; script exits 0 or clear skip reason
+- [ ] `git push -u origin lane/a-stabilize`
+- [ ] WORK_LOG + COMPLETED updated; status DONE
 
 ## On completion
 
