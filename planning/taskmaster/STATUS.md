@@ -2,7 +2,7 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **HUMAN INTEGRATION**  
-**Updated:** 2026-08-07T11:53:13Z  
+**Updated:** 2026-08-07T12:03:45Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
@@ -17,7 +17,7 @@
 
 ## This check-in
 
-- **A–G** HOLD OPEN; heartbeats: C `2909ff8`, D `7126208`, E `ca87553`.
+- **A–G** HOLD OPEN; heartbeats: C `5dfa5a3`, D `c40d83c`, E `1d939c0`.
 - Still **no** product merge to main (taskmaster-only).
 - No new tasks; no BLOCKED; no DONE→next.
 
