@@ -22,11 +22,14 @@ image** (bootc) derived from Universal Blue’s Fedora Atomic base
 There is no full-OS `dnf upgrade` of the desktop image the way a mutable Fedora Workstation
 works. Flatpaks and user data update separately — see [updating.md](updating.md).
 
+Install paths (rebase vs ISO vs local build): [INSTALL.md](../INSTALL.md).
+
 ---
 
-## Two image variants
+## Two image variants (dual DE)
 
-Build-time argument `DE` selects the desktop:
+Build-time argument `DE` selects the desktop at **image build** time (not a session
+toggle on one disk):
 
 | | Hyprland (`hyprwave`) | COSMIC (`hyprwave-cosmic`) |
 |--|----------------------|---------------------------|
@@ -34,9 +37,13 @@ Build-time argument `DE` selects the desktop:
 | Greeter | SDDM (synthwave theme) | cosmic-greeter |
 | Session | Hyprland + Waybar, Walker, Mako, hyprpaper | Fedora COSMIC DE |
 | Hypr stack | Yes | No |
-| Shared apps | Neonwolf, FlatArcade, Yazi, Ghostty, themes CLI | Same companions + COSMIC apps |
+| Shared apps | Neonwolf, FlatArcade, Yazi, Ghostty, `hyprwave-theme` | Same companions + COSMIC shell apps |
 
-Same repo, one `Containerfile`, matrix CI. Details for COSMIC users: [cosmic.md](cosmic.md).
+Same repo, one `Containerfile` (stage alias `de-${DE}`), matrix CI. COSMIC details:
+[cosmic.md](cosmic.md). First hour: [first-boot.md](first-boot.md).
+
+Switching variants later is another `bootc switch` + reboot; desktop configs do not
+auto-migrate.
 
 ---
 
@@ -64,7 +71,15 @@ System theme packs live under:
 
 Eleven packs ship (default **hyprwave** + ten others). The switcher
 (`hyprwave-theme` / GUI) points `~/.config/hyprwave/theme` at a pack and reloads the
-active desktop (Hyprland live-reload vs COSMIC appearance keys).
+active desktop (Hyprland live-reload vs COSMIC appearance keys under `~/.config/cosmic/`).
+
+| Layer | Path | Notes |
+|-------|------|--------|
+| Pack store | `/usr/share/hyprwave/themes/<name>/` | Immutable with the image |
+| Active pointer | `~/.config/hyprwave/theme` | Per-user; new users get skel defaults |
+| COSMIC vendor defaults | `/usr/share/cosmic/` | First-boot dock/wallpaper/theme on COSMIC image |
+
+Guide: [theming.md](theming.md).
 
 ### Default user configs (`/etc/skel`)
 
@@ -96,6 +111,9 @@ Some Hyprland utilities are **source-built** in a multi-stage container build
 (hyprpaper, hyprpicker, hyprsunset, hyprland-qtutils) so the final image stays free of
 the heavy `-devel` toolchain.
 
+Keybinds: [keybinds.md](keybinds.md) (E-lane ENDPOINT may still be pending merge —
+handbook notes that).
+
 ---
 
 ## Companion apps
@@ -108,7 +126,40 @@ the heavy `-devel` toolchain.
 | Ghostty | Terminal | Default on both variants |
 
 These are part of the OS image, not something you download after first boot (unless you
-rebuild from source).
+rebuild from source). Companion **version pins** may still land from `lane/a-stabilize`
+— not assumed on published `:latest` until merge ([CHANGELOG.md](../CHANGELOG.md)).
+
+---
+
+## Optional / lane packaging boundaries (not stock UX)
+
+Wave-1 parallel work may ship **additional packages or assets** without changing the
+default login story. Treat these as **boundaries**, not features you must use.
+
+### Hyprwave Assistant (lane C — pending merge / image hook)
+
+| | |
+|--|--|
+| Intent | Go TUI for updates / Flatpak / offline knowledge base |
+| Stock claim | **Do not** assume `/usr/bin/hyprwave-assistant` on disk until CHANGELOG lists it as image-hooked |
+| Boundary | Convenience UI only — confirm OS upgrades; reboot still required after `bootc upgrade` |
+| Docs | Mentioned in [security.md](security.md) / FAQ as upcoming; not an INSTALL step |
+
+### Duress packaging (lane D — pending merge; **off by default**)
+
+| | |
+|--|--|
+| Intent | Optional [pam-duress](https://github.com/nuvious/pam-duress) **assets** (module, templates, setup CLI) |
+| Stock claim | **PAM never enabled by default**; packaging alone changes nothing at login |
+| Boundary | Admin ENABLE docs only; not LUKS; not forensic wipe; no handbook enable paste |
+| Docs | [security.md](security.md) — residual risks and non-goals |
+
+### QA / merge tooling (lane G)
+
+Scripts and smoke matrices live under `planning/` / integration trees for contributors.
+They are **not** end-user desktop features.
+
+Honesty table for all lanes: [CHANGELOG.md](../CHANGELOG.md) Unreleased.
 
 ---
 
@@ -122,24 +173,16 @@ Hyprwave’s git repository is a customized Universal Blue **image-template**:
 - `Justfile` — `just build`, ISO, VM helpers  
 
 There is no separate “application monorepo” for the desktop itself. Contributor-oriented
-detail lives in `CLAUDE.md` / `AGENTS.md` (optional for end users).
-
----
-
-## Planned but not stock (do not assume installed)
-
-Other lanes may ship **dormant** packages later:
-
-- **Hyprwave Assistant** — TUI for updates / Flatpak / docs (not claimed as default on `main` until merged and hooked)
-- **Duress password** — optional PAM tooling, **off by default** even after packaging lands
-
-See [security.md](security.md) and [CHANGELOG.md](../CHANGELOG.md).
+detail lives in `CLAUDE.md` / `AGENTS.md` and
+[contributor-notes.md](contributor-notes.md).
 
 ---
 
 ## See also
 
 - [INSTALL.md](../INSTALL.md) — switch / ISO / first login  
+- [first-boot.md](first-boot.md) — healthy first session  
 - [updating.md](updating.md) — upgrades  
-- [troubleshooting.md](troubleshooting.md) — when things break  
+- [troubleshooting.md](troubleshooting.md) — dual-variant matrix  
 - [keybinds.md](keybinds.md) — Hyprland shortcuts  
+- [security.md](security.md) — immutability + optional duress  
