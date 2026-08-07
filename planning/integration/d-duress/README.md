@@ -10,7 +10,9 @@
 | `Containerfile.snippet` | Optional `duressbuilder` stage |
 | `ENABLE.md` | Admin enable / recovery / bootc PAM drift / root-shell checklist |
 | `DRILL.md` | 30–45 min disposable VM operator procedure |
-| `validate.sh` | Packaging safety gates (syntax, no `.sha256`, no pam.d writes, `--verify`, threat model) |
+| `FAQ.md` | Operator Q&A (off by default, signing, greeter/lock, lockout, bootc, LUKS residual) |
+| `OPERATOR-RUNBOOK.md` | Ordered enable → VM test → disable/rollback (links DRILL) |
+| `validate.sh` | Packaging safety gates + negative fixtures (no `.sha256`, no pam.d writes, threat model) |
 
 ## Setup tool
 
