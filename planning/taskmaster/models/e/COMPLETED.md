@@ -9,4 +9,4 @@ E-W1-003 | 2026-08-07 | Windowrules rationale, multi-output hyprpaper docs, comm
 
 E-W1-004 | 2026-08-07 | Pre-merge freeze: KEYBIND-MAP audit, SESSION-SMOKE 1-30 gate, HANDOFF residuals | 446af16
 
-E-W1-005 | 2026-08-07 | INTEGRATION-DAY one-page smoke card (gates 1-30 + run log) | TIP
+E-W1-005 | 2026-08-07 | INTEGRATION-DAY one-page smoke card (gates 1-30 + run log) | 0897db4
