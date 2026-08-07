@@ -1,4 +1,4 @@
-# --- Model C (C-W1-001): Hyprwave Assistant (integrator → build_files/build.sh) ---
+# --- Model C (C-W1-002): Hyprwave Assistant (integrator → build_files/build.sh) ---
 # Prerequisites:
 #   - Containerfile multi-stage builds static binary (Containerfile.snippet)
 #     with CGO_ENABLED=0 -trimpath -ldflags="-s -w -X main.version=..."
@@ -7,6 +7,9 @@
 #
 # Place AFTER package installs; BEFORE final cleanup. No network services.
 # Safe on both DE=hyprland and DE=cosmic.
+#
+# Runtime deps (usually already on image): ghostty (TUI host), flatpak, bootc.
+# No extra dnf packages required solely for Assistant beyond those.
 
 ASSISTANT_SRC="${ASSISTANT_SRC:-/ctx/build_files}"
 ASSISTANT_DATA_SRC="${ASSISTANT_SRC}/usr/share/hyprwave/assistant"
@@ -30,6 +33,12 @@ fi
 if [[ -x /tmp/hyprwave-assistant && ! -x /usr/bin/hyprwave-assistant ]]; then
   install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
 fi
+
+# Optional branded icon (if integrator adds PNG/SVG later):
+#   install -D -m 0644 "${ASSISTANT_SRC}/usr/share/icons/hicolor/scalable/apps/hyprwave-assistant.svg" \
+#     /usr/share/icons/hicolor/scalable/apps/hyprwave-assistant.svg
+#   gtk-update-icon-cache -f /usr/share/icons/hicolor || true
+# Then set Icon=hyprwave-assistant in the desktop file.
 
 # Keybind is NOT applied here — see HANDOFF-WAVE2.md:
 #   bind = SUPER SHIFT, A, exec, ghostty -e hyprwave-assistant
