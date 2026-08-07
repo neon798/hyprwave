@@ -21,3 +21,7 @@
 - About tab offline-first banner; RELEASE-NOTES-0.2.md
 - Validate: go test ./... && go build -ldflags "-X main.version=test" -o /tmp/hyprwave-assistant .
 - Note: accidental main commit bd8eac4 earlier this cycle (not force-pushed); lane work is authoritative
+
+## 2026-08-07 — poll re-assert
+
+- main still OPEN for C-W1-002; lane already complete (tip b7aff65 / mark 0f4ec1b). Re-assert DONE; no re-implement. Tests green.
