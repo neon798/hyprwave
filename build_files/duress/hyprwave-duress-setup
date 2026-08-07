@@ -1,0 +1,345 @@
+#!/usr/bin/env bash
+# hyprwave-duress-setup — opt-in configuration for pam-duress on Hyprwave.
+#
+# Does NOT enable system PAM stacks. That requires admin action documented in
+# planning/integration/d-duress/ENABLE.md (or the installed copy under
+# /usr/share/hyprwave/duress/ if the integrator installs it).
+#
+# Requires: duress_sign (from pam-duress), bash, standard coreutils.
+
+set -euo pipefail
+
+VERSION="1.0.0"
+TEMPLATE_DIR="${HYPRWAVE_DURESS_TEMPLATE_DIR:-/usr/share/hyprwave/duress/templates}"
+TEMPLATE_NAME="00-wipe-sensitive.sh"
+USER_DURESS_DIR="${HOME}/.duress"
+
+usage() {
+	cat <<'EOF'
+Usage: hyprwave-duress-setup [OPTIONS]
+
+Opt-in setup for a personal duress password (pam-duress).
+
+This tool:
+  - warns about irreversible data loss
+  - optionally installs the Hyprwave wipe template into ~/.duress/
+  - signs a script with duress_sign (you choose the duress password)
+  - sets permissions required by pam_duress (500 / 400 on .sha256)
+
+It does NOT:
+  - enable pam_duress in /etc/pam.d (admin/integrator only)
+  - sign any global script under /etc/duress.d unless you pass --system
+  - run wipes during setup
+
+Options:
+  --wipe-template   Install and sign the default wipe template (default interactive)
+  --script PATH     Sign an existing script instead of the wipe template
+  --system          Operate on /etc/duress.d (requires root); still no PAM enable
+  --list            List scripts and signatures in the target directory
+  --remove NAME     Remove script NAME and its .sha256 from the target directory
+  --status          Show whether pam_duress appears enabled (best-effort)
+  -h, --help        Show this help
+  -V, --version     Show version
+
+Environment:
+  HYPRWAVE_DURESS_TEMPLATE_DIR   Override template directory
+                                 (default: /usr/share/hyprwave/duress/templates)
+
+After setup, ensure an administrator has enabled pam_duress per
+/usr/share/hyprwave/duress/ENABLE.md (if installed) or the Hyprwave docs.
+EOF
+}
+
+die() {
+	echo "error: $*" >&2
+	exit 1
+}
+
+need_cmd() {
+	command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
+}
+
+confirm() {
+	local prompt=$1
+	local reply
+	read -r -p "$prompt [y/N] " reply || true
+	case "${reply,,}" in
+	y | yes) return 0 ;;
+	*) return 1 ;;
+	esac
+}
+
+target_dir() {
+	if [[ "${SYSTEM_MODE:-0}" == "1" ]]; then
+		echo "/etc/duress.d"
+	else
+		echo "$USER_DURESS_DIR"
+	fi
+}
+
+ensure_target_dir() {
+	local dir
+	dir="$(target_dir)"
+	if [[ "${SYSTEM_MODE:-0}" == "1" ]]; then
+		[[ "$(id -u)" -eq 0 ]] || die "--system requires root"
+		mkdir -p "$dir"
+		chmod 755 "$dir"
+	else
+		mkdir -p "$dir"
+		chmod 700 "$dir"
+	fi
+}
+
+cmd_list() {
+	local dir
+	dir="$(target_dir)"
+	if [[ ! -d "$dir" ]]; then
+		echo "No directory: $dir"
+		return 0
+	fi
+	echo "Duress directory: $dir"
+	# shellcheck disable=SC2012
+	ls -la "$dir" 2>/dev/null || true
+}
+
+cmd_remove() {
+	local name=$1
+	local dir base script sig
+	dir="$(target_dir)"
+	base="$(basename "$name")"
+	script="$dir/$base"
+	sig="$dir/${base}.sha256"
+	[[ -e "$script" || -e "$sig" ]] || die "nothing named $base under $dir"
+	confirm "Remove $script and $sig?" || die "aborted"
+	rm -f -- "$script" "$sig"
+	echo "Removed $base"
+}
+
+cmd_status() {
+	echo "hyprwave-duress-setup $VERSION"
+	if command -v duress_sign >/dev/null 2>&1; then
+		echo "duress_sign: $(command -v duress_sign)"
+	else
+		echo "duress_sign: NOT FOUND (pam-duress binaries not installed)"
+	fi
+	if [[ -f /usr/lib64/security/pam_duress.so ]]; then
+		echo "pam_duress.so: /usr/lib64/security/pam_duress.so"
+	elif [[ -f /lib64/security/pam_duress.so ]]; then
+		echo "pam_duress.so: /lib64/security/pam_duress.so"
+	elif [[ -f /lib/security/pam_duress.so ]]; then
+		echo "pam_duress.so: /lib/security/pam_duress.so"
+	else
+		echo "pam_duress.so: NOT FOUND"
+	fi
+	echo "user scripts: $USER_DURESS_DIR"
+	if [[ -d /etc/duress.d ]]; then
+		echo "global scripts: /etc/duress.d"
+	else
+		echo "global scripts: /etc/duress.d (missing)"
+	fi
+	echo
+	echo "PAM enablement (best-effort grep; does not prove load order):"
+	local found=0
+	for f in /etc/pam.d/system-auth /etc/pam.d/sddm /etc/pam.d/greetd \
+		/etc/pam.d/hyprlock /etc/pam.d/login /etc/pam.d/common-auth; do
+		if [[ -f "$f" ]] && grep -qE 'pam_duress\.so' "$f" 2>/dev/null; then
+			echo "  ENABLED reference in $f"
+			found=1
+		fi
+	done
+	if [[ "$found" -eq 0 ]]; then
+		echo "  no pam_duress.so lines found — OFF (expected on stock Hyprwave)"
+	fi
+	echo
+	echo "Signed user scripts are required before a duress password does anything."
+}
+
+install_template_copy() {
+	local dest_dir dest src
+	dest_dir="$(target_dir)"
+	dest="$dest_dir/$TEMPLATE_NAME"
+	src="$TEMPLATE_DIR/$TEMPLATE_NAME"
+	[[ -f "$src" ]] || die "template not found: $src"
+	if [[ -e "$dest" ]]; then
+		confirm "Overwrite existing $dest?" || die "aborted"
+	fi
+	install -m 0500 "$src" "$dest"
+	echo "Installed template -> $dest"
+	echo "$dest"
+}
+
+sign_script() {
+	local script=$1
+	[[ -f "$script" ]] || die "script not found: $script"
+	need_cmd duress_sign
+
+	# pam-duress requires 500/540/550 on the script itself.
+	chmod 500 "$script"
+
+	echo
+	echo "You will now set the DURESS password (NOT your normal login password)."
+	echo "Choose something you can type under stress, that is NOT your real password,"
+	echo "and that a coercer is unlikely to guess. Never tell anyone it is a duress code."
+	echo
+	if ! confirm "Continue and run duress_sign on $(basename "$script")?"; then
+		die "aborted (script left unsigned at $script)"
+	fi
+
+	# duress_sign prompts for password interactively (no CLI password args — good).
+	if [[ "${SYSTEM_MODE:-0}" == "1" ]]; then
+		duress_sign "$script"
+	else
+		duress_sign "$script"
+	fi
+
+	if [[ -f "${script}.sha256" ]]; then
+		chmod 400 "${script}.sha256"
+	else
+		die "duress_sign did not produce ${script}.sha256"
+	fi
+
+	# Tighten directory perms for user mode.
+	if [[ "${SYSTEM_MODE:-0}" != "1" ]]; then
+		chmod 700 "$(dirname "$script")"
+		# Upstream note: 500/540/550 only for scripts; keep dir private.
+		chmod 500 "$script" 2>/dev/null || true
+	fi
+
+	echo
+	echo "Signed: $script"
+	echo "Signature: ${script}.sha256"
+	echo
+	echo "NEXT STEPS:"
+	echo "  1. An administrator must enable pam_duress in PAM (still OFF by default)."
+	echo "     See: /usr/share/hyprwave/duress/ENABLE.md  (or planning/integration/d-duress/ENABLE.md)"
+	echo "  2. Test ONLY in a disposable VM first."
+	echo "  3. Using the duress password will run this script and may DESTROY DATA."
+}
+
+interactive_main() {
+	cat <<'EOF'
+Hyprwave Duress Password Setup
+==============================
+
+A duress password logs you in like a normal password, but runs signed scripts
+(for example a wipe of SSH keys, browser profiles, etc.).
+
+WARNINGS:
+  - This is opt-in. Stock Hyprwave does not enable duress authentication.
+  - Wipes are irreversible. Review the template before signing.
+  - A knowledgeable attacker may still recover data from disk images.
+  - Never discuss or demonstrate your duress password in front of others.
+  - Multi-user systems need a clear policy before enabling system-wide.
+
+EOF
+	if ! confirm "I understand and want to continue"; then
+		echo "Aborted."
+		exit 0
+	fi
+
+	ensure_target_dir
+	local script
+	if confirm "Install the default wipe template into $(target_dir)?"; then
+		script="$(install_template_copy)"
+		echo
+		echo "---- template preview (first 40 lines) ----"
+		head -n 40 "$script" || true
+		echo "---- end preview ----"
+		echo
+		if ! confirm "Sign THIS wipe script with a new duress password?"; then
+			echo "Template installed but NOT signed. Exiting."
+			exit 0
+		fi
+		sign_script "$script"
+	else
+		echo "No template installed. Use: hyprwave-duress-setup --script /path/to/script.sh"
+		exit 0
+	fi
+}
+
+SYSTEM_MODE=0
+ACTION=""
+SCRIPT_PATH=""
+REMOVE_NAME=""
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	-h | --help)
+		usage
+		exit 0
+		;;
+	-V | --version)
+		echo "hyprwave-duress-setup $VERSION"
+		exit 0
+		;;
+	--system)
+		SYSTEM_MODE=1
+		shift
+		;;
+	--wipe-template)
+		ACTION="wipe"
+		shift
+		;;
+	--script)
+		ACTION="script"
+		SCRIPT_PATH=${2:-}
+		[[ -n "$SCRIPT_PATH" ]] || die "--script requires a path"
+		shift 2
+		;;
+	--list)
+		ACTION="list"
+		shift
+		;;
+	--remove)
+		ACTION="remove"
+		REMOVE_NAME=${2:-}
+		[[ -n "$REMOVE_NAME" ]] || die "--remove requires a name"
+		shift 2
+		;;
+	--status)
+		ACTION="status"
+		shift
+		;;
+	*)
+		die "unknown option: $1 (try --help)"
+		;;
+	esac
+done
+
+case "${ACTION:-}" in
+"")
+	interactive_main
+	;;
+status)
+	cmd_status
+	;;
+list)
+	cmd_list
+	;;
+remove)
+	ensure_target_dir
+	cmd_remove "$REMOVE_NAME"
+	;;
+wipe)
+	ensure_target_dir
+	need_cmd duress_sign
+	script="$(install_template_copy)"
+	sign_script "$script"
+	;;
+script)
+	ensure_target_dir
+	need_cmd duress_sign
+	# Copy into target dir if outside
+	base="$(basename "$SCRIPT_PATH")"
+	dest="$(target_dir)/$base"
+	if [[ "$(readlink -f "$SCRIPT_PATH" 2>/dev/null || realpath "$SCRIPT_PATH" 2>/dev/null || echo "$SCRIPT_PATH")" != \
+		"$(readlink -f "$dest" 2>/dev/null || realpath "$dest" 2>/dev/null || echo "$dest")" ]]; then
+		install -m 0500 "$SCRIPT_PATH" "$dest"
+		SCRIPT_PATH="$dest"
+	fi
+	sign_script "$SCRIPT_PATH"
+	;;
+*)
+	die "internal: unknown action $ACTION"
+	;;
+esac

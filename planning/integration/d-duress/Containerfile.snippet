@@ -1,0 +1,44 @@
+# INTEGRATION SNIPPET — Model D (duress)
+# DO NOT apply without human review. Duress remains OFF BY DEFAULT even after
+# this stage is wired: binaries + templates only; no /etc/pam.d edits here.
+#
+# Place relative to the existing Containerfile multi-stage layout.
+# Mirror the hyprbuilder pattern so -devel packages never land in the final image.
+
+# ---------------------------------------------------------------------------
+# 1) New builder stage (can run in parallel with hyprbuilder; independent).
+#    Insert after the `ctx` stage and alongside (or after) hyprbuilder.
+# ---------------------------------------------------------------------------
+
+# FROM ghcr.io/ublue-os/base-main:latest AS duressbuilder
+# RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+#     --mount=type=cache,dst=/var/cache \
+#     --mount=type=tmpfs,dst=/tmp \
+#     /ctx/build-duress.sh
+
+# ---------------------------------------------------------------------------
+# 2) Copy staged artifacts into BOTH desktop variants (shared security tooling).
+#    Option A — copy in the shared `base` stage after build.sh:
+# ---------------------------------------------------------------------------
+
+# COPY --from=duressbuilder /install/ /
+# RUN ldconfig
+
+# ---------------------------------------------------------------------------
+# Option B — copy into both de-hyprland and de-cosmic (if you prefer DE-local):
+# ---------------------------------------------------------------------------
+
+# FROM base AS de-hyprland
+# COPY --from=hyprbuilder /install/ /
+# COPY --from=duressbuilder /install/ /
+# RUN ldconfig
+#
+# FROM base AS de-cosmic
+# COPY --from=duressbuilder /install/ /
+# RUN ldconfig
+
+# ---------------------------------------------------------------------------
+# Runtime libraries: pam + openssl-libs are already on ublue base-main.
+# If a future base drops them, add to build.sh.snippet:
+#   dnf5 install -y openssl-libs pam
+# ---------------------------------------------------------------------------

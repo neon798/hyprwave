@@ -1,0 +1,18 @@
+# REFERENCE ONLY — do not install automatically.
+# Fedora / Universal Blue typically centralize auth in /etc/pam.d/system-auth.
+# Prefer inserting pam_duress as "sufficient" AFTER pam_unix so:
+#   - normal passwords still work
+#   - a missing pam_duress.so does not brick login as easily as "required"
+#
+# BEFORE (illustrative):
+#   auth       sufficient                  pam_unix.so nullok
+#   auth       required                    pam_deny.so
+#
+# AFTER:
+#   auth       sufficient                  pam_unix.so nullok
+#   auth       sufficient                  pam_duress.so
+#   auth       required                    pam_deny.so
+#
+# See planning/integration/d-duress/ENABLE.md for full procedure and warnings.
+
+auth       sufficient                  pam_duress.so
