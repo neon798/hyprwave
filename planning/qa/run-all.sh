@@ -24,6 +24,7 @@ declare -a CHECK_ORDER=(
   no-wofi-swaybg
   duress-safety
   assistant
+  lane-artifacts
 )
 
 declare -A CHECK_SCRIPTS=(
@@ -32,6 +33,7 @@ declare -A CHECK_SCRIPTS=(
   [no-wofi-swaybg]="check-no-wofi-swaybg.sh"
   [duress-safety]="check-duress-safety.sh"
   [assistant]="check-assistant.sh"
+  [lane-artifacts]="check-lane-artifacts.sh"
 )
 
 usage() {
@@ -40,13 +42,21 @@ Usage: bash planning/qa/run-all.sh [options]
 
 Options:
   --only id[,id...]   Run subset of checks (ids: pins-static, themes,
-                      no-wofi-swaybg, duress-safety, assistant)
+                      no-wofi-swaybg, duress-safety, assistant,
+                      lane-artifacts)
   --list              List available checks and exit
   -h, --help          Show this help
 
 Environment:
-  NO_COLOR=1          Disable ANSI colors
-  ROOT                Override repo root (default: auto from script path)
+  NO_COLOR=1              Disable ANSI colors
+  ROOT                    Override repo root (default: auto from script path)
+  LANE_ARTIFACTS_OFF=1    Skip multi-ref lane checks (also used by CI static job)
+  ORIGIN_LANE_A..G        Override git refs for lane-artifacts (default origin/lane/*)
+
+Exit codes:
+  0  no FAIL (WARN/SKIP allowed — e.g. missing lane not yet merged)
+  1  at least one check returned FAIL / non-zero
+  2  harness misconfiguration (unknown --only id, bad flags)
 EOF
 }
 
