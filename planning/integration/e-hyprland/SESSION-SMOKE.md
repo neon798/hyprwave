@@ -35,8 +35,28 @@ Copy this list into a PR or test log; mark each line PASS/FAIL.
 
 12. [ ] **Super+S** — region select; selection lands on clipboard (`wl-paste` or paste into Ghostty).  
 13. [ ] **Super+SHIFT+S** — region save under `~/Pictures` (directory exists).  
-14. [ ] **Super+SHIFT+L** — hyprlock screen; unlock with user password.  
+14. [ ] **Super+SHIFT+L** — hyprlock screen via `loginctl lock-session`; unlock with user password.  
 15. [ ] **Super+SHIFT+T** — theme GUI floats/centered; applying a theme retints bar/borders without logout (or documents known reload).
+
+## Lock / idle / DPMS (E-W1-002)
+
+Timeouts live in `~/.config/hypr/hypridle.conf` (dim 300s → lock 600s → DPMS 630s → suspend 1200s).
+
+16. [ ] **hypridle running** — `pgrep -a hypridle` after login.  
+17. [ ] **Lock keybind path** — Super+SHIFT+L shows lock; second press does **not** spawn a second hyprlock (`pgrep -c hyprlock` ≤ 1).  
+18. [ ] **Manual lock CLI** — `loginctl lock-session` same UI as keybind.  
+19. [ ] **hyprlock wallpaper** — brand image or solid fallback color (not a missing-file crash).  
+20. [ ] **Idle dim (optional long)** — after ~5 min no input, backlight drops if `brightnessctl` works; on VMs without backlight, no error spam.  
+21. [ ] **Idle lock (long)** — after ~10 min no input, session locks without needing the keybind.  
+22. [ ] **DPMS after lock (long)** — ~30s after lock timeout, outputs blank; move mouse / type restores DPMS and shows lock (not an unlocked desktop).  
+23. [ ] **Suspend lock (optional)** — `systemctl suspend` then resume still requires unlock (`before_sleep_cmd`). Skip if VM suspend is broken.
+
+## Theme symlink integrity
+
+24. [ ] **Indirection** — `readlink -f ~/.config/hyprwave/theme` → `/usr/share/hyprwave/themes/<name>`.  
+25. [ ] **Relative chain** — `readlink -f ~/.config/waybar/style.css` and `looknfeel.conf` resolve under that pack (not dangling).  
+26. [ ] **Theme switch** — `hyprwave-theme set <other>` updates indirection; waybar/mako colors change; hyprpaper wallpaper updates.  
+27. [ ] **No stale launchers** — no wofi/rofi/swaybg processes or binds; wallpaper is hyprpaper; launcher is Walker.
 
 ## Extra checks (optional but useful)
 
@@ -47,7 +67,8 @@ Copy this list into a PR or test log; mark each line PASS/FAIL.
 - [ ] **Notifications:** `notify-send 'hyprwave' 'mako ok'` shows a mako bubble.  
 - [ ] **Walker layer:** no open animation glitch (windowrules layerrule).  
 - [ ] **Multi-monitor (if any):** Super+period / Super+comma cycle focus.  
-- [ ] **Idle path (long):** leave idle per hypridle timeouts — dim → DPMS → lock (do not require full suspend in CI VMs).
+- [ ] **Monitors default:** fresh skel has `monitor = , preferred, auto, 1` (not a foreign machine’s hardcode).  
+- [ ] **HiDPI comment only:** scaling examples stay commented until the user opts in.
 
 ## Failure triage (short)
 
@@ -58,7 +79,10 @@ Copy this list into a PR or test log; mark each line PASS/FAIL.
 | Walker never opens | service missing | `walker --gapplication-service &` |
 | Portal file picker fails | env not imported | re-login; verify autostart order in AUTOSTART.md |
 | Super+S does nothing | hyprshot/grim/slurp | `command -v hyprshot grim slurp` |
-| Bar unstyled | broken theme symlink | `readlink -f ~/.config/waybar/style.css` |
+| Bar unstyled | broken theme symlink | `readlink -f ~/.config/waybar/style.css` — see THEME-SYMLINKS.md |
+| Lock does nothing | hypridle/hyprlock missing | `pgrep hypridle`; `command -v hyprlock`; try `loginctl lock-session` |
+| Blank screen, unlocked | DPMS before lock (old conf) | ensure lock listener timeout &lt; DPMS timeout |
+| Double lock UI | keybind execs hyprlock twice | keybind must be `loginctl lock-session` |
 
 ## Sign-off
 

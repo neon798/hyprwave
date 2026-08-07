@@ -105,7 +105,7 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 
 | keys | dispatcher | args | notes |
 |------|------------|------|-------|
-| SUPER+SHIFT+L | exec | hyprlock | lock screen |
+| SUPER+SHIFT+L | exec | loginctl lock-session | lock via hypridle `lock_cmd` (no double hyprlock) |
 | SUPER+SHIFT+P | exec | hyprpicker -a | color pick → clipboard |
 
 ## Screenshots (hyprshot)
@@ -147,6 +147,13 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 | Split ratio | setleftwideratio on minus | `splitratio` | Dwindle-compatible |
 | Vim move/resize | (missing) | SUPER+SHIFT/ALT + hjkl | Parity with arrows |
 | Walker | already bound | unchanged Super+D/Space/R | + explicit exec-once service |
+
+## Conflicts / intentional changes (E-W1-002)
+
+| Change | Before | After | Why |
+|--------|--------|-------|-----|
+| Lock keybind | `hyprlock` direct | `loginctl lock-session` | Same path as idle/sleep; single instance via hypridle `lock_cmd` |
+| Idle ladder | dim → DPMS → lock → suspend | dim → **lock** → DPMS → suspend | Never blank an unlocked session |
 
 ## Walker in-app prefixes (not Hypr binds)
 
