@@ -26,17 +26,23 @@ Implementation module: `pam_duress.so` + `duress_sign` (upstream).
 |---|---|---|---|
 | `templates/00-wipe-sensitive.sh` | **AGGRESSIVE** | Best-effort destroy of keys, keyrings, browser profiles, common secrets | `--wipe-template` |
 | `templates/10-clear-histories.sh` | **MILD** | Shell histories + clipboard only | `--mild-template` |
+| `templates/20-local-only-clear.sh` | **MILD** | Browser/session caches under `~/.cache` only (single root) | `--local-clear-template` |
 
-Both are **unsigned** in the package tree. Prefer MILD unless you need more.
+All are **unsigned** in the package tree. Prefer MILD unless you need more.
 Never bake `.sha256` signature files into the image or git tree.
 
 ```bash
-hyprwave-duress-setup --dry-run --mild-template   # preview only
-hyprwave-duress-setup --mild-template             # install + sign (needs duress_sign)
+hyprwave-duress-setup --dry-run --mild-template          # preview only
+hyprwave-duress-setup --mild-template                    # install + sign (needs duress_sign)
+hyprwave-duress-setup --local-clear-template             # mild cache clear
+hyprwave-duress-setup --verify                           # read-only: modes + matching .sha256
 hyprwave-duress-setup --status --json
 ```
 
-## Threat model (short)
+## Threat model
+
+Formal model: **`THREAT-MODEL.md`** (assets, adversaries, residual risks, non-goals:
+LUKS, forensics). Short summary:
 
 | Goal | In scope | Out of scope |
 |---|---|---|
