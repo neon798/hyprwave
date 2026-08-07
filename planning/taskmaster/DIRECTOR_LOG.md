@@ -100,3 +100,9 @@
 - A/B/C/G still acked HOLD on lanes.
 - **D/E/F** still on W1-006 DONE tips (3+ cycles) — reissued HOLD with fetch instructions; no product tasks.
 - Human merge remains required for ENDPOINT progress.
+
+## 2026-08-07T06:15:00Z — Director check-in
+
+- All A–G lanes now **HOLD OPEN** (D `00003ec`, E `ba1c21f`, F `9f59118` refreshed).
+- Main product tree still unmerged — human integration remains sole ENDPOINT blocker.
+- No new tasks issued; models correctly idle.

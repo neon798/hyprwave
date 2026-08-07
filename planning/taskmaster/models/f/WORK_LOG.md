@@ -69,3 +69,10 @@
 - Self-check: `check-vendor-paths.sh` exit **0**
 - Status: **standby for integration** — await Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`
 - No product edits; no cross-lane work.
+
+## 2026-08-07 — F-W1-HOLD refresh heartbeat
+
+- Refreshed `planning/taskmaster/models/f/` from `origin/main` (Director reissue 06:05Z)
+- Status remains **OPEN** HOLD — not marked DONE
+- Freeze tip still F-W1-006 / 7b19270; standby for integration
+- No product edits
