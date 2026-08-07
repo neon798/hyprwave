@@ -23,4 +23,4 @@
 - docs/cosmic.md: F GREETER/SESSION-SMOKE/VENDOR cross-links
 - ACCURACY-AUDIT.md refreshed for keybind + first-boot sources
 - Relative links: 181 checked, 0 missing (fenced examples ignored)
-- Commits: e16055a, 5367ffe, 79c4c04 (+ DONE tip)
+- Commits: e16055a, 5367ffe, 79c4c04 (+ DONE tip 7614d2b)
