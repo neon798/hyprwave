@@ -59,6 +59,8 @@ func TestDetectNeedsReboot(t *testing.T) {
 }
 
 func TestCollectStatus(t *testing.T) {
+	restore := OnlineForTests()
+	defer restore()
 	f := &fakeRunner{
 		paths: map[string]bool{"bootc": true, "flatpak": true},
 		responses: map[string]struct {
@@ -89,6 +91,8 @@ func TestCollectStatus(t *testing.T) {
 }
 
 func TestCollectStatusMissingTools(t *testing.T) {
+	restore := OfflineForTests()
+	defer restore()
 	f := &fakeRunner{paths: map[string]bool{}}
 	s := CollectStatus(f)
 	if s.BootcAvailable || s.FlatpakAvailable {

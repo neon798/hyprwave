@@ -21,6 +21,28 @@ type Preflight struct {
 	Warnings         []string
 }
 
+// OnlineProbe checks rough connectivity. Override in tests — never call real
+// network from go test (see OfflineForTests).
+var OnlineProbe = defaultProbeOnline
+
+// OfflineForTests sets OnlineProbe to a fixed offline result and returns restore.
+func OfflineForTests() (restore func()) {
+	prev := OnlineProbe
+	OnlineProbe = func() (bool, string) {
+		return false, "test: network disabled"
+	}
+	return func() { OnlineProbe = prev }
+}
+
+// OnlineForTests sets OnlineProbe to a fixed online result and returns restore.
+func OnlineForTests() (restore func()) {
+	prev := OnlineProbe
+	OnlineProbe = func() (bool, string) {
+		return true, "test: online"
+	}
+	return func() { OnlineProbe = prev }
+}
+
 // CollectPreflight probes tools, privileges, and rough connectivity.
 func CollectPreflight(r Runner) Preflight {
 	p := Preflight{
@@ -36,7 +58,7 @@ func CollectPreflight(r Runner) Preflight {
 		p.HasSudo = true
 	}
 
-	p.Online, p.OnlineDetail = probeOnline()
+	p.Online, p.OnlineDetail = OnlineProbe()
 
 	switch {
 	case p.IsRoot:
@@ -54,12 +76,21 @@ func CollectPreflight(r Runner) Preflight {
 		p.Warnings = append(p.Warnings, "flatpak missing — app updates/installs unavailable")
 	}
 	if !p.Online {
-		p.Warnings = append(p.Warnings, "network looks offline — remote updates/installs will fail: "+p.OnlineDetail)
+		p.Warnings = append(p.Warnings,
+			"cannot reach network — KB and catalog still work offline; remote updates/installs blocked: "+p.OnlineDetail)
 	}
 	if !p.IsRoot && !p.HasSudo {
 		p.Warnings = append(p.Warnings, "no elevated privileges path for bootc upgrade")
 	}
 	return p
+}
+
+// OfflineBanner is a short TUI/CLI line when offline.
+func (p Preflight) OfflineBanner() string {
+	if p.Online {
+		return ""
+	}
+	return "OFFLINE: cannot reach registry/Flathub. Knowledge Base and catalog remain available."
 }
 
 // CanMutateBase reports whether attempting bootc upgrade is plausible.
@@ -95,9 +126,9 @@ func yn(v bool) string {
 	return "no"
 }
 
-// probeOnline does a short TCP dial to common public resolvers (no HTTP).
-// Best-effort only; failures mean "maybe offline".
-func probeOnline() (bool, string) {
+// defaultProbeOnline does a short TCP dial to common public resolvers (no HTTP).
+// Best-effort only; failures mean "maybe offline". Not used during unit tests.
+func defaultProbeOnline() (bool, string) {
 	targets := []string{
 		"1.1.1.1:443",
 		"8.8.8.8:53",
