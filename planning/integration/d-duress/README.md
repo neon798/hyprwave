@@ -17,6 +17,7 @@
 | `snippet-selftest.sh` | Asserts build/Containerfile snippets stay PAM-inert |
 | `validate.sh` | Packaging safety gates + negative fixtures (no `.sha256`, no pam.d writes, threat model) |
 | `INTEGRATOR-CHECKLIST.md` | **Pre-merge freeze:** ordered merge → snippets → no PAM → validate → operator ENABLE docs only |
+| `INTEGRATION-DAY.md` | **One-page day-of card:** merge D → snippets → validate → never enable PAM |
 
 ## Templates (severity — must match `build_files/duress/README.md`)
 
@@ -30,7 +31,8 @@
 
 | Doc | Use when |
 |---|---|
-| [INTEGRATOR-CHECKLIST.md](./INTEGRATOR-CHECKLIST.md) | Merging packaging into the live image (**start here**) |
+| [INTEGRATION-DAY.md](./INTEGRATION-DAY.md) | **Integration day** one-page gate card (merge → validate → no PAM) |
+| [INTEGRATOR-CHECKLIST.md](./INTEGRATOR-CHECKLIST.md) | Full pre-merge freeze checklist |
 | [FAQ.md](./FAQ.md) | Scope, off-by-default, greeter/lock, lockout, bootc, LUKS residual |
 | [OPERATOR-RUNBOOK.md](./OPERATOR-RUNBOOK.md) | Ordered enable → VM test → disable/rollback |
 | [SIGNING.md](./SIGNING.md) | Local `duress_sign` / `--verify`; never commit `*.sha256` |

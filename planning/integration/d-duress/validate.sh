@@ -47,6 +47,7 @@ for p in \
 	planning/integration/d-duress/SIGNING.md \
 	planning/integration/d-duress/RESIDUALS.md \
 	planning/integration/d-duress/INTEGRATOR-CHECKLIST.md \
+	planning/integration/d-duress/INTEGRATION-DAY.md \
 	planning/integration/d-duress/snippet-selftest.sh; do
 	if [[ -f "$p" ]]; then
 		ok "exists $p"
@@ -473,7 +474,7 @@ if [[ -f planning/integration/d-duress/INTEGRATOR-CHECKLIST.md ]]; then
 	fi
 fi
 # Integration README must index full operator set + checklist
-for doc in SIGNING RESIDUALS FAQ OPERATOR-RUNBOOK DRILL INTEGRATOR-CHECKLIST; do
+for doc in SIGNING RESIDUALS FAQ OPERATOR-RUNBOOK DRILL INTEGRATOR-CHECKLIST INTEGRATION-DAY; do
 	if grep -q "${doc}.md" planning/integration/d-duress/README.md; then
 		ok "integration README indexes ${doc}.md"
 	else
@@ -484,6 +485,16 @@ if grep -q 'INTEGRATOR-CHECKLIST.md' build_files/duress/README.md; then
 	ok "packaging README links INTEGRATOR-CHECKLIST"
 else
 	fail "packaging README missing INTEGRATOR-CHECKLIST link"
+fi
+# INTEGRATION-DAY one-page gate card
+if [[ -f planning/integration/d-duress/INTEGRATION-DAY.md ]]; then
+	if grep -qiE 'INTEGRATOR-CHECKLIST|validate\.sh|snippet-selftest' planning/integration/d-duress/INTEGRATION-DAY.md &&
+		grep -qiE 'never.*enable|do \*\*not\*\* enable|Never enable PAM|OFF' planning/integration/d-duress/INTEGRATION-DAY.md &&
+		grep -qiE 'SIGNING|\.sha256|do not commit' planning/integration/d-duress/INTEGRATION-DAY.md; then
+		ok "INTEGRATION-DAY links checklist/validate and forbids PAM + signature commit"
+	else
+		fail "INTEGRATION-DAY incomplete gate card"
+	fi
 fi
 
 # --- negative fixtures (temp dirs; prove policies would catch bad trees) ---

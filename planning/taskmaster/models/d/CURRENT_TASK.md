@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: D-W1-004  
+status: OPEN  
+task_id: D-W1-005  
 wave: 1  
-issued: 2026-08-07T05:05:00Z  
-title: Pre-merge duress freeze + integrator checklist  
+issued: 2026-08-07T05:15:00Z  
+title: Integration-day duress gate card  
 
 ## Objective
 
-Freeze duress packaging for merge: single INTEGRATOR-CHECKLIST, validate+snippet-selftest green, reaffirm OFF by default with no path to accidental enable.
+One-page integration-day card: merge D → apply snippets → validate green → never enable PAM.
 
 ## Exclusive paths
 
@@ -19,25 +19,23 @@ Freeze duress packaging for merge: single INTEGRATOR-CHECKLIST, validate+snippet
 
 ## Forbidden
 
-- Enabling pam_duress in defaults
+- Enabling pam_duress by default
 - Committing `*.sha256`
-- Skel / assistant / handbook product prose
+- Skel / assistant / handbook
 
 ## Requirements
 
-- [x] `planning/integration/d-duress/INTEGRATOR-CHECKLIST.md` — ordered steps: merge tree → apply snippets → do **not** enable PAM → run validate → document operator ENABLE path only
-- [x] README index links SIGNING, RESIDUALS, FAQ, OPERATOR-RUNBOOK, DRILL, checklist
-- [x] `validate.sh` + `snippet-selftest.sh` exit 0
-- [x] Confirm zero `*.sha256` in tree; no active pam.d writes in snippets
-- [x] ≥3 commits; push `lane/d-duress`
+- [ ] `planning/integration/d-duress/INTEGRATION-DAY.md` — short ordered gate linking INTEGRATOR-CHECKLIST, validate, snippet-selftest, SIGNING “do not commit”
+- [ ] validate.sh + snippet-selftest still exit 0
+- [ ] ≥2 commits; push `lane/d-duress`
 
 ## Deliverables
 
-- INTEGRATOR-CHECKLIST + freeze validation
+- INTEGRATION-DAY.md
 
 ## Done criteria
 
-- [x] validate + snippet-selftest green; push; WORK_LOG + COMPLETED; status DONE
+- [ ] validate green; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 

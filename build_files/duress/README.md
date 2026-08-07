@@ -104,6 +104,7 @@ for lawful use. Do not enable on multi-user machines without clear policy.
 
 - https://github.com/nuvious/pam-duress
 - `planning/DURESS-PASSWORD.md`
+- `planning/integration/d-duress/INTEGRATION-DAY.md` — integration-day one-page gate card
 - `planning/integration/d-duress/INTEGRATOR-CHECKLIST.md` — pre-merge freeze (assets only)
 - `planning/integration/d-duress/ENABLE.md`
 - `planning/integration/d-duress/FAQ.md`
