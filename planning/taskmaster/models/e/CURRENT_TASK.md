@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: E-W1-002  
+status: OPEN  
+task_id: E-W1-003  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
-title: Lock/idle/theme symlink integrity and session edge cases  
+issued: 2026-08-07T04:55:00Z  
+title: Window rules, hyprpaper multi-output, and assistant bind HANDOFF  
 
 ## Objective
 
-Second depth pass on Hyprland session reliability: hyprlock/hypridle coherence, theme indirection symlinks, HiDPI/monitor notes, and edge-case binds — still exclusive to skel + e-hyprland integration docs.
+Polish remaining Hyprland session edges: windowrules rationale completeness, multi-monitor wallpaper notes, and a clear **commented** HANDOFF for Super+Shift+A (Assistant) without implementing Assistant.
 
 ## Exclusive paths
 
@@ -16,39 +16,38 @@ Second depth pass on Hyprland session reliability: hyprlock/hypridle coherence, 
 - `build_files/etc/skel/.config/waybar/**`
 - `build_files/etc/skel/.config/walker/**`
 - `build_files/etc/skel/.config/mako/**`
-- `build_files/etc/skel/.config/ghostty/**` (Hyprland-facing only)
+- `build_files/etc/skel/.config/ghostty/**`
 - `build_files/etc/skel/.config/yazi/**`
 - `build_files/etc/skel/.config/autostart/**`
 - `build_files/etc/skel/.config/systemd/user/**`
-- `build_files/etc/skel/.config/hyprwave/**` (theme indirection if present)
+- `build_files/etc/skel/.config/hyprwave/**`
 - `planning/integration/e-hyprland/**`
 - `planning/taskmaster/models/e/**`
 
 ## Forbidden
 
-- COSMIC vendor trees (F)
-- Duress/Assistant code
-- Mass theme pack rewrites under `usr/share/hyprwave/themes` (fix skel symlinks only; HANDOFF for theme pack bugs)
+- COSMIC vendor (F), duress, apps/**
+- Mass theme pack rewrites
 - `build.sh` package installs (HANDOFF only)
+- Enabling live Assistant package — only bind comment + HANDOFF line for integrator/C
 
 ## Requirements
 
-- [x] Audit `hyprlock.conf` + `hypridle.conf`: lock keybind exists, idle → lock → DPMS chain documented; no broken paths
-- [x] Document theme symlink layout (`~/.config/hyprwave/theme` and per-app links) in `planning/integration/e-hyprland/THEME-SYMLINKS.md`; fix broken skel links if any
-- [x] `monitors.conf`: sensible default + comments for multi-monitor / scaling; do not hardcode one user’s layout as silent default if risky
-- [x] Walker/mako/waybar: confirm theme-friendly paths; no stale wofi/swaybg
-- [x] Expand SESSION-SMOKE.md with lock/idle/theme-switch checks (≥5 new items)
-- [x] KEYBIND-MAP.md regenerated/updated if binds change
-- [x] HANDOFF.md: any package gaps (hyprshot, etc.) listed for integrator
-- [x] ≥3 commits; push `lane/e-hyprland`
+- [ ] `windowrules.conf`: every rule has rationale comment; walker no-anim present; ThemeSwitcher float preserved
+- [ ] `hyprpaper.conf` (+ AUTOSTART/THEME notes): multi-monitor wallpaper behavior documented; no swaybg
+- [ ] `bindings.conf`: add **commented** optional Super+Shift+A → hyprwave-assistant line + pointer to C HANDOFF; do not require binary present
+- [ ] Update KEYBIND-MAP.md (include commented future bind section)
+- [ ] SESSION-SMOKE: + multi-monitor / hyprpaper reload / windowrule spot-checks if practical
+- [ ] HANDOFF.md: list integrator steps for Assistant bind uncomment after C merge
+- [ ] ≥3 commits; push `lane/e-hyprland`
 
 ## Deliverables
 
-- Skel lock/idle/theme fixes + THEME-SYMLINKS + smoke/map updates
+- Skel polish + map/smoke/handoff updates
 
 ## Done criteria
 
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
