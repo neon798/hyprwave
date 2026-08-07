@@ -46,6 +46,7 @@ for p in \
 	planning/integration/d-duress/OPERATOR-RUNBOOK.md \
 	planning/integration/d-duress/SIGNING.md \
 	planning/integration/d-duress/RESIDUALS.md \
+	planning/integration/d-duress/INTEGRATOR-CHECKLIST.md \
 	planning/integration/d-duress/snippet-selftest.sh; do
 	if [[ -f "$p" ]]; then
 		ok "exists $p"
@@ -458,6 +459,31 @@ if grep -q '00-wipe-sensitive' planning/integration/d-duress/README.md &&
 	ok "integration README severity table + SIGNING/RESIDUALS index"
 else
 	fail "integration README missing severity table or SIGNING/RESIDUALS"
+fi
+
+# INTEGRATOR-CHECKLIST — ordered freeze path, no accidental enable
+if [[ -f planning/integration/d-duress/INTEGRATOR-CHECKLIST.md ]]; then
+	if grep -qiE 'do not.*enable|OFF BY DEFAULT|assets only' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'validate\.sh|snippet-selftest' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'ENABLE\.md|OPERATOR-RUNBOOK|SIGNING' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'snippet|Containerfile|build\.sh' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md; then
+		ok "INTEGRATOR-CHECKLIST covers merge → no PAM → validate → operator ENABLE docs"
+	else
+		fail "INTEGRATOR-CHECKLIST incomplete freeze steps"
+	fi
+fi
+# Integration README must index full operator set + checklist
+for doc in SIGNING RESIDUALS FAQ OPERATOR-RUNBOOK DRILL INTEGRATOR-CHECKLIST; do
+	if grep -q "${doc}.md" planning/integration/d-duress/README.md; then
+		ok "integration README indexes ${doc}.md"
+	else
+		fail "integration README missing link/index for ${doc}.md"
+	fi
+done
+if grep -q 'INTEGRATOR-CHECKLIST.md' build_files/duress/README.md; then
+	ok "packaging README links INTEGRATOR-CHECKLIST"
+else
+	fail "packaging README missing INTEGRATOR-CHECKLIST link"
 fi
 
 # --- negative fixtures (temp dirs; prove policies would catch bad trees) ---
