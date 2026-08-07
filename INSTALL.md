@@ -12,8 +12,39 @@ from this repository.
 **Both variants include:** Neonwolf (browser), FlatArcade (Flathub TUI), Yazi, Ghostty,
 fonts, wallpapers, and **`hyprwave-theme`**.
 
-Docs index: [docs/README.md](docs/README.md) · Keybinds: [docs/keybinds.md](docs/keybinds.md) ·
-COSMIC: [docs/cosmic.md](docs/cosmic.md) · Updates: [docs/updating.md](docs/updating.md)
+Docs index: [docs/README.md](docs/README.md) ·
+[First boot](docs/first-boot.md) ·
+[Keybinds](docs/keybinds.md) ·
+[COSMIC](docs/cosmic.md) ·
+[Updates](docs/updating.md)
+
+---
+
+## Choose a variant (Hyprland vs COSMIC)
+
+Pick **one** image first. You can switch later with `bootc switch` (home kept; desktop
+configs are not auto-migrated).
+
+```text
+Want a tiling, keyboard-first Wayland session (Walker, Waybar, Super+binds)?
+    └─► Hyprland image  —  ghcr.io/neon798/hyprwave:latest
+        Greeter: SDDM · Guide: docs/keybinds.md · docs/first-boot.md
+
+Want a full desktop environment (panel, dock, Settings app)?
+    └─► COSMIC image  —  ghcr.io/neon798/hyprwave-cosmic:latest
+        Greeter: cosmic-greeter · Guide: docs/cosmic.md · docs/first-boot.md
+
+Both share: Neonwolf, FlatArcade, Yazi, Ghostty, 11-theme switcher (hyprwave-theme)
+```
+
+| Decision | Hyprland | COSMIC |
+|----------|----------|--------|
+| Greeter | SDDM (synthwave theme) | cosmic-greeter (upstream face; session is branded) |
+| Launcher / bar | Walker + Waybar | COSMIC launcher + panel/dock |
+| Default Super+binds | Yes ([keybinds.md](docs/keybinds.md)) | No — COSMIC settings |
+| Local build | `just build` / `just build-iso` | `just build-cosmic` / `just build-iso-cosmic` |
+
+More comparison: [docs/cosmic.md](docs/cosmic.md). After install: [docs/first-boot.md](docs/first-boot.md).
 
 ---
 
@@ -44,15 +75,25 @@ Details: [docs/troubleshooting.md](docs/troubleshooting.md#install--registry).
 
 ---
 
-## Choose an install path
+## Choose an install path (ISO vs rebase)
+
+After you know **which variant** you want:
 
 ```text
 Already on Fedora Atomic / Universal Blue / any bootc host?
-    ├─ Yes, and GHCR pull works ──► Path A: bootc switch (fastest)
-    ├─ Yes, but GHCR is private ──► Path B (local build) or fix registry access
+    ├─ Yes, and GHCR pull works ──► Path A: bootc switch (fastest rebase)
+    ├─ Yes, but GHCR is private ──► Path B (local build / ISO) or fix registry access
     └─ No / bare metal / VM from installer media ──► Path B: ISO
 Developer iterating on the image ──► Path C: local container + qcow2 VM
 ```
+
+| Path | When | Needs public GHCR? |
+|------|------|--------------------|
+| **A — `bootc switch`** | Existing Atomic/bootc host | Yes (or auth / your mirror) |
+| **B — ISO** | Clean install media | Kickstart still pulls published image unless you retarget |
+| **C — local build + VM** | Contributors | No — uses `localhost/…` images |
+
+Private GHCR contingency remains in the [section above](#important-ghcr-may-be-private).
 
 ---
 
@@ -86,7 +127,7 @@ bootc status    # confirm booted image
 ```
 
 Log in at **SDDM** (Hyprland) or **cosmic-greeter** (COSMIC), then follow
-[Post-install](#post-install-first-hour).
+[docs/first-boot.md](docs/first-boot.md) and [Post-install](#post-install-first-hour).
 
 Day-to-day upgrades (same image ref): see [docs/updating.md](docs/updating.md) —
 `sudo bootc upgrade` then reboot.
@@ -151,18 +192,24 @@ podman build -f Dockerfile.overlay -t hyprwave:latest .
 
 ## First login
 
+Step-by-step narrative (login → bar/launcher → apps → themes → updates):
+**[docs/first-boot.md](docs/first-boot.md)**.
+
 ### Hyprland — SDDM
 
 1. Boot into **SDDM** (synthwave theme: purple panel, “HYPRWAVE” title).
 2. Log in → **Hyprland** session with skel defaults (**new users only**):
    - Waybar, Walker (elephant), Mako, hyprpaper, hypridle
 3. Try: **Super+D** (Walker), **Super+Return** (Ghostty), **Super+B** (Neonwolf).
+   Exit session (after E-lane merge): **Super+Shift+E** — see [keybinds.md](docs/keybinds.md).
 
 ### COSMIC — cosmic-greeter
 
-1. Boot into **cosmic-greeter** (not SDDM).
-2. COSMIC session with Hyprwave wallpaper/palette and dock favorites
-   (Neonwolf, Files, Ghostty, FlatArcade, Settings).
+1. Boot into **cosmic-greeter** (not SDDM). Greeter face may be upstream stock;
+   session wallpaper/theme is Hyprwave-branded. Greeter limits documented on
+   `lane/f-cosmic` as `planning/integration/f-cosmic/GREETER.md` (until merge).
+2. COSMIC session with dock favorites (Neonwolf, FlatArcade, Ghostty, Files,
+   Hyprwave Themes, Settings — order per F vendor inventory).
 3. No Walker/Waybar — use COSMIC’s launcher. Themes still via **Hyprwave Themes**.
 
 More: [docs/cosmic.md](docs/cosmic.md).
@@ -175,6 +222,8 @@ reset `~/.config`. Details: [docs/architecture.md](docs/architecture.md).
 ---
 
 ## Post-install (first hour)
+
+Follow [docs/first-boot.md](docs/first-boot.md) for the full path. Short list:
 
 1. **Confirm image:** `bootc status`
 2. **Browser:** launch **Neonwolf** (Hyprland: Super+B)
@@ -231,8 +280,9 @@ Full index: [docs/troubleshooting.md](docs/troubleshooting.md).
 ## See also
 
 - [docs/README.md](docs/README.md) — handbook index  
+- [docs/first-boot.md](docs/first-boot.md) — login through first-hour tour  
 - [docs/faq.md](docs/faq.md) — common questions  
-- [docs/keybinds.md](docs/keybinds.md) — Hyprland shortcuts  
+- [docs/keybinds.md](docs/keybinds.md) — Hyprland shortcuts (E-lane map)  
 - [docs/theming.md](docs/theming.md) — theme packs  
 - [docs/security.md](docs/security.md) — immutability, duress off by default  
 - [CHANGELOG.md](CHANGELOG.md) · [README.md](README.md) · `just --list`

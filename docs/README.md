@@ -7,18 +7,19 @@ daily install and use.
 
 | Doc | Description |
 |-----|-------------|
-| [../INSTALL.md](../INSTALL.md) | Atomic `bootc switch` + ISO paths; private GHCR; first hour |
+| [../INSTALL.md](../INSTALL.md) | Variant pick; Atomic rebase vs ISO; private GHCR |
+| [first-boot.md](first-boot.md) | Login → wallpaper/bar/launcher → apps → themes → updates |
 | [../README.md](../README.md) | Product overview, stack, companions, themes |
-| [../CHANGELOG.md](../CHANGELOG.md) | What ships / Unreleased lane reality |
+| [../CHANGELOG.md](../CHANGELOG.md) | What ships / Unreleased lane reality (pending merge) |
 | [faq.md](faq.md) | ≥12 frequent questions |
 
 ## Using the desktop
 
 | Doc | Description |
 |-----|-------------|
-| [keybinds.md](keybinds.md) | Hyprland shortcuts (from skel `bindings.conf`) |
+| [keybinds.md](keybinds.md) | Hyprland shortcuts (E KEYBIND-MAP / skel `bindings.conf`) |
 | [theming.md](theming.md) | 11 themes, GUI/CLI switcher, palette |
-| [cosmic.md](cosmic.md) | COSMIC variant differences |
+| [cosmic.md](cosmic.md) | COSMIC variant; F greeter/session smoke cross-links |
 | [updating.md](updating.md) | `bootc upgrade`, reboot, Flatpak |
 | [troubleshooting.md](troubleshooting.md) | Pull failures, black screen, Walker, wallpaper |
 

@@ -15,12 +15,14 @@ sudo bootc switch ghcr.io/neon798/hyprwave:latest && sudo systemctl reboot
 sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest && sudo systemctl reboot
 ```
 
-Full guide (ISO, first login, updates): **[INSTALL.md](INSTALL.md)**.
+Full guide (variant pick, ISO vs rebase, first login): **[INSTALL.md](INSTALL.md)** ·
+**[docs/first-boot.md](docs/first-boot.md)**.
 
 > **Registry note:** GHCR packages may be **private** until visibility is fixed. If
 > `bootc switch` / `podman pull` returns 403, see INSTALL or build from source.
 
 **Docs:** [Handbook index](docs/README.md) ·
+[First boot](docs/first-boot.md) ·
 [FAQ](docs/faq.md) ·
 [Install](INSTALL.md) ·
 [Updating](docs/updating.md) ·
