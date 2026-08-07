@@ -14,3 +14,19 @@
 - Expanded `validate.sh` (THREAT-MODEL, no `*.sha256`, no default required pam_duress, `--verify` fixtures).
 - Commits: e7ccce3, a348bb4, 16535c9 (+ DONE meta).
 - `bash planning/integration/d-duress/validate.sh` → PASSED.
+
+## 2026-08-07 — D-W1-002
+
+- Negative-path validate, operator FAQ, packaging dry-run proof on `lane/d-duress`.
+- Added `planning/integration/d-duress/FAQ.md` (13 Q&As: scope, off-by-default, signing, greeter/hyprlock, lockout, bootc, residual vs LUKS, templates, validate, no CI enable).
+- Added `planning/integration/d-duress/OPERATOR-RUNBOOK.md` (ordered enable → VM test → disable/rollback; links DRILL.md).
+- Expanded `validate.sh`: required FAQ/runbook paths; content guards; **negative fixtures** in temp dirs (planted `*.sha256`, `auth required pam_duress`, missing THREAT-MODEL, build-hook pam.d write); cleanup via trap + early rm.
+- **Snippet PAM audit (no build-hook writes to `/etc/pam.d`):**
+  - `build.sh.snippet`: only installs under `/usr/share/hyprwave/duress`, `/usr/bin`, empty `/etc/duress.d`; `/etc/pam.d/*` appear only in trailing comments (“Explicitly do NOT touch”).
+  - `Containerfile.snippet`: stages binaries via DESTROOT; comments forbid sed/cp into `/etc/pam.d/*`.
+  - `build_files/duress/pam.d/*.snippet`: documentation/reference only (not installed as live stacks).
+  - validate re-asserts no active (non-comment) `/etc/pam.d` paths in build/Containerfile snippets.
+- Confirmed `build-duress.sh` still echoes `pin=` + full 40-char `PAM_DURESS_COMMIT` and `date=` UTC; dry-run setup still green in validate.
+- No new mild template/flag needed (existing severity table accurate).
+- Commits: 7de27a9, f758537, 7d35112 (+ DONE meta).
+- `bash planning/integration/d-duress/validate.sh` → PASSED.
