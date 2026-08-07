@@ -1,0 +1,31 @@
+font-family = JetBrains Mono
+font-size = 12
+
+# Retro Arcade palette
+background = 0f0f23
+foreground = e0e0ff
+cursor-color = 00ff9f
+cursor-text = 0f0f23
+selection-background = ffea00
+selection-foreground = 0f0f23
+
+# 16-color ANSI
+palette = 0=#1a1a2e
+palette = 1=#ff3366
+palette = 2=#00ff9f
+palette = 3=#ffea00
+palette = 4=#00ffff
+palette = 5=#aa66ff
+palette = 6=#00ffff
+palette = 7=#e0e0ff
+palette = 8=#404080
+palette = 9=#ff5d8a
+palette = 10=#8affc1
+palette = 11=#ffe98a
+palette = 12=#8f8fff
+palette = 13=#d8a4ff
+palette = 14=#36f9f6
+palette = 15=#ffffff
+
+background-opacity = 0.92
+background-blur-radius = 12

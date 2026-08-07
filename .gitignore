@@ -2,3 +2,8 @@ cosign.key
 _build_*
 output
 _build-*/**
+disk.qcow2
+AI cowork.md
+GROK.md
+__pycache__/
+planning/bin/themegen/target/

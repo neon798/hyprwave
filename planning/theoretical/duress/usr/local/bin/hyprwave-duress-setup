@@ -1,0 +1,54 @@
+#!/bin/bash
+# Theoretical user-facing tool to configure duress password(s)
+# This would be installed system-wide and run by the user after first login.
+
+set -euo pipefail
+
+echo "Hyprwave Duress Password Setup (theoretical)"
+echo "============================================"
+echo
+echo "You will be asked for your NORMAL password (for verification)"
+echo "and then one or more DURESS passwords."
+echo
+echo "When a duress password is used at login or hyprlock:"
+echo " - The system will appear to log in normally."
+echo " - Sensitive files will be securely wiped in the background."
+echo " - You can add your own scripts in ~/.duress.d/"
+echo
+
+read -s -p "Enter your current (normal) password to verify: " NORMAL_PW
+echo
+
+# In real impl: verify against pam or current password
+# For now, just proceed.
+
+echo
+read -s -p "Enter NEW duress password (will not be echoed): " DURESS1
+echo
+read -s -p "Confirm duress password: " DURESS2
+echo
+
+if [ "$DURESS1" != "$DURESS2" ]; then
+    echo "Passwords do not match. Aborting."
+    exit 1
+fi
+
+mkdir -p "$HOME/.duress.d"
+
+# In real tool: use the pam-duress tooling to register the password + sign the script
+# Example placeholder:
+cat > "$HOME/.duress.d/00-personal-wipe.sh" <<'EOF'
+#!/bin/bash
+# Your personal additional wipe actions go here
+echo "Personal duress wipe running..."
+# e.g. rm -rf ~/super-secret-project
+EOF
+
+chmod +x "$HOME/.duress.d/00-personal-wipe.sh"
+
+echo
+echo "Duress password registered (theoretical)."
+echo "In the real implementation this would call the pam-duress registration."
+echo "Test carefully in a safe environment."
+echo
+echo "You can add more scripts to ~/.duress.d/"

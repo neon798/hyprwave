@@ -1,0 +1,8 @@
+(
+    name: "Arcade Rain",
+    dark: (
+        accent: ( red: 0, green: 224, blue: 255 ),
+        background: ( red: 10, green: 14, blue: 24 ),
+        foreground: ( red: 232, green: 224, blue: 255 ),
+    ),
+)

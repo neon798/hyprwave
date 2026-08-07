@@ -21,6 +21,7 @@ on:
     paths:
       - './disk_config/disk.toml'
       - './disk_config/iso.toml'
+      - './disk_config/iso-cosmic.toml'
       - './.github/workflows/build-disk.yml'
 
 env:
@@ -40,7 +41,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        disk-type: ["qcow2", "anaconda-iso"]
+        include:
+          - de: hyprland
+            disk-type: qcow2
+            config: ./disk_config/disk.toml
+          - de: hyprland
+            disk-type: anaconda-iso
+            config: ./disk_config/iso.toml
+          - de: cosmic
+            disk-type: anaconda-iso
+            config: ./disk_config/iso-cosmic.toml
     permissions:
       contents: read
       packages: read
@@ -56,6 +66,10 @@ jobs:
           # Lowercase the image uri
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY,,}" >> ${GITHUB_ENV}
           echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
+          # Suffix for cosmic variant (hyprland stays bare name).
+          if [[ "${{ matrix.de }}" == "cosmic" ]]; then
+            echo "IMAGE_NAME=${IMAGE_NAME,,}-cosmic" >> ${GITHUB_ENV}
+          fi
           echo "DISK_TYPE=${DISK_TYPE}" >> ${GITHUB_ENV}
           echo "USER_UID=${USER_UID}" >> ${GITHUB_ENV}
           echo "USER_GID=${USER_GID}" >> ${GITHUB_ENV}
@@ -82,7 +96,7 @@ jobs:
         uses: osbuild/bootc-image-builder-action@main
         with:
           builder-image: ${{ env.BIB_IMAGE }}
-          config-file: ${{ matrix.disk-type == 'anaconda-iso' && './disk_config/iso.toml' || './disk_config/disk.toml' }}
+          config-file: ${{ matrix.config }}
           image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DEFAULT_TAG }}
           chown: ${{ env.USER_UID }}:${{ env.USER_GID }}
           types: ${{ matrix.disk-type }}

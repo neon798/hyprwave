@@ -1,0 +1,8 @@
+(
+    name: "Cozy Harvest",
+    dark: (
+        accent: ( red: 139, green: 195, blue: 74 ),
+        background: ( red: 58, green: 50, blue: 40 ),
+        foreground: ( red: 245, green: 232, blue: 199 ),
+    ),
+)

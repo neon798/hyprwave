@@ -1,0 +1,8 @@
+(
+    name: "Vaporwave",
+    dark: (
+        accent: ( red: 255, green: 113, blue: 206 ),
+        background: ( red: 42, green: 26, blue: 61 ),
+        foreground: ( red: 240, green: 208, blue: 255 ),
+    ),
+)

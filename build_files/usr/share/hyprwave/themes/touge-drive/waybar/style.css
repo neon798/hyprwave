@@ -1,0 +1,123 @@
+/* Touge Drive Waybar */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono", "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "FontAwesome", "Noto Sans", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(12,12,20,0.96);
+    color: #d8d8e8;
+    border-bottom: 2px solid #e63946;
+}
+
+#workspaces {
+    margin: 2px 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #404080;
+    border-radius: 4px;
+}
+
+#workspaces button.active {
+    color: #e63946;
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom: 2px solid #e63946;
+}
+
+#workspaces button.urgent {
+    color: #e63946;
+    background: rgba(255, 0, 255, 0.12);
+}
+
+#workspaces button:hover {
+    color: #f4a261;
+    background: rgba(0, 240, 255, 0.08);
+}
+
+#window {
+    margin: 2px 8px;
+    color: #8080aa;
+}
+
+#clock,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#bluetooth,
+#tray {
+    margin: 2px 4px;
+    padding: 0 8px;
+    color: #d8d8e8;
+}
+
+#clock {
+    color: #f4a261;
+    font-weight: bold;
+}
+
+#cpu {
+    color: #00b4d8;
+}
+
+#cpu.warning {
+    color: #f4a261;
+}
+
+#cpu.critical {
+    color: #e63946;
+}
+
+#memory {
+    color: #e63946;
+}
+
+#network {
+    color: #00b4d8;
+}
+#network.wifi,
+#network.ethernet,
+#network.linked {
+    color: #00b4d8;
+}
+
+#network.disconnected,
+#network.disabled {
+    color: #4c566a;
+}
+
+
+#pulseaudio {
+    color: #d8d8e8;
+}
+
+#pulseaudio.muted {
+    color: #4c566a;
+}
+
+#bluetooth {
+    color: #00b4d8;
+}
+
+#tray {
+    padding: 0 4px;
+}
+
+#tray menu {
+    background: rgba(12,12,20,0.95);
+    color: #d8d8e8;
+    border: 1px solid #e63946;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}

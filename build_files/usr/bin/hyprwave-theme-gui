@@ -1,0 +1,211 @@
+#!/usr/bin/env python3
+"""Hyprwave Themes — beginner-friendly GUI switcher (GTK4).
+
+Lists packs from /usr/share/hyprwave/themes and runs `hyprwave-theme set <name>`.
+Works on Hyprland and COSMIC (no terminal window).
+"""
+
+from __future__ import annotations
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+import gi
+
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+from gi.repository import Adw, GLib, Gtk  # noqa: E402
+
+THEMES_DIR = Path("/usr/share/hyprwave/themes")
+INDIRECTION = Path.home() / ".config/hyprwave/theme"
+
+# One-line vibe labels (shown under the theme id)
+BLURBS = {
+    "hyprwave": "Classic synthwave (default)",
+    "retro-arcade": "80s arcade cabinets",
+    "cozy-harvest": "Warm earthy farm life",
+    "fjord-dark": "Clean cold nordic",
+    "touge-drive": "Night mountain racing",
+    "vaporwave": "80s/90s vapor",
+    "highway-haze": "Misty neon drive",
+    "lunar-pulse": "Dreamy moonlit",
+    "glitch-horizon": "Sharp digital glitch",
+    "arcade-rain": "Rainy neon arcade",
+    "verdant-haven": "Immersive nature",
+}
+
+
+def list_theme_names() -> list[str]:
+    if not THEMES_DIR.is_dir():
+        return []
+    return sorted(p.name for p in THEMES_DIR.iterdir() if p.is_dir())
+
+
+def current_theme() -> str:
+    try:
+        if INDIRECTION.is_symlink():
+            return Path(os.path.realpath(INDIRECTION)).name
+    except OSError:
+        pass
+    return "hyprwave"
+
+
+def apply_theme(name: str) -> tuple[bool, str]:
+    try:
+        r = subprocess.run(
+            ["hyprwave-theme", "set", name],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        out = (r.stdout or "") + (r.stderr or "")
+        if r.returncode == 0:
+            return True, out.strip() or f"Switched to {name}"
+        return False, out.strip() or f"Failed to switch to {name} (exit {r.returncode})"
+    except FileNotFoundError:
+        return False, "hyprwave-theme not found on PATH"
+    except subprocess.TimeoutExpired:
+        return False, "Theme switch timed out"
+    except Exception as e:  # noqa: BLE001
+        return False, str(e)
+
+
+class ThemeWindow(Adw.ApplicationWindow):
+    def __init__(self, app: Adw.Application) -> None:
+        super().__init__(application=app, title="Hyprwave Themes")
+        self.set_default_size(420, 520)
+        self._selected = current_theme()
+        self._rows: dict[str, Adw.ActionRow] = {}
+
+        toolbar = Adw.ToolbarView()
+        header = Adw.HeaderBar()
+        header.set_title_widget(Gtk.Label(label="Hyprwave Themes"))
+        toolbar.add_top_bar(header)
+
+        outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        outer.set_margin_top(12)
+        outer.set_margin_bottom(12)
+        outer.set_margin_start(16)
+        outer.set_margin_end(16)
+
+        intro = Gtk.Label(
+            label="Pick a look for your desktop. Changes apply right away.",
+            wrap=True,
+            xalign=0.0,
+        )
+        intro.add_css_class("dim-label")
+        outer.append(intro)
+
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_vexpand(True)
+        scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+
+        self._list = Gtk.ListBox()
+        self._list.set_selection_mode(Gtk.SelectionMode.SINGLE)
+        self._list.add_css_class("boxed-list")
+        self._list.connect("row-selected", self._on_row_selected)
+
+        cur = current_theme()
+        for name in list_theme_names():
+            row = Adw.ActionRow()
+            row.set_title(name)
+            row.set_subtitle(BLURBS.get(name, "Hyprwave theme pack"))
+            row.set_activatable(True)
+            if name == cur:
+                check = Gtk.Image.new_from_icon_name("object-select-symbolic")
+                check.set_valign(Gtk.Align.CENTER)
+                row.add_suffix(check)
+                row.set_subtitle(f"{BLURBS.get(name, 'Hyprwave theme pack')}  ·  active")
+            self._list.append(row)
+            self._rows[name] = row
+            # store name on row
+            row._theme_name = name  # type: ignore[attr-defined]
+
+        scroll.set_child(self._list)
+        outer.append(scroll)
+
+        self._status = Gtk.Label(label="", wrap=True, xalign=0.0)
+        self._status.add_css_class("dim-label")
+        outer.append(self._status)
+
+        buttons = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        buttons.set_halign(Gtk.Align.END)
+
+        cancel = Gtk.Button(label="Close")
+        cancel.connect("clicked", lambda *_: self.close())
+        buttons.append(cancel)
+
+        self._apply_btn = Gtk.Button(label="Apply theme")
+        self._apply_btn.add_css_class("suggested-action")
+        self._apply_btn.connect("clicked", self._on_apply)
+        buttons.append(self._apply_btn)
+
+        outer.append(buttons)
+        toolbar.set_content(outer)
+        self.set_content(toolbar)
+
+        # Pre-select current
+        for i, name in enumerate(list_theme_names()):
+            if name == cur:
+                row = self._list.get_row_at_index(i)
+                if row is not None:
+                    self._list.select_row(row)
+                break
+
+    def _on_row_selected(self, _list: Gtk.ListBox, row: Gtk.ListBoxRow | None) -> None:
+        if row is None:
+            return
+        name = getattr(row, "_theme_name", None)
+        if name:
+            self._selected = name
+            self._status.set_text(f"Selected: {name}")
+
+    def _on_apply(self, *_args) -> None:
+        name = self._selected
+        if not name:
+            self._status.set_text("Select a theme first.")
+            return
+        self._apply_btn.set_sensitive(False)
+        self._status.set_text(f"Applying {name}…")
+
+        def work() -> bool:
+            ok, msg = apply_theme(name)
+            GLib.idle_add(self._apply_done, ok, name, msg)
+            return False
+
+        # run apply off the UI thread slightly so the label paints
+        GLib.timeout_add(50, work)
+
+    def _apply_done(self, ok: bool, name: str, msg: str) -> bool:
+        self._apply_btn.set_sensitive(True)
+        if ok:
+            self._status.set_text(f"✓ Applied “{name}”. New terminal windows pick up colors.")
+            # brief success then close so it feels like a settings action
+            GLib.timeout_add(900, self.close)
+        else:
+            self._status.set_text(f"Could not apply theme: {msg}")
+        return False
+
+
+class ThemeApp(Adw.Application):
+    def __init__(self) -> None:
+        super().__init__(application_id="dev.hyprwave.ThemeSwitcher")
+        self.connect("activate", self._on_activate)
+
+    def _on_activate(self, app: Adw.Application) -> None:
+        win = ThemeWindow(app)
+        win.present()
+
+
+def main() -> int:
+    # Prefer dark chrome to match Hyprwave
+    Adw.init()
+    app = ThemeApp()
+    return app.run(sys.argv)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,15 @@
+[package]
+name = "themegen"
+version = "0.1.0"
+edition = "2021"
+
+# Pinned to the libcosmic rev from cosmic-settings epoch-1.1.0's Cargo.lock so
+# the generated schema version (v1) matches what Fedora's COSMIC 1.1 reads.
+# libcosmic master already writes v2, which the installed desktop ignores.
+[dependencies]
+cosmic-theme = { git = "https://github.com/pop-os/libcosmic", rev = "f0f68933f1552857e2165fc0fa953228107bddef" }
+cosmic-config = { git = "https://github.com/pop-os/libcosmic", rev = "f0f68933f1552857e2165fc0fa953228107bddef" }
+palette = "0.7"
+
+[profile.release]
+debug = false

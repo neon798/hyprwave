@@ -1,0 +1,8 @@
+(
+    name: "Verdant Haven",
+    dark: (
+        accent: ( red: 45, green: 90, blue: 39 ),
+        background: ( red: 31, green: 42, blue: 31 ),
+        foreground: ( red: 232, green: 228, blue: 217 ),
+    ),
+)

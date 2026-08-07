@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Hyprwave TUI
+Comment=Universal Updater & One-Click Installer
+Exec=ghostty -e hyprwave-tui
+Icon=hyprwave
+Terminal=false
+Type=Application
+Categories=System;Settings;
+StartupNotify=true
+Keywords=update;install;flatpak;bootc;steam;tailscale;

@@ -1,0 +1,26 @@
+/* Lunar Pulse Walker */
+@define-color window_bg_color #121a2e;
+@define-color theme_fg_color #d4d8f0;
+@define-color accent_bg_color #7ec8d9;
+@define-color lavender #a89ed6;
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: @theme_fg_color;
+}
+
+.box-wrapper {
+  background: alpha(@window_bg_color, 0.92);
+  padding: 20px;
+  border: 1px solid @accent_bg_color;
+}
+
+child:selected .item-box * {
+  color: @lavender;
+}
+
+.keybind-hints {
+  background: @window_bg_color;
+}

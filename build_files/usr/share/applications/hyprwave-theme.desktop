@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Hyprwave Themes
+GenericName=Theme Switcher
+Comment=Switch your Hyprwave desktop look with one click
+Exec=hyprwave-theme-gui
+Icon=preferences-desktop-theme
+Type=Application
+Categories=Settings;DesktopSettings;Utility;
+Keywords=theme;appearance;hyprwave;wallpaper;color;look;
+StartupNotify=true
+Terminal=false
+StartupWMClass=dev.hyprwave.ThemeSwitcher

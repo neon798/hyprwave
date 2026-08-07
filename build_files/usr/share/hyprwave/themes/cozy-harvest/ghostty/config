@@ -1,0 +1,27 @@
+font-family = JetBrains Mono
+font-size = 12
+
+# Cozy Harvest palette
+background = 3a3228
+foreground = f5e8c7
+cursor-color = 8bc34a
+cursor-text = 3a3228
+selection-background = ff9800
+selection-foreground = 3a3228
+
+palette = 0=#2a2520
+palette = 1=#e91e63
+palette = 2=#8bc34a
+palette = 3=#ff9800
+palette = 4=#4fc3f7
+palette = 5=#a1887f
+palette = 6=#8bc34a
+palette = 7=#f5e8c7
+palette = 8=#5d5348
+palette = 9=#f06292
+palette = 10=#aed581
+palette = 11=#ffb74d
+palette = 12=#81d4fa
+palette = 13=#bcaaa4
+palette = 14=#4dd0e1
+palette = 15=#fff8e1

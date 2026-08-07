@@ -1,0 +1,8 @@
+(
+    name: "Glitch Horizon",
+    dark: (
+        accent: ( red: 163, green: 255, blue: 61 ),
+        background: ( red: 8, green: 6, blue: 12 ),
+        foreground: ( red: 232, green: 255, blue: 224 ),
+    ),
+)

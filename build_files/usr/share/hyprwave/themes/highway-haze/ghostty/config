@@ -1,0 +1,31 @@
+font-family = JetBrains Mono
+font-size = 12
+
+# Highway Haze palette
+background = 0a0f1c
+foreground = c8d4e8
+cursor-color = c97a9e
+cursor-text = 0a0f1c
+selection-background = 6fa8b8
+selection-foreground = 0a0f1c
+
+# 16-color ANSI
+palette = 0=#1a2433
+palette = 1=#c97a9e
+palette = 2=#6fa8b8
+palette = 3=#8a9ab0
+palette = 4=#5e6a8a
+palette = 5=#7a8ab0
+palette = 6=#6fa8b8
+palette = 7=#c8d4e8
+palette = 8=#2a3644
+palette = 9=#d89ab0
+palette = 10=#8fb8c8
+palette = 11=#a0b0c0
+palette = 12=#7a8ab0
+palette = 13=#9aacc0
+palette = 14=#8fb8c8
+palette = 15=#e0e8f0
+
+background-opacity = 0.90
+background-blur-radius = 8

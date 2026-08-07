@@ -1,0 +1,23 @@
+font-family = JetBrains Mono
+font-size = 12
+background = 2a1a3d
+foreground = f0d0ff
+cursor-color = ff71ce
+palette = 0=#1a0f2e
+palette = 1=#ff71ce
+palette = 2=#01cdfe
+palette = 3=#fffb96
+palette = 4=#7b68ee
+palette = 5=#b967ff
+palette = 6=#01cdfe
+palette = 7=#f0d0ff
+palette = 8=#241540
+palette = 9=#ff85f3
+palette = 10=#01f2ff
+palette = 11=#ffffb1
+palette = 12=#917bff
+palette = 13=#da7aff
+palette = 14=#01f2ff
+palette = 15=#fff5ff
+background-opacity = 0.9
+background-blur-radius = 15

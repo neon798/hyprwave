@@ -1,0 +1,30 @@
+/* Glitch Horizon Walker — lime frame, magenta selection, hard edges */
+@define-color window_bg_color #08060c;
+@define-color theme_fg_color #e8ffe0;
+@define-color accent_bg_color #ff3d9e;
+@define-color acid_lime #a3ff3d;
+@define-color electric_cyan #00f0ff;
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: @theme_fg_color;
+}
+
+.box-wrapper {
+  background: alpha(@window_bg_color, 0.94);
+  padding: 16px;
+  border: 3px solid @acid_lime;
+  border-radius: 0;
+}
+
+child:selected .item-box * {
+  color: @acid_lime;
+  background: alpha(@accent_bg_color, 0.18);
+}
+
+.keybind-hints {
+  background: @window_bg_color;
+  color: @electric_cyan;
+}

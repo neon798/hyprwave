@@ -1,0 +1,123 @@
+/* Arcade Rain — wet neon bar (cyan chrome, pink active, coin-yellow spark) */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono", "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "FontAwesome", "Noto Sans", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(10, 14, 24, 0.92);
+    color: #e8e0ff;
+    border-bottom: 2px solid #00e0ff;
+}
+
+#workspaces {
+    margin: 2px 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #3a4860;
+    border-radius: 6px;
+}
+
+#workspaces button.active {
+    color: #ff4d9e;
+    background: rgba(255, 77, 158, 0.14);
+    border-bottom: 2px solid #ff4d9e;
+}
+
+#workspaces button.urgent {
+    color: #ffea5e;
+    background: rgba(255, 234, 94, 0.12);
+}
+
+#workspaces button:hover {
+    color: #00e0ff;
+    background: rgba(0, 224, 255, 0.10);
+}
+
+#window {
+    margin: 2px 8px;
+    color: #7a88a8;
+}
+
+#clock,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#bluetooth,
+#tray {
+    margin: 2px 4px;
+    padding: 0 8px;
+    color: #e8e0ff;
+}
+
+#clock {
+    color: #ffea5e;
+    font-weight: bold;
+}
+
+#cpu {
+    color: #ff4d9e;
+}
+
+#cpu.warning {
+    color: #ffea5e;
+}
+
+#cpu.critical {
+    color: #ff2d6a;
+}
+
+#memory {
+    color: #00e0ff;
+}
+
+#network {
+    color: #00e0ff;
+}
+
+#network.wifi,
+#network.ethernet,
+#network.linked {
+    color: #00e0ff;
+}
+
+#network.disconnected,
+#network.disabled {
+    color: #3a4860;
+}
+
+#pulseaudio {
+    color: #e8e0ff;
+}
+
+#pulseaudio.muted {
+    color: #3a4860;
+}
+
+#bluetooth {
+    color: #ff4d9e;
+}
+
+#tray {
+    padding: 0 4px;
+}
+
+#tray menu {
+    background: rgba(10, 14, 24, 0.95);
+    color: #e8e0ff;
+    border: 1px solid #00e0ff;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}

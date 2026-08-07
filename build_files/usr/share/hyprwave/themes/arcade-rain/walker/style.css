@@ -1,0 +1,29 @@
+/* Arcade Rain Walker — cyan frame, pink selection, wet glass */
+@define-color window_bg_color #0a0e18;
+@define-color theme_fg_color #e8e0ff;
+@define-color accent_bg_color #ff4d9e;
+@define-color neon_cyan #00e0ff;
+@define-color coin_yellow #ffea5e;
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: @theme_fg_color;
+}
+
+.box-wrapper {
+  background: alpha(@window_bg_color, 0.92);
+  padding: 20px;
+  border: 2px solid @neon_cyan;
+  border-radius: 10px;
+}
+
+child:selected .item-box * {
+  color: @accent_bg_color;
+}
+
+.keybind-hints {
+  background: @window_bg_color;
+  color: @coin_yellow;
+}

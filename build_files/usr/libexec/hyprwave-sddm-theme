@@ -1,0 +1,57 @@
+#!/usr/bin/bash
+# Apply a Hyprwave theme pack's SDDM colors/wallpaper into the switchable
+# copy under /etc/sddm/themes/hyprwave/ (bootc keeps /usr read-only).
+# Intended to run via pkexec from hyprwave-theme.
+set -euo pipefail
+
+if [[ $EUID -ne 0 ]]; then
+	echo "hyprwave-sddm-theme: must run as root (use pkexec)" >&2
+	exit 1
+fi
+
+if [[ $# -ne 1 || -z "${1:-}" ]]; then
+	echo "Usage: hyprwave-sddm-theme <theme-name>" >&2
+	exit 1
+fi
+
+name="$1"
+if [[ "$name" == */* ]] || [[ "$name" != "$(basename "$name")" ]]; then
+	echo "hyprwave-sddm-theme: invalid theme name '$name'" >&2
+	exit 1
+fi
+
+theme_conf="/usr/share/hyprwave/themes/${name}/sddm/theme.conf"
+if [[ ! -f "$theme_conf" ]]; then
+	echo "hyprwave-sddm-theme: no SDDM theme.conf for '$name' at $theme_conf" >&2
+	exit 1
+fi
+
+dest_dir="/etc/sddm/themes/hyprwave"
+install -d "$dest_dir"
+cp "$theme_conf" "${dest_dir}/theme.conf"
+
+wp_base="/usr/share/hyprwave/themes/${name}/wallpapers"
+wp=""
+# Prefer 2560x1440 (covers wallpaper-2560x1440.jpg and wallpaper-<scene>-2560x1440.jpg)
+for f in "${wp_base}"/wallpaper*-2560x1440.jpg; do
+	if [[ -r "$f" ]]; then
+		wp="$f"
+		break
+	fi
+done
+if [[ -z "$wp" && -r "${wp_base}/default.png" ]]; then
+	wp="${wp_base}/default.png"
+fi
+if [[ -z "$wp" ]]; then
+	for f in "${wp_base}"/*; do
+		if [[ -r "$f" ]]; then
+			wp="$f"
+			break
+		fi
+	done
+fi
+if [[ -z "$wp" || ! -r "$wp" ]]; then
+	echo "hyprwave-sddm-theme: no readable wallpaper for '$name' under $wp_base" >&2
+	exit 1
+fi
+cp "$wp" "${dest_dir}/background.png"

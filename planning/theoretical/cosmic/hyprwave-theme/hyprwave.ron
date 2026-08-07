@@ -1,0 +1,81 @@
+// Hyprwave Theme for COSMIC Desktop
+// ==================================
+//
+// THEORETICAL / PLANNING EXAMPLE ONLY
+//
+// DO NOT USE THIS FILE IN ANY BUILD OR COPY IT TO build_files/
+// WITHOUT EXPLICIT CLAUDE HANDOFF VERIFICATION.
+//
+// This is a synthesized .ron theme using the official Hyprwave palette:
+//   bg      = #15052e  (deep purple)
+//   fg      = #e0e0ff  (light lavender)
+//   pink    = #ff2d95  (primary accent)
+//   cyan    = #00f0ff  (highlight)
+//   purple  = #b967ff  (secondary)
+//
+// Goal: Make this the primary/default theme on the hyprwave-cosmic variant.
+//
+// Structure based on public community examples (Catppuccin/cosmic-desktop,
+// cosmic-themes.org, etc.). Exact keys may differ in the version of cosmic
+// shipped in Fedora at build time — validation required.
+
+(
+    name: "Hyprwave",
+    dark: (
+        accent: (
+            red: 255,
+            green: 45,
+            blue: 149,   // #ff2d95 pink as main accent
+        ),
+        background: (
+            red: 21,
+            green: 5,
+            blue: 46,    // #15052e
+        ),
+        foreground: (
+            red: 224,
+            green: 224,
+            blue: 255,   // #e0e0ff
+        ),
+        // Additional palette hints (approximate; real themes use more fields)
+        pink: (
+            red: 255,
+            green: 45,
+            blue: 149,
+        ),
+        cyan: (
+            red: 0,
+            green: 240,
+            blue: 255,
+        ),
+        purple: (
+            red: 185,
+            green: 103,
+            blue: 255,
+        ),
+    ),
+    // Light variant could be a desaturated or inverted version later.
+    // For v1 we focus on a strong dark synthwave default.
+    light: (
+        // Placeholder — would be defined in a full theme
+        accent: (
+            red: 255,
+            green: 45,
+            blue: 149,
+        ),
+    ),
+    // Font hint (COSMIC may respect system fonts; JetBrains Mono is already
+    // installed for Hyprwave).
+    font: "JetBrains Mono",
+    // Optional metadata
+    author: "Hyprwave",
+    description: "Synthwave 8-bit arcade palette for Hyprwave (COSMIC variant)",
+)
+
+// Usage notes (theoretical):
+// 1. Install to /usr/share/cosmic/cosmic-themes/hyprwave/hyprwave.ron
+// 2. In /etc/skel for cosmic users, provide a default cosmic appearance config
+//    that imports/selects this theme on first login.
+// 3. Also copy the Hyprwave wallpaper so the desktop + greeter match.
+//
+// This file alone does not constitute a complete implementation.

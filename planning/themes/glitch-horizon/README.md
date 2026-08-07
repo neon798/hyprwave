@@ -1,0 +1,2 @@
+# glitch-horizon
+Theme pack moved to build_files/usr/share/hyprwave/themes/glitch-horizon/ for implementation.

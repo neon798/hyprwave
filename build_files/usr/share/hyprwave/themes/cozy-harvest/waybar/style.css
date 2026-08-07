@@ -1,0 +1,123 @@
+/* Cozy Harvest Waybar */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono", "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "FontAwesome", "Noto Sans", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(58,50,40,0.92);
+    color: #f5e8c7;
+    border-bottom: 2px solid #8bc34a;
+}
+
+#workspaces {
+    margin: 2px 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #404080;
+    border-radius: 4px;
+}
+
+#workspaces button.active {
+    color: #8bc34a;
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom: 2px solid #8bc34a;
+}
+
+#workspaces button.urgent {
+    color: #e91e63;
+    background: rgba(255, 0, 255, 0.12);
+}
+
+#workspaces button:hover {
+    color: #ff9800;
+    background: rgba(0, 240, 255, 0.08);
+}
+
+#window {
+    margin: 2px 8px;
+    color: #8080aa;
+}
+
+#clock,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#bluetooth,
+#tray {
+    margin: 2px 4px;
+    padding: 0 8px;
+    color: #f5e8c7;
+}
+
+#clock {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+#cpu {
+    color: #8bc34a;
+}
+
+#cpu.warning {
+    color: #ff9800;
+}
+
+#cpu.critical {
+    color: #e91e63;
+}
+
+#memory {
+    color: #a1887f;
+}
+
+#network {
+    color: #4fc3f7;
+}
+#network.wifi,
+#network.ethernet,
+#network.linked {
+    color: #4fc3f7;
+}
+
+#network.disconnected,
+#network.disabled {
+    color: #a1887f;
+}
+
+
+#pulseaudio {
+    color: #f5e8c7;
+}
+
+#pulseaudio.muted {
+    color: #a1887f;
+}
+
+#bluetooth {
+    color: #4fc3f7;
+}
+
+#tray {
+    padding: 0 4px;
+}
+
+#tray menu {
+    background: rgba(58,50,40,0.95);
+    color: #f5e8c7;
+    border: 1px solid #8bc34a;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}

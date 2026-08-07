@@ -1,0 +1,5 @@
+@define-color window_bg_color #2a1a3d; @define-color theme_fg_color #f0d0ff; @define-color accent_bg_color #ff71ce;
+@define-color neon_teal #01cdfe;
+* { font-family: "JetBrains Mono"; font-size: 18px; color: @theme_fg_color; }
+.box-wrapper { background: alpha(@window_bg_color, 0.92); border: 2px solid @neon_teal; }
+child:selected .item-box * { color: @neon_teal; }

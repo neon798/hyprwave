@@ -50,27 +50,28 @@
         "format": "RAM {percentage:2}%"
     },
     "network": {
-        "format-wifi": "{icon} {signalStrength}%",
-        "format-ethernet": "󰈀",
-        "format-disconnected": "",
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": " eth",
+        "format-disconnected": " offline",
+        "format-linked": "",
         "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": "Wired",
-        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤨"],
+        "tooltip-format-ethernet": "{ifname}: wired",
+        "tooltip-format-disconnected": "Disconnected",
         "on-click": "nm-connection-editor"
     },
     "pulseaudio": {
         "format": "{icon} {volume:2}%",
-        "format-muted": "󰝟 Muted",
+        "format-muted": " muted",
         "format-icons": {
-            "default": ["󰕿", "󰖀", "󰕾"]
+            "default": ["", "", ""]
         },
         "on-click": "pavucontrol",
         "scroll-step": 5
     },
     "bluetooth": {
-        "format": "󰂯",
+        "format": "",
         "format-disabled": "",
-        "format-connected": "󰂯 {num_connections}",
+        "format-connected": " {num_connections}",
         "on-click": "blueman-manager"
     },
     "tray": {

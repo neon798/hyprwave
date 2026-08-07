@@ -1,0 +1,8 @@
+(
+    name: "Lunar Pulse",
+    dark: (
+        accent: ( red: 126, green: 200, blue: 217 ),
+        background: ( red: 18, green: 26, blue: 46 ),
+        foreground: ( red: 212, green: 216, blue: 240 ),
+    ),
+)

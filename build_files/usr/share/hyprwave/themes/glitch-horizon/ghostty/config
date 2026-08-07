@@ -1,0 +1,28 @@
+# Glitch Horizon — terminal under corruption
+background = 08060c
+foreground = e8ffe0
+cursor-color = a3ff3d
+cursor-text = 08060c
+selection-background = a3ff3d
+selection-foreground = 08060c
+
+# 16-color ANSI (lime primary, magenta secondary, cyan glitch)
+palette = 0=#121018
+palette = 1=#ff3d9e
+palette = 2=#a3ff3d
+palette = 3=#00f0ff
+palette = 4=#7a5a9a
+palette = 5=#c85a9a
+palette = 6=#00f0ff
+palette = 7=#e8ffe0
+palette = 8=#252033
+palette = 9=#ff6db0
+palette = 10=#c8ff6d
+palette = 11=#4dffff
+palette = 12=#9a7ab8
+palette = 13=#e07ab8
+palette = 14=#4dffff
+palette = 15=#f0ffe8
+
+background-opacity = 0.92
+background-blur-radius = 2

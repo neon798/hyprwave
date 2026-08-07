@@ -1,0 +1,31 @@
+font-family = JetBrains Mono
+font-size = 12
+
+# Lunar Pulse palette
+background = 121a2e
+foreground = d4d8f0
+cursor-color = 7ec8d9
+cursor-text = 121a2e
+selection-background = a89ed6
+selection-foreground = 121a2e
+
+# 16-color ANSI
+palette = 0=#1c2438
+palette = 1=#a89ed6
+palette = 2=#7ec8d9
+palette = 3=#9dd4e8
+palette = 4=#6a7a9a
+palette = 5=#b0a8d0
+palette = 6=#7ec8d9
+palette = 7=#d4d8f0
+palette = 8=#2a3448
+palette = 9=#c0b0e0
+palette = 10=#90d0e8
+palette = 11=#b0d8f0
+palette = 12=#8a9ab8
+palette = 13=#c8b8e8
+palette = 14=#90d0e8
+palette = 15=#e8ecf8
+
+background-opacity = 0.88
+background-blur-radius = 15

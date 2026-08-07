@@ -1,0 +1,14 @@
+[SddmGreeterTheme]
+Name=Hyprwave
+Description=8-bit arcade synthwave login theme for Hyprwave
+Author=Hyprwave
+Copyright=Hyprwave
+License=MIT
+Type=sddm-theme
+Version=1.0
+Website=https://github.com/neon798/hyprwave
+Screenshot=background.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=
+QtVersion=6

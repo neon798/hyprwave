@@ -1,0 +1,6 @@
+@define-color window_bg_color #3a3228;
+@define-color theme_fg_color #f5e8c7;
+@define-color accent_bg_color #8bc34a;
+* { font-family: "JetBrains Mono", monospace; font-size: 18px; color: @theme_fg_color; }
+.box-wrapper { background: alpha(@window_bg_color, 0.95); border: 2px solid @accent_bg_color; }
+child:selected .item-box * { color: #ff9800; }

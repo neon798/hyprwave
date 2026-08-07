@@ -1,0 +1,28 @@
+# Arcade Rain — rainy cabinet glass
+background = 0a0e18
+foreground = e8e0ff
+cursor-color = 00e0ff
+cursor-text = 0a0e18
+selection-background = ff4d9e
+selection-foreground = 0a0e18
+
+# 16-color ANSI (pink / cyan / coin yellow)
+palette = 0=#12182a
+palette = 1=#ff4d9e
+palette = 2=#00e0ff
+palette = 3=#ffea5e
+palette = 4=#3a5a8a
+palette = 5=#8a5a9a
+palette = 6=#00e0ff
+palette = 7=#e8e0ff
+palette = 8=#2a3348
+palette = 9=#ff7db0
+palette = 10=#5deeff
+palette = 11=#fff27a
+palette = 12=#6a8aa8
+palette = 13=#a87ab8
+palette = 14=#5deeff
+palette = 15=#f4f0ff
+
+background-opacity = 0.88
+background-blur-radius = 14

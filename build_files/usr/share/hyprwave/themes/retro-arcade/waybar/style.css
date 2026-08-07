@@ -1,0 +1,123 @@
+/* Retro Arcade Waybar */
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrains Mono", "Font Awesome 6 Free Solid", "Font Awesome 6 Free", "FontAwesome", "Noto Sans", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(15,15,35,0.95);
+    color: #e0e0ff;
+    border-bottom: 2px solid #00ff9f;
+}
+
+#workspaces {
+    margin: 2px 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #404080;
+    border-radius: 4px;
+}
+
+#workspaces button.active {
+    color: #00ff9f;
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom: 2px solid #00ff9f;
+}
+
+#workspaces button.urgent {
+    color: #ff3366;
+    background: rgba(255, 0, 255, 0.12);
+}
+
+#workspaces button:hover {
+    color: #ffea00;
+    background: rgba(0, 240, 255, 0.08);
+}
+
+#window {
+    margin: 2px 8px;
+    color: #8080aa;
+}
+
+#clock,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#bluetooth,
+#tray {
+    margin: 2px 4px;
+    padding: 0 8px;
+    color: #e0e0ff;
+}
+
+#clock {
+    color: #ffea00;
+    font-weight: bold;
+}
+
+#cpu {
+    color: #ff3366;
+}
+
+#cpu.warning {
+    color: #ffea00;
+}
+
+#cpu.critical {
+    color: #ff3366;
+}
+
+#memory {
+    color: #00ffff;
+}
+
+#network {
+    color: #00ff9f;
+}
+#network.wifi,
+#network.ethernet,
+#network.linked {
+    color: #00ff9f;
+}
+
+#network.disconnected,
+#network.disabled {
+    color: #404080;
+}
+
+
+#pulseaudio {
+    color: #e0e0ff;
+}
+
+#pulseaudio.muted {
+    color: #404080;
+}
+
+#bluetooth {
+    color: #00ff9f;
+}
+
+#tray {
+    padding: 0 4px;
+}
+
+#tray menu {
+    background: rgba(15,15,35,0.95);
+    color: #e0e0ff;
+    border: 1px solid #00ff9f;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}

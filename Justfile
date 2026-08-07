@@ -86,13 +86,14 @@ sudoif command *args:
 #
 
 # Build the image using the specified parameters
-build $target_image=image_name $tag=default_tag:
+build $target_image=image_name $tag=default_tag $de="hyprland":
     #!/usr/bin/env bash
 
     BUILD_ARGS=()
     if [[ -z "$(git status -s)" ]]; then
         BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
     fi
+    BUILD_ARGS+=("--build-arg" "DE=${de}")
 
     podman build \
         "${BUILD_ARGS[@]}" \
@@ -209,6 +210,22 @@ build-raw $target_image=("localhost/" + image_name) $tag=default_tag: && (_build
 [group('Build Virtal Machine Image')]
 build-iso $target_image=("localhost/" + image_name) $tag=default_tag: && (_build-bib target_image tag "iso" "disk_config/iso.toml")
 
+# Build the COSMIC variant container image (DE=cosmic skips the hyprbuilder stage)
+[group('Build Virtal Machine Image')]
+build-cosmic $target_image=(image_name + "-cosmic") $tag=default_tag: (build target_image tag "cosmic")
+
+# Build a QCOW2 for the COSMIC variant.
+[group('Build Virtal Machine Image')]
+build-qcow2-cosmic $target_image=("localhost/" + image_name + "-cosmic") $tag=default_tag: && (_build-bib target_image tag "qcow2" "disk_config/disk.toml")
+
+# Build an ISO for the COSMIC variant.
+[group('Build Virtal Machine Image')]
+build-iso-cosmic $target_image=("localhost/" + image_name + "-cosmic") $tag=default_tag: && (_build-bib target_image tag "iso" "disk_config/iso-cosmic.toml")
+
+# Run VM for the COSMIC qcow2 (builds on demand).
+[group('Run Virtal Machine')]
+run-vm-qcow2-cosmic $target_image=("localhost/" + image_name + "-cosmic") $tag=default_tag: && (_run-vm target_image tag "qcow2" "disk_config/disk.toml")
+
 # Rebuild a QCOW2 virtual machine image
 [group('Build Virtal Machine Image')]
 rebuild-qcow2 $target_image=("localhost/" + image_name) $tag=default_tag: && (_rebuild-bib target_image tag "qcow2" "disk_config/disk.toml")
@@ -292,7 +309,6 @@ spawn-vm rebuild="0" type="qcow2" ram="6G":
       --network-user-mode \
       --vsock=false --pass-ssh-key=false \
       -i ./output/**/*.{{ type }}
-
 
 # Runs shell check on all Bash scripts
 lint:

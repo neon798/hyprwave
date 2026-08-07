@@ -1,0 +1,26 @@
+/* Verdant Haven Walker */
+@define-color window_bg_color #1f2a1f;
+@define-color theme_fg_color #e8e4d9;
+@define-color accent_bg_color #2d5a27;
+@define-color earth_brown #5c4033;
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: @theme_fg_color;
+}
+
+.box-wrapper {
+  background: alpha(@window_bg_color, 0.96);
+  padding: 20px;
+  border: 2px solid @accent_bg_color;
+}
+
+child:selected .item-box * {
+  color: @earth_brown;
+}
+
+.keybind-hints {
+  background: @window_bg_color;
+}

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Hyprwave Assistant
+Comment=Updater, Installer & Knowledge Base
+Exec=ghostty -e hyprwave-assistant
+Icon=hyprwave
+Terminal=false
+Type=Application
+Categories=System;Settings;Utility;
+StartupNotify=true
+Keywords=update;install;knowledge;base;help;assistant;hyprwave;

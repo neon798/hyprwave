@@ -1,0 +1,26 @@
+/* Highway Haze Walker */
+@define-color window_bg_color #0a0f1c;
+@define-color theme_fg_color #c8d4e8;
+@define-color accent_bg_color #c97a9e;
+@define-color haze_cyan #6fa8b8;
+
+* {
+  all: unset;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  color: @theme_fg_color;
+}
+
+.box-wrapper {
+  background: alpha(@window_bg_color, 0.93);
+  padding: 20px;
+  border: 2px solid @accent_bg_color;
+}
+
+child:selected .item-box * {
+  color: @haze_cyan;
+}
+
+.keybind-hints {
+  background: @window_bg_color;
+}

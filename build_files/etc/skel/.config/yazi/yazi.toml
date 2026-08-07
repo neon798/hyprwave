@@ -1,0 +1,8 @@
+# Hyprwave Yazi config. Merged over Yazi's built-in defaults — only overrides here.
+# Full reference: https://yazi-rs.github.io/docs/configuration/yazi
+
+[mgr]
+# Enable mouse support. With "click", the first click hovers an item and clicking
+# the already-hovered item enters a directory / opens a file — i.e. double-click to
+# open. "scroll" lets the wheel move the cursor.
+mouse_events = ["click", "scroll"]

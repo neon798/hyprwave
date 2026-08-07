@@ -1,0 +1,20 @@
+// EXAMPLE ONLY — Theoretical user config fragment for COSMIC
+//
+// This would live (after verified implementation) under
+// /etc/skel/.config/cosmic/ (or the correct path for the cosmic-settings
+// RON files) so that newly created users on hyprwave-cosmic get the
+// Hyprwave theme + sane defaults on first login.
+//
+// DO NOT COPY TO PRODUCTION WITHOUT CLAUDE VERIFICATION.
+
+(
+    // Hypothetical structure — real files use specific component names
+    // such as com.system76.CosmicTheme or similar.
+    theme: "Hyprwave",
+    accent: "pink",   // or direct color
+    wallpaper: "/usr/share/hyprwave/wallpapers/default.png",
+    // Other appearance knobs (panel opacity, etc.) could go here.
+)
+
+// In a real deployment we would also need the matching panel/dock/launcher
+// RON fragments to surface FlatArcade prominently.

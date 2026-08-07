@@ -1,0 +1,49 @@
+# ── Hyprwave Yazi keymap ────────────────────────────────────────────
+# Synthwave-flavoured keybinds layered over Yazi's built-in defaults.
+# Remove entries here to restore default bindings.
+# Reference: https://yazi-rs.github.io/docs/configuration/keymap
+#
+# Palette:  bg #15052e  fg #e0e0ff  pink #ff2d95  cyan #00f0ff  purple #b967ff
+
+# ── Quick directory jumps ──────────────────────────────────────────
+[[manager.prepend_keymap]]
+on = [ "g", "h" ]
+run = "cd ~"
+desc = "Go home"
+
+[[manager.prepend_keymap]]
+on = [ "g", "d" ]
+run = "cd ~/Downloads"
+desc = "Go to Downloads"
+
+[[manager.prepend_keymap]]
+on = [ "g", "D" ]
+run = "cd ~/Desktop"
+desc = "Go to Desktop"
+
+[[manager.prepend_keymap]]
+on = [ "g", "c" ]
+run = "cd ~/.config"
+desc = "Go to .config"
+
+[[manager.prepend_keymap]]
+on = [ "g", "p" ]
+run = "cd ~/Pictures"
+desc = "Go to Pictures"
+
+# ── Open in Hyprwave default apps ──────────────────────────────────
+[[manager.prepend_keymap]]
+on = [ "o", "n" ]
+run = 'shell "neonwolf \"$@\"" --confirm'
+desc = "Open selected with Neonwolf"
+
+[[manager.prepend_keymap]]
+on = [ "o", "t" ]
+run = 'shell "ghostty --working-directory ."'
+desc = "Open terminal here"
+
+# ── Convenience toggles ────────────────────────────────────────────
+[[manager.prepend_keymap]]
+on = [ "z" ]
+run = "toggle_hidden"
+desc = "Toggle hidden files"

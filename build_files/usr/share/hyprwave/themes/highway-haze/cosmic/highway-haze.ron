@@ -1,0 +1,8 @@
+(
+    name: "Highway Haze",
+    dark: (
+        accent: ( red: 201, green: 122, blue: 158 ),
+        background: ( red: 10, green: 15, blue: 28 ),
+        foreground: ( red: 200, green: 212, blue: 232 ),
+    ),
+)

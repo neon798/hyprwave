@@ -1,0 +1,8 @@
+(
+    name: "Retro Arcade",
+    dark: (
+        accent: ( red: 0, green: 255, blue: 159 ),
+        background: ( red: 15, green: 15, blue: 35 ),
+        foreground: ( red: 224, green: 224, blue: 255 ),
+    ),
+)

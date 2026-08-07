@@ -1,0 +1,301 @@
+#!/usr/bin/bash
+# Hyprwave theme switcher — Hyprland + COSMIC
+# Usage: hyprwave-theme [list|current|set <name> [scene]|menu]
+#
+# Hyprland: retints borders, waybar, walker, mako, hyprpaper, ghostty (via symlink).
+# COSMIC:   applies cosmic-theme key trees + wallpaper + ghostty (via symlink).
+
+set -euo pipefail
+
+THEMES_DIR="/usr/share/hyprwave/themes"
+INDIRECTION="${HOME}/.config/hyprwave/theme"
+
+usage() {
+	echo "Usage: hyprwave-theme {list|current|set <name> [scene]|menu}"
+	echo "  list    - list available themes ( * = current)"
+	echo "  current - show current theme"
+	echo "  set <name> [scene] - switch to theme (Hyprland or COSMIC)"
+	echo "           e.g. hyprwave-theme set verdant-haven forest"
+	echo "  menu    - interactive picker (walker on Hyprland; numbered list otherwise)"
+	exit 1
+}
+
+detect_de() {
+	# Prefer session desktop; fall back to process heuristics.
+	local desk="${XDG_CURRENT_DESKTOP:-}${XDG_SESSION_DESKTOP:-}"
+	desk=$(printf '%s' "$desk" | tr '[:upper:]' '[:lower:]')
+	if [[ "$desk" == *cosmic* ]]; then
+		echo cosmic
+		return
+	fi
+	if [[ "$desk" == *hyprland* ]] || { command -v hyprctl >/dev/null 2>&1 && pgrep -x Hyprland >/dev/null 2>&1; }; then
+		echo hyprland
+		return
+	fi
+	if pgrep -x cosmic-session >/dev/null 2>&1 || pgrep -x cosmic-comp >/dev/null 2>&1; then
+		echo cosmic
+		return
+	fi
+	# Default to hyprland tooling if hyprctl exists; else cosmic-style file apply only.
+	if command -v hyprctl >/dev/null 2>&1; then
+		echo hyprland
+	else
+		echo cosmic
+	fi
+}
+
+list_themes() {
+	local current
+	current=$(current_theme 2>/dev/null || echo "")
+	local d name
+	for d in "$THEMES_DIR"/*; do
+		if [[ -d "$d" ]]; then
+			name=$(basename "$d")
+			if [[ "$name" == "$current" ]]; then
+				echo "* $name"
+			else
+				echo "  $name"
+			fi
+		fi
+	done
+}
+
+current_theme() {
+	if [[ -L "$INDIRECTION" ]]; then
+		basename "$(readlink -f "$INDIRECTION")"
+	else
+		echo "hyprwave"
+	fi
+}
+
+pick_wallpaper() {
+	local name="$1"
+	local scene="${2:-}"
+	local base="${THEMES_DIR}/${name}/wallpapers"
+	local f
+
+	if [[ -n "$scene" ]]; then
+		if [[ -r "${base}/wallpaper-${scene}-2560x1440.jpg" ]]; then
+			echo "${base}/wallpaper-${scene}-2560x1440.jpg"
+			return
+		fi
+		for f in "${base}/wallpaper-${scene}-"*.jpg; do
+			if [[ -r "$f" ]]; then
+				echo "$f"
+				return
+			fi
+		done
+		echo "Error: no wallpaper for scene '$scene' in theme '$name'" >&2
+		echo "Available under ${base}:" >&2
+		ls -1 "$base" 2>/dev/null >&2 || true
+		return 1
+	fi
+
+	# Prefer 2560x1440 (covers wallpaper-2560x1440.jpg and wallpaper-<scene>-2560x1440.jpg)
+	for f in "${base}"/wallpaper*-2560x1440.jpg; do
+		if [[ -r "$f" ]]; then
+			echo "$f"
+			return
+		fi
+	done
+	if [[ -r "${base}/default.png" ]]; then
+		echo "${base}/default.png"
+		return
+	fi
+	for f in "${base}"/*; do
+		if [[ -r "$f" ]]; then
+			echo "$f"
+			return
+		fi
+	done
+	if [[ -r /usr/share/hyprwave/wallpapers/default.png ]]; then
+		echo /usr/share/hyprwave/wallpapers/default.png
+		return
+	fi
+	echo ""
+}
+
+apply_hyprland() {
+	local name="$1"
+	local wp="$2"
+
+	mkdir -p "${HOME}/.config/hypr"
+	cat >"${HOME}/.config/hypr/hyprpaper.conf" <<EOF
+# Managed by hyprwave-theme — regenerated on theme switch.
+# Hyprwave wallpaper (hyprpaper)
+preload = ${wp}
+wallpaper = , ${wp}
+splash = false
+ipc = on
+EOF
+
+	# looknfeel etc. via indirection + reload
+	hyprctl reload 2>/dev/null || true
+	# hyprctl hyprpaper IPC is broken vs source-built hyprpaper — restart daemon
+	pkill -x hyprpaper 2>/dev/null || true
+	if ! hyprctl dispatch exec hyprpaper 2>/dev/null; then
+		hyprpaper >/dev/null 2>&1 &
+	fi
+	pkill -SIGUSR2 waybar 2>/dev/null || true
+	makoctl reload 2>/dev/null || true
+	systemctl --user restart 'app-walker@autostart.service' 2>/dev/null || true
+
+	# Retint the SDDM login screen too (root helper via polkit; skip silently if declined)
+	if command -v pkexec >/dev/null 2>&1 && [[ -x /usr/libexec/hyprwave-sddm-theme ]]; then
+		pkexec /usr/libexec/hyprwave-sddm-theme "$name" 2>/dev/null ||
+			echo "note: login screen theme unchanged (authorization declined)"
+	fi
+}
+
+apply_cosmic() {
+	local name="$1"
+	local wp="$2"
+	local src="${THEMES_DIR}/${name}/cosmic/config"
+	local dest="${HOME}/.config/cosmic"
+
+	if [[ ! -d "$src" ]]; then
+		echo "Error: theme '$name' has no COSMIC config tree at $src" >&2
+		echo "Regenerate with planning/bin/generate-cosmic-themes.sh" >&2
+		exit 1
+	fi
+
+	# User config overrides /usr/share/cosmic vendor defaults.
+	mkdir -p "$dest"
+	# Theme Dark + Builder (full derived palettes from themegen)
+	rm -rf \
+		"${dest}/com.system76.CosmicTheme.Dark" \
+		"${dest}/com.system76.CosmicTheme.Dark.Builder"
+	cp -a "${src}/com.system76.CosmicTheme.Dark" "${dest}/" 2>/dev/null || true
+	cp -a "${src}/com.system76.CosmicTheme.Dark.Builder" "${dest}/" 2>/dev/null || true
+
+	# Wallpaper — point CosmicBackground at the theme image
+	mkdir -p "${dest}/com.system76.CosmicBackground/v1"
+	cat >"${dest}/com.system76.CosmicBackground/v1/all" <<EOF
+(
+    output: "all",
+    source: Path("${wp}"),
+    filter_by_theme: false,
+    rotation_frequency: 3600,
+    filter_method: Lanczos,
+    scaling_mode: Zoom,
+    sampling_method: Alphanumeric,
+)
+EOF
+
+	# Prefer dark mode when switching Hyprwave packs
+	mkdir -p "${dest}/com.system76.CosmicTheme.Mode/v1"
+	# is_dark as RON bool (common cosmic-config shape)
+	printf 'true\n' >"${dest}/com.system76.CosmicTheme.Mode/v1/is_dark" 2>/dev/null || true
+
+	# Nudge daemons to re-read config (best-effort; session may also need a moment)
+	# cosmic-settings-daemon / cosmic-bg watch config paths on many builds.
+	systemctl --user try-restart cosmic-settings-daemon.service 2>/dev/null || true
+	# Restart background helper so wallpaper updates without logout
+	pkill -x cosmic-bg 2>/dev/null || true
+	if command -v cosmic-bg >/dev/null 2>&1; then
+		# Will be re-spawned by session; try direct start as fallback
+		nohup cosmic-bg >/dev/null 2>&1 &
+	fi
+}
+
+set_theme() {
+	local name="$1"
+	local scene="${2:-}"
+	if [[ ! -d "${THEMES_DIR}/${name}" ]]; then
+		echo "Error: unknown theme '$name'" >&2
+		echo "Available:" >&2
+		list_themes >&2
+		exit 1
+	fi
+
+	local wp
+	wp=$(pick_wallpaper "$name" "$scene")
+	if [[ -z "$wp" || ! -r "$wp" ]]; then
+		echo "Error: no readable wallpaper for '$name'" >&2
+		exit 1
+	fi
+
+	mkdir -p "$(dirname "$INDIRECTION")"
+	ln -sfn "${THEMES_DIR}/${name}" "$INDIRECTION"
+
+
+	local de
+	de=$(detect_de)
+	case "$de" in
+	hyprland) apply_hyprland "$name" "$wp" ;;
+	cosmic) apply_cosmic "$name" "$wp" ;;
+	*)
+		echo "Warning: unknown DE '$de'; applying COSMIC file layout + symlink only" >&2
+		apply_cosmic "$name" "$wp" || true
+		;;
+	esac
+
+	echo "Switched to $name [$de] (wallpaper: $(basename "$wp"))"
+	echo "Note: Ghostty applies to new windows or via its reload keybind."
+	if [[ "$de" == cosmic ]]; then
+		echo "Note: COSMIC may take a second to repaint; open Cosmic Settings → Appearance if chrome looks stale."
+	fi
+}
+
+menu() {
+	# Prefer the beginner-friendly GUI whenever a graphical session is available.
+	if [[ -n "${WAYLAND_DISPLAY:-}${DISPLAY:-}" ]] && command -v hyprwave-theme-gui >/dev/null 2>&1; then
+		exec hyprwave-theme-gui
+	fi
+
+	local choice
+	# Walker dmenu (Hyprland power-user path)
+	if command -v walker >/dev/null 2>&1; then
+		choice=$(list_themes | walker --dmenu --placeholder "Theme" 2>/dev/null || true)
+		if [[ -n "$choice" ]]; then
+			# shellcheck disable=SC2001
+			choice=$(echo "$choice" | sed 's/^[* ]*//')
+			set_theme "$choice"
+			return
+		fi
+	fi
+
+	# Last resort: numbered TTY menu
+	local themes=()
+	local d name i=0
+	echo "Hyprwave themes:"
+	for d in "$THEMES_DIR"/*; do
+		[[ -d "$d" ]] || continue
+		name=$(basename "$d")
+		themes+=("$name")
+		i=$((i + 1))
+		if [[ "$name" == "$(current_theme)" ]]; then
+			printf '  %2d) %s  *\n' "$i" "$name"
+		else
+			printf '  %2d) %s\n' "$i" "$name"
+		fi
+	done
+	if [[ ! -t 0 ]]; then
+		echo "No GUI or TTY available; use: hyprwave-theme set <name>" >&2
+		exit 1
+	fi
+	printf "Choose [1-%d]: " "${#themes[@]}"
+	local num
+	read -r num
+	if [[ "$num" =~ ^[0-9]+$ ]] && ((num >= 1 && num <= ${#themes[@]})); then
+		set_theme "${themes[$((num - 1))]}"
+	else
+		echo "Invalid selection" >&2
+		exit 1
+	fi
+}
+
+case "${1:-}" in
+list) list_themes ;;
+current) current_theme ;;
+set)
+	if [[ -z "${2:-}" ]]; then usage; fi
+	set_theme "$2" "${3:-}"
+	;;
+menu) menu ;;
+-h | --help | "") usage ;;
+*)
+	echo "Unknown command: $1" >&2
+	usage
+	;;
+esac

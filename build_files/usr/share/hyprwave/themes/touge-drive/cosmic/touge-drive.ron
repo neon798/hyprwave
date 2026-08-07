@@ -1,0 +1,8 @@
+(
+    name: "Touge Drive",
+    dark: (
+        accent: ( red: 230, green: 57, blue: 70 ),
+        background: ( red: 12, green: 12, blue: 20 ),
+        foreground: ( red: 216, green: 216, blue: 232 ),
+    ),
+)
