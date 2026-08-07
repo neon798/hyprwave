@@ -38,3 +38,9 @@
 ## 2026-08-07 — poll re-assert C-W1-003
 
 - main reissued OPEN for C-W1-003; lane already complete (tip 2dc0509 / mark 48327c8). Re-assert DONE; smoke-host exit 0; no re-implement.
+
+## 2026-08-07 — C-W1-004 standby
+
+- Freeze tip: 2dc0509 (smoke-host.sh / C-W1-003 package); lane HEAD 2dafc3b
+- smoke-host.sh exit 0
+- Standby for integration (no product scope); await serial merge per INTEGRATION-DAY
