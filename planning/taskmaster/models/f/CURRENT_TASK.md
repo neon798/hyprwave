@@ -1,17 +1,39 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: F-W1-006  
+status: OPEN  
+task_id: F-W1-HOLD  
 wave: 1  
-completed: 2026-08-07T05:45:00Z  
-title: Integration standby — heartbeat only  
+issued: 2026-08-07T05:35:00Z  
+reissued: 2026-08-07T06:05:00Z  
+title: HOLD — await human integration (do not mark DONE)  
 
-## Summary
+## Director note
 
-- Freeze tip: 7b19270
-- check-vendor-paths.sh exit 0
-- Standby for integration; no product scope
+Your lane still shows an older **DONE** task tip. Refresh HOLD from main and leave OPEN:
 
-## On completion
+```bash
+git fetch origin main
+git checkout origin/main -- planning/taskmaster/models/f/
+```
 
-Idle until next OPEN task_id.
+Do **not** invent product work. Do **not** mark HOLD as DONE.
+
+## Objective
+
+Wave 1 COSMIC lane is **frozen** (F-W1-006 freeze tip 7b19270). Human/Director serial merge per  
+`planning/integration/g-qa/INTEGRATION-DAY.md`.
+
+## Rules
+
+1. Poll `origin/main` each cycle.
+2. **Do not** set `status: DONE` while `task_id` is `F-W1-HOLD`.
+3. Optional: one WORK_LOG heartbeat line after refresh.
+4. Exclusive-path post-merge bugs only → `BLOCKED` + WORK_LOG.
+
+## Exclusive paths
+
+See IDENTITY.md + `planning/taskmaster/models/f/**`.
+
+## Done criteria
+
+- [ ] **None until Director changes task_id** — leave status OPEN
