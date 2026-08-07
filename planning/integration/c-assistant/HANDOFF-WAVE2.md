@@ -78,3 +78,9 @@ HYPRWAVE_ASSISTANT_DATA=../../build_files/usr/share/hyprwave/assistant \
 - Do not enable duress from this lane
 - Do not edit production `build.sh` / `Containerfile` outside snippets
 - Do not edit skel from this lane (keybind is handoff-only)
+
+## Host freeze smoke (C-W1-003)
+
+```bash
+bash planning/integration/c-assistant/smoke-host.sh
+```

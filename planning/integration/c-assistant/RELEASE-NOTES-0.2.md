@@ -2,6 +2,11 @@
 
 Integrator CHANGELOG blurb for image / distro release notes.
 
+## 0.2.2 (freeze C-W1-003)
+
+- `planning/integration/c-assistant/smoke-host.sh` — host-side pre-merge smoke (test/build/CLI)
+- HANDOFF one-pager freeze for integrator apply order
+
 ## 0.2.2 (C-W1-002)
 
 **Hyprwave Assistant** is package-surface complete for a one-pass image integrate.

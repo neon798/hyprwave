@@ -1,19 +1,23 @@
-# Model C handoff — Hyprwave Assistant
+# Model C HANDOFF — Hyprwave Assistant (freeze 0.2.2)
 
-Wave 1 skeleton + Wave 2 productization + **C-W1-002 package surface** (0.2.2).  
-See also **HANDOFF-WAVE2.md** (Super+Shift+A, CLI, smoke) and **RELEASE-NOTES-0.2.md**.
+**Pre-merge freeze (C-W1-003).** Integrator applies in one pass. Do not invent alternate paths.
 
-## Delivered (dormant until integrator wires build)
+## Apply order
 
-| Path | Role |
-|------|------|
-| `apps/hyprwave-assistant/` | Go module (Bubble Tea TUI + CLI), version 0.2.2 |
-| `build_files/usr/share/hyprwave/assistant/` | `catalog.toml` + `kb/*.md` |
-| `build_files/usr/share/applications/hyprwave-assistant.desktop` | menu entry |
-| `planning/integration/c-assistant/*.snippet` | build + Containerfile hooks |
-| `planning/integration/c-assistant/RELEASE-NOTES-0.2.md` | CHANGELOG blurb |
+1. **Containerfile** — merge `Containerfile.snippet`
+   - Stage `assistant-builder` (Go 1.23, `CGO_ENABLED=0`, `-trimpath`, `-ldflags "-s -w -X main.version=0.2.2"`)
+   - Final image: `COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant`
+2. **build.sh** — merge `build.sh.snippet` **or** use the commented `COPY` block in the Containerfile snippet for data + desktop
+3. **Skel keybind (Model E / integrator only — Model C does not edit skel):**
 
-## Runtime layout (do not invent alternate paths)
+```conf
+# Hyprwave Assistant
+bind = SUPER SHIFT, A, exec, ghostty -e hyprwave-assistant
+```
+
+4. Build both DE variants; run host smoke (below) then image smoke after boot.
+
+## Runtime paths (fixed)
 
 ```
 /usr/bin/hyprwave-assistant
@@ -22,40 +26,62 @@ See also **HANDOFF-WAVE2.md** (Super+Shift+A, CLI, smoke) and **RELEASE-NOTES-0.
 /usr/share/hyprwave/assistant/kb/*.md
 ```
 
-## Not touched (by design)
+Repo sources → targets:
 
-- `build_files/build.sh`, `Containerfile`, CI, skel, themes, duress/PAM
+| Source | Target |
+|--------|--------|
+| `apps/hyprwave-assistant/` (built binary) | `/usr/bin/hyprwave-assistant` |
+| `build_files/usr/share/hyprwave/assistant/` | `/usr/share/hyprwave/assistant/` |
+| `build_files/usr/share/applications/hyprwave-assistant.desktop` | `/usr/share/applications/…` |
 
-## Integrator checklist (one pass)
-
-1. Apply `Containerfile.snippet` (assistant-builder + COPY binary; `-trimpath` + ldflags version).
-2. Apply `build.sh.snippet` **or** COPY data + desktop as commented in Containerfile snippet.
-3. Optional: Super+Shift+A bind — exact line in **HANDOFF-WAVE2.md** (skel edit by integrator / Model E).
-4. Optional icon: ship SVG/PNG as `hyprwave-assistant` under hicolor; desktop currently uses `utilities-system-monitor`.
-5. `just build` both DE variants; smoke commands below.
-6. Optional README section from `README-blurb.md` / release notes.
+Override data dir: `HYPRWAVE_ASSISTANT_DATA` or `--data DIR`.
 
 ## Package deps
 
-- **Required at runtime for full features:** `bootc` (base updates), `flatpak` (apps), `ghostty` (desktop Exec host for TUI).
-- **Build-time only:** Go 1.23+ toolchain in `assistant-builder` stage (does not ship).
-- No exclusive extra dnf packages beyond the image’s existing stack.
+| Dep | Role |
+|-----|------|
+| `ghostty` | Desktop `Exec=ghostty -e hyprwave-assistant` |
+| `bootc` | Base status / upgrade |
+| `flatpak` | App updates / curated installs |
+| Go 1.23+ | **Build stage only** (not shipped) |
 
-## Post-install smoke
+No exclusive extra packages beyond the image stack.
+
+## Icon
+
+Desktop uses `Icon=utilities-system-monitor`. Optional brand: hicolor `hyprwave-assistant` + set `Icon=` (see `build.sh.snippet` comments).
+
+## Host smoke (no image)
+
+```bash
+bash planning/integration/c-assistant/smoke-host.sh
+```
+
+Must exit 0. Runs `go test ./...`, ldflags build, `--help`, `--version`, `kb`, `list`, `update --dry-run`.
+
+## Post-image smoke
 
 ```bash
 hyprwave-assistant --help
 hyprwave-assistant --version
-hyprwave-assistant version
 hyprwave-assistant kb
 hyprwave-assistant list | head
 hyprwave-assistant update --dry-run
 ```
 
-## Validate without image
+## Safety (do not regress)
 
-```bash
-cd apps/hyprwave-assistant && go test ./... \
-  && go build -trimpath -ldflags "-X main.version=test" -o /tmp/hyprwave-assistant .
-/tmp/hyprwave-assistant update --dry-run
-```
+- Mutations need `--dry-run` **or** `--yes --confirm` (TUI: Y twice)
+- Never reboots the host
+- Offline: KB + catalog work; remote update/install blocked
+
+## Related
+
+- `HANDOFF-WAVE2.md` — CLI detail / dual-DE notes
+- `RELEASE-NOTES-0.2.md` — CHANGELOG blurb
+- `README-blurb.md` — optional project README section
+- Snippets only — **not** production `build.sh` / `Containerfile` edits from this lane
+
+## Forbidden (Model C)
+
+skel · production build.sh/Containerfile · duress/PAM · other models’ trees
