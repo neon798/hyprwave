@@ -30,6 +30,7 @@ NO_COLOR=1 bash planning/qa/run-all.sh
 | `no-wofi-swaybg` | `check-no-wofi-swaybg.sh` | Skel / theme trees do not reintroduce Wofi or swaybg |
 | `duress-safety` | `check-duress-safety.sh` | If duress packaging present: no `*.sha256`; run `planning/integration/d-duress/validate.sh` when available |
 | `assistant` | `check-assistant.sh` | If `apps/hyprwave-assistant` present: `go test ./...` |
+| `lane-artifacts` | `check-lane-artifacts.sh` | Optional multi-ref: expected paths on `origin/lane/*` (or `ORIGIN_LANE_*`); WARN if ref missing; FAIL only if ref present but path missing |
 
 ### Soft-skip policy
 
@@ -39,6 +40,18 @@ When a lane is **not** merged into the tree under test:
 - That is **not** counted as PASS for that artifact.
 - `run-all.sh` still exits `0` if nothing hard-failed (so main can stay green before integration).
 - After merging A/C/D, re-run; WARNs should become PASS or surface real FAILs.
+
+`lane-artifacts` is the multi-ref cousin: missing **remote-tracking refs** are WARN (fetch not required for a green host tree). Set `LANE_ARTIFACTS_OFF=1` in shallow CI if you only want tree-local checks.
+
+### Exit semantics (`run-all.sh`)
+
+| Code | Meaning |
+|---|---|
+| `0` | No check **FAIL**ed. WARN and SKIP are allowed. |
+| `1` | At least one check exited non-zero / recorded FAIL. |
+| `2` | Harness misuse (unknown `--only` id, bad CLI). |
+
+Individual check scripts exit `0` when `FAIL_COUNT==0` (via `qa_exit_code`), else `1`.
 
 ## Layout
 
@@ -51,6 +64,8 @@ planning/qa/
   check-no-wofi-swaybg.sh
   check-duress-safety.sh
   check-assistant.sh
+  check-lane-artifacts.sh   # multi-ref residual checks
+  ci-snippet.yml            # copy-paste GH job (not a live workflow)
   theme-exceptions.list     # optional theme:component exceptions
   lib/common.sh             # PASS/FAIL/WARN helpers
 ```
@@ -78,6 +93,7 @@ Integration **order and conflict hotspots** live in:
 | pins / themes / wofi | bash, grep, find (always) |
 | duress validate | bash; optional files from D |
 | assistant | Go toolchain (`go` on `PATH`) matching `go.mod` |
+| lane-artifacts | `git` + fetched `origin/lane/*` (optional; soft-WARN without) |
 
 ## Adding a check
 
@@ -88,16 +104,29 @@ Integration **order and conflict hotspots** live in:
 
 ## CI suggestion (integrator / Model A)
 
-A static job can run without network:
+Prefer the ready-to-copy job file:
+
+- **`planning/qa/ci-snippet.yml`** — static / full / advisory lane-ref jobs, no secrets.
+
+Minimal inline static job (no network, no Go):
 
 ```yaml
 - name: Packaging QA
   run: bash planning/qa/run-all.sh --only pins-static,themes,no-wofi-swaybg
+  env:
+    NO_COLOR: "1"
+    LANE_ARTIFACTS_OFF: "1"
 ```
 
-Full harness (including `go test` and duress validate) after C/D merge:
+Full harness (including `go test`, duress validate, optional lane refs) after C/D merge:
 
 ```yaml
 - name: Packaging QA (full)
   run: bash planning/qa/run-all.sh
+  env:
+    NO_COLOR: "1"
 ```
+
+Endpoint residual tracker (human-maintained from harness + `git ls-tree`):
+
+- `planning/integration/g-qa/ENDPOINT-RESIDUALS.md`
