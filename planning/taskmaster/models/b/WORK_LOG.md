@@ -24,3 +24,14 @@
 - ACCURACY-AUDIT.md refreshed for keybind + first-boot sources
 - Relative links: 181 checked, 0 missing (fenced examples ignored)
 - Commits: e16055a, 5367ffe, 79c4c04 (+ DONE tip 7614d2b)
+
+## 2026-08-07 — B-W1-003
+
+- status OPEN → IN_PROGRESS → DONE
+- security.md: D-lane THREAT-MODEL/ENABLE/FAQ alignment; off-by-default; no LUKS claims; no enable paste
+- troubleshooting.md: dual-variant matrix (greeter, Walker vs COSMIC launcher, themes both)
+- screenshot-checklist.md: every row purpose + alt + exact hyprshot/grim command; compositor blockers
+- docs/screenshots.md index; docs/assets/ reserved (no binaries)
+- README Docs bar emphasizes first-boot + keybinds + security
+- ACCURACY-AUDIT B-W1-003 addendum; relative links 205/0 missing
+- Product commits: security, troubleshooting, screenshots, README/audit
