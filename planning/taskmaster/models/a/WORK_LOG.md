@@ -162,3 +162,11 @@ Director reissued W1-004 after W1-003 completed. Lane already had:
 - Floating-release token clean; tip 0dbde46 / COMPLETED 435c39b
 
 No invented follow-up. Idle for next OPEN task id.
+
+## 2026-08-07 — A-W1-HOLD heartbeat
+
+**status:** OPEN (HOLD — not DONE)  
+**branch:** `lane/a-stabilize` @ e405a70 / freeze tip A-W1-004 `435c39b`
+
+Idle: no product work. Awaiting human/Director serial merge per INTEGRATION-DAY.
+Exclusive paths frozen. Will not mark HOLD as DONE.

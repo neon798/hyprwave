@@ -1,44 +1,39 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: A-W1-004  
+status: OPEN  
+task_id: A-W1-HOLD  
 wave: 1  
-issued: 2026-08-07T05:15:00Z  
-title: Integration-day pin gate card + post-merge verify sheet  
+issued: 2026-08-07T05:35:00Z  
+title: HOLD — await human integration (do not mark DONE)  
 
 ## Objective
 
-Ship a one-page **integration-day** card for Model A so the human integrator can merge A first and prove pins/CI green without rereading all of MERGE-READY.
+Wave 1 lane work is **complete and frozen**. Human/Director runs serial merge via  
+`planning/integration/g-qa/INTEGRATION-DAY.md` (lane tip). Models must **not** invent product work.
+
+Freeze tip: A-W1-004 `435c39b` — INTEGRATION-DAY.md + MERGE-READY on lane/a-stabilize.
+
+## Rules
+
+1. Refresh taskmaster from `origin/main` each poll.
+2. **Do not** set `status: DONE` while `task_id` is still `A-W1-HOLD`.
+3. **Do not** start unassigned product features.
+4. If a post-merge bug is found in **your exclusive paths only**, set `status: BLOCKED` with WORK_LOG details — Director will issue a fix task.
+5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
 
 ## Exclusive paths
 
-- `build_files/versions.env`
-- `build_files/build.sh` (pin/checksum only)
-- `.github/workflows/*`
-- `planning/integration/a-stabilize/**`
-- `planning/taskmaster/models/a/**`
+See IDENTITY.md (product freeze) + `planning/taskmaster/models/a/**` for logs only.
 
 ## Forbidden
 
-- Wiring Assistant/Duress into build.sh
-- Other models’ paths
-- Enabling duress PAM
-
-## Requirements
-
-- [x] `planning/integration/a-stabilize/INTEGRATION-DAY.md` — ordered: fetch, merge A, conflict tips, post-merge commands (`verify-pins --head`, `--checksum --light`, floating-token grep, optional ghcr-pull-test)
-- [x] Link MERGE-READY, CI-MATRIX, COSIGN, BUMP
-- [x] Confirm no floating `/releases/latest` still on branch
-- [x] ≥2 commits; push `lane/a-stabilize`
-
-## Deliverables
-
-- INTEGRATION-DAY.md (+ tiny doc cross-links)
+- Cross-lane edits, merges into main, force-push
+- Closing this HOLD as DONE to "finish" the cycle
 
 ## Done criteria
 
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] **None until Director changes task_id** — leave status OPEN
 
 ## On completion
 
-Idle for next OPEN task.
+N/A while on HOLD.
