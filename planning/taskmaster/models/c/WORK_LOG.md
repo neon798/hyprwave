@@ -34,3 +34,7 @@
 - Version/RELEASE-NOTES consistent at 0.2.2
 - Coverage snapshot: catalog 90.1%, kb 73.5%, system 82.2%
 - Validate: bash planning/integration/c-assistant/smoke-host.sh
+
+## 2026-08-07 — poll re-assert C-W1-003
+
+- main reissued OPEN for C-W1-003; lane already complete (tip 2dc0509 / mark 48327c8). Re-assert DONE; smoke-host exit 0; no re-implement.
