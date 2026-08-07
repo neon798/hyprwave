@@ -10,3 +10,18 @@
 - KB: hyprpaper.md; expanded first-boot, variants, troubleshooting
 - Catalog Validate/ValidFlatpakID; snippets v0.2.1; README
 - Validate: `go test ./... && go build -o /tmp/hyprwave-assistant .`
+
+## 2026-08-07 — C-W1-002
+
+- Install layout documented (README + HANDOFF); data tree catalog.toml + kb/*.md
+- Desktop entry polish; icon handoff (utilities-system-monitor + optional branded path)
+- Snippets 0.2.2: -trimpath + ldflags version; binary+data+desktop one-pass
+- HANDOFF smoke: --help/--version/kb/list/update --dry-run; Super+Shift+A bind line
+- KB: expanded FlatArcade, theming, variants, updates; new bootc-rebase article
+- About tab offline-first banner; RELEASE-NOTES-0.2.md
+- Validate: go test ./... && go build -ldflags "-X main.version=test" -o /tmp/hyprwave-assistant .
+- Note: accidental main commit bd8eac4 earlier this cycle (not force-pushed); lane work is authoritative
+
+## 2026-08-07 — poll re-assert
+
+- main still OPEN for C-W1-002; lane already complete (tip b7aff65 / mark 0f4ec1b). Re-assert DONE; no re-implement. Tests green.

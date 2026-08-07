@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: F-W1-003  
+task_id: F-W1-004  
 wave: 1  
-issued: 2026-08-07T04:55:00Z  
-title: Declutter proof, ISO final notes, FlatArcade-on-COSMIC smoke  
+issued: 2026-08-07T05:05:00Z  
+title: Pre-merge COSMIC freeze + integrator checklist  
 
 ## Objective
 
-Lock COSMIC variant story for integration: prove declutter intent, finalize iso-cosmic operator notes, and expand smoke for FlatArcade/Ghostty/Neonwolf on COSMIC — still no Hyprland skel churn.
+Freeze COSMIC variant for integration: INTEGRATOR-CHECKLIST, check-vendor-paths green, SESSION-SMOKE/DECLUTTER/GREETER cross-linked as the support pack.
 
 ## Exclusive paths
 
@@ -23,20 +23,19 @@ Lock COSMIC variant story for integration: prove declutter intent, finalize iso-
 ## Forbidden
 
 - Hyprland skel, pins (A), duress, Assistant app code
-- Removing packages that break cosmic-session
+- Breaking cosmic-session package set
 
 ## Requirements
 
-- [ ] `planning/integration/f-cosmic/DECLUTTER.md` — list packages intentionally removed/avoided in cosmic arm (from build.sh read-only or HANDOFF); warn about `--no-autoremove`; what must remain
-- [ ] `disk_config/iso-cosmic.toml`: final comment block for image name, expected bootc ref, known installer limits
-- [ ] Expand SESSION-SMOKE: FlatArcade launch, Ghostty, Neonwolf, Settings, Files, network, theme switch (≥6 new or refined items)
-- [ ] `check-vendor-paths.sh` still exit 0; extend lightly if declutter docs claim wallpapers/favorites
-- [ ] GREETER.md: one-pass “day-1 COSMIC” expectation vs Hyprland for support docs (B can link later)
+- [ ] `planning/integration/f-cosmic/INTEGRATOR-CHECKLIST.md` — merge vendor tree + iso notes; run check-vendor-paths; do not reintroduce cosmic-store; smoke link
+- [ ] `check-vendor-paths.sh` exit 0
+- [ ] README or index under integration/f-cosmic listing DECLUTTER, GREETER, SESSION-SMOKE, THEME-COSMIC-MATRIX, REGENERATE
+- [ ] Confirm iso-cosmic.toml bootc ref still `hyprwave-cosmic` story
 - [ ] ≥3 commits; push `lane/f-cosmic`
 
 ## Deliverables
 
-- DECLUTTER.md, ISO notes, smoke/greeter updates, check script still green
+- INTEGRATOR-CHECKLIST + freeze validation
 
 ## Done criteria
 

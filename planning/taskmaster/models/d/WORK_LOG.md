@@ -30,3 +30,14 @@
 - No new mild template/flag needed (existing severity table accurate).
 - Commits: 7de27a9, f758537, 7d35112 (+ DONE meta).
 - `bash planning/integration/d-duress/validate.sh` → PASSED.
+
+## 2026-08-07 — D-W1-003
+
+- Signing workflow docs + snippet self-test + residual operator duties on `lane/d-duress`.
+- Added `planning/integration/d-duress/SIGNING.md` (dry-run, setup sign, `--verify` success, disposable `$TMPDIR` lab with `duress_sign`, never commit `*.sha256`).
+- Added `planning/integration/d-duress/RESIDUALS.md` (LUKS, physical/root, signed-script trust root, bootc PAM drift, incomplete wipe, social/ops, integration boundary).
+- Added `planning/integration/d-duress/snippet-selftest.sh` (build + Containerfile snippets: no active pam.d writes, no pam_duress enable, no `*.sha256`).
+- `validate.sh` invokes snippet-selftest; gates SIGNING/RESIDUALS content; README severity + FAQ/runbook/SIGNING links.
+- Packaging + integration READMEs: severity tables for all three templates; doc index polish.
+- Commits: 2733afe, 8f8d2cc, 240b4e5 (+ DONE meta).
+- `bash planning/integration/d-duress/validate.sh` → PASSED; `snippet-selftest.sh` → PASSED.
