@@ -1,17 +1,17 @@
 # CURRENT_TASK
 
 status: DONE  
-task_id: F-W1-005  
+task_id: F-W1-006  
 wave: 1  
-completed: 2026-08-07T05:35:00Z  
-title: Integration-day COSMIC smoke card  
+completed: 2026-08-07T05:45:00Z  
+title: Integration standby — heartbeat only  
 
 ## Summary
 
-- INTEGRATION-DAY.md — Gate A host / B guest / C day-1 UX / D sign-off
-- README links one-pager as merge-day start
+- Freeze tip: 7b19270
 - check-vendor-paths.sh exit 0
+- Standby for integration; no product scope
 
 ## On completion
 
-Idle for next OPEN task.
+Idle until next OPEN task_id.

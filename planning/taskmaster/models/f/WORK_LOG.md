@@ -62,3 +62,10 @@
 - Deliverables: `INTEGRATION-DAY.md`; README index link
 - Validation: `check-vendor-paths.sh` exit 0
 - Forbidden paths untouched.
+
+## 2026-08-07 — F-W1-006 Integration standby heartbeat
+
+- Branch: `lane/f-cosmic` tip `7b19270` (freeze; no product scope)
+- Self-check: `check-vendor-paths.sh` exit **0**
+- Status: **standby for integration** — await Director serial merge per `planning/integration/g-qa/INTEGRATION-DAY.md`
+- No product edits; no cross-lane work.
