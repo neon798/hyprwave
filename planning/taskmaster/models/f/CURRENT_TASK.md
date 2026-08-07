@@ -1,50 +1,19 @@
 # CURRENT_TASK
 
-status: OPEN  
+status: DONE  
 task_id: F-W1-002  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
+completed: 2026-08-07T05:00:00Z  
 title: Theme-store COSMIC configs audit + wallpaper path proofs  
 
-## Objective
+## Summary
 
-Ensure every Hyprwave theme that ships COSMIC config is coherent, wallpapers resolve, and greeter/session docs match vendor keys — toward ENDPOINT “COSMIC feels on-brand.”
-
-## Exclusive paths
-
-- `build_files/usr/share/cosmic/**`
-- `disk_config/iso-cosmic.toml`
-- COSMIC-only `build_files/build.sh` `cosmic)` arm only if essential (prefer docs/snippets)
-- `planning/bin/generate-cosmic-themes.sh` / `planning/bin/themegen/**` (no huge `target/` commits)
-- `build_files/usr/share/hyprwave/themes/*/cosmic/**` (theme cosmic configs only — not Hyprland skel)
-- `planning/integration/f-cosmic/**`
-- `planning/taskmaster/models/f/**`
-
-## Forbidden
-
-- Hyprland skel rewrites
-- Shared pin URLs (A)
-- Duress / Assistant
-- Removing packages that break cosmic-session
-
-## Requirements
-
-- [ ] Inventory which themes under `build_files/usr/share/hyprwave/themes/*` include `cosmic/config/`; table in `planning/integration/f-cosmic/THEME-COSMIC-MATRIX.md`
-- [ ] For default/system vendor path: prove wallpaper file(s) exist in repo; fix broken references
-- [ ] Spot-check 2–3 non-default themes’ cosmic configs for required keys (Mode, Background, dock favorites or document intentional minimal sets)
-- [ ] If themegen needed: document regenerate steps in REGENERATE.md; commit only generated configs (not `target/`)
-- [ ] Expand SESSION-SMOKE.md with theme-switch / wallpaper checks for COSMIC
-- [ ] GREETER.md: confirm wallpaper/branding expectations vs what greeter can show
-- [ ] Optional: small shell check script under `planning/integration/f-cosmic/check-vendor-paths.sh` (wallpaper exists, favorites IDs non-empty)
-- [ ] ≥3 commits; push `lane/f-cosmic`
-
-## Deliverables
-
-- THEME-COSMIC-MATRIX, path proofs, any justified config fixes, smoke/greeter updates
-
-## Done criteria
-
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- Inventory: all 11 themes have full `cosmic/config` (30 Dark + 16 Builder); Mode/Background/AppList intentionally pack-omitted (switcher + vendor).
+- Vendor wallpaper path proved: repo `wallpapers/default.png` → staged `/usr/share/backgrounds/hyprwave/default.png`; no broken refs.
+- Spot-check: vaporwave, fjord-dark, verdant-haven (scene) coherent.
+- Docs: THEME-COSMIC-MATRIX.md, SESSION-SMOKE theme-switch items, GREETER reconfirm, REGENERATE note.
+- Script: `planning/integration/f-cosmic/check-vendor-paths.sh` (exit 0).
+- No themegen regen needed; no vendor config file fixes required.
 
 ## On completion
 

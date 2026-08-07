@@ -17,3 +17,18 @@
 - ISO: `disk_config/iso-cosmic.toml` header comments only; bootc ref already `hyprwave-cosmic:latest`
 - build.sh: **no edit** — cosmic arm already correct (greeter, declutter `--no-autoremove`, wallpaper copy, vendor cp). Choice: leave build.sh; document only.
 - Forbidden paths untouched (Hyprland skel, pins, duress, assistant).
+
+## 2026-08-07 — F-W1-002 Theme-store COSMIC audit + wallpaper proofs
+
+- Branch: `lane/f-cosmic`
+- Deliverables:
+  - `planning/integration/f-cosmic/THEME-COSMIC-MATRIX.md` (11/11 packs; path proofs; spot-checks)
+  - `planning/integration/f-cosmic/check-vendor-paths.sh` (exit 0 on full tree)
+  - SESSION-SMOKE.md items 23–32 (theme switch / wallpaper / scene)
+  - GREETER.md F-W1-002 branding vs greeter capabilities
+  - REGENERATE.md note: packs stay Dark+Builder only
+- Findings:
+  - Vendor Background path OK; source PNG present (SHA matches hyprwave pack default.png)
+  - Theme packs intentionally omit Mode/Background/AppList — switcher writes Mode+Background; dock stays vendor
+  - No config file fixes required; themegen not re-run
+- Forbidden paths untouched.
