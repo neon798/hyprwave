@@ -1,46 +1,43 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: A-W1-003  
+status: OPEN  
+task_id: A-W1-004  
 wave: 1  
-issued: 2026-08-07T04:58:00Z  
-title: Pre-merge pin freeze + dual-image build gate notes  
+issued: 2026-08-07T05:15:00Z  
+title: Integration-day pin gate card + post-merge verify sheet  
 
 ## Objective
 
-Last stabilize depth before integration: freeze operator pin-bump SOP against live GHCR/cosign docs, ensure disk+container workflows agree on pin_guards, and document the **minimum green** gate for merging `lane/a-stabilize` first.
+Ship a one-page **integration-day** card for Model A so the human integrator can merge A first and prove pins/CI green without rereading all of MERGE-READY.
 
-## Exclusive paths (only these)
+## Exclusive paths
 
 - `build_files/versions.env`
-- `build_files/build.sh` (pin/checksum sourcing only)
+- `build_files/build.sh` (pin/checksum only)
 - `.github/workflows/*`
 - `planning/integration/a-stabilize/**`
 - `planning/taskmaster/models/a/**`
 
 ## Forbidden
 
-- Wiring Assistant or Duress into `build.sh`
-- Handbook rewrites (B)
+- Wiring Assistant/Duress into build.sh
+- Other models’ paths
 - Enabling duress PAM
-- Other models’ exclusive paths
 
 ## Requirements
 
-- [x] `planning/integration/a-stabilize/MERGE-READY.md` — why A merges first; conflict risks; post-merge verify commands (`verify-pins.sh --head`, pin_guards expectations, `just build` note)
-- [x] Re-run / document `verify-pins.sh --head` and `--checksum --light` still green on branch
-- [x] Confirm `build.yml` + `build-disk.yml` both block floating `/releases/latest` (or document intentional gap)
-- [x] `versions.env` comments point at CI-MATRIX + COSIGN + MERGE-READY
-- [x] Optional: pin age / upstream release-check script (advisory only, not CI-fail)
-- [x] ≥3 commits; push `lane/a-stabilize`
+- [ ] `planning/integration/a-stabilize/INTEGRATION-DAY.md` — ordered: fetch, merge A, conflict tips, post-merge commands (`verify-pins --head`, `--checksum --light`, floating-token grep, optional ghcr-pull-test)
+- [ ] Link MERGE-READY, CI-MATRIX, COSIGN, BUMP
+- [ ] Confirm no floating `/releases/latest` still on branch
+- [ ] ≥2 commits; push `lane/a-stabilize`
 
 ## Deliverables
 
-- MERGE-READY.md + workflow/docs consistency pass
+- INTEGRATION-DAY.md (+ tiny doc cross-links)
 
 ## Done criteria
 
-- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
