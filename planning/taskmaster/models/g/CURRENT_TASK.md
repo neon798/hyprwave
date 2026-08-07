@@ -1,54 +1,46 @@
 # CURRENT_TASK
 
 status: DONE  
-task_id: G-W1-001  
+task_id: G-W1-002  
 wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: QA harness + merge playbook for seven-lane integration  
+issued: 2026-08-07T04:45:00Z  
+title: Multi-lane fetch checks, endpoint residual tracker, CI harness snippet  
 
 ## Objective
 
-Build the **glue without merging**: scripts that validate packaging invariants across the repo, a merge order playbook for morning integration, and host-side checks that Director/humans can run. Deep automation — not a one-page checklist.
-
-## Branch setup
-
-```bash
-git fetch origin
-git checkout -B lane/g-qa origin/main
-```
+Deepen QA toward ENDPOINT: optional multi-ref checks against remote lanes, residual tracker for program closeout, and a CI-ready harness snippet — still **no** merging product lanes.
 
 ## Exclusive paths
 
 - `planning/qa/**`
 - `planning/integration/g-qa/**`
+- `planning/taskmaster/models/g/**`
+- Optional additive Justfile fragment under `planning/qa/` only (not root Justfile unless purely additive and risk-free)
 
 ## Forbidden
 
 - Implementing Assistant/Duress/desktop features
 - Force-merging other lanes
-- Editing exclusive paths of A–F product code
+- Editing exclusive product paths of A–F
 
 ## Requirements
 
-- [x] `planning/qa/README.md` — how to run the harness
-- [x] `planning/qa/check-pins-static.sh` — grep no releases/latest; versions.env keys present (works even if A’s branch not merged — detect files if present)
-- [x] `planning/qa/check-themes.sh` — each theme under `build_files/usr/share/hyprwave/themes/*` has expected components (looknfeel, waybar style, walker style, ghostty, wallpaper or documented exception)
-- [x] `planning/qa/check-no-wofi-swaybg.sh` — fail if skel still references removed stack
-- [x] `planning/qa/check-duress-safety.sh` — if duress tree present: no *.sha256; call validate.sh if present
-- [x] `planning/qa/check-assistant.sh` — if apps/hyprwave-assistant present: `go test ./...`
-- [x] `planning/qa/run-all.sh` — runs all checks; non-zero on failure; prints summary table
-- [x] `planning/integration/g-qa/MERGE-PLAYBOOK.md` — exact order A→B→C→D→E→F→G, conflict hotspots (`build.sh`, README, Containerfile), snippet apply steps for C/D
-- [x] `planning/integration/g-qa/SMOKE-MATRIX.md` — Hyprland + COSMIC smoke matrix linking E/F session smokes when present
+- [x] `planning/qa/check-lane-artifacts.sh` — given `git` available, can `git ls-tree`/`git show` **optional** `ORIGIN_LANE_*` refs or default `origin/lane/*` to verify expected paths exist (soft-WARN if refs missing; FAIL only when ref present but artifact missing)
+- [x] `planning/integration/g-qa/ENDPOINT-RESIDUALS.md` — checklist mapped from `ENDPOINT.md` product items 1–10 with status (met on main / met on lane / open) based on read-only inspection
+- [x] Expand MERGE-PLAYBOOK with pre-merge `run-all.sh` gates and post-merge expected flips (pins FAIL→PASS after A, etc.)
+- [x] `planning/qa/ci-snippet.yml` or markdown embedding for a GH workflow job (A may copy later) — no secrets
+- [x] `run-all.sh` includes new check (or documents why separate); summary table still clear
+- [x] Theme exceptions list remains accurate
 - [x] ≥3 commits; push `lane/g-qa`
-- [x] `bash planning/qa/run-all.sh` runs on current tree (may soft-skip missing lane artifacts with WARN not silent pass)
+- [x] `bash planning/qa/run-all.sh` runs; document exit semantics
 
 ## Deliverables
 
-- QA harness + merge playbook + smoke matrix
+- Lane artifact checker, endpoint residuals tracker, CI snippet, playbook updates
 
 ## Done criteria
 
-- [x] Requirements met; run-all produces clear output; push; WORK_LOG + COMPLETED; status DONE
+- [x] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 

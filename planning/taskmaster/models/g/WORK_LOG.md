@@ -36,3 +36,37 @@
 
 - Re-run `bash planning/qa/run-all.sh` after merging A/C/D; WARNs should flip to PASS.
 - G does not merge other lanes; playbook is human/Director-driven.
+
+## G-W1-002 — 2026-08-07
+
+**Status:** DONE  
+**Branch:** `lane/g-qa` (worktree `/home/zen/hyprwave-g-qa`)  
+**Task:** Multi-lane fetch checks, endpoint residual tracker, CI harness snippet
+
+### Work performed
+
+1. `planning/qa/check-lane-artifacts.sh` — multi-ref checks for lanes A–G via `git rev-parse` + `git cat-file`; env overrides `ORIGIN_LANE_A..G`; `LANE_ARTIFACTS_OFF=1` skip; WARN missing refs, FAIL missing paths on present refs.
+2. Wired into `run-all.sh` as `lane-artifacts` (ordered last); help/exit semantics documented (0/1/2).
+3. `planning/integration/g-qa/ENDPOINT-RESIDUALS.md` — ENDPOINT product items 1–10 with met-on-main / met-on-lane / open / partial from inspection of `origin/main` + `origin/lane/*`.
+4. MERGE-PLAYBOOK §6 expanded: pre-merge baseline, expected FAIL/WARN→PASS flips, post-merge closeout.
+5. `planning/qa/ci-snippet.yml` — static / full / advisory jobs, no secrets; README updated.
+6. Theme exceptions list unchanged (empty, accurate for all 11 themes PASS).
+
+### Host run
+
+- Full harness: **FAIL** solely from `pins-static` (6× `/releases/latest` on unpinned main baseline) — expected until A merges.
+- `themes` / `no-wofi-swaybg` PASS; `duress-safety` / `assistant` WARN soft-skip; `lane-artifacts` PASS (7 refs, 25 paths).
+- `LANE_ARTIFACTS_OFF=1` → SKIP, harness OK.
+
+### Commits
+
+- `cb7d348` qa: multi-ref lane-artifacts + run-all
+- `b51b10e` integration: ENDPOINT-RESIDUALS + playbook flips
+- `e993e8f` qa: ci-snippet.yml + README exit docs
+- (this) taskmaster DONE record
+
+### Notes for Director
+
+- After A merge, re-run: pins FAIL→PASS.
+- CI: copy `planning/qa/ci-snippet.yml` into workflows when ready.
+- Refresh ENDPOINT-RESIDUALS after each serial merge; G still does not merge lanes.
