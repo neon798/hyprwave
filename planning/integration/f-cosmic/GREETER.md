@@ -93,3 +93,33 @@ loginctl
 ```
 
 **Pass criterion for greeter in this task:** greeter is the active DM and yields a COSMIC session. Wallpaper/theme parity with SDDM is **documented as a known limit**, not a silent failure.
+
+---
+
+## F-W1-002 — Branding vs greeter capabilities (reconfirm)
+
+Cross-check with `THEME-COSMIC-MATRIX.md` path proofs (2026-08-07).
+
+### What the greeter can show today
+
+| Asset | Available in image? | Greeter consumes it? |
+|---|---|---|
+| `/usr/share/backgrounds/hyprwave/default.png` | Yes (staged in cosmic arm) | **Unknown / unlikely** — greeter has its own compositor user; does not reliably read session `CosmicBackground` |
+| `/usr/share/cosmic/com.system76.CosmicTheme.Dark/**` | Yes | **Session only** after login (or if greeter explicitly loads cosmic-config — not verified on F44) |
+| Theme pack wallpapers under `/usr/share/hyprwave/themes/*/wallpapers/` | Yes | **No** — switcher writes user session config only |
+| SDDM `hyprwave` theme | Present in tree for Hyprland image | **Not active** when DM is `cosmic-greeter` |
+
+### Expectation matrix (operator-facing)
+
+| Surface | Hyprwave-branded? | Where documented |
+|---|---|---|
+| Login greeter chrome | Stock COSMIC / best-effort | This file (known limits) |
+| Post-login wallpaper (first boot) | Yes — `default.png` via vendor Background | SESSION-SMOKE #5, #9 |
+| Post-login wallpaper (after theme set) | Yes — theme store path | SESSION-SMOKE #26–#31 |
+| Dock + Dark theme first boot | Yes — vendor AppList + Dark + Mode | VENDOR-INVENTORY / SESSION-SMOKE #10–#11 |
+
+### Conclusion (F-W1-002)
+
+No greeter wallpaper fix in this task: still **no stable in-tree cosmic-greeter theme API**. Session path proofs pass; greeter branding remains a **documented gap**, not a silent regression. Prefer investing in session `hyprwave-theme` + vendor Dark (already shipped) over speculative greeter hacks.
+
+If upstream later documents e.g. `/usr/share/cosmic-greeter/` vendor keys, add a subsection here and a SESSION-SMOKE greeter visual item.

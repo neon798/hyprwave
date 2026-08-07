@@ -104,3 +104,56 @@ Mark each item **PASS / FAIL / SKIP** with a one-line note. Failures that only a
 
 **Critical for ship:** items 2–5, 7–15, 21.  
 **Nice-to-have:** 16–18, 22, greeter wallpaper polish.
+
+---
+
+## Theme switch + wallpaper (COSMIC) — F-W1-002
+
+Use a logged-in COSMIC session (or a VM with GUI). Theme packs live under
+`/usr/share/hyprwave/themes/<name>/`. Matrix: `THEME-COSMIC-MATRIX.md`.
+
+### Pre-checks (image, no GUI required)
+
+23. **Theme store present** — `ls /usr/share/hyprwave/themes | wc -l` ≥ 11; each has `cosmic/config/com.system76.CosmicTheme.Dark/v1/is_dark` = `true`.  
+24. **Repo path script** (on build host, not guest) — `planning/integration/f-cosmic/check-vendor-paths.sh` exits 0.
+
+### Switcher behavior
+
+25. **List themes** — `hyprwave-theme list` prints all pack names including `hyprwave`, `vaporwave`, `fjord-dark`, `verdant-haven`.  
+26. **Switch to vaporwave** — `hyprwave-theme set vaporwave`  
+    - Desktop chrome accent shifts (pink vaporwave, not hyprwave magenta alone).  
+    - `~/.config/cosmic/com.system76.CosmicBackground/v1/all` contains  
+      `Path("/usr/share/hyprwave/themes/vaporwave/wallpapers/wallpaper-2560x1440.jpg")`  
+      (or another resolvable file under that theme’s `wallpapers/`).  
+    - `~/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark` is `true`.  
+    - `~/.config/cosmic/com.system76.CosmicTheme.Dark/v1/name` is `"vaporwave"`.  
+27. **Wallpaper file readable** —  
+    `test -r "$(grep -oP 'Path\("\K[^"]+' ~/.config/cosmic/com.system76.CosmicBackground/v1/all)"`  
+28. **Dock favorites preserved** — After switch, dock still shows Neonwolf / FlatArcade / Ghostty / Files / Settings (AppList not overwritten by pack).  
+    - *How:* visual; or confirm pack has no `com.system76.CosmicAppList` tree  
+      (`test ! -d /usr/share/hyprwave/themes/vaporwave/cosmic/config/com.system76.CosmicAppList`).  
+29. **Switch to fjord-dark** — `hyprwave-theme set fjord-dark` — Nord-like blue accent; wallpaper under `themes/fjord-dark/wallpapers/`.  
+30. **Scene wallpaper (verdant-haven)** — `hyprwave-theme set verdant-haven forest`  
+    - Background path ends with `wallpaper-forest-2560x1440.jpg` (or another `forest` resolution if 2560 missing).  
+31. **Return to default pack** — `hyprwave-theme set hyprwave`  
+    - User Background may point at theme JPG (`wallpaper-2560x1440.jpg`) rather than vendor  
+      `/usr/share/backgrounds/hyprwave/default.png` — both are on-brand; first-boot only uses backgrounds path.  
+32. **Survive logout/login** — After switch, log out and back in: theme colors + wallpaper still from `~/.config/cosmic` (user wins over `/usr/share/cosmic`).
+
+### First-boot vs post-switch wallpaper paths
+
+| Moment | Typical `CosmicBackground` Path | Source of truth |
+|---|---|---|
+| Brand-new user, never ran switcher | `/usr/share/backgrounds/hyprwave/default.png` | Vendor `/usr/share/cosmic/.../all` |
+| After `hyprwave-theme set <name>` | `/usr/share/hyprwave/themes/<name>/wallpapers/…` | Written into `~/.config/cosmic/` by switcher |
+
+Both files must exist on the installed image. Smoke **#5** covers staged default; **#26–#30** cover switcher paths.
+
+### Criticality
+
+| Items | Priority |
+|---|---|
+| 23–24, 26–28, 31 | **Critical** for “COSMIC feels on-brand” after theme use |
+| 25, 29–30, 32 | Nice-to-have / extended |
+
+Update sign-off Result if any of 23–28 fail.

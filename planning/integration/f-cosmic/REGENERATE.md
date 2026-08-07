@@ -55,3 +55,16 @@ planning/bin/themegen/target/release/themegen \
 ```
 
 Schema pin: themegen depends on cosmic-theme matching COSMIC 1.x `v1` keys (see `planning/COSMIC-THEME-AND-STORE-REPLACEMENT.md`). Do not bump crate revs casually — master may emit v2 keys ignored by current Fedora COSMIC.
+
+---
+
+## F-W1-002 notes
+
+- Theme packs intentionally contain **only** `CosmicTheme.Dark` + `Dark.Builder` (see `THEME-COSMIC-MATRIX.md`). Regenerating does **not** need to emit Mode, Background, or AppList into packs — `hyprwave-theme` synthesizes Mode + Background at apply time; dock favorites stay vendor-global.
+- After regenerate, re-run:
+
+  ```bash
+  planning/integration/f-cosmic/check-vendor-paths.sh
+  ```
+
+- F-W1-002 did **not** re-run themegen: all 11 packs already had full 30+16 key trees; no broken wallpaper references.
