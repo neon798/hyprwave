@@ -2,4 +2,4 @@
 
 (append: `task_id | date | one-line summary | tip commit`)
 
-A-W1-001 | 2026-08-07 | Pin CI guards, verify-pins --checksum, RELEASE/BUMP/first-boot docs | d21fdc0
+A-W1-001 | 2026-08-07 | Fail-closed pins, verify-pins static guards, deeper pin_guards CI, release docs | 7847736

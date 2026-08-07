@@ -1,46 +1,42 @@
 # CURRENT_TASK
 
 status: OPEN  
-task_id: F-W1-002  
+task_id: F-W1-003  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
-title: Theme-store COSMIC configs audit + wallpaper path proofs  
+issued: 2026-08-07T04:55:00Z  
+title: Declutter proof, ISO final notes, FlatArcade-on-COSMIC smoke  
 
 ## Objective
 
-Ensure every Hyprwave theme that ships COSMIC config is coherent, wallpapers resolve, and greeter/session docs match vendor keys — toward ENDPOINT “COSMIC feels on-brand.”
+Lock COSMIC variant story for integration: prove declutter intent, finalize iso-cosmic operator notes, and expand smoke for FlatArcade/Ghostty/Neonwolf on COSMIC — still no Hyprland skel churn.
 
 ## Exclusive paths
 
 - `build_files/usr/share/cosmic/**`
 - `disk_config/iso-cosmic.toml`
-- COSMIC-only `build_files/build.sh` `cosmic)` arm only if essential (prefer docs/snippets)
-- `planning/bin/generate-cosmic-themes.sh` / `planning/bin/themegen/**` (no huge `target/` commits)
-- `build_files/usr/share/hyprwave/themes/*/cosmic/**` (theme cosmic configs only — not Hyprland skel)
+- COSMIC-only `build_files/build.sh` `cosmic)` arm only if essential
+- `planning/bin/generate-cosmic-themes.sh` / `planning/bin/themegen/**` (no huge `target/`)
+- `build_files/usr/share/hyprwave/themes/*/cosmic/**`
 - `planning/integration/f-cosmic/**`
 - `planning/taskmaster/models/f/**`
 
 ## Forbidden
 
-- Hyprland skel rewrites
-- Shared pin URLs (A)
-- Duress / Assistant
+- Hyprland skel, pins (A), duress, Assistant app code
 - Removing packages that break cosmic-session
 
 ## Requirements
 
-- [ ] Inventory which themes under `build_files/usr/share/hyprwave/themes/*` include `cosmic/config/`; table in `planning/integration/f-cosmic/THEME-COSMIC-MATRIX.md`
-- [ ] For default/system vendor path: prove wallpaper file(s) exist in repo; fix broken references
-- [ ] Spot-check 2–3 non-default themes’ cosmic configs for required keys (Mode, Background, dock favorites or document intentional minimal sets)
-- [ ] If themegen needed: document regenerate steps in REGENERATE.md; commit only generated configs (not `target/`)
-- [ ] Expand SESSION-SMOKE.md with theme-switch / wallpaper checks for COSMIC
-- [ ] GREETER.md: confirm wallpaper/branding expectations vs what greeter can show
-- [ ] Optional: small shell check script under `planning/integration/f-cosmic/check-vendor-paths.sh` (wallpaper exists, favorites IDs non-empty)
+- [ ] `planning/integration/f-cosmic/DECLUTTER.md` — list packages intentionally removed/avoided in cosmic arm (from build.sh read-only or HANDOFF); warn about `--no-autoremove`; what must remain
+- [ ] `disk_config/iso-cosmic.toml`: final comment block for image name, expected bootc ref, known installer limits
+- [ ] Expand SESSION-SMOKE: FlatArcade launch, Ghostty, Neonwolf, Settings, Files, network, theme switch (≥6 new or refined items)
+- [ ] `check-vendor-paths.sh` still exit 0; extend lightly if declutter docs claim wallpapers/favorites
+- [ ] GREETER.md: one-pass “day-1 COSMIC” expectation vs Hyprland for support docs (B can link later)
 - [ ] ≥3 commits; push `lane/f-cosmic`
 
 ## Deliverables
 
-- THEME-COSMIC-MATRIX, path proofs, any justified config fixes, smoke/greeter updates
+- DECLUTTER.md, ISO notes, smoke/greeter updates, check script still green
 
 ## Done criteria
 
