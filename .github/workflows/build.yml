@@ -79,8 +79,12 @@ jobs:
             echo "OK ${v}=${!v}"
           done
 
-      - name: Verify pin URLs reachable
-        run: bash planning/integration/a-stabilize/scripts/verify-pins.sh
+      - name: Verify pin URLs reachable (HEAD)
+        run: bash planning/integration/a-stabilize/scripts/verify-pins.sh --head
+
+      # Light checksums catch wrong sha256 without downloading the ~100MB Neonwolf AppImage.
+      - name: Verify pin checksums (light)
+        run: bash planning/integration/a-stabilize/scripts/verify-pins.sh --checksum --light
 
   build_push:
     name: Build and push image
