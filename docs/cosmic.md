@@ -54,7 +54,28 @@ Ghostty). Some changes may need a moment or a session restart.
 ## Keybinds
 
 Hyprland Super+… shortcuts in [keybinds.md](keybinds.md) **do not apply**. Use COSMIC’s
-keyboard settings. Launch apps from the COSMIC launcher or dock.
+keyboard settings. Launch apps from the COSMIC launcher or dock. First-hour path:
+[first-boot.md](first-boot.md).
+
+---
+
+## Greeter & session smoke (lane F)
+
+COSMIC image greeter and first-session expectations are written on **`lane/f-cosmic`**
+under `planning/integration/f-cosmic/` (not always present on `main` until merge):
+
+| Doc (on lane / after merge) | Contents |
+|-----------------------------|----------|
+| `planning/integration/f-cosmic/GREETER.md` | `cosmic-greeter.service` as DM; session wallpaper vs greeter face; known limits (no SDDM-parity greeter theme) |
+| `planning/integration/f-cosmic/SESSION-SMOKE.md` | Post-login checks (≥12): dock, wallpaper, Neonwolf, FlatArcade, Ghostty, theme switcher, no cosmic-store |
+| `planning/integration/f-cosmic/VENDOR-INVENTORY.md` | Dock favorites order, CosmicBackground path, theme keys |
+| `planning/integration/f-cosmic/VENDOR-FIXES.md` | Mode `is_dark`, dock reorder rationale |
+
+**Operator takeaway:** greeter must yield a COSMIC session; Hyprwave branding is
+**session**-oriented. Do not treat a stock greeter background as a failed install.
+
+Dual-variant integration matrix (when present):
+`planning/integration/g-qa/SMOKE-MATRIX.md` on **`lane/g-qa`**.
 
 ---
 
@@ -67,12 +88,14 @@ keyboard settings. Launch apps from the COSMIC launcher or dock.
 | You still want Neonwolf + FlatArcade + themes | You want Super+keybind defaults from skel |
 
 You can switch images later with `bootc switch`; home data stays, desktop configs do not
-auto-migrate.
+auto-migrate. Decision tree: [INSTALL.md](../INSTALL.md#choose-a-variant-hyprland-vs-cosmic).
 
 ---
 
 ## Troubleshooting pointers
 
-- Greeter issues → [troubleshooting.md](troubleshooting.md) (cosmic-greeter unit)  
+- Greeter issues → [troubleshooting.md](troubleshooting.md) (cosmic-greeter unit); F’s
+  `GREETER.md` on `lane/f-cosmic` for enable/symlink expectations  
 - Updates → [updating.md](updating.md)  
 - Architecture → [architecture.md](architecture.md)  
+- First boot → [first-boot.md](first-boot.md)  
