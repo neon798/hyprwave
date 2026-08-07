@@ -32,10 +32,26 @@ hyprwave-duress-setup --mild-template
 
 - `/etc` is writable; PAM edits survive until the next intentional reset of that file.
 - Image updates via `bootc upgrade` may **replace** vendor PAM files if they are
-  owned by packages — re-check `system-auth` after upgrades.
+  owned by packages — re-check `system-auth` after upgrades (commands below).
 - Prefer a small drop-in mindset: one `sufficient pam_duress.so` line, not a full
   stack rewrite.
 - Keep recovery media or a root console path ready (serial, second account, live USB).
+
+### Post-upgrade PAM drift check (example commands)
+
+```bash
+# After: sudo bootc upgrade && sudo systemctl reboot
+grep -n 'pam_duress' /etc/pam.d/system-auth /etc/pam.d/sddm /etc/pam.d/greetd \
+  /etc/pam.d/hyprlock 2>/dev/null || echo "no pam_duress references found"
+
+ls -l /usr/lib64/security/pam_duress.so
+hyprwave-duress-setup --status
+hyprwave-duress-setup --verify
+
+# If the enable line vanished, re-apply after backup — do not blind-restore an
+# ancient system-auth over a newer vendor file without reading the diff:
+#   diff -u /etc/pam.d/system-auth.bak.TIMESTAMP /etc/pam.d/system-auth
+```
 
 ## Keep a root shell open (mandatory checklist)
 
@@ -136,11 +152,15 @@ duress unlock.
 # Mild (recommended for first test)
 hyprwave-duress-setup --mild-template
 
+# Mild: local browser session caches under ~/.cache only
+hyprwave-duress-setup --local-clear-template
+
 # Aggressive wipe (keys/browsers/secrets)
 hyprwave-duress-setup --wipe-template
 
-# Status
+# Status / read-only integrity
 hyprwave-duress-setup --status
+hyprwave-duress-setup --verify
 hyprwave-duress-setup --list
 ```
 
@@ -178,13 +198,28 @@ From the **open root shell**:
 ```bash
 sudo cp /etc/pam.d/system-auth.bak.TIMESTAMP /etc/pam.d/system-auth
 # or remove only the pam_duress.so line
+sudo sed -i '/pam_duress\.so/d' /etc/pam.d/system-auth
+grep -n pam_duress /etc/pam.d/system-auth || echo "no pam_duress lines"
 ```
 
 ```bash
 hyprwave-duress-setup --list
+hyprwave-duress-setup --verify
 hyprwave-duress-setup --remove 10-clear-histories.sh
+hyprwave-duress-setup --remove 20-local-only-clear.sh
 hyprwave-duress-setup --remove 00-wipe-sensitive.sh
 ```
+
+## Recovery if locked out
+
+1. **Preferred:** use the still-open root shell to restore `*.bak.*` or delete
+   `pam_duress.so` lines (commands above). Test normal password before logout.
+2. **Already locked out:** boot live/recovery, mount the install root, edit the
+   same PAM files under the mount, reboot. Removing `~/.duress` never fixes PAM.
+3. Avoid `required pam_duress.so` unless you have tested missing-module behavior;
+   `sufficient` is the supported first enable.
+
+Full disposable-VM timing: `planning/integration/d-duress/DRILL.md`.
 
 ## Hard no’s
 

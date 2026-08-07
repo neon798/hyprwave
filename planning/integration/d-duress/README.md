@@ -1,22 +1,25 @@
 # Integration: Model D — Duress (lane/d-duress)
 
-## Wave 1 + Wave 2 delivered
+## Wave 1 + Wave 2 + security pack delivered
 
 | Artifact | Purpose |
 |---|---|
-| `build_files/build-duress.sh` | Pin + compile pam-duress → `$DESTROOT` |
-| `build_files/duress/` | Templates (mild + aggressive), setup tool, PAM **snippets**, security README, ENABLE.md |
+| `build_files/build-duress.sh` | Pin + compile pam-duress → `$DESTROOT` (prints pin/date; `PAM_DURESS_COMMIT` override) |
+| `build_files/duress/` | Templates (mild + local-clear + aggressive), setup tool, PAM **snippets**, THREAT-MODEL, ENABLE |
 | `build.sh.snippet` | Deploy packaging; **no PAM enable** (`DURESS=assets` intent) |
 | `Containerfile.snippet` | Optional `duressbuilder` stage |
-| `ENABLE.md` | Admin enable / rollback / Atomic notes / root-shell checklist |
-| `validate.sh` | Packaging safety gates (syntax, no `.sha256`, no pam.d writes) |
+| `ENABLE.md` | Admin enable / recovery / bootc PAM drift / root-shell checklist |
+| `DRILL.md` | 30–45 min disposable VM operator procedure |
+| `validate.sh` | Packaging safety gates (syntax, no `.sha256`, no pam.d writes, `--verify`, threat model) |
 
-## Setup tool (Wave 2)
+## Setup tool
 
 ```bash
 hyprwave-duress-setup --dry-run --mild-template
 hyprwave-duress-setup --mild-template
+hyprwave-duress-setup --local-clear-template
 hyprwave-duress-setup --wipe-template
+hyprwave-duress-setup --verify
 hyprwave-duress-setup --status --json
 ```
 
