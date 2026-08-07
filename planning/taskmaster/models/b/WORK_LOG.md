@@ -52,3 +52,11 @@
 - CHANGELOG Post-merge template links to flip file
 - contributor-notes + ACCURACY-AUDIT post-merge pass stub
 - Links 245/0 missing; ≥2 commits; push lane/b-docs
+
+## 2026-08-07 — B-W1-006
+
+- status OPEN → DONE (integration standby heartbeat)
+- Wave 1 product docs **frozen**; no product scope this tick
+- Freeze / lane tip: `fb3eb36`
+- Standby for integration (Director serial merge / INTEGRATION-DAY)
+- Optional self-check: relative links checked=245 missing=0
