@@ -64,8 +64,11 @@ Program board: `planning/taskmaster/STATUS.md` (on `main` after director check-i
 
 ## Refreshing the handbook after lane merges
 
+**Canonical step-by-step:**  
+[planning/integration/b-docs/POST-MERGE-DOC-FLIP.md](../planning/integration/b-docs/POST-MERGE-DOC-FLIP.md)
+
 When the integrator lands A–G (or a subset) onto `main`, docs must **stop claiming
-pending** for features that actually shipped. Checklist:
+pending** for features that actually shipped. Summary:
 
 1. **Diff product sources on the new `main` tip**
    - Keybinds: `build_files/etc/skel/.config/hypr/bindings.conf` vs [keybinds.md](keybinds.md)

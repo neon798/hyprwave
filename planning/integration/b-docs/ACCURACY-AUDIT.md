@@ -1,6 +1,6 @@
 # Accuracy audit (Model B)
 
-**Tasks:** B-W1-001 … B-W1-004 (pre-merge handbook freeze)  
+**Tasks:** B-W1-001 … B-W1-005 (post-merge flip checklist)  
 **Date:** 2026-08-07  
 **Branch:** `lane/b-docs`  
 **Scope:** Handbook claims vs tree on this branch + **read-only** lane tips
@@ -187,3 +187,29 @@ Registry publicity and Wave-1 merge status remain deliberately cautious.
 
 Re-run link check, refresh ACCURACY-AUDIT with **merge commit**, execute CHANGELOG
 Post-merge template checkboxes, drop obsolete “pending merge” banners.
+
+
+---
+
+## Post-merge pass (B-W1-005 prep)
+
+| Field | Value |
+|-------|--------|
+| Prepared | 2026-08-07 |
+| Checklist | `planning/integration/b-docs/POST-MERGE-DOC-FLIP.md` |
+| Status | **Not executed** — product A–G still unmerged on main at authoring time |
+| When to run | After integrator serial merge (or partial merge); then fill claims below |
+
+### Post-merge pass log (fill when run)
+
+| Check | Result |
+|-------|--------|
+| main tip | |
+| Link check | |
+| Keybinds match skel | |
+| Duress still off-by-default in docs | |
+| GHCR public claim avoided unless verified | |
+| CHANGELOG dated release section | |
+| Pending-merge banners reduced accurately | |
+
+Do not mark the pass complete without product merge evidence.
