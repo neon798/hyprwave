@@ -71,11 +71,14 @@ onboarding without requiring readers to open `planning/`.
 - [INSTALL.md](INSTALL.md) — dual-variant decision tree; ISO vs rebase; private GHCR.
 - [docs/first-boot.md](docs/first-boot.md) — login → desktop → apps → themes → updates.
 - [docs/keybinds.md](docs/keybinds.md) — reconciled to E KEYBIND-MAP / dwindle binds.
+- [docs/security.md](docs/security.md) — aligned to D-lane ENABLE/FAQ/THREAT-MODEL; **off by default**; not LUKS.
+- [docs/troubleshooting.md](docs/troubleshooting.md) — dual-variant greeter/launcher/theme matrix.
+- [docs/screenshots.md](docs/screenshots.md) + screenshot checklist with **exact** capture commands.
 - [docs/README.md](docs/README.md) — handbook index.
-- Operator pages: troubleshooting, architecture, updating, security, cosmic, theming,
-  [faq.md](docs/faq.md), [contributor-notes.md](docs/contributor-notes.md).
+- Operator pages: architecture, updating, cosmic, theming, [faq.md](docs/faq.md),
+  [contributor-notes.md](docs/contributor-notes.md).
 - [ACCURACY-AUDIT.md](planning/integration/b-docs/ACCURACY-AUDIT.md) — sources checked.
-- Screenshot checklist: purpose + alt text + capture notes (binaries still TODO).
+- Screenshot binaries still TODO (ops notes ready; not blocking).
 
 ### Wave-1 lane deliverables (**pending merge** — not claimed on main GHCR)
 

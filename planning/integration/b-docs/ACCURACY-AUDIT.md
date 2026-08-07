@@ -1,6 +1,6 @@
 # Accuracy audit (Model B)
 
-**Tasks:** B-W1-001 (initial handbook), B-W1-002 (keybind + first-boot pass)  
+**Tasks:** B-W1-001, B-W1-002, B-W1-003 (security + screenshots + dual-variant TS)  
 **Date:** 2026-08-07  
 **Branch:** `lane/b-docs`  
 **Scope:** Handbook claims vs tree on this branch + **read-only** lane tips
@@ -129,3 +129,31 @@ may 404 on `main` until those lanes merge — handbook labels them “on lane”
 Handbook language matches **lane product reality** for Walker / hyprpaper / Yazi /
 themes / dual DE. Keybinds document E-lane ENDPOINT with explicit merge honesty.
 Registry publicity and Wave-1 merge status remain deliberately cautious.
+
+
+---
+
+## B-W1-003 addendum (security / troubleshooting / screenshots)
+
+**Date:** 2026-08-07  
+**Read-only D sources:**
+
+| Doc | Used for |
+|-----|----------|
+| `origin/lane/d-duress:build_files/duress/THREAT-MODEL.md` | Residual risks, non-goals (no LUKS, no forensics claim) |
+| `origin/lane/d-duress:build_files/duress/ENABLE.md` | Off-by-default, sufficient PAM, no enable paste in handbook |
+| `origin/lane/d-duress:planning/integration/d-duress/FAQ.md` | Condition table; upgrade drift; template severities |
+| `origin/lane/d-duress:build_files/duress/README.md` | Assets-only packaging |
+
+**Claim updates:**
+
+| Claim | Verdict |
+|-------|---------|
+| Duress enabled by default | **Not claimed** — explicit assets-only / PAM-off |
+| Duress replaces LUKS | **Not claimed** — security.md non-goals table |
+| Dual-variant troubleshooting matrix | OK — greeter/launcher/theme both DEs |
+| Screenshot rows have exact commands | OK — checklist H1–H11, C1–C5, M1–M2 |
+| Compositor-less host blocker | Documented |
+| GHCR public | Still **not claimed** |
+
+**New handbook files:** `docs/screenshots.md` → checklist + `docs/assets/` reserved.

@@ -22,16 +22,17 @@ Full guide (variant pick, ISO vs rebase, first login): **[INSTALL.md](INSTALL.md
 > `bootc switch` / `podman pull` returns 403, see INSTALL or build from source.
 
 **Docs:** [Handbook index](docs/README.md) ·
-[First boot](docs/first-boot.md) ·
+**[First boot](docs/first-boot.md)** ·
+**[Keybinds](docs/keybinds.md)** ·
+**[Security](docs/security.md)** (duress **off by default**) ·
 [FAQ](docs/faq.md) ·
 [Install](INSTALL.md) ·
 [Updating](docs/updating.md) ·
 [Troubleshooting](docs/troubleshooting.md) ·
 [Theming](docs/theming.md) ·
-[Keybinds](docs/keybinds.md) ·
 [COSMIC](docs/cosmic.md) ·
 [Architecture](docs/architecture.md) ·
-[Security](docs/security.md) ·
+[Screenshots](docs/screenshots.md) ·
 [Changelog](CHANGELOG.md)
 
 ## Default stack (Hyprland)
