@@ -1,14 +1,14 @@
 # CURRENT_TASK
 
-status: DONE  
-task_id: D-W1-002  
+status: OPEN  
+task_id: D-W1-003  
 wave: 1  
-issued: 2026-08-07T04:45:00Z  
-title: Negative-path validate, operator FAQ, packaging dry-run proof  
+issued: 2026-08-07T04:55:00Z  
+title: Signing workflow dry-run docs + snippet self-test + residual operator duties  
 
 ## Objective
 
-Harden duress packaging toward ENDPOINT residual confidence: automated **negative** tests, operator FAQ for enable/disable/recovery, and proof that stock image path remains PAM-off — still **never** enable PAM by default.
+Final packaging confidence before integration: document **how operators sign** without shipping signatures, prove snippets are inert, and list residual risks operators still own (ENDPOINT: packaged OFF by default).
 
 ## Exclusive paths
 
@@ -19,29 +19,27 @@ Harden duress packaging toward ENDPOINT residual confidence: automated **negativ
 
 ## Forbidden
 
-- Enabling pam_duress in shipped PAM configs
-- Pre-signed `*.sha256` in repo
-- Skel / assistant / product README handbook (B)
-- Marking DONE without validate.sh green
+- Enabling pam_duress in shipped defaults
+- Committing `*.sha256` signatures into the repo
+- Skel / assistant / handbook prose (B)
 
 ## Requirements
 
-- [x] Expand `validate.sh` with **negative fixtures** (temp dirs): e.g. planted `*.sha256` must fail; snippet with `required pam_duress` must fail; missing THREAT-MODEL must fail — then clean up
-- [x] `planning/integration/d-duress/FAQ.md` — ≥10 Q&As (what it is/isn’t, off by default, signing scripts, greeter/hyprlock, lockout recovery, bootc drift, residual risk vs LUKS)
-- [x] `OPERATOR-RUNBOOK.md` — enable → test in disposable VM → disable/rollback ordered steps (link DRILL.md)
-- [x] Audit all snippets: no path writes under `/etc/pam.d` in build hooks; document in WORK_LOG
-- [x] Optional mild template or setup flag only if justified; keep severity table accurate
-- [x] Confirm `build-duress.sh` still prints pin+date; pin format full SHA
-- [x] ≥3 commits; push `lane/d-duress`
-- [x] `bash planning/integration/d-duress/validate.sh` exits 0
+- [ ] `planning/integration/d-duress/SIGNING.md` — generate checksums locally, install to target dir, `--verify` success path, **never** commit signatures; worked example with disposable path
+- [ ] `snippet-selftest.sh` (or validate.sh section): asserts `build.sh.snippet` / `Containerfile.snippet` do not enable PAM / write pam.d; exit 0 on current tree
+- [ ] README severity table still matches all templates; link FAQ + OPERATOR-RUNBOOK + SIGNING
+- [ ] `RESIDUALS.md` — what packaging does **not** solve (disk encryption, physical access, signed-script trust root, bootc PAM drift) for integrator/B
+- [ ] validate.sh still green including negatives
+- [ ] ≥3 commits; push `lane/d-duress`
 
 ## Deliverables
 
-- Stronger validate negatives, FAQ, operator runbook
+- SIGNING.md, residuals, snippet self-test, README index polish
 
 ## Done criteria
 
-- [x] Requirements met; validate green; push; WORK_LOG + COMPLETED; status DONE
+- [ ] `bash planning/integration/d-duress/validate.sh` exits 0
+- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
