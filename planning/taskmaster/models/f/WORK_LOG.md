@@ -32,3 +32,15 @@
   - Theme packs intentionally omit Mode/Background/AppList — switcher writes Mode+Background; dock stays vendor
   - No config file fixes required; themegen not re-run
 - Forbidden paths untouched.
+
+## 2026-08-07 — F-W1-003 Declutter / ISO / FlatArcade smoke
+
+- Branch: `lane/f-cosmic`
+- Deliverables:
+  - `planning/integration/f-cosmic/DECLUTTER.md`
+  - `disk_config/iso-cosmic.toml` final operator notes (kickstart ref unchanged)
+  - SESSION-SMOKE.md items 33–47
+  - GREETER.md day-1 COSMIC vs Hyprland one-pager
+  - check-vendor-paths.sh: favorites flatarcade/neonwolf/hyprwave-theme + wallpaper story
+- build.sh: **no edit** (read-only audit)
+- Forbidden paths untouched.
