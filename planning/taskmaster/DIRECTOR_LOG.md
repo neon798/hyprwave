@@ -112,3 +112,9 @@
 - Stable HOLD: A `a69e0d9`, B `3cbe3e6`, C `f1e48a5`, D `00003ec`, E `ba1c21f`, F `9f59118`, G `b6efd63`.
 - No lane activity / product commits; main still `AWAITING_HUMAN_INTEGRATION`.
 - No re-issue; no new tasks.
+
+## 2026-08-07T06:35:00Z — Director check-in
+
+- HOLD steady: A/B/C/F/G tips unchanged; **D** `6ea752e` and **E** `9aff7ee` poll heartbeats (still OPEN HOLD).
+- Product tree on main still unmerged — human serial merge remains sole blocker.
+- No new tasks; no re-issue.
