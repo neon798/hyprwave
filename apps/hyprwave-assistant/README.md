@@ -2,6 +2,8 @@
 
 Go + Bubble Tea TUI and CLI for Hyprwave: **Updater**, **Installer**, **Knowledge Base**, **About**.
 
+Version default in source: **0.2.2** (override with `-ldflags "-X main.version=…"`).
+
 ## Build & test
 
 ```bash
@@ -9,8 +11,8 @@ cd apps/hyprwave-assistant
 go test ./...
 go test ./internal/catalog ./internal/kb ./internal/system -cover
 go build -o hyprwave-assistant .
-# release-ish static binary:
-CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=0.2.1" -o hyprwave-assistant .
+# release-ish static binary (integrator uses this shape):
+CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=0.2.2" -o hyprwave-assistant .
 ```
 
 Unit tests must not perform real network I/O (`OnlineProbe` is stubbed via `OfflineForTests` / `OnlineForTests`).
@@ -25,7 +27,9 @@ hyprwave-assistant install <id> [--dry-run|--yes --confirm]
 hyprwave-assistant list [--source flathub|layer]
 hyprwave-assistant kb [query|id]
 hyprwave-assistant version
+hyprwave-assistant --version
 hyprwave-assistant help
+hyprwave-assistant --help
 ```
 
 ### Safety
@@ -42,22 +46,46 @@ hyprwave-assistant help
 
 - **Works offline:** KB browse/search, catalog list/filter, dry-run plans, status of local tools
 - **Needs network:** live `bootc upgrade`, `flatpak update/install`
-- Updater shows a clear **OFFLINE / cannot reach** banner when connectivity probe fails
+- Updater/About show a clear **OFFLINE / cannot reach** banner when connectivity probe fails
 
-## Environment & data
+## Install layout (runtime)
+
+Integrator installs a **fixed tree**. The binary resolves data in this order:
+
+1. `--data DIR`
+2. `HYPRWAVE_ASSISTANT_DATA`
+3. `/usr/share/hyprwave/assistant` ← **production default**
+4. Repo-relative `build_files/usr/share/hyprwave/assistant` (dev)
+5. `testdata` / beside the executable
+
+### Production tree (after image integrate)
+
+```
+/usr/bin/hyprwave-assistant
+/usr/share/applications/hyprwave-assistant.desktop
+/usr/share/hyprwave/assistant/
+  catalog.toml          # curated installer entries
+  kb/
+    *.md                # knowledge base articles (id = filename stem)
+```
+
+Repo sources that map 1:1:
+
+| Source | Install target |
+|--------|----------------|
+| `apps/hyprwave-assistant/` (Go build) | `/usr/bin/hyprwave-assistant` |
+| `build_files/usr/share/hyprwave/assistant/` | `/usr/share/hyprwave/assistant/` |
+| `build_files/usr/share/applications/hyprwave-assistant.desktop` | `/usr/share/applications/…` |
+
+See `planning/integration/c-assistant/` for `Containerfile.snippet` + `build.sh.snippet` (one-pass wire-up).
+
+### Environment & flags
 
 | Variable / flag | Purpose |
 |-----------------|---------|
 | `HYPRWAVE_ASSISTANT_DATA` | Dir with `catalog.toml` + `kb/` |
 | `--data DIR` | Same, CLI flag |
 | `HYPRWAVE_THEME` | Theme name for TUI accent (best-effort) |
-
-Default search order includes `/usr/share/hyprwave/assistant` and repo `build_files/usr/share/hyprwave/assistant`.
-
-Files:
-
-- `catalog.toml` — curated installer entries (Flathub IDs validated in tests)
-- `kb/*.md` — knowledge base articles
 
 ## Theme
 

@@ -872,16 +872,26 @@ func (m Model) viewAbout() string {
 	if theme == "" {
 		theme = "synthwave (default)"
 	}
-	b.WriteString(style.Body.Render("Theme:   ") + theme + "\n\n")
+	b.WriteString(style.Body.Render("Theme:   ") + theme + "\n")
+	if m.statusLoaded {
+		if ban := m.status.Preflight.OfflineBanner(); ban != "" {
+			b.WriteString(style.Error.Render(ban) + "\n")
+			b.WriteString(style.Muted.Render("Offline-first: KB + catalog work; remote update/install blocked.") + "\n")
+		} else {
+			b.WriteString(style.Success.Render("Network probe: online") + "\n")
+		}
+	}
+	b.WriteString("\n")
 	b.WriteString("A single TUI for updates, curated installs, and distro knowledge.\n")
 	b.WriteString("Built with Go + Bubble Tea + Lip Gloss.\n")
-	b.WriteString(style.Muted.Render("Never forces reboot. Confirmations for base upgrades.\n\n"))
+	b.WriteString(style.Muted.Render("Never forces reboot. Double-confirm for mutations. Dry-run always available.\n\n"))
 	b.WriteString(style.Highlight.Render("Palette") + "  ")
 	b.WriteString(lipgloss.NewStyle().Foreground(style.Pink).Render("■pink ") +
 		lipgloss.NewStyle().Foreground(style.Cyan).Render("■cyan ") +
 		lipgloss.NewStyle().Foreground(style.Purple).Render("■purple") + "\n\n")
-	b.WriteString(style.Muted.Render("CLI: status | update | install | list | kb | version\n"))
-	b.WriteString(style.Muted.Render("Theme switcher: hyprwave-theme · App store: FlatArcade\n\n"))
+	b.WriteString(style.Muted.Render("CLI: status | update | install | list | kb | version | --help\n"))
+	b.WriteString(style.Muted.Render("Theme switcher: hyprwave-theme · App store: FlatArcade\n"))
+	b.WriteString(style.Muted.Render("Install layout: /usr/share/hyprwave/assistant/{catalog.toml,kb/*.md}\n\n"))
 	tools := system.Which(m.cfg.Runner, "bootc", "flatpak", "ghostty", "sudo")
 	b.WriteString(style.Highlight.Render("Host tools") + "\n")
 	for _, name := range []string{"bootc", "flatpak", "ghostty", "sudo"} {
