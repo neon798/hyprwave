@@ -1,38 +1,42 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** 1 complete → **HUMAN INTEGRATION**  
-**Updated:** 2026-08-07T12:13:13Z  
+**Director wave:** 1 complete → **HUMAN INTEGRATION DONE (local)**  
+**Updated:** 2026-08-07 (integrator, serial merge A→G)  
 **Endpoint:** see `ENDPOINT.md`
 
-| Model | Role | Branch | Current task | Status |
-|---|---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | A-W1-HOLD | OPEN — ack |
-| B | Docs / handbook | `lane/b-docs` | B-W1-HOLD | OPEN — ack |
-| C | Hyprwave Assistant | `lane/c-assistant` | C-W1-HOLD | OPEN — ack (heartbeat) |
-| D | Duress / security packaging | `lane/d-duress` | D-W1-HOLD | OPEN — ack (heartbeat) |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | E-W1-HOLD | OPEN — ack (heartbeat) |
-| F | COSMIC variant | `lane/f-cosmic` | F-W1-HOLD | OPEN — ack |
-| G | QA automation / integration prep | `lane/g-qa` | G-W1-HOLD | OPEN — ack |
+| Model | Role | Branch | Status |
+|---|---|---|---|
+| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main |
+| B | Docs / handbook | `lane/b-docs` | merged → main |
+| C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets |
+| D | Duress / security packaging | `lane/d-duress` | merged → main + snippets |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | merged → main |
+| F | COSMIC variant | `lane/f-cosmic` | merged → main |
+| G | QA automation / integration prep | `lane/g-qa` | merged → main |
 
 ## This check-in
 
-- **A–G** HOLD OPEN; heartbeats: C `5dfa5a3` (idle), D `5958f7a`, E `7c8fd63`.
-- Still **no** product merge to main (taskmaster-only).
-- No new tasks; no BLOCKED; no DONE→next.
+- Serial merge **A→B→C→D→E→F→G** performed by integrator on `main`.
+- C and D **snippets applied** (assistant-builder stage + duress packaging, PAM OFF).
+- Super+Shift+A bind enabled for assistant; wofi/swaybg comment clarified.
+- Host harness: `planning/qa/run-all.sh` → **RESULT OK** (33 PASS, 0 FAIL).
+- `just lint` → pre-existing info-level findings only (SC1091/SC2015); fails on `set -e` (was already failing pre-integration).
+- Tagged `pre-integration-20260807` before merges.
 
 ## Integration readiness
 
 | Gate | Status |
 |---|---|
 | Wave 1 freeze + docs on lanes | **GO** |
-| All models holding | **GO** |
-| Human serial merge A→G | **PENDING** (blocker) |
-| Pins/publish on main | **NO-GO** |
+| Serial merge A→G | **DONE (local)** |
+| Pins on main | **PASS** (pins-static) |
+| Harness on main | **PASS** (RESULT OK) |
+| Image builds / VM smokes / GHCR publish | **PENDING (T8)** |
+| Push local main → origin | **PENDING** |
 
-**Human:** `git show origin/lane/g-qa:planning/integration/g-qa/INTEGRATION-DAY.md`  
-Also: `PROGRAM-CLOSEOUT.md` for ENDPOINT verification after merge.
+**Remaining:** `just build` / `just build-cosmic`, VM smokes, GHCR publish decision, push to origin.
 
 ## Program state
 
-`AWAITING_HUMAN_INTEGRATION`
+`MERGED_LOCAL_AWAITING_T8_AND_PUSH`

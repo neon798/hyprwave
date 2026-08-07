@@ -45,15 +45,15 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence / residual |
 |---|---|---|
-| A pins on main | **open** | `versions.env` absent; **met on lane** A |
-| B docs on main | **open** | **met on lane** B |
-| C assistant on main | **open** | **met on lane** C; snippets post-merge |
-| D duress on main | **open** | **met on lane** D |
-| E Hyprland polish | **partial** | baseline skel on main; E polish **met on lane** |
-| F COSMIC | **partial** | baseline vendor on main; F freeze **met on lane** |
-| G QA on main | **open** | **met on lane** G |
+| A pins on main | **met on main** | merged `lane/a-stabilize`; pins-static PASS |
+| B docs on main | **met on main** | merged `lane/b-docs`; INSTALL/CHANGELOG/docs present |
+| C assistant on main | **met on main** | merged `lane/c-assistant` + snippets applied; assistant PASS |
+| D duress on main | **met on main** | merged `lane/d-duress` + snippets applied; duress-safety PASS |
+| E Hyprland polish | **met on main** | merged `lane/e-hyprland`; themes/no-wofi PASS |
+| F COSMIC | **met on main** | merged `lane/f-cosmic`; vendor check PASS |
+| G QA on main | **met on main** | merged `lane/g-qa`; full run-all RESULT OK |
 
-**Residual:** Follow INTEGRATION-DAY.md serial A→G + C/D snippets.
+**Residual:** image builds (`just build` / `just build-cosmic`) + VM smokes + GHCR decision = T8.
 
 ---
 
@@ -61,8 +61,8 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| No `/releases/latest` on main | **open** | main still **6** hits; pins-static FAIL |
-| A lane pinned | **met on lane** | 0 hits + versions.env |
+| No `/releases/latest` on main | **met on main** | 0 hits; pins-static PASS |
+| A lane pinned | **met on main** | 0 hits + versions.env |
 | `just build` green | **open** | integrator T8 |
 
 ---
@@ -81,9 +81,9 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| Sources/tests | **met on lane** C | |
-| Image stages | **open** | snippet apply |
-| Super+Shift+A | **open** | E card / C HANDOFF |
+| Sources/tests | **met on main** | `go test ./...` green on main |
+| Image stages | **met on main** | assistant-builder stage + COPY; build.sh snippet |
+| Super+Shift+A | **met on main** | bind enabled in skel bindings.conf |
 
 ---
 
@@ -91,9 +91,9 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| Packaging + validate | **met on lane** D | |
-| No `*.sha256` | **met on lane** | |
-| OFF in shipped image | **open** until merge verify | |
+| Packaging + validate | **met on main** | validate.sh PASS on main |
+| No `*.sha256` | **met on main** | 0 files |
+| OFF in shipped image | **open** | verify in built image (T8) |
 
 ---
 
@@ -120,7 +120,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| INSTALL/CHANGELOG/docs | **met on lane** B | not on main |
+| INSTALL/CHANGELOG/docs | **met on main** | merged `lane/b-docs` |
 | Accuracy post-merge | **open** | B POST-MERGE-DOC-FLIP |
 
 ---
@@ -129,9 +129,9 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| Harness, probe, CI snippet, dry-run | **met on lane** G | |
-| INTEGRATION-DAY master runbook | **met on lane** G | this task |
-| On main | **open** | merge G |
+| Harness, probe, CI snippet, dry-run | **met on main** | merged `lane/g-qa` |
+| INTEGRATION-DAY master runbook | **met on main** | merged `lane/g-qa` |
+| On main | **met on main** | full run-all RESULT OK |
 
 ---
 
