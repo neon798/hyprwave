@@ -78,5 +78,5 @@
 
 ## 2026-08-07 — D-W1-HOLD (poll heartbeat)
 
-- Polled `origin/main`; refreshed `planning/taskmaster/models/d/` (still D-W1-HOLD OPEN).
-- Product freeze unchanged: `adbb4f4`. **status remains OPEN** — no product work; do not mark HOLD DONE.
+- Polled `origin/main`; refreshed `planning/taskmaster/models/d/` — task_id still `D-W1-HOLD`, status OPEN.
+- Product freeze unchanged: `adbb4f4`. No product work; will not mark HOLD DONE. Awaiting serial merge.
