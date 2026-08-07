@@ -1,24 +1,29 @@
-# --- Model C: multi-stage Go build for hyprwave-assistant ---
-# Merge into Containerfile. The hyprbuilder stage is Hyprland-only; this stage is
-# independent and can be used for both DE=hyprland and DE=cosmic finals.
-#
+# --- Model C Wave 2: multi-stage Go build for hyprwave-assistant ---
+# Merge into Containerfile. Independent of hyprbuilder; usable for hyprland + cosmic.
 # Build context must include apps/hyprwave-assistant/.
 
 FROM docker.io/library/golang:1.23-bookworm AS assistant-builder
 WORKDIR /src
-# Cache modules first
 COPY apps/hyprwave-assistant/go.mod apps/hyprwave-assistant/go.sum ./
 RUN go mod download
 COPY apps/hyprwave-assistant/ ./
+# Static binary; version stamped for About / --version
+ARG ASSISTANT_VERSION=0.2.0
 ENV CGO_ENABLED=0
 RUN go test ./... \
- && go build -trimpath -ldflags="-s -w -X main.version=0.1.0" \
+ && go build -trimpath \
+      -ldflags="-s -w -X main.version=${ASSISTANT_VERSION}" \
       -o /out/hyprwave-assistant .
 
-# In the final image stage (after FROM de-${DE} or equivalent):
-# COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant
+# Final image stage (after FROM de-${DE} or equivalent):
 #
-# Data files should already be installed via build.sh.snippet or:
-# COPY build_files/usr/share/hyprwave/assistant /usr/share/hyprwave/assistant
-# COPY build_files/usr/share/applications/hyprwave-assistant.desktop \
-#      /usr/share/applications/hyprwave-assistant.desktop
+#   COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant
+#   RUN chmod 0755 /usr/bin/hyprwave-assistant
+#
+# Data (if not installed via build.sh.snippet):
+#   COPY build_files/usr/share/hyprwave/assistant /usr/share/hyprwave/assistant
+#   COPY build_files/usr/share/applications/hyprwave-assistant.desktop \
+#        /usr/share/applications/hyprwave-assistant.desktop
+#
+# Runtime default data path: /usr/share/hyprwave/assistant
+# Override: HYPRWAVE_ASSISTANT_DATA or --data

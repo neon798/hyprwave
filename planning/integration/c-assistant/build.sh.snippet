@@ -1,40 +1,39 @@
-# --- Model C: Hyprwave Assistant (integrator applies into build_files/build.sh) ---
+# --- Model C Wave 2: Hyprwave Assistant (integrator → build_files/build.sh) ---
 # Prerequisites:
-#   - Containerfile multi-stage builds the binary (see Containerfile.snippet)
-#     OR a prebuilt binary is COPY'd into the image at /usr/bin/hyprwave-assistant
-#   - Catalog + KB already live at build_files/usr/share/hyprwave/assistant/
-#     (copied by the existing skel/share rsync patterns if present; otherwise add below)
+#   - Containerfile multi-stage builds static binary (Containerfile.snippet)
+#   - Catalog + KB at build_files/usr/share/hyprwave/assistant/
 #   - Desktop entry at build_files/usr/share/applications/hyprwave-assistant.desktop
 #
-# Place AFTER package installs; BEFORE final cleanup. Does not enable any network
-# services. Safe to gate with DE if desired (works on both hyprland and cosmic).
+# Place AFTER package installs; BEFORE final cleanup. No network services.
+# Safe on both DE=hyprland and DE=cosmic.
 
-# Install assistant data (if not already covered by a blanket copy of build_files/usr)
-if [[ -d /ctx/build_files/usr/share/hyprwave/assistant ]]; then
+ASSISTANT_SRC="${ASSISTANT_SRC:-/ctx/build_files}"
+ASSISTANT_DATA_SRC="${ASSISTANT_SRC}/usr/share/hyprwave/assistant"
+ASSISTANT_DESKTOP_SRC="${ASSISTANT_SRC}/usr/share/applications/hyprwave-assistant.desktop"
+
+# Data: catalog.toml + kb/*.md → runtime path used by the binary
+if [[ -d "${ASSISTANT_DATA_SRC}" ]]; then
   install -d /usr/share/hyprwave/assistant
-  cp -a /ctx/build_files/usr/share/hyprwave/assistant/. /usr/share/hyprwave/assistant/
+  cp -a "${ASSISTANT_DATA_SRC}/." /usr/share/hyprwave/assistant/
+  # ensure world-readable for non-root users of the TUI
+  chmod -R a+rX /usr/share/hyprwave/assistant
 fi
 
-# Desktop entry (file-only; do not touch other .desktop files)
-if [[ -f /ctx/build_files/usr/share/applications/hyprwave-assistant.desktop ]]; then
+# Desktop entry (this file only — do not touch other .desktop files)
+if [[ -f "${ASSISTANT_DESKTOP_SRC}" ]]; then
   install -d /usr/share/applications
-  install -m 0644 \
-    /ctx/build_files/usr/share/applications/hyprwave-assistant.desktop \
-    /usr/share/applications/hyprwave-assistant.desktop
+  install -m 0644 "${ASSISTANT_DESKTOP_SRC}" /usr/share/applications/hyprwave-assistant.desktop
 fi
 
-# Binary: either COPY --from=assistant-builder in Containerfile, or:
-# install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
-#
-# Optional convenience symlink (CLI name "hyprwave" may already exist for themes —
-# only add if free):
-# if [[ ! -e /usr/bin/hyprwave ]]; then
-#   ln -s hyprwave-assistant /usr/bin/hyprwave
-# fi
+# Binary: prefer COPY --from=assistant-builder in Containerfile:
+#   COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant
+# Fallback if pre-staged in build context:
+if [[ -x /tmp/hyprwave-assistant && ! -x /usr/bin/hyprwave-assistant ]]; then
+  install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
+fi
 
-# Optional: refresh desktop database if the image uses it
+# Optional desktop database refresh
 # update-desktop-database /usr/share/applications 2>/dev/null || true
 
-# Suggested Walker note for integrator (DO NOT edit bindings.conf in this lane):
-#   Super+Shift+A → ghostty -e hyprwave-assistant
-# --- end Model C snippet ---
+# Keybind is NOT applied here — see HANDOFF-WAVE2.md (Super+Shift+A → skel bindings).
+# --- end Model C Wave 2 snippet ---
