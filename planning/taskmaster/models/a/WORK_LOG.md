@@ -371,4 +371,4 @@ GHCR                                       still documented private
                                            (GHCR-VISIBILITY.md + README 403)
 ```
 
-Poll 2026-08-13T06:25:50Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+Poll 2026-08-13T06:27:41Z: still DONE; main `c712cbd`; pins-static 11 PASS.
