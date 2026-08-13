@@ -309,3 +309,18 @@ releases/latest                   CLEAN
 1. merge `origin/main` (A-W3-001 assignment)
 2. FIRST-BOOT-CHECKLIST Wave 3 stamp + run log
 3. taskmaster DONE
+
+## 2026-08-13 — A-W3-001 reconfirm (main still OPEN)
+
+**status:** DONE (no new product work)
+
+Director copy on `origin/main` still listed A-W3-001 OPEN. Stamp already on
+lane (`c845521`). Re-ran gates:
+
+```
+verify-pins.sh --head --light     exit 0
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+```
+
+Pins still current. GHCR still documented 403. VM smoke still OPEN.
+No invented follow-up.
