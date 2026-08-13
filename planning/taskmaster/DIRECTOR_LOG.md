@@ -336,3 +336,12 @@
 - Pushed integrated `main` to origin: `3db77d4..d5c6961` (includes Wave 1 merges + director HOLD refresh).
 - Program state → `MERGED_PUSHED_AWAITING_T8`.
 - Models still HOLD; sole remaining gates: image builds / VM smokes / GHCR (human/infra T8).
+
+## 2026-08-13T02:35:07Z — Director check-in
+
+- HOLD steady A–G; no DONE/BLOCKED; no new task_ids.
+- Heartbeats: A `cdabba0`, B `cb3e144`, C `68f6b83`, D `a583d33`, E `4bba475`, G `dfb535b`; **F quiet** (`9f59118` since 2026-08-07 — leave OPEN).
+- Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
+- Refreshed HOLD CURRENT_TASK: push complete; await human T8 only.
+- **Blocker:** image builds / VM smokes / GHCR (human/infra).
+- Note: director committed via worktree `/home/zen/hyprwave-director-main` (primary worktree branch thrash from concurrent lane agents).
