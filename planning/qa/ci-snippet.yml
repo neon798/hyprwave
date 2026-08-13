@@ -84,3 +84,27 @@ jobs:
         run: bash planning/qa/run-all.sh --only lane-artifacts
         env:
           NO_COLOR: "1"
+
+  # Advisory container smoke (G-W2-001 check-image.sh via run-all --only image).
+  # GH-hosted runners almost always SKIP (no localhost/hyprwave:latest tag, no
+  # podman, or no pre-built image). That is intentional — never a red build.
+  # Enable on a self-hosted / image-bearing runner after `just build` (and
+  # optionally `just build-cosmic`) so SKIP becomes PASS.
+  # No secrets. Do not pull GHCR here (anonymous may 403; not required).
+  packaging-qa-image:
+    name: Packaging QA (image inspect, advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true  # advisory: SKIP/FAIL here must not block the workflow
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Container image smoke (skip-if-missing)
+        # check-image.sh: missing image or missing podman → SKIP (exit 0).
+        # Optional cosmic: set HYPRWAVE_COSMIC_IMAGE or run check-image.sh --cosmic
+        # after a local/cosmic tag exists; still SKIP-ok when absent.
+        run: bash planning/qa/run-all.sh --only image
+        env:
+          NO_COLOR: "1"
+          HYPRWAVE_IMAGE: localhost/hyprwave:latest
+          HYPRWAVE_COSMIC_IMAGE: localhost/hyprwave-cosmic:latest
