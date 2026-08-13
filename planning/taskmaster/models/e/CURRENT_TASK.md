@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: E-W5-001
 wave: 5
 issued: 2026-08-13T03:55:00Z
@@ -15,13 +15,6 @@ Poll **every 2 minutes**. Exclusive paths only.
 
 `lane/e-hyprland` Waves 2–4 are **merged to main**. Confirm KEYBIND-MAP still
 matches `bindings.conf` on the merge tip. No redesign.
-
-```bash
-git fetch origin
-git checkout lane/e-hyprland
-git merge origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/e/
-```
 
 ## Exclusive paths
 
@@ -39,12 +32,13 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 ## Requirements
 
-- [ ] KEYBIND-MAP matches bindings.conf (Shift+A, Shift+T, Shift+E)
-- [ ] No cliphist / wofi / swaybg in skel
-- [ ] WORK_LOG merge SHA
-- [ ] `git push -u origin lane/e-hyprland`
+- [x] KEYBIND-MAP matches bindings.conf (Shift+A, Shift+T, Shift+E)
+- [x] No cliphist / wofi / swaybg in skel (negation comments only)
+- [x] WORK_LOG merge SHA `878d38e`
+- [x] `git push -u origin lane/e-hyprland`
 
-## Done criteria
+## On completion
 
-- [ ] Map/skel in sync on merged main
-- [ ] Lane pushed
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

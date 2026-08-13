@@ -1,10 +1,11 @@
 # HANDOFF — Model E (Hyprland skel)
 
 **From:** Model E  
-**Task:** E-W4-001 (merge-prep; builds on E-W2 / E-W3)  
+**Task:** E-W5-001 (post-merge verify; Waves 2–4 on main)  
 **Date:** 2026-08-13  
 **Branch:** `lane/e-hyprland`  
-**Product tip (integrator):** **`d8db11f`** — last `hyprland:` product commit (E-W3-001); KEYBIND-MAP stamps this SHA
+**Main merge SHA:** **`878d38e`** — `merge: lane/e-hyprland Wave 2–4 (session hardening)`  
+**Product tip (pre-merge):** **`d8db11f`** — last `hyprland:` product commit (E-W3-001)
 
 ## Existing-user caveat (critical)
 

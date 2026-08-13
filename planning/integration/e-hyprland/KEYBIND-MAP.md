@@ -5,14 +5,15 @@
 **Layout assumption:** `dwindle` (theme `looknfeel.conf`)  
 **Audit:** 2026-08-13 (E-W2-001) — every active `bind`/`binde`/`bindm` line counted (**87** active, **0** commented binds). Map matches skel.
 
-### Lane product tip (E-W4-001 merge-prep)
+### Lane product tip (E-W4-001 merge-prep) + post-merge verify (E-W5-001)
 
 | Ref | SHA | Notes |
 |-----|-----|-------|
-| **Product tip** (integrator) | **`d8db11f`** (`d8db11f5ac70922c724db5ef4278404a033a7f83`) | Last `hyprland:` product commit on `lane/e-hyprland` — E-W3-001 SESSION-SMOKE inspect + dwindle comments; includes W2 binds/lock/tooltip work |
+| **Merged to main** | **`878d38e`** | `merge: lane/e-hyprland Wave 2–4 (session hardening)` |
+| **Product tip** (pre-merge) | **`d8db11f`** (`d8db11f5ac70922c724db5ef4278404a033a7f83`) | Last `hyprland:` product commit on `lane/e-hyprland` — E-W3-001 SESSION-SMOKE inspect + dwindle comments; includes W2 binds/lock/tooltip work |
 | Prior product | `7c1b044` | E-W2-002 lock/idle comments + waybar tooltips |
 | Prior product | `e364669` | E-W2-001 assistant bind + float rules + KEYBIND-MAP 87 |
-| Bind count | **87** | Unchanged since E-W2-001; W3/W4 were comments/docs only |
+| Bind count | **87** | E-W5-001 re-count on merge tip: still **87**; Super+SHIFT+A/T/E match `bindings.conf` |
 
 Machine-readable table. Columns: `keys | dispatcher | args | notes`
 
