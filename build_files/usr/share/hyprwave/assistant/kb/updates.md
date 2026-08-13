@@ -15,10 +15,13 @@ sudo systemctl reboot # apply staged deployment
 - The Assistant **Updater** tab runs status + upgrade with dry-run / double-confirm and a reboot reminder.
 - Assistant **never** reboots the host.
 - Pull failures (401/403) often mean **GHCR is private** — see **`ghcr`**.
+- `hyprwave-assistant status` prints the booted image ref and a short note:
+  GHCR may need auth; **localhost** tags are valid for local builds.
 
 CLI:
 
 ```bash
+hyprwave-assistant status
 hyprwave-assistant status --check
 hyprwave-assistant update --base --dry-run
 hyprwave-assistant update --base --yes --confirm   # mutates when online + privileged
