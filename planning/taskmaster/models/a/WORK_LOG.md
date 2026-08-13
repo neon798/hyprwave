@@ -357,21 +357,15 @@ releases/latest                               CLEAN
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`  
-`merge: G-W5 wofi-comment allowlist (harness RESULT OK)`
+**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
 
-Director copy on `origin/main` still lists A-W5-001 OPEN. Re-verified
-exclusive pin/CI surface only. No pin or workflow edits. No invented A-W6.
-
-### Validation
+Director still OPEN on `origin/main`. Re-verified exclusive pin/CI only.
+No pin/workflow edits. No invented A-W6.
 
 ```
-git merge origin/main                          Already up to date
-planning/qa/run-all.sh --only pins-static      RESULT: OK (11 PASS, 0 FAIL)
-releases/latest in build.sh / verify-pins.sh   CLEAN
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+A-W2-002 SHAs on HEAD                      metadata 6.2.0 / login 4.5.1 / cosign 4.1.2
+GHCR                                       still documented private
 ```
 
-A-W2-002 SHAs still on HEAD: metadata 6.2.0, login 4.5.1, cosign 4.1.2;
-checkout v6; push-to-registry v2. GHCR still documented private.
-
-Poll 2026-08-13T06:02:12Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+Poll 2026-08-13T06:03:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
