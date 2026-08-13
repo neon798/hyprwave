@@ -133,3 +133,10 @@
   - 11/11 theme packs OK
 - No `build_files/usr/share/cosmic/**` or `iso-cosmic.toml` edits required
 - Forbidden paths untouched
+
+## 2026-08-13 — F-W5-001 re-sync after G-W5 on main
+
+- Merged `origin/main` (`c712cbd`) into `lane/f-cosmic` (post G-W5 harness allowlist)
+- Re-ran `bash planning/integration/f-cosmic/check-vendor-paths.sh` → **exit 0** (fail=0)
+  - 11/11 themes; favorites/Mode/wallpaper OK; no product edits
+- Forbidden paths untouched

@@ -23,6 +23,6 @@ build_files/usr/share/cosmic/** disk_config/iso-cosmic.toml planning/integration
 
 ## Result
 
-- Fast-forwarded `lane/f-cosmic` to `origin/main` (`07be046`)
-- `check-vendor-paths.sh` **exit 0** (fail=0; 11 themes; favorites/Mode/wallpaper OK)
-- No product tree edits required post-merge
+- Initial: ff to `07be046`; vendor check exit 0 (e6d6b54)
+- Re-sync: merged `origin/main` `c712cbd` (G-W5); recheck exit 0 (fail=0; 11 themes)
+- No product tree edits required
