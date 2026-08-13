@@ -1,11 +1,26 @@
 # COSMIC first-login session smoke checklist
 
 **Variant:** `hyprwave-cosmic` (`DE=cosmic`)  
-**Task:** F-W1-001  
+**Task:** F-W1-001 · **Wave 2 refresh:** F-W2-001  
+**Stamped:** 2026-08-13  
 **How to get a session:** `just build-cosmic` then `just build-qcow2-cosmic` / `just run-vm-qcow2-cosmic`, or ISO via `just build-iso-cosmic`.  
 **User under test:** brand-new account (vendor `/usr/share/cosmic` + `/etc/skel` only — not an upgraded home).
 
 Mark each item **PASS / FAIL / SKIP** with a one-line note. Failures that only affect greeter go to `GREETER.md` known limits, not this list, unless session never starts.
+
+### Dock favorites (vendor truth — must match)
+
+Vendor file `build_files/usr/share/cosmic/com.system76.CosmicAppList/v1/favorites`
+(image: `/usr/share/cosmic/.../favorites`) — **six** desktop IDs, in order:
+
+1. `neonwolf`
+2. `flatarcade`
+3. `com.mitchellh.ghostty`
+4. `com.system76.CosmicFiles`
+5. `hyprwave-theme`
+6. `com.system76.CosmicSettings`
+
+`hyprwave-theme` is **required** on the COSMIC dock (not optional).
 
 ---
 
@@ -49,13 +64,13 @@ Mark each item **PASS / FAIL / SKIP** with a one-line note. Failures that only a
 10. **Dark synthwave chrome** — Panel/dock/windows use dark purple base (`#15052e` family), pink accent, cyan window hints — not stock blue COSMIC.  
     - *How:* Visual; Settings → Desktop → Appearance shows dark theme active.
 
-11. **Dock favorites (minimum five)** — Dock (or app list favorites) includes:
-    - Neonwolf  
-    - FlatArcade  
-    - Ghostty  
-    - COSMIC Files  
-    - COSMIC Settings  
-    - *Optional sixth:* Hyprwave Themes  
+11. **Dock favorites (all six)** — Dock (or app list favorites) includes, in vendor order:
+    - Neonwolf (`neonwolf`)
+    - FlatArcade (`flatarcade`)
+    - Ghostty (`com.mitchellh.ghostty`)
+    - COSMIC Files (`com.system76.CosmicFiles`)
+    - Hyprwave Themes (`hyprwave-theme`) — **required**, not optional
+    - COSMIC Settings (`com.system76.CosmicSettings`)
     - *How:* Visual dock; or `cat /usr/share/cosmic/com.system76.CosmicAppList/v1/favorites` if user has no override.
 
 12. **Neonwolf launches** — Favorite opens the browser (extracted AppImage under `/usr/lib/neonwolf`).  
@@ -208,3 +223,51 @@ Refined launch + network checks for the COSMIC dock story. Cross-ref `DECLUTTER.
 | 46–47 | Regression / nice-to-have |
 
 Sign-off: day-1 COSMIC ship bar includes declutter (#3) + these critical app items.
+
+---
+
+## Image inspect (host) — F-W2-001 / F-W2-002 / F-W3-001
+
+**Durable card (copy-paste + digest table):** [IMAGE-INSPECT.md](./IMAGE-INSPECT.md)
+
+Run against a built container **before** VM/ISO when `localhost/hyprwave-cosmic:latest` exists.
+Does **not** replace greeter/session GUI smoke; catches packaging regressions early.
+COSMIC DM is **cosmic-greeter** — do **not** require SDDM ([GREETER.md](./GREETER.md)).
+ISO build: `just build-iso-cosmic` → [`disk_config/iso-cosmic.toml`](../../../disk_config/iso-cosmic.toml).
+
+```bash
+# Host pre-check
+bash planning/integration/f-cosmic/check-vendor-paths.sh   # must exit 0
+
+podman run --rm --entrypoint bash localhost/hyprwave-cosmic:latest -lc '
+  rpm -q cosmic-store 2>&1 | grep -q "not installed" && echo PASS: no cosmic-store
+  rpm -q cosmic-greeter ghostty && echo PASS: greeter+ghostty
+  readlink -f /etc/systemd/system/display-manager.service | grep -q cosmic-greeter && echo PASS: DM=cosmic-greeter
+  test ! -e /usr/lib/systemd/system/sddm.service && echo PASS: no SDDM unit
+  test -f /usr/share/applications/flatarcade.desktop
+  test -f /usr/share/applications/neonwolf.desktop
+  test -f /usr/share/applications/hyprwave-theme.desktop
+  command -v flatarcade neonwolf hyprwave-theme-gui
+  grep -q flatarcade /usr/share/cosmic/com.system76.CosmicAppList/v1/favorites
+  test -f /usr/share/backgrounds/hyprwave/default.png
+  cat /usr/share/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark   # true
+'
+```
+
+| # | Check | Expected | 2026-08-13 host result (`localhost/hyprwave-cosmic:latest`) |
+|---|---|---|---|
+| 48 | Image present | `podman image exists localhost/hyprwave-cosmic:latest` | **PASS** — created ~2026-08-13T03:22Z UTC, ~10.1 GB, id `189340691cc7` |
+| 49 | `cosmic-store` | not installed | **PASS** |
+| 50 | FlatArcade present | `flatarcade` + `.desktop` | **PASS** |
+| 51 | Theme GUI present | `hyprwave-theme` / `hyprwave-theme-gui` + desktop | **PASS** |
+| 52 | Neonwolf present | binary + desktop | **PASS** |
+| 53 | No SDDM | no `/usr/lib/systemd/system/sddm.service` | **PASS** (cosmic-greeter is DM) |
+| 54 | Vendor favorites | six IDs as above (includes `hyprwave-theme`) | **PASS** (matches tree) |
+| 55 | Mode + wallpaper | `is_dark=true`; backgrounds PNG staged | **PASS** |
+| 56 | Host vendor script | `check-vendor-paths.sh` exit 0 | **PASS** |
+
+**F-W3-001 reconfirm (same image id `189340691cc7`):** rows 48–56 all **PASS** again —
+no cosmic-store, DM=cosmic-greeter, no SDDM, FlatArcade + theme GUI present.
+Full card + digest: [IMAGE-INSPECT.md](./IMAGE-INSPECT.md) §3.
+
+**Docs must not claim SDDM on the COSMIC variant.** SDDM/hyprwave theme is Hyprland-only (see `GREETER.md`).

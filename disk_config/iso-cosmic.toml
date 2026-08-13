@@ -1,14 +1,37 @@
 # Hyprwave COSMIC installable ISO — bootc-image-builder config
 #
 # =============================================================================
-# FINAL OPERATOR NOTES (F-W1-003) — keep in sync with CI / Justfile / GHCR
+# OPERATOR NOTES — keep in sync with CI / Justfile / GHCR
+# (F-W1-003 base · F-W3-001 refresh)
 # =============================================================================
+#
+# Quick start (host)
+#   1. Build the COSMIC container first (not the Hyprland image):
+#        just build-cosmic
+#      → localhost/hyprwave-cosmic:latest
+#   2. Build this ISO (rootful Podman + KVM):
+#        just build-iso-cosmic
+#      Justfile recipe uses THIS file:
+#        bootc-image-builder --type iso … -f disk_config/iso-cosmic.toml
+#      Target container: localhost/hyprwave-cosmic (see Justfile build-iso-cosmic)
+#   3. Optional host package smoke before ISO / VM:
+#        bash planning/integration/f-cosmic/check-vendor-paths.sh   # exit 0
+#        # then: planning/integration/f-cosmic/IMAGE-INSPECT.md
+#
+# Display manager (COSMIC only)
+#   After install/boot: display-manager.service → cosmic-greeter.service
+#   Do NOT expect or configure SDDM on this variant.
+#   SDDM/hyprwave theme ships for Hyprland (disk_config/iso.toml) only.
+#   See planning/integration/f-cosmic/GREETER.md
 #
 # Image names
 #   Build arg:     DE=cosmic
 #   Image name:    hyprwave-cosmic   (CI matrix / Just `build-cosmic`)
 #   Local tag:     localhost/hyprwave-cosmic:<tag>   (default tag often `latest`)
-#   Published:     ghcr.io/neon798/hyprwave-cosmic:latest
+#   Registry ref:  ghcr.io/neon798/hyprwave-cosmic:latest
+#   GHCR access:   do NOT assume the package is public — CI/human may need
+#                  credentials or a private pull; local ISO builds use the
+#                  localhost tag; kickstart still points at the registry ref.
 #
 # Expected bootc ref after install (kickstart %post below)
 #   transport: registry
@@ -16,7 +39,7 @@
 #   Do NOT use ghcr.io/neon798/hyprwave:latest here — that is the Hyprland ISO
 #   (disk_config/iso.toml). A wrong ref yields a Hyprland session on a “cosmic” ISO.
 #
-# How to build
+# How to build (detail)
 #   just build-iso-cosmic
 #   # Internally: bootc-image-builder --type iso -f disk_config/iso-cosmic.toml
 #   # Target image: localhost/hyprwave-cosmic (see Justfile build-iso-cosmic)
@@ -37,15 +60,18 @@
 #   5. ISO size/time track the full cosmic container (comps group + shared apps);
 #      declutter removes only store/edit/player/wallpapers packages (DECLUTTER.md).
 #   6. After first boot, verify: display-manager → cosmic-greeter, rpm -q declines
-#      for cosmic-store, and /usr/share/backgrounds/hyprwave/default.png exists.
+#      for cosmic-store, FlatArcade + hyprwave-theme present, and
+#      /usr/share/backgrounds/hyprwave/default.png exists. No SDDM unit required.
 #   7. Mutate-in-place switch requires registry pull access to ghcr.io on first
 #      bootc switch; offline airgap needs a mirrored ref (out of scope for this file).
+#      Do not document GHCR as public unless the human confirms package visibility.
 #
 # Sibling configs
-#   disk_config/iso.toml   → Hyprland variant (hyprwave:latest)
+#   disk_config/iso.toml   → Hyprland variant (hyprwave:latest) — SDDM path
 #   disk_config/disk.toml  → shared qcow2/raw customizations (user, filesystem)
 #
 # Integration docs
+#   planning/integration/f-cosmic/IMAGE-INSPECT.md   (host podman card)
 #   planning/integration/f-cosmic/SESSION-SMOKE.md
 #   planning/integration/f-cosmic/DECLUTTER.md
 #   planning/integration/f-cosmic/GREETER.md
