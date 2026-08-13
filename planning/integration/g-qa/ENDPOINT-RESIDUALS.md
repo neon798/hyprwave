@@ -53,7 +53,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 | F COSMIC | **met on main** | merged `lane/f-cosmic`; vendor check PASS |
 | G QA on main | **met on main** | merged `lane/g-qa`; full run-all RESULT OK |
 
-**Residual:** image builds (`just build` / `just build-cosmic`) + VM smokes + GHCR decision = T8.
+**Residual:** VM smokes + GHCR public-pull decision. Image builds **met** (CI + local).
 
 ---
 
@@ -63,7 +63,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 |---|---|---|
 | No `/releases/latest` on main | **met on main** | 0 hits; pins-static PASS |
 | A lane pinned | **met on main** | 0 hits + versions.env |
-| `just build` green | **open** | integrator T8 |
+| `just build` green | **met** | local `localhost/hyprwave:latest` 9bc0e1e57d6b + CI `31662742064` |
 
 ---
 
@@ -73,7 +73,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 |---|---|---|
 | DE=cosmic path | **met on main** | F checklist + vendor on main |
 | Vendor + Mode dark / favorites | **met on main** | |
-| `just build-cosmic` | **open** | T8 (in progress 2026-08-13) |
+| `just build-cosmic` | **met** | local `localhost/hyprwave-cosmic:latest` 189340691cc7 + CI |
 
 ---
 

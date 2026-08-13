@@ -33,7 +33,7 @@
 | Handbook flip | **DONE** (`70e5616`) |
 | CI hyprland + cosmic | **PASS** |
 | Local hyprland image | **PASS** (inspect) |
-| Local cosmic image | **IN PROGRESS** |
+| Local cosmic image | **PASS** (`localhost/hyprwave-cosmic:latest` 189340691cc7; inspect OK) |
 | GHCR anonymous public | **NO** (403) |
 | VM smokes | **OPEN** (after images) |
 
