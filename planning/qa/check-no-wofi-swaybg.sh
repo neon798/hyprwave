@@ -58,15 +58,16 @@ for root in "${SEARCH_ROOTS[@]}"; do
   done < <(find "$root" -type f -print0 2>/dev/null)
 done
 
-# Allow explicit migration notes that say "do not use wofi/swaybg" in comments
-# only if the line also contains remove/migrat/obsolete/do not/don't/forbidden
+# Allow explicit migration / negation notes (comments that document removal).
+# Match whole-line intent: "no wofi", "are not used", "not swaybg", etc.
 filtered="${tmpdir}/filtered.txt"
 : >"$filtered"
 if [[ -s "$hits_file" ]]; then
   while IFS= read -r hit; do
     content="${hit#*:}"
     content="${content#*:}"
-    if echo "$content" | grep -qiE 'do not use|don.t use|removed|obsolete|migrat|replaced by|no longer|forbidden|was wofi|was swaybg|not wofi|not swaybg'; then
+    if echo "$content" | grep -qiE \
+      'do not use|don.t use|are not used|is not used|not used|removed|obsolete|migrat|replaced by|no longer|forbidden|was wofi|was swaybg|not wofi|not swaybg|\bno[[:space:]]+wofi\b|\bno[[:space:]]+swaybg\b'; then
       continue
     fi
     echo "$hit" >>"$filtered"

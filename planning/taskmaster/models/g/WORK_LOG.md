@@ -278,3 +278,12 @@ PASS f-cosmic@c596cf6 product-clean files=6
 PASS g-qa@5ecfd60 product-clean files=7
 Total CONFLICT lines: 0
 ```
+
+## 2026-08-13T04:02Z — G-W5-001 DONE
+
+- Claimed OPEN task; `git merge origin/main` → already up to date (@ `07be046`).
+- Harness initially FAIL: `no-wofi-swaybg.refs` 4 hits (all migration/negation comments from E/C on main).
+- Fix (G exclusive): broaden filter in `planning/qa/check-no-wofi-swaybg.sh` for `are/is not used`, `not used`, `\bno wofi/swaybg\b`.
+- Re-run from worktree: **RESULT OK** (pins, themes, no-wofi, duress, assistant, image, lane-artifacts).
+- check-image: localhost/hyprwave:latest + hyprwave-cosmic:latest → **PASS** (18).
+- Residuals still human-owned: VM boot, GHCR 403 (unchanged).

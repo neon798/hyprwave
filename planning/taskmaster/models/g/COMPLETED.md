@@ -11,3 +11,9 @@ G-W2-001 | 2026-08-13 | check-image.sh + T8 residual flip (CI+local PASS; VM/GHC
 G-W2-003 | 2026-08-13 | ci-snippet packaging-qa-image advisory job + README/residuals | 04f54b4
 G-W3-001 | 2026-08-13 | check-image --cosmic PASS; residuals narrowed to VM+GHCR | 32b310d
 G-W4-001 | 2026-08-13 | product-only probe clean; PRE-MERGE-DRY-RUN A/B/C on main | 613afbd
+
+## G-W5-001 — Post-merge harness + check-image (2026-08-13)
+- Wave 2–4 already on main (`07be046`); lane/g-qa merge was up-to-date.
+- Expanded `check-no-wofi-swaybg.sh` migration-comment filter (`are/is not used`, `no wofi`, etc.) so E/C negation comments PASS.
+- `run-all.sh` → **RESULT OK** (7/7).
+- `check-image` hyprland + cosmic → **18 PASS** (local tags present).
