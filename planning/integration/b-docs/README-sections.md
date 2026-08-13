@@ -92,4 +92,4 @@ Contributor build guts: [CLAUDE.md](CLAUDE.md). The product *is* the OS image.
 2. Dedupe COSMIC install bullets now that INSTALL + `docs/cosmic.md` exist.  
 3. Never reintroduce Wofi, swaybg, or Thunar-as-default.  
 4. Screenshots: only embed when files exist (see screenshot-checklist.md).  
-5. Assistant/Duress blurbs stay “upcoming / off by default” until integrator says otherwise.
+5. Assistant **ships** (Super+Shift+A); duress stays **off by default** — never claim enabled-by-default.

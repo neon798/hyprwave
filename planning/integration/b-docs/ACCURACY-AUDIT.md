@@ -228,3 +228,20 @@ Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR
 | GHCR public | **Not claimed** |
 | Screenshots | Still TODO (B-7) |
 | Sweep leftover “upcoming Assistant” | README / faq / security rewritten |
+
+---
+
+## B-W2-002 addendum (2026-08-13)
+
+| Check | Result |
+|-------|--------|
+| IMAGE_NAME default | Justfile `env("IMAGE_NAME", "image-template")` — **not edited** |
+| INSTALL Path C | Documents default `image-template`, override `just build hyprwave latest` / `IMAGE_NAME=hyprwave`, CI uses repo name |
+| contributor-notes | Same IMAGE_NAME note under Building and validating |
+| ISSUES B-6 | **Closed** (docs-only) |
+| screenshot-checklist | Hygiene only: IMAGE_NAME + DE mix-up blockers; C2 dock favorites; H8 skel bind; all Status still **TODO** |
+| Screenshot binaries | **None added** (B-7 open) |
+| Duress default on | **Not claimed** |
+| GHCR public | **Not claimed** |
+| Justfile | **Untouched** |
+

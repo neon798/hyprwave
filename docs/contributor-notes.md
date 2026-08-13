@@ -114,10 +114,15 @@ when a later wave lands.
 ```bash
 just lint          # shellcheck
 just check         # Justfile format
-just build hyprwave latest
+just build hyprwave latest   # pass name: default IMAGE_NAME is image-template
 just build-cosmic
 # VM (sudo): just run-vm-qcow2
 ```
+
+**`IMAGE_NAME`:** Justfile default is `image-template` (template heritage). CI uses
+the repo name (`hyprwave`). Always pass `just build hyprwave latest` or
+`IMAGE_NAME=hyprwave just build` in local docs/examples — **do not** edit the
+Justfile only to rename the default (see ISSUES B-6, closed as docs note).
 
 Docs-only changes do **not** require a full image build, but INSTALL recipe names must
 match the Justfile.
@@ -135,6 +140,6 @@ image is built and installed. Document that clearly whenever you describe defaul
 
 - [architecture.md](architecture.md)  
 - [security.md](security.md)  
-- [CHANGELOG.md](../CHANGELOG.md) — pending-merge table + post-merge template  
+- [CHANGELOG.md](../CHANGELOG.md) — Wave 1 integration section + history  
 - [planning/integration/b-docs/](../planning/integration/b-docs/)  
 - [PROTOCOL.md](../planning/taskmaster/PROTOCOL.md)  

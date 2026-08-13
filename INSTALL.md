@@ -42,7 +42,7 @@ Both share: Neonwolf, FlatArcade, Yazi, Ghostty, 11-theme switcher (hyprwave-the
 | Greeter | SDDM (synthwave theme) | cosmic-greeter (upstream face; session is branded) |
 | Launcher / bar | Walker + Waybar | COSMIC launcher + panel/dock |
 | Default Super+binds | Yes ([keybinds.md](docs/keybinds.md)) | No — COSMIC settings |
-| Local build | `just build` / `just build-iso` | `just build-cosmic` / `just build-iso-cosmic` |
+| Local build | `just build hyprwave latest` / `just build-iso` (default `IMAGE_NAME=image-template`) | `just build-cosmic` / `just build-iso-cosmic` |
 
 More comparison: [docs/cosmic.md](docs/cosmic.md). After install: [docs/first-boot.md](docs/first-boot.md).
 
@@ -179,8 +179,28 @@ just build-qcow2-cosmic && just run-vm-qcow2-cosmic
 just rebuild-qcow2          # force fresh container build, then disk
 ```
 
-Default Justfile `IMAGE_NAME` is `image-template` unless you set `IMAGE_NAME=hyprwave`
-(CI uses the repo name). Examples above pass `hyprwave` explicitly.
+#### Local image name (`IMAGE_NAME`)
+
+The Justfile default is **`IMAGE_NAME=image-template`** (Universal Blue template
+name), **not** `hyprwave`:
+
+```bash
+# Plain `just build` tags: localhost/image-template:latest
+just build
+
+# Tag as hyprwave (what most docs and overlay examples expect):
+just build hyprwave latest
+# equivalent:
+IMAGE_NAME=hyprwave just build
+
+# COSMIC recipes use the same IMAGE_NAME pattern with a -cosmic suffix in recipes
+just build-cosmic
+```
+
+**CI** sets the image name from the **repository name** (`hyprwave`). Local clones
+must pass `hyprwave` (or export `IMAGE_NAME`) if you want tags that match INSTALL
+examples, `Dockerfile.overlay` (`hyprwave:latest`), and Path A/B GHCR names.
+**Do not edit the Justfile** just to rename the default — override at invoke time.
 
 Dotfile-only overlay (no full package rebuild):
 
