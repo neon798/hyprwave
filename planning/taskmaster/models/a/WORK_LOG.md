@@ -358,6 +358,5 @@ releases/latest                               CLEAN
 **status:** DONE  
 **branch:** `lane/a-stabilize`
 
-`origin/main` still `c712cbd` / lane merge `0a6f99a`. Re-ran
-`pins-static` PASS (11). A-W2-002 SHAs unchanged. GHCR still 403.
-No invented follow-up.
+Unchanged tip `c712cbd` / `0a6f99a`. `pins-static` PASS (11).
+A-W2-002 SHAs unchanged. GHCR still private. No invented work.
