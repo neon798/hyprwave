@@ -16,3 +16,4 @@ A-W5-001 | 2026-08-13 | Post-merge pin verify on c712cbd; pins-static 11 PASS; A
 A-W5-001 | 2026-08-13 | Reconfirm: main still c712cbd; pins-static 11 PASS; SHAs/GHCR unchanged | 8e92f97
 A-W5-001 | 2026-08-13 | Poll: main still c712cbd; pins-static 11 PASS; no A-W6 | 2d15c41
 A-W5-001 | 2026-08-13 | Poll: main still c712cbd; pins-static 11 PASS; no A-W6 | 4d6c657
+A-W5-001 | 2026-08-13 | Poll 07:45Z: main still c712cbd; pins-static 11 PASS | TBD
