@@ -53,6 +53,48 @@ install -m0755 /ctx/usr/bin/hyprwave-theme-gui /usr/bin/hyprwave-theme-gui
 install -d /usr/share/applications
 install -m0644 /ctx/usr/share/applications/hyprwave-theme.desktop /usr/share/applications/hyprwave-theme.desktop
 
+### ---- duress packaging (OFF BY DEFAULT — no PAM enablement) ----
+### Module binaries (pam_duress.so, duress_sign) come from the duressbuilder
+### stage COPY. Here we only deploy templates, setup tool, docs, and an empty
+### global script dir. Enabling pam_duress in /etc/pam.d is a human post-boot
+### step (see /usr/share/hyprwave/duress/ENABLE.md) — never done in this build.
+install -d /usr/share/hyprwave/duress/templates
+install -d /usr/share/hyprwave/duress/pam.d
+install -d /etc/duress.d
+
+if [ -d /ctx/duress/templates ]; then
+	cp -a /ctx/duress/templates/. /usr/share/hyprwave/duress/templates/
+	find /usr/share/hyprwave/duress/templates -type f -name '*.sh' -exec chmod 0644 {} +
+fi
+
+if [ -f /ctx/duress/README.md ]; then
+	install -m0644 /ctx/duress/README.md /usr/share/hyprwave/duress/README.md
+fi
+if [ -d /ctx/duress/pam.d ]; then
+	cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/
+fi
+
+if [ -f /ctx/duress/ENABLE.md ]; then
+	install -m0644 /ctx/duress/ENABLE.md /usr/share/hyprwave/duress/ENABLE.md
+fi
+
+if [ -f /ctx/duress/hyprwave-duress-setup ]; then
+	install -m0755 /ctx/duress/hyprwave-duress-setup /usr/bin/hyprwave-duress-setup
+fi
+
+cat >/etc/duress.d/README <<'EOF'
+# /etc/duress.d — global pam-duress scripts (run as root when signed password matches)
+#
+# Stock Hyprwave ships this directory EMPTY and does NOT enable pam_duress.so.
+# To configure:
+#   1. Enable PAM (see /usr/share/hyprwave/duress/ENABLE.md) — admin decision
+#   2. Preview: hyprwave-duress-setup --dry-run --mild-template
+#   3. sudo hyprwave-duress-setup --system --mild-template   # or --wipe-template
+# Scripts must be mode 500/540/550 with a matching .sha256 from duress_sign.
+# Never commit or bake .sha256 into the image.
+EOF
+chmod 0644 /etc/duress.d/README
+
 ### ---- desktop: ${DE} ----
 
 case "$DE" in
@@ -266,12 +308,83 @@ dnf5 remove -y firefox firefox-langpacks
 ### Guarded so the build doesn't fail if a future base stops shipping it.
 rpm -q xterm &>/dev/null && dnf5 remove -y xterm || true
 
-### Install Yazi — Hyprwave's default file manager (terminal-based, latest release).
+### Pinned external companion apps (Yazi / Neonwolf / FlatArcade).
+### Versions + sha256 live in /ctx/versions.env (build_files/versions.env).
+### See planning/integration/a-stabilize/BUMP.md for how to bump pins.
+### Fail closed: missing file, empty keys, non-hex sha256, or floating GitHub
+### release redirects abort before any network download.
+if [[ ! -f /ctx/versions.env ]]; then
+	echo "ERROR: missing /ctx/versions.env (build_files/versions.env must be in the ctx stage)" >&2
+	exit 1
+fi
+# shellcheck source=/dev/null
+. /ctx/versions.env
+
+require_pin() {
+	local name="$1"
+	local value="${2:-}"
+	if [[ -z "${value}" ]]; then
+		echo "ERROR: versions.env pin empty or unset: ${name}" >&2
+		exit 1
+	fi
+}
+
+require_sha256() {
+	local name="$1"
+	local value="${2:-}"
+	require_pin "${name}" "${value}"
+	if [[ ! "${value}" =~ ^[0-9a-fA-F]{64}$ ]]; then
+		echo "ERROR: ${name} is not a 64-char hex sha256: ${value}" >&2
+		exit 1
+	fi
+}
+
+forbid_floating_url() {
+	local name="$1"
+	local url="${2:-}"
+	# Build the forbidden path without a contiguous "releases"+"/"+"latest" token
+	# so pin_guards can grep the source tree for accidental floating URLs.
+	local floating
+	floating="$(printf '%s/%s' releases latest)"
+	require_pin "${name}" "${url}"
+	if [[ "${url}" == *"/${floating}"* ]]; then
+		echo "ERROR: ${name} must not use floating GitHub release redirects (got: ${url})" >&2
+		exit 1
+	fi
+}
+
+require_pin YAZI_VERSION "${YAZI_VERSION:-}"
+require_pin NEONWOLF_VERSION "${NEONWOLF_VERSION:-}"
+require_pin FLATARCADE_VERSION "${FLATARCADE_VERSION:-}"
+forbid_floating_url YAZI_URL "${YAZI_URL:-}"
+forbid_floating_url NEONWOLF_URL "${NEONWOLF_URL:-}"
+forbid_floating_url FLATARCADE_URL "${FLATARCADE_URL:-}"
+forbid_floating_url FLATARCADE_SVG_URL "${FLATARCADE_SVG_URL:-}"
+require_sha256 YAZI_SHA256 "${YAZI_SHA256:-}"
+require_sha256 NEONWOLF_SHA256 "${NEONWOLF_SHA256:-}"
+require_sha256 FLATARCADE_SHA256 "${FLATARCADE_SHA256:-}"
+require_sha256 FLATARCADE_SVG_SHA256 "${FLATARCADE_SVG_SHA256:-}"
+
+### curl dest, then fail the build if sha256 does not match the pin.
+verify_sha256() {
+	local file="$1"
+	local expected="$2"
+	if [[ ! -f "${file}" ]]; then
+		echo "ERROR: verify_sha256: missing file ${file}" >&2
+		exit 1
+	fi
+	if [[ -z "${expected}" ]]; then
+		echo "ERROR: verify_sha256: empty expected digest for ${file}" >&2
+		exit 1
+	fi
+	echo "${expected}  ${file}" | sha256sum -c -
+}
+
+### Install Yazi — Hyprwave's default file manager (terminal-based, pinned release).
 ### Not packaged in Fedora, so we pull the upstream prebuilt binaries (yazi + the
-### `ya` helper) from GitHub's /releases/latest/download/ redirect, same pattern as
-### the apps below. Launched inside Ghostty from the keybind / .desktop.
-curl -fsSL -o /tmp/yazi.zip \
-	https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip
+### `ya` helper) from a versioned GitHub release URL. Launched inside Ghostty.
+curl -fsSL -o /tmp/yazi.zip "${YAZI_URL}"
+verify_sha256 /tmp/yazi.zip "${YAZI_SHA256}"
 mkdir -p /tmp/yazi
 unzip -q /tmp/yazi.zip -d /tmp/yazi
 install -m0755 /tmp/yazi/*/yazi /usr/bin/yazi
@@ -292,13 +405,11 @@ StartupNotify=true
 Terminal=false
 EOF
 
-### Install Neonwolf — Hyprwave's default web browser (latest stable release).
-### Built in its own repo (neon798/neonwolf) and shipped as an AppImage. We track
-### the latest *stable* release via GitHub's /releases/latest/download/ redirect
-### (excludes pre-releases, no API rate limits). The AppImage is extracted at build
+### Install Neonwolf — Hyprwave's default web browser (pinned AppImage release).
+### Built in its own repo (neon798/neonwolf). The AppImage is extracted at build
 ### time so the deployed image needs no FUSE at runtime; /usr/bin/neonwolf launches it.
-curl -fsSL -o /tmp/neonwolf.AppImage \
-	https://github.com/neon798/neonwolf/releases/latest/download/Neonwolf-x86_64.AppImage
+curl -fsSL -o /tmp/neonwolf.AppImage "${NEONWOLF_URL}"
+verify_sha256 /tmp/neonwolf.AppImage "${NEONWOLF_SHA256}"
 chmod +x /tmp/neonwolf.AppImage
 (cd /tmp && ./neonwolf.AppImage --appimage-extract >/dev/null)
 rm -rf /usr/lib/neonwolf
@@ -325,17 +436,17 @@ StartupWMClass=neonwolf
 Terminal=false
 EOF
 
-### Install FlatArcade — Hyprwave's default "app store" (Flathub TUI, latest release).
+### Install FlatArcade — Hyprwave's default "app store" (Flathub TUI, pinned release).
 ### Also its own repo (neon798/flatarcade): a Rust/ratatui TUI for browsing Flathub
 ### and managing Flatpaks. Flatpak + the Flathub remote already come from the base
 ### image (at /etc/flatpak/remotes.d/flathub.flatpakrepo); no GUI store ships, so this
 ### TUI is the front-end. It's launched inside Ghostty from graphical launchers.
-curl -fsSL -o /usr/bin/flatarcade \
-	https://github.com/neon798/flatarcade/releases/latest/download/flatarcade
+curl -fsSL -o /usr/bin/flatarcade "${FLATARCADE_URL}"
+verify_sha256 /usr/bin/flatarcade "${FLATARCADE_SHA256}"
 chmod +x /usr/bin/flatarcade
 mkdir -p /usr/share/icons/hicolor/scalable/apps
-curl -fsSL -o /usr/share/icons/hicolor/scalable/apps/flatarcade.svg \
-	https://github.com/neon798/flatarcade/releases/latest/download/flatarcade.svg
+curl -fsSL -o /usr/share/icons/hicolor/scalable/apps/flatarcade.svg "${FLATARCADE_SVG_URL}"
+verify_sha256 /usr/share/icons/hicolor/scalable/apps/flatarcade.svg "${FLATARCADE_SVG_SHA256}"
 cat >/usr/share/applications/flatarcade.desktop <<'EOF'
 [Desktop Entry]
 Name=FlatArcade
@@ -348,6 +459,29 @@ Categories=System;PackageManager;Settings;
 StartupNotify=true
 Terminal=false
 EOF
+
+### Hyprwave Assistant — data + desktop entry (binary built in the
+### assistant-builder stage of the Containerfile and COPYed into the final image).
+### Runtime deps are already on the image (ghostty, flatpak, bootc). No network
+### services. Safe on both DE=hyprland and DE=cosmic.
+ASSISTANT_SRC="${ASSISTANT_SRC:-/ctx}"
+ASSISTANT_DATA_SRC="${ASSISTANT_SRC}/usr/share/hyprwave/assistant"
+ASSISTANT_DESKTOP_SRC="${ASSISTANT_SRC}/usr/share/applications/hyprwave-assistant.desktop"
+
+if [[ -d "${ASSISTANT_DATA_SRC}" ]]; then
+	install -d /usr/share/hyprwave/assistant
+	cp -a "${ASSISTANT_DATA_SRC}/." /usr/share/hyprwave/assistant/
+	chmod -R a+rX /usr/share/hyprwave/assistant
+fi
+
+if [[ -f "${ASSISTANT_DESKTOP_SRC}" ]]; then
+	install -d /usr/share/applications
+	install -m 0644 "${ASSISTANT_DESKTOP_SRC}" /usr/share/applications/hyprwave-assistant.desktop
+fi
+
+if [[ -x /tmp/hyprwave-assistant && ! -x /usr/bin/hyprwave-assistant ]]; then
+	install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
+fi
 
 ### Refresh the hicolor icon cache so GTK launchers (Walker) pick up the icons we
 ### just added (flatarcade.svg). The base image ships a prebuilt icon-theme.cache;

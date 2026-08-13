@@ -1,3 +1,17 @@
+// Hyprwave Waybar — module layout (style comes from theme symlink)
+//
+// style.css → ~/.config/hyprwave/theme/waybar/style.css (hyprwave-theme)
+// Modules are only those that ship in Fedora waybar builds we install.
+// No custom/script modules that need extra packages.
+//
+// Left:   hyprland/workspaces — click to activate
+// Center: hyprland/window     — focused title (per output)
+// Right:  network | pulseaudio | bluetooth | cpu | memory | clock | tray
+//
+// Clicks:
+//   network   → nm-connection-editor
+//   pulseaudio → pavucontrol
+//   bluetooth → blueman-manager
 {
     "layer": "top",
     "position": "top",

@@ -1,6 +1,6 @@
 # Parallel 4-Model Execution Plan
 
-**Status:** Ready to run  
+**Status:** Wave 1 complete (lanes pushed 2026-08-06). See PARALLEL-WAVE2-OVERNIGHT.md for Wave 2.  
 **Purpose:** Move Hyprwave forward fast by splitting remaining work into **four independent lanes** that never wait on each other and never edit the same files.  
 **Based on:** Assessment of `HYPRWAVE_EXECUTABLE_PLAN.md` vs current tree (2026-08-06).
 
