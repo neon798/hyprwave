@@ -150,3 +150,15 @@
 - No product/PAM changes; no `*.sha256`.
 
 - DONE tip: `3aa2362` (re-poll)
+
+## 2026-08-13T06:22Z — D-W5-001 re-poll (post-merge validate)
+
+- Session resume after compaction; fetched `origin/main` (tip `c712cbd`).
+- `git merge origin/main` → already up to date on `lane/d-duress`.
+- Accepted OPEN D-W5-001 from origin/main taskmaster (main still reissues OPEN).
+- Re-ran gates (no product scope):
+  - `bash planning/integration/d-duress/validate.sh` → **PASSED**
+  - `bash planning/qa/run-all.sh --only duress-safety` → **RESULT: OK** (9 PASS)
+- PAM still OFF; zero `*.sha256`; no edits under build_files/duress or integration product paths.
+- Product tip remains `3aa2362`; lane meta tip will advance with this DONE record.
+- Note for Director: please rotate `task_id` off D-W5-001 OPEN on main when satisfied.
