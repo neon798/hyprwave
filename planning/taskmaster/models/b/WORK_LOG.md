@@ -60,3 +60,10 @@
 - Freeze / lane tip: `fb3eb36`
 - Standby for integration (Director serial merge / INTEGRATION-DAY)
 - Optional self-check: relative links checked=245 missing=0
+
+## 2026-08-13 — B-W1-HOLD heartbeat
+
+- status remains OPEN (HOLD; not DONE)
+- Polled origin/main: still task_id B-W1-HOLD (reissued 2026-08-13T02:24:44Z)
+- Local main merge A→G done; await human T8 / push origin
+- No product docs work; no exclusive-path bugs
