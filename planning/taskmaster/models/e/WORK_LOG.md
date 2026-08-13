@@ -275,3 +275,13 @@
 - waybar tooltips name nm-connection-editor / pavucontrol / blueman-manager; header notes Walker/theme-gui/lock
 - KEYBIND-MAP + SESSION-SMOKE lock path one-liners; HANDOFF E-W2-002 + existing-home caveat
 - No redesign; no wofi/swaybg/cliphist
+
+## 2026-08-13T03:35Z — E-W3-001
+
+- Branch: `lane/e-hyprland`
+- Status → DONE
+- SESSION-SMOKE: container inspect of localhost/hyprwave:latest (9bc0e1e57d6b)
+  - assistant/hyprpaper/walker/elephant PASS; 11 themes; no wofi/swaybg/cliphist/rofi
+  - image skel Super+SHIFT+A still without --class (lane has class); full session SKIP
+- dwindle comments only in hyprland.conf + bindings.conf (no looknfeel value change)
+- HANDOFF updated; skel caveat kept
