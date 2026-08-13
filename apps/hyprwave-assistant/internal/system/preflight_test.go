@@ -65,6 +65,14 @@ func TestClassifyErrorMore(t *testing.T) {
 	if !strings.Contains(e.Error(), "op failed") {
 		t.Fatal(e)
 	}
+	e = ClassifyError(errors.New("Error: denied: 403 Forbidden"), "bootc upgrade")
+	if !strings.Contains(strings.ToLower(e.Error()), "private") &&
+		!strings.Contains(e.Error(), "401") && !strings.Contains(e.Error(), "403") {
+		t.Fatal(e)
+	}
+	if strings.Contains(strings.ToLower(e.Error()), "ghcr is public") {
+		t.Fatal(e)
+	}
 }
 
 func TestRootOrSudoHintAndEnvHome(t *testing.T) {
