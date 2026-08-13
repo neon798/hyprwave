@@ -130,3 +130,14 @@
 - `bash planning/integration/d-duress/validate.sh` → PASSED
 - `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
 - Commits: 8924251, 045536f, + this series (+ DONE meta); tip ef5c41e
+
+## 2026-08-13 — D-W4-001 (merge-prep checklist + validate green)
+
+- Merged origin/main; accepted D-W4-001.
+- Refreshed `INTEGRATOR-CHECKLIST.md` for W2–W4: never default-on, DRILL
+  PAM-inert paths, N7 pam-snippet→/etc/pam.d, duress-safety, stock image paths.
+- validate gates checklist merge-prep markers; integration README wave index.
+- RESIDUALS still OFF; no PAM enable; no `*.sha256`; no live build.sh edit.
+- `bash planning/integration/d-duress/validate.sh` → PASSED
+- `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
+- Commits: 2973b5c, 73334ad, + this series; tip 1fc067d

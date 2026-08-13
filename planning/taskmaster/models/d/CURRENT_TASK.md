@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: D-W4-001
 wave: 4
 issued: 2026-08-13T03:44:30Z
@@ -44,12 +44,12 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Requirements
 
-- [ ] INTEGRATOR-CHECKLIST: merge order + **do not enable PAM** still accurate
+- [x] INTEGRATOR-CHECKLIST: merge order + **do not enable PAM** still accurate
       after W2–W3 (DRILL paths, N7 pam.d fixtures)
-- [ ] RESIDUALS.md still **OFF**
-- [ ] `bash planning/integration/d-duress/validate.sh` PASS
-- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [ ] No `*.sha256` templates added
+- [x] RESIDUALS.md still **OFF**
+- [x] `bash planning/integration/d-duress/validate.sh` PASS
+- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [x] No `*.sha256` templates added
 
 ## Deliverables
 
@@ -58,9 +58,9 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Done criteria
 
-- [ ] No default PAM enablement introduced
-- [ ] validate + duress-safety PASS
-- [ ] `git push -u origin lane/d-duress`
+- [x] No default PAM enablement introduced
+- [x] validate + duress-safety PASS
+- [x] `git push -u origin lane/d-duress`
 
 ## On completion
 
