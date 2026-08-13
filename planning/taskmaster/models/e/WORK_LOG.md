@@ -335,3 +335,9 @@
 
 - origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
 - 87 binds; Shift+A/T/E OK; bindings == main; no forbidden; no product changes
+
+## 2026-08-13T07:39Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001; lane DONE at e787c09
+- Main tip c712cbd; 87 binds; Shift+A/T/E OK; no forbidden in skel
+- Poll re-verify only; push lane/e-hyprland
