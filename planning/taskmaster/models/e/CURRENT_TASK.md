@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: E-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
@@ -17,15 +17,6 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 Hyprland image builds. Make the **new-user session** feel finished: binds,
 window rules, autostart, Walker/waybar. Existing homes are not rewritten —
 document that in HANDOFF, do not write a destructive migrator.
-
-Refresh first:
-
-```bash
-git fetch origin
-git checkout lane/e-hyprland
-git merge --ff-only origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/e/
-```
 
 ## Exclusive paths (only these)
 
@@ -47,18 +38,18 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 ## Requirements
 
-- [ ] Confirm Super+Shift+A → assistant, Super+Shift+T → theme GUI,
+- [x] Confirm Super+Shift+A → assistant, Super+Shift+T → theme GUI,
       Super+Shift+E exit, Super+D/Space Walker, Super+R runner — all in
       `bindings.conf`; refresh KEYBIND-MAP if drift
-- [ ] Window rules: assistant (Ghostty `-e hyprwave-assistant`) and
+- [x] Window rules: assistant (Ghostty `-e hyprwave-assistant`) and
       `hyprwave-theme-gui` should not look broken (float/center if that matches
       existing style — justify in comments)
-- [ ] Autostart: elephant + walker + waybar + mako + hyprpaper + hypridle;
+- [x] Autostart: elephant + walker + waybar + mako + hyprpaper + hypridle;
       no cliphist
-- [ ] Walker emergencies still restart `app-walker@autostart.service`
-- [ ] SESSION-SMOKE.md / HANDOFF: existing-user skel caveat; image
+- [x] Walker emergencies still restart `app-walker@autostart.service`
+- [x] SESSION-SMOKE.md / HANDOFF: existing-user skel caveat; image
       `localhost/hyprwave:latest` exists
-- [ ] Small UX bugs only (typos, missing comments, one bind). No redesign.
+- [x] Small UX bugs only (typos, missing comments, one bind). No redesign.
 
 ## Deliverables
 
@@ -68,9 +59,9 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 ## Done criteria
 
-- [ ] No Wofi/swaybg/cliphist
-- [ ] KEYBIND-MAP matches `bindings.conf`
-- [ ] `git push -u origin lane/e-hyprland`
+- [x] No Wofi/swaybg/cliphist
+- [x] KEYBIND-MAP matches `bindings.conf`
+- [x] `git push -u origin lane/e-hyprland`
 
 ## On completion
 

@@ -249,3 +249,13 @@
 
 - Refreshed taskmaster from origin/main; status OPEN (HOLD)
 - No product work; freeze tip c722fd5; idle for Director
+
+## 2026-08-13 — E-W2-001
+
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
+- Status → DONE
+- Super+SHIFT+A active: `ghostty --class=dev.hyprwave.Assistant --title="Hyprwave Assistant" -e hyprwave-assistant`
+- Windowrules: float+center+size for Assistant + ThemeSwitcher
+- KEYBIND-MAP: 87 active binds; SESSION-SMOKE Wave 2; HANDOFF existing-home caveat
+- No wofi/swaybg/cliphist; no migrator; image `localhost/hyprwave:latest` present on host
+- Walker emergency still restarts `app-walker@autostart.service`

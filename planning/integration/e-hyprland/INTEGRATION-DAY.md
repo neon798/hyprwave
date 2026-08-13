@@ -88,7 +88,7 @@ Binds: [KEYBIND-MAP.md](./KEYBIND-MAP.md) · Residuals: [HANDOFF.md](./HANDOFF.m
 | 33 | Multi-mon focus + wallpaper all outputs | |
 | 34 | hyprpaper restart restores art | |
 | 35 | Idle ~10m locks before DPMS | |
-| 36 | Super+SHIFT+A inactive (bind commented) | |
+| 36 | Super+SHIFT+A → Assistant floats (class dev.hyprwave.Assistant) | |
 
 ---
 
