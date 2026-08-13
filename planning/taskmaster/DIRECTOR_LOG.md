@@ -415,3 +415,12 @@
 - Issued **B-W3-001** from WAVE3-QUEUE (first-boot/INSTALL vs private GHCR).
 - A/C/D/E/F/G remain OPEN on last W2 follow-up; do not double-issue.
 
+## 2026-08-13T03:33:03Z — Issue E-W3-001 F-W3-001 G-W3-001
+
+- Verified DONE exclusive-only: E lock/tooltip `7c1b044`; F IMAGE-INSPECT
+  `a068147`; G ci-snippet image job `04f54b4`.
+- Issued **E-W3-001** (SESSION-SMOKE inspect + dwindle comments),
+  **F-W3-001** (iso-cosmic operator note + inspect results),
+  **G-W3-001** (`check-image --cosmic`; residuals VM-only).
+- A/C/D still OPEN on W2-002; B already on W3-001.
+

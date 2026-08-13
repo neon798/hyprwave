@@ -1,8 +1,8 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** **2 in progress; Wave 3 started (B)**  
-**Updated:** 2026-08-13T03:31:08Z  
+**Director wave:** **3 issuing (B/E/F/G); A/C/D still on W2 follow-up**  
+**Updated:** 2026-08-13T03:33:03Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
@@ -11,16 +11,16 @@
 | B | Docs / handbook | `lane/b-docs` | **B-W3-001** | OPEN |
 | C | Hyprwave Assistant | `lane/c-assistant` | **C-W2-002** | OPEN |
 | D | Duress / security packaging | `lane/d-duress` | **D-W2-002** | OPEN |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W2-002** | OPEN |
-| F | COSMIC variant | `lane/f-cosmic` | **F-W2-002** | OPEN |
-| G | QA automation | `lane/g-qa` | **G-W2-003** | OPEN |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W3-001** | OPEN |
+| F | COSMIC variant | `lane/f-cosmic` | **F-W3-001** | OPEN |
+| G | QA automation | `lane/g-qa` | **G-W3-001** | OPEN |
 
 ## This check-in
 
-- **B-W2-002 DONE** (`07d7e9e` / tip `2574bc9`) exclusive docs only.
-- Issued **B-W3-001** (first-boot + INSTALL vs private GHCR).
-- A/C/D/E/F/G still OPEN on W2-002/003; lane tips mostly prior W2-001 DONE
-  (await refresh). No HOLD. No invented W2 ids.
+- Verified DONE exclusive-only: **E-W2-002** `7c1b044`/`7292ca0`,
+  **F-W2-002** `a068147`/`1821790`, **G-W2-003** `04f54b4`/`b0eada4`.
+- Issued **E-W3-001**, **F-W3-001**, **G-W3-001** (WAVE3-QUEUE).
+- A/C/D still OPEN W2-002 (lanes not refreshed). B-W3-001 already OPEN.
 
 ## Integration readiness
 

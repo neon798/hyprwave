@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: F-W2-002
-wave: 2
-issued: 2026-08-13T03:27:11Z
+task_id: F-W3-001
+wave: 3
+issued: 2026-08-13T03:33:03Z
 poll: 2m
-title: Cosmic image inspect card after localhost/hyprwave-cosmic:latest is new
+title: ISO-cosmic.toml operator note + SESSION-SMOKE image-inspect results committed
 
 ## Duty cycle
 
@@ -14,10 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-F-W2-001 stamped vendor + greeter docs. Local image **exists**:
-`localhost/hyprwave-cosmic:latest` (`189340691cc7`, inspect OK). Produce a
-durable **image inspect card** (copy-paste `podman run` + expected facts) so
-the next rebuild can be re-checked without rediscovering commands.
+F-W2-002 added IMAGE-INSPECT.md. Wave 3: operator note on
+`disk_config/iso-cosmic.toml` (how to build the COSMIC ISO) and **commit**
+SESSION-SMOKE / inspect results from `localhost/hyprwave-cosmic:latest`.
 
 Refresh first:
 
@@ -45,25 +44,23 @@ git checkout origin/main -- planning/taskmaster/models/f/
 
 ## Requirements
 
-- [ ] Add or finish `planning/integration/f-cosmic/IMAGE-INSPECT.md` (or a
-      clearly marked section in SESSION-SMOKE):
-      image ref, digest if known, commands, expected: cosmic-greeter present,
-      **no** SDDM required, **no** cosmic-store, FlatArcade + theme GUI present,
-      vendor favorites / wallpaper keys
-- [ ] Re-run inspect against `localhost/hyprwave-cosmic:latest` if the tag
-      exists; if missing, SKIP and record — do not FAIL the lane
-- [ ] Cross-link GREETER.md / SESSION-SMOKE / FREEZE-STATUS (still no SDDM)
-- [ ] Vendor path script still exit 0 if you touch vendor files (prefer docs-only)
+- [ ] Comment or short operator blurb for `iso-cosmic.toml`: used by
+      `just build-iso-cosmic`; cosmic-greeter not SDDM; do not claim GHCR public
+- [ ] SESSION-SMOKE / IMAGE-INSPECT: commit actual inspect output (or SKIP if
+      image missing). Expected: cosmic-greeter, no cosmic-store, FlatArcade,
+      theme GUI, no SDDM required
+- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` still exit 0
+      if you touch vendor files (prefer docs + toml comments)
 
 ## Deliverables
 
-- IMAGE-INSPECT (or equivalent) card with recorded output snippet
+- ISO operator note + committed inspect results
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] Inspect card is re-runnable
 - [ ] Docs do not claim SDDM on cosmic
+- [ ] iso-cosmic.toml still valid TOML
 - [ ] `git push -u origin lane/f-cosmic`
 
 ## On completion

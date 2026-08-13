@@ -266,3 +266,12 @@
 - Re-audited binds/windowrules/autostart/KEYBIND-MAP/HANDOFF/SESSION-SMOKE — requirements met
 - Merged origin/main into lane/e-hyprland; no product changes this poll
 - status remains DONE; idle until new task_id
+
+## 2026-08-13T03:30Z — E-W2-002
+
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
+- Status → DONE
+- hyprlock/hypridle headers: Super+SHIFT+L → loginctl → `pidof hyprlock || hyprlock`; ladder unchanged
+- waybar tooltips name nm-connection-editor / pavucontrol / blueman-manager; header notes Walker/theme-gui/lock
+- KEYBIND-MAP + SESSION-SMOKE lock path one-liners; HANDOFF E-W2-002 + existing-home caveat
+- No redesign; no wofi/swaybg/cliphist
