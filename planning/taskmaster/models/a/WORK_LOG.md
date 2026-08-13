@@ -395,3 +395,11 @@ GHCR                                       still documented private
 ```
 
 Lane already merged with `origin/main` (merge-base == `c712cbd`).
+
+## 2026-08-13 — A-W5-001 poll (director still OPEN)
+
+**status:** DONE (no new product work)  
+**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
+
+Poll 2026-08-13T06:41:44Z: `pins-static` RESULT OK (11 PASS). SHAs/GHCR
+unchanged. No versions.env / build.sh / workflow edits. No A-W6.
