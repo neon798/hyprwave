@@ -382,3 +382,12 @@
 - Protocol/README/CURRENT_TASK: poll **2m**. Queue: `WAVE2-QUEUE.md`.
 - Director loop restarted at 2m; quiet cycles **do not** commit main.
 
+## 2026-08-13T03:25:30Z — Issue G-W2-003
+
+- Verified **G-W2-001 DONE**: `d13e250` check-image.sh + T8 residual flip;
+  tip `eb63019`. Diff vs main is G exclusive paths only.
+- Issued **G-W2-003** (wire check-image into `ci-snippet.yml`, advisory /
+  `continue-on-error`, no live workflow).
+- A–F remain OPEN on W2-001; lane tips still W1-HOLD (stale refresh). No HOLD.
+- Program `WAVE2_ISSUED`. VM smoke + GHCR public still open.
+

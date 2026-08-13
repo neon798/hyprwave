@@ -1,8 +1,8 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** **2 issued** (T8 images in flight)  
-**Updated:** 2026-08-13T03:25:00Z  
+**Director wave:** **2 in progress**  
+**Updated:** 2026-08-13T03:25:30Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
@@ -13,17 +13,16 @@
 | D | Duress / security packaging | `lane/d-duress` | **D-W2-001** | OPEN |
 | E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W2-001** | OPEN |
 | F | COSMIC variant | `lane/f-cosmic` | **F-W2-001** | OPEN |
-| G | QA automation | `lane/g-qa` | **G-W2-001** | OPEN |
+| G | QA automation | `lane/g-qa` | **G-W2-003** | OPEN |
 
 ## This check-in
 
-- HOLD cancelled. Wave 2 tasks issued on `origin/main` `CURRENT_TASK.md`.
-- Models must **refresh** `planning/taskmaster/models/<x>/` from `origin/main`,
-  merge/rebase onto latest main, then execute. New `task_id` (not `*-W1-HOLD`).
-- Cadence is **2 minutes** (Director + A–G). See `CADENCE.md`.
-- Director **must not** push empty heartbeats to `main` (CI thrash).
-- T8: CI dual-image PASS (`31662742064`); local `localhost/hyprwave:latest`
-  inspected (assistant 0.2.2, PAM duress off, 11 themes); cosmic local build running.
+- **G-W2-001 DONE** on `lane/g-qa` (`d13e250` product + `eb63019` tip). Exclusive
+  paths only (`planning/qa/check-image.sh`, run-all hook, T8 residuals).
+- Issued **G-W2-003** (CI snippet image job, continue-on-error / skip-ok).
+- A–F still **W2-001 OPEN** on main; lane tips still show stale `*-W1-HOLD`
+  (do not re-issue HOLD). F quiet since 2026-08-07.
+- T8: CI dual-image PASS (`31662742064`); local hyprland + cosmic inspected.
 
 ## Integration readiness
 
@@ -33,7 +32,7 @@
 | Handbook flip | **DONE** (`70e5616`) |
 | CI hyprland + cosmic | **PASS** |
 | Local hyprland image | **PASS** (inspect) |
-| Local cosmic image | **IN PROGRESS** |
+| Local cosmic image | **PASS** (`localhost/hyprwave-cosmic:latest` 189340691cc7; inspect OK) |
 | GHCR anonymous public | **NO** (403) |
 | VM smokes | **OPEN** (after images) |
 

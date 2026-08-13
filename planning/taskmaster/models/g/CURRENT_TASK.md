@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: G-W2-001
+task_id: G-W2-003
 wave: 2
-issued: 2026-08-13T03:25:00Z
+issued: 2026-08-13T03:25:30Z
 poll: 2m
-title: Container image smoke check + T8 residual update
+title: Wire check-image into CI snippet as continue-on-error / skip-ok
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Host tree harness is green. We now have `localhost/hyprwave:latest` (and soon
-cosmic). Add a **skip-if-missing** image inspect check so T8 is automated next
-time, and flip ENDPOINT residuals to match CI + local build.
+G-W2-001 landed `planning/qa/check-image.sh` (skip-if-missing) and hooked it
+in `run-all.sh`. CI still uses the **copy-paste** snippet only. Add an
+**advisory** image-inspect job so integrators can paste it without turning a
+missing GH runner image into a red build.
 
 Refresh first:
 
@@ -37,35 +38,31 @@ git checkout origin/main -- planning/taskmaster/models/g/
 ## Forbidden
 
 - Product skel, cosmic vendor, apps, duress, pins, handbook prose
+- Do **not** edit `.github/workflows/*` (A owns live CI). Snippet only.
 - Do not merge other lanes onto main
 
 ## Requirements
 
-- [ ] New `planning/qa/check-image.sh`:
-      - Env `HYPRWAVE_IMAGE` default `localhost/hyprwave:latest`
-      - If image missing → SKIP (not FAIL)
-      - `podman run --rm --entrypoint bash "$img" -lc` asserts:
-        assistant version, hyprwave-theme, walker, hyprpaper, 11 themes,
-        catalog.toml, ENABLE.md, **no** `pam_duress` in `/etc/pam.d`,
-        sddm enabled, no wofi/swaybg binaries as defaults
-- [ ] Register in `run-all.sh` (after assistant). Document `--only image`
-- [ ] Optional second image `HYPRWAVE_COSMIC_IMAGE` or `--cosmic` : cosmic-greeter,
-      no sddm required, no cosmic-store, FlatArcade present — SKIP if missing
-- [ ] Update ENDPOINT-RESIDUALS.md / PROGRAM-CLOSEOUT.md / SMOKE-MATRIX.md:
-      CI run `31662742064` both variants PASS; GHCR anonymous still 403;
-      local hyprland image inspected; VM smoke still open
-- [ ] `bash planning/qa/run-all.sh` still RESULT OK (image check PASS or SKIP)
+- [ ] Extend `planning/qa/ci-snippet.yml` with a job (e.g. `packaging-qa-image`):
+      - `continue-on-error: true` (advisory; never blocks the workflow)
+      - Runs `bash planning/qa/run-all.sh --only image` (SKIP if no image/podman)
+      - Document that GH-hosted runners will typically **SKIP** (no local tag)
+      - Optional cosmic: `HYPRWAVE_COSMIC_IMAGE` / note `--cosmic` — still SKIP-ok
+      - No secrets; do not require a GHCR pull
+- [ ] README: how to enable the job after a self-hosted / image-bearing runner exists
+- [ ] SMOKE-MATRIX or ENDPOINT-RESIDUALS: one line that snippet is advisory-only
+- [ ] `bash planning/qa/run-all.sh` still RESULT OK (do not change skip-if-missing)
 
 ## Deliverables
 
-- check-image.sh + run-all hook
-- Residuals reflect T8 image-build **met**, VM **open**, GHCR public **open**
+- ci-snippet.yml image job + README note
+- Residual: live workflow still A's copy step (not done in this task)
 
 ## Done criteria
 
+- [ ] Snippet job is skip-ok / continue-on-error
+- [ ] No live workflow change
 - [ ] Harness RESULT OK
-- [ ] Image check PASS against `localhost/hyprwave:latest` if present
-- [ ] Residuals no longer say “all T8 pending”
 - [ ] `git push -u origin lane/g-qa`
 
 ## On completion
