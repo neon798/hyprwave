@@ -287,3 +287,10 @@ Total CONFLICT lines: 0
 - Re-run from worktree: **RESULT OK** (pins, themes, no-wofi, duress, assistant, image, lane-artifacts).
 - check-image: localhost/hyprwave:latest + hyprwave-cosmic:latest → **PASS** (18).
 - Residuals still human-owned: VM boot, GHCR 403 (unchanged).
+
+## 2026-08-13 poll — idle (G-W6-001 already DONE)
+
+- `git fetch origin main`; synced `planning/taskmaster/models/g/` from `origin/main` @ `c712cbd`.
+- **CURRENT_TASK** `G-W6-001` **DONE** — allowlist already shipped as G-W5-001 `9f50998`; merge `c712cbd` on main.
+- No OPEN exclusive G work. No product/QA code changes this poll.
+- Residuals unchanged (human): VM boot, GHCR 403.

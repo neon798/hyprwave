@@ -17,3 +17,7 @@ G-W4-001 | 2026-08-13 | product-only probe clean; PRE-MERGE-DRY-RUN A/B/C on mai
 - Expanded `check-no-wofi-swaybg.sh` migration-comment filter (`are/is not used`, `no wofi`, etc.) so E/C negation comments PASS.
 - `run-all.sh` → **RESULT OK** (7/7).
 - `check-image` hyprland + cosmic → **18 PASS** (local tags present).
+
+## G-W6-001 — no-wofi “not used” false FAIL (2026-08-13)
+- Issued DONE by orchestrator: work already in G-W5-001 `9f50998` / main `c712cbd`.
+- No additional exclusive G changes required.
