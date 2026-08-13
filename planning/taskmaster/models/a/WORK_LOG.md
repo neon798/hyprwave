@@ -368,4 +368,4 @@ A-W2-002 SHAs on HEAD                      metadata 6.2.0 / login 4.5.1 / cosign
 GHCR                                       still documented private
 ```
 
-Poll 2026-08-13T06:15:36Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+Poll 2026-08-13T06:17:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
