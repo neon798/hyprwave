@@ -360,5 +360,4 @@ releases/latest                               CLEAN
 **main merge tip:** `c712cbd`
 
 `git merge origin/main` already up to date. `pins-static` PASS (11).
-A-W2-002 SHAs unchanged on HEAD (metadata 6.2.0, login 4.5.1, cosign 4.1.2).
-GHCR still documented 403. No invented work.
+A-W2-002 SHAs unchanged on HEAD. GHCR still documented 403. No invented work.
