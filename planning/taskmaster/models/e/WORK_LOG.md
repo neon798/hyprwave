@@ -309,13 +309,7 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T06:34Z — E-W5-001 poll re-verify (remain DONE)
+## 2026-08-13T06:35Z — E-W5-001 poll re-verify (remain DONE)
 
-- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
-- origin/main still OPEN E-W5-001; lane re-verify only
-- Merged main: `878d38e` (lane/e-hyprland Wave 2–4); origin/main tip `c712cbd`
-- Lane already contains main (merge no-op); product tip `d8db11f`
-- bindings.conf == origin/main skel; **87** active binds
-- SUPER+SHIFT+A (assistant), SUPER+SHIFT+T (theme-gui), SUPER+SHIFT+E (exit) match KEYBIND-MAP
-- No cliphist/wofi/swaybg in skel (comments only)
-- No product changes; status remains DONE
+- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
+- 87 binds; Shift+A/T/E OK; bindings == main; no forbidden; no product changes
