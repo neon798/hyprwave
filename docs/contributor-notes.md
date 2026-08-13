@@ -32,7 +32,7 @@ protocol: **[planning/taskmaster/PROTOCOL.md](../planning/taskmaster/PROTOCOL.md
 |-------|--------|----------------|
 | A | `lane/a-stabilize` | pins (`versions.env`), CI guards, stabilize notes |
 | **B** | **`lane/b-docs`** | **INSTALL, CHANGELOG, README, `docs/**`, `planning/integration/b-docs/**`** |
-| C | `lane/c-assistant` | Assistant app + dormant snippets |
+| C | `lane/c-assistant` | Assistant app (now **image-hooked** on main) |
 | D | `lane/d-duress` | Duress packaging (**off by default**) |
 | E | `lane/e-hyprland` | Hyprland skel / keybinds / session |
 | F | `lane/f-cosmic` | COSMIC vendor / greeter / declutter |
@@ -77,7 +77,7 @@ pending** for features that actually shipped. Summary:
 2. **Edit honesty language**
    - [CHANGELOG.md](../CHANGELOG.md): use the **Post-merge template** under Unreleased;
      add `## [YYYY-MM-DD]` and uncheck only what is truly on the image
-   - Drop “on `lane/e-hyprland` until merge” notes when E is merged
+   - Drop leftover “until merge” notes if any remain (E is on main)
    - Keep duress **off by default** even if D assets are on the image
    - Mention Assistant only if the binary is actually installed
 3. **Re-run accuracy**

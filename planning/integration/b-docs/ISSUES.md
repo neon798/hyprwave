@@ -8,7 +8,7 @@ Docs lane does **not** fix product code. Gaps for stabilizer / integrator.
 | B-2 | Build | External app pins | Owned by lane A (`versions.env`); docs point at philosophy only |
 | B-3 | Docs/UX | README still long on SDDM QML | Wave 2 proposes sections in README-sections.md; partial install links applied |
 | B-4 | Product | E2E first-boot both DEs | Still ops proof; not docs-blocked |
-| B-5 | Product | Assistant / Duress | Document as upcoming / off-by-default only until merge |
+| B-5 | **Closed** (B-W2-001) | Assistant / Duress | **Assistant** is on `main` and image-hooked (`/usr/bin/hyprwave-assistant`, Super+Shift+A). **Duress** is packaged **off by default** — handbook never claims it is enabled. |
 | B-6 | Minor | Justfile default `IMAGE_NAME=image-template` | INSTALL notes; CI sets repo name |
 | B-7 | Docs | Screenshots | All TODO; checklist + alt-text ready in screenshot-checklist.md |
 

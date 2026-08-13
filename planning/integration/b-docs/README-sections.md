@@ -3,8 +3,8 @@
 Wave 1 added a short Install block on `README.md`. Wave 2 expands the docs tree under
 `docs/`; the integrator can fold the sections below for a cleaner end-user README.
 
-**Do not claim Assistant or Duress as default-shipped** until merge + image hooks land.
-Phrase as optional / upcoming.
+**Assistant ships** (optional TUI, Super+Shift+A). **Duress stays off by default** —
+never phrase as enabled on a stock install.
 
 ---
 
@@ -55,20 +55,15 @@ Phrase as optional / upcoming.
 
 ---
 
-## Upcoming (optional features — not stock until merged)
+## Optional extras (post-merge)
 
 ```markdown
-## Upcoming (optional)
-
-These may land from parallel workstreams; they are **not** required for a usable desktop:
+## Optional extras
 
 | Feature | Status to document |
 |---------|-------------------|
-| **Hyprwave Assistant** | Go TUI for updates / Flatpak / knowledge base. Dormant until image integration; not assumed installed. |
-| **Duress password** | Optional PAM tooling. **Off by default** even after packaging; never describe as enabled on a fresh install. See [docs/security.md](docs/security.md). |
-
-When merged, link Assistant to its manpage/KB and Duress only to operator ENABLE docs
-(not a one-liner enable in the README).
+| **Hyprwave Assistant** | **Ships.** Super+Shift+A on Hyprland; optional convenience TUI. |
+| **Duress password** | Packaged **off by default**. Never describe as enabled on a fresh install. See [docs/security.md](docs/security.md). |
 ```
 
 ---

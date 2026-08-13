@@ -213,3 +213,18 @@ Post-merge template checkboxes, drop obsolete “pending merge” banners.
 | Pending-merge banners reduced accurately | Handbook flipped; historical planning docs left as-is |
 
 Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR still open.
+
+---
+
+## B-W2-001 addendum (2026-08-13)
+
+| Check | Result |
+|-------|--------|
+| Super+Shift+A | `build_files/etc/skel/.config/hypr/bindings.conf` → `ghostty -e hyprwave-assistant`; documented in `docs/keybinds.md` Essentials |
+| Assistant companion | README table + default stack + optional extras; desktop entry `hyprwave-assistant.desktop` |
+| COSMIC dock | README matches `build_files/usr/share/cosmic/com.system76.CosmicAppList/v1/favorites` (Neonwolf, FlatArcade, Ghostty, Cosmic Files, Hyprwave Themes, Cosmic Settings) |
+| ISSUES B-5 | Closed: assistant hooked; duress packaged OFF |
+| Duress default on | **Not claimed** (security.md + faq) |
+| GHCR public | **Not claimed** |
+| Screenshots | Still TODO (B-7) |
+| Sweep leftover “upcoming Assistant” | README / faq / security rewritten |

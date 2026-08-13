@@ -1,9 +1,10 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: B-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
+completed: 2026-08-13T04:10:00Z
 poll: 2m
 title: Handbook residual polish after post-merge flip
 
@@ -17,15 +18,6 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 Integrator already flipped most “pending merge” language (`70e5616`). Finish
 the user-facing handbook so a new user can run the **shipped** desktop without
 lane folklore.
-
-Refresh first:
-
-```bash
-git fetch origin
-git checkout lane/b-docs
-git merge --ff-only origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/b/
-```
 
 ## Exclusive paths (only these)
 
@@ -41,18 +33,18 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Requirements
 
-- [ ] Add **Hyprwave Assistant** to README companion table (ships in image;
+- [x] Add **Hyprwave Assistant** to README companion table (ships in image;
       Super+Shift+A on Hyprland; optional)
-- [ ] Document Super+Shift+A on [docs/keybinds.md](../../../docs/keybinds.md)
+- [x] Document Super+Shift+A on [docs/keybinds.md](../../../docs/keybinds.md)
       Essentials table (missing today)
-- [ ] Close or rewrite ISSUES.md **B-5** (Assistant/Duress are on main:
+- [x] Close or rewrite ISSUES.md **B-5** (Assistant/Duress are on main:
       assistant hooked; duress packaged OFF)
-- [ ] Sweep `docs/` + `INSTALL.md` + `planning/integration/b-docs/` for leftover
+- [x] Sweep `docs/` + `INSTALL.md` + `planning/integration/b-docs/` for leftover
       “pending merge / until merge / on lane” that is now false
-- [ ] README COSMIC dock line already updated — confirm it matches
+- [x] README COSMIC dock line already updated — confirm it matches
       `build_files/usr/share/cosmic/.../favorites`
-- [ ] Keep screenshot binaries TODO (B-7); do not invent captures
-- [ ] Re-run POST-MERGE link walk (0 missing)
+- [x] Keep screenshot binaries TODO (B-7); do not invent captures
+- [x] Re-run POST-MERGE link walk (0 missing)
 
 ## Deliverables
 
@@ -62,11 +54,11 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Done criteria
 
-- [ ] Super+Shift+A documented
-- [ ] Assistant listed as shipped (not “upcoming”)
-- [ ] Duress still **off by default** in security/faq
-- [ ] Link check 0 missing
-- [ ] `git push -u origin lane/b-docs`
+- [x] Super+Shift+A documented
+- [x] Assistant listed as shipped (not “upcoming”)
+- [x] Duress still **off by default** in security/faq
+- [x] Link check 0 missing
+- [x] `git push -u origin lane/b-docs`
 
 ## On completion
 

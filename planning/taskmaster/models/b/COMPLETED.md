@@ -8,3 +8,4 @@ B-W1-003 | 2026-08-07 | Security/D-lane align, dual-variant TS, screenshot ops |
 B-W1-004 | 2026-08-07 | Pre-merge handbook freeze + CHANGELOG post-merge template | 6892b17
 B-W1-005 | 2026-08-07 | POST-MERGE-DOC-FLIP checklist for integrator | e6cad8e
 B-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip fb3eb36 | 2ddbd23
+B-W2-001 | 2026-08-13 | Assistant shipped + Super+Shift+A; close B-5 | (tip after push)
