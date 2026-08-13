@@ -408,3 +408,10 @@
   vs image paths, stay OFF), **E-W2-002** (hyprlock/idle + waybar tooltips).
 - A/B/F/G already have next OPEN tasks; awaiting lane refresh.
 
+## 2026-08-13T03:31:08Z — Issue B-W3-001
+
+- Verified **B-W2-002 DONE**: `07d7e9e` IMAGE_NAME + B-6; tip `2574bc9`.
+  Exclusive handbook paths only (Justfile untouched).
+- Issued **B-W3-001** from WAVE3-QUEUE (first-boot/INSTALL vs private GHCR).
+- A/C/D/E/F/G remain OPEN on last W2 follow-up; do not double-issue.
+
