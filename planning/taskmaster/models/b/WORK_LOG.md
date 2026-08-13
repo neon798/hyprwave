@@ -3,6 +3,14 @@
 (append only)
 
 
+## 2026-08-13 — B-W4-001
+
+- status OPEN → IN_PROGRESS → DONE
+- CHANGELOG Unreleased: W2–W3 handbook deltas (Assistant Super+Shift+A, IMAGE_NAME, local build primary / GHCR 403)
+- ISSUES merge-prep table: B-5/B-6 closed, B-7 + B-1 open
+- ACCURACY-AUDIT B-W4-001; no public GHCR claim; no screenshot binaries; links 0 missing
+
+
 ## 2026-08-13 — B-W3-001
 
 - status OPEN → IN_PROGRESS → DONE

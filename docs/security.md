@@ -115,13 +115,13 @@ duplicated here so this page never becomes an accidental runbook.
 
 ---
 
-## Hyprwave Assistant (when present)
+## Hyprwave Assistant (ships in the image)
 
-A future **Hyprwave Assistant** TUI may wrap `bootc` / Flatpak update flows. Treat it as
-a convenience UI: confirm any action that upgrades the base OS or installs software, and
-expect a **reboot** after base upgrades. It is not a substitute for understanding
-[updating.md](updating.md). Until it is merged into the published image and listed in
-the changelog as shipped, do not expect `/usr/bin/hyprwave-assistant` on disk.
+**Hyprwave Assistant** is installed at `/usr/bin/hyprwave-assistant` (desktop entry
+launches it in Ghostty). Hyprland: **Super+Shift+A**. Treat it as a convenience UI:
+confirm any action that upgrades the base OS or installs software, and expect a
+**reboot** after base upgrades. It is not a substitute for understanding
+[updating.md](updating.md).
 
 ---
 

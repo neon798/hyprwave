@@ -727,6 +727,12 @@ func (m Model) viewUpdater() string {
 		} else {
 			b.WriteString(style.Muted.Render(truncateLines(m.status.BootcStatus, 10)) + "\n")
 		}
+		if m.status.ImageRef != "" {
+			b.WriteString(style.Muted.Render("  ref: "+m.status.ImageRef) + "\n")
+		}
+		if m.status.ImageNote != "" {
+			b.WriteString(style.Warning.Render("  ℹ "+m.status.ImageNote) + "\n")
+		}
 		if m.status.NeedsReboot {
 			b.WriteString(style.Warning.Render("⚠ Staged/pending changes — reboot yourself when ready (never forced).") + "\n")
 		}
@@ -866,7 +872,13 @@ func (m Model) viewKBArticle() string {
 func (m Model) viewAbout() string {
 	var b strings.Builder
 	b.WriteString(style.Title.Render("About Hyprwave Assistant") + "\n\n")
-	b.WriteString(style.Body.Render("Version: ") + m.cfg.Version + "\n")
+	ver := m.cfg.Version
+	if ver == "" {
+		ver = "0.2.2"
+	}
+	b.WriteString(style.Body.Render("Version: ") + ver + "\n")
+	b.WriteString(style.Body.Render("Images:  ") + "Hyprland + COSMIC (dual DE; same companion)\n")
+	b.WriteString(style.Body.Render("Launch:  ") + "Super+Shift+A (Hyprland) · menu · hyprwave-assistant\n")
 	b.WriteString(style.Body.Render("Data:    ") + style.Muted.Render(m.cfg.DataDir) + "\n")
 	theme := m.cfg.Theme
 	if theme == "" {
@@ -880,18 +892,27 @@ func (m Model) viewAbout() string {
 		} else {
 			b.WriteString(style.Success.Render("Network probe: online") + "\n")
 		}
+		if m.status.ImageRef != "" {
+			b.WriteString(style.Body.Render("Image:   ") + style.Muted.Render(m.status.ImageRef) + "\n")
+		}
+		if m.status.ImageNote != "" {
+			b.WriteString(style.Warning.Render(m.status.ImageNote) + "\n")
+		}
 	}
 	b.WriteString("\n")
-	b.WriteString("A single TUI for updates, curated installs, and distro knowledge.\n")
+	b.WriteString("Ships in the stock image as a system companion (not a pending install).\n")
+	b.WriteString("Safe bootc + Flatpak updates, curated installs, offline knowledge base.\n")
 	b.WriteString("Built with Go + Bubble Tea + Lip Gloss.\n")
-	b.WriteString(style.Muted.Render("Never forces reboot. Double-confirm for mutations. Dry-run always available.\n\n"))
+	b.WriteString(style.Muted.Render("Never forces reboot. Double-confirm for mutations. Dry-run always available.\n"))
+	b.WriteString(style.Muted.Render("Stack: Walker + hyprpaper on Hyprland — not Wofi/swaybg.\n\n"))
 	b.WriteString(style.Highlight.Render("Palette") + "  ")
 	b.WriteString(lipgloss.NewStyle().Foreground(style.Pink).Render("■pink ") +
 		lipgloss.NewStyle().Foreground(style.Cyan).Render("■cyan ") +
 		lipgloss.NewStyle().Foreground(style.Purple).Render("■purple") + "\n\n")
 	b.WriteString(style.Muted.Render("CLI: status | update | install | list | kb | version | --help\n"))
 	b.WriteString(style.Muted.Render("Theme switcher: hyprwave-theme · App store: FlatArcade\n"))
-	b.WriteString(style.Muted.Render("Install layout: /usr/share/hyprwave/assistant/{catalog.toml,kb/*.md}\n\n"))
+	b.WriteString(style.Muted.Render("Install layout: /usr/share/hyprwave/assistant/{catalog.toml,kb/*.md}\n"))
+	b.WriteString(style.Muted.Render("GHCR may be private; localhost tags are valid for local builds (kb ghcr).\n\n"))
 	tools := system.Which(m.cfg.Runner, "bootc", "flatpak", "ghostty", "sudo")
 	b.WriteString(style.Highlight.Render("Host tools") + "\n")
 	for _, name := range []string{"bootc", "flatpak", "ghostty", "sudo"} {

@@ -14,10 +14,14 @@ sudo systemctl reboot # apply staged deployment
 - Previous deployments remain available for rollback.
 - The Assistant **Updater** tab runs status + upgrade with dry-run / double-confirm and a reboot reminder.
 - Assistant **never** reboots the host.
+- Pull failures (401/403) often mean **GHCR is private** — see **`ghcr`**.
+- `hyprwave-assistant status` prints the booted image ref and a short note:
+  GHCR may need auth; **localhost** tags are valid for local builds.
 
 CLI:
 
 ```bash
+hyprwave-assistant status
 hyprwave-assistant status --check
 hyprwave-assistant update --base --dry-run
 hyprwave-assistant update --base --yes --confirm   # mutates when online + privileged
@@ -57,7 +61,11 @@ sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest
 sudo systemctl reboot
 ```
 
-Rebase is a full image switch, not a package toggle. Your home directory is kept; greeter and session defaults follow the image.
+Rebase is a full image switch, not a package toggle. Your home directory is kept; greeter and session defaults follow the image. Skel does not rewrite existing homes.
+
+## GHCR may be private
+
+`bootc upgrade` / `switch` pull from GHCR (`ghcr.io/neon798/hyprwave[:cosmic]`). If the package is private, pulls fail with **401/403**. That is registry visibility, not a bad command. See article **`ghcr`**.
 
 ## Offline
 
@@ -72,3 +80,9 @@ When offline, Assistant shows a clear **OFFLINE** banner and refuses remote muta
 ## Rollback
 
 If an update misbehaves, boot a previous deployment from the bootloader or use bootc/ostree rollback tooling, then report the issue with `bootc status` output.
+
+## Related
+
+- `ghcr` — registry 401/403
+- `bootc-rebase` — variant switch
+- `first-boot` — after a new image boots

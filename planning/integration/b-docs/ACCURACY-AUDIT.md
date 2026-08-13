@@ -213,3 +213,56 @@ Post-merge template checkboxes, drop obsolete “pending merge” banners.
 | Pending-merge banners reduced accurately | Handbook flipped; historical planning docs left as-is |
 
 Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR still open.
+
+---
+
+## B-W2-001 addendum (2026-08-13)
+
+| Check | Result |
+|-------|--------|
+| Super+Shift+A | `build_files/etc/skel/.config/hypr/bindings.conf` → `ghostty -e hyprwave-assistant`; documented in `docs/keybinds.md` Essentials |
+| Assistant companion | README table + default stack + optional extras; desktop entry `hyprwave-assistant.desktop` |
+| COSMIC dock | README matches `build_files/usr/share/cosmic/com.system76.CosmicAppList/v1/favorites` (Neonwolf, FlatArcade, Ghostty, Cosmic Files, Hyprwave Themes, Cosmic Settings) |
+| ISSUES B-5 | Closed: assistant hooked; duress packaged OFF |
+| Duress default on | **Not claimed** (security.md + faq) |
+| GHCR public | **Not claimed** |
+| Screenshots | Still TODO (B-7) |
+| Sweep leftover “upcoming Assistant” | README / faq / security rewritten |
+
+---
+
+## B-W2-002 addendum (2026-08-13)
+
+| Check | Result |
+|-------|--------|
+| IMAGE_NAME default | Justfile `env("IMAGE_NAME", "image-template")` — **not edited** |
+| INSTALL Path C | Documents default `image-template`, override `just build hyprwave latest` / `IMAGE_NAME=hyprwave`, CI uses repo name |
+| contributor-notes | Same IMAGE_NAME note under Building and validating |
+| ISSUES B-6 | **Closed** (docs-only) |
+| screenshot-checklist | Hygiene only: IMAGE_NAME + DE mix-up blockers; C2 dock favorites; H8 skel bind; all Status still **TODO** |
+| Screenshot binaries | **None added** (B-7 open) |
+| Duress default on | **Not claimed** |
+| GHCR public | **Not claimed** |
+| Justfile | **Untouched** |
+
+---
+
+## B-W3-001 addendum (2026-08-13)
+
+| Check | Result |
+|-------|--------|
+| Anonymous GHCR public claim | **Avoided** — INSTALL says private / 403; podman pull framed as diagnostic |
+| Primary path | Local build Path C (`just build hyprwave latest` → `localhost/hyprwave:latest`) |
+| Path A | Requires public GHCR **or** `podman login` |
+| first-boot.md | How-you-got-image table; localhost refs; greeters SDDM vs cosmic-greeter |
+| Dual-variant greeters | Unchanged accuracy (SDDM / cosmic-greeter) |
+| Screenshot binaries | **None** (B-7 still open) |
+| Duress default on | **Not claimed** (first-boot still off by default) |
+| IMAGE_NAME | Path C still documents image-template default |
+
+---
+
+## B-W4-001 addendum (2026-08-13)
+
+Merge-prep: CHANGELOG Unreleased records W2–W3 handbook deltas (Assistant Super+Shift+A, IMAGE_NAME, local-build primary / GHCR 403). ISSUES B-5/B-6 closed, B-7 open. **No public-GHCR claim.** No screenshot binaries.
+
