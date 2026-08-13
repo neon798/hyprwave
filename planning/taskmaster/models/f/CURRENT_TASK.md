@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: F-W2-001
+task_id: F-W2-002
 wave: 2
-issued: 2026-08-13T03:25:00Z
+issued: 2026-08-13T03:27:11Z
 poll: 2m
-title: COSMIC vendor + greeter vs merged main (wake F)
+title: Cosmic image inspect card after localhost/hyprwave-cosmic:latest is new
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-F has been **quiet since 2026-08-07**. COSMIC image CI already succeeded;
-local `just build-cosmic` is in flight. Prove vendor defaults and operator
-docs match `main`, and prepare a session-smoke card for the new image.
+F-W2-001 stamped vendor + greeter docs. Local image **exists**:
+`localhost/hyprwave-cosmic:latest` (`189340691cc7`, inspect OK). Produce a
+durable **image inspect card** (copy-paste `podman run` + expected facts) so
+the next rebuild can be re-checked without rediscovering commands.
 
 Refresh first:
 
@@ -40,30 +41,28 @@ git checkout origin/main -- planning/taskmaster/models/f/
 ## Forbidden
 
 - Hyprland skel, duress, assistant app, shared pin section of build.sh
+- Do not merge other lanes onto main
 
 ## Requirements
 
-- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` exit 0
-- [ ] Dock favorites file matches SESSION-SMOKE / GREETER claims:
-      neonwolf, flatarcade, Ghostty, CosmicFiles, hyprwave-theme, CosmicSettings
-- [ ] Mode `is_dark` + wallpaper vendor keys still present
-- [ ] GREETER.md: stock greeter face vs session branding (still true?)
-- [ ] SESSION-SMOKE.md: add “image inspect” rows for
-      `localhost/hyprwave-cosmic:latest` when the tag is new (cosmic-store
-      absent, FlatArcade present, theme GUI present, no SDDM)
-- [ ] If local cosmic image exists: `podman run --rm --entrypoint bash
-      localhost/hyprwave-cosmic:latest -lc '...'` and record results
-- [ ] No cosmic-store regression
+- [ ] Add or finish `planning/integration/f-cosmic/IMAGE-INSPECT.md` (or a
+      clearly marked section in SESSION-SMOKE):
+      image ref, digest if known, commands, expected: cosmic-greeter present,
+      **no** SDDM required, **no** cosmic-store, FlatArcade + theme GUI present,
+      vendor favorites / wallpaper keys
+- [ ] Re-run inspect against `localhost/hyprwave-cosmic:latest` if the tag
+      exists; if missing, SKIP and record — do not FAIL the lane
+- [ ] Cross-link GREETER.md / SESSION-SMOKE / FREEZE-STATUS (still no SDDM)
+- [ ] Vendor path script still exit 0 if you touch vendor files (prefer docs-only)
 
 ## Deliverables
 
-- Vendor script green
-- SESSION-SMOKE / GREETER / FREEZE-STATUS stamped 2026-08-13
-- WORK_LOG with inspect output or “image not local yet”
+- IMAGE-INSPECT (or equivalent) card with recorded output snippet
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] check-vendor-paths.sh PASS
+- [ ] Inspect card is re-runnable
 - [ ] Docs do not claim SDDM on cosmic
 - [ ] `git push -u origin lane/f-cosmic`
 

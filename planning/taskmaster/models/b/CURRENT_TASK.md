@@ -1,12 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: B-W2-001
+status: OPEN
+task_id: B-W2-002
 wave: 2
-issued: 2026-08-13T03:25:00Z
-completed: 2026-08-13T04:10:00Z
+issued: 2026-08-13T03:27:11Z
 poll: 2m
-title: Handbook residual polish after post-merge flip
+title: Justfile IMAGE_NAME note (B-6) + screenshot checklist remaining rows only
 
 ## Duty cycle
 
@@ -15,9 +14,19 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Integrator already flipped most “pending merge” language (`70e5616`). Finish
-the user-facing handbook so a new user can run the **shipped** desktop without
-lane folklore.
+B-W2-001 shipped Assistant + Super+Shift+A. Close ISSUES **B-6** in **docs
+only**: local `just build` defaults `IMAGE_NAME=image-template`; CI sets the
+repo name (`hyprwave`). Keep screenshot binaries TODO (B-7) — polish checklist
+rows, do not invent captures.
+
+Refresh first:
+
+```bash
+git fetch origin
+git checkout lane/b-docs
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/b/
+```
 
 ## Exclusive paths (only these)
 
@@ -28,37 +37,33 @@ lane folklore.
 
 ## Forbidden
 
-- `build_files/**`, workflows, apps, duress packaging
+- `build_files/**`, workflows, apps, duress packaging, **Justfile** (document
+  IMAGE_NAME — do not edit the Justfile)
 - Claiming GHCR is public; claiming duress is on by default
+- Committing screenshot binaries or fake `docs/assets/` images
 
 ## Requirements
 
-- [x] Add **Hyprwave Assistant** to README companion table (ships in image;
-      Super+Shift+A on Hyprland; optional)
-- [x] Document Super+Shift+A on [docs/keybinds.md](../../../docs/keybinds.md)
-      Essentials table (missing today)
-- [x] Close or rewrite ISSUES.md **B-5** (Assistant/Duress are on main:
-      assistant hooked; duress packaged OFF)
-- [x] Sweep `docs/` + `INSTALL.md` + `planning/integration/b-docs/` for leftover
-      “pending merge / until merge / on lane” that is now false
-- [x] README COSMIC dock line already updated — confirm it matches
-      `build_files/usr/share/cosmic/.../favorites`
-- [x] Keep screenshot binaries TODO (B-7); do not invent captures
-- [x] Re-run POST-MERGE link walk (0 missing)
+- [ ] INSTALL.md (and contributor-notes if needed): `IMAGE_NAME` default is
+      `image-template`; override `IMAGE_NAME=hyprwave` / CI uses repo name
+- [ ] Close or rewrite ISSUES.md **B-6** after the note exists
+- [ ] screenshot-checklist.md: remaining TODO rows only — fix stale paths,
+      blockers, or Hyprland vs COSMIC capture notes; leave Status TODO
+- [ ] Do not capture or embed new PNG/JPG
+- [ ] Link walk still 0 missing for files you touch
 
 ## Deliverables
 
-- Handbook matches skel + CHANGELOG Wave 1 section
-- ISSUES.md updated
-- ACCURACY-AUDIT addendum for B-W2-001
+- B-6 closed in ISSUES + INSTALL note
+- Checklist hygiene only (B-7 still open)
+- ACCURACY-AUDIT addendum for B-W2-002
 
 ## Done criteria
 
-- [x] Super+Shift+A documented
-- [x] Assistant listed as shipped (not “upcoming”)
-- [x] Duress still **off by default** in security/faq
-- [x] Link check 0 missing
-- [x] `git push -u origin lane/b-docs`
+- [ ] IMAGE_NAME default documented; Justfile untouched
+- [ ] No new screenshot binaries
+- [ ] Duress still off / GHCR not claimed public
+- [ ] `git push -u origin lane/b-docs`
 
 ## On completion
 

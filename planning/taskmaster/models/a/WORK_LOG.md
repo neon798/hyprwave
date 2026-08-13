@@ -170,3 +170,58 @@ No invented follow-up. Idle for next OPEN task id.
 
 Idle: no product work. Awaiting human/Director serial merge per INTEGRATION-DAY.
 Exclusive paths frozen. Will not mark HOLD as DONE.
+
+## 2026-08-13 — A-W2-001
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`  
+**HOLD:** cancelled (Director)
+
+### Refresh
+
+- `git fetch origin` + `git merge origin/main` (Wave 1 now on main)
+- `git checkout origin/main -- planning/taskmaster/models/a/`
+
+### Pin verify log
+
+```
+verify-pins.sh --head            exit 0  (4× HTTP 200)
+verify-pins.sh --head --light    exit 0
+verify-pins.sh --checksum --light exit 0  (Yazi + FlatArcade + SVG sha256)
+check-upstream-pins.sh           current (yazi v26.5.6, neonwolf v152.0.1-3, flatarcade v0.1.0)
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+releases/latest in build.sh / versions.env  CLEAN
+```
+
+**Pins still current** — no `versions.env` tag bump; comment updated with 2026-08-13 verify date.
+
+### GHCR / CI reality (docs)
+
+- CI dual-image **build + push** on `77755f1` run `31662742064`
+- Local: `localhost/hyprwave:latest` (9bc0e1e57d6b), `localhost/hyprwave-cosmic:latest` (189340691cc7)
+- `ghcr-pull-test.sh --owner neon798` **exit 1**: hyprwave `unauthorized`; cosmic inspect OK
+- **Do not claim public GHCR.** Next human step: Packages → `hyprwave` (then confirm both) → Public
+
+### Dependabot (skipped)
+
+Reviewed vs `origin/main`; all exclusive to `.github/workflows/*`. **Not landed** this cycle:
+
+| Branch | Change | Why skip |
+|--------|--------|----------|
+| `actions/checkout-7.0.1` | checkout v6 → **v7** | major; not CI-safe without a green rebuild |
+| `redhat-actions/push-to-registry-3` | push-to-registry v2 → **v3** | major; just-green push path |
+| `docker/login-action-4.5.1` | 4.2.0 → 4.5.1 | patch, but no reason to touch login same day as 31662742064 |
+| `docker/metadata-action-6.2.0` | 6.1.0 → 6.2.0 | minor; skip until isolated PR |
+| `sigstore/cosign-installer-4.1.2` | 4.1.0 → 4.1.2 | patch; skip (still pins `cosign-release: v2.6.3`) |
+
+### Docs
+
+- `RELEASE.md` Wave 1 CI closeout + visibility next step
+- `FIRST-BOOT-CHECKLIST.md` local images + 2026-08-13 probe log
+- `COSIGN.md` verify blocked on hyprland unauthorized
+
+### Commits
+
+1. merge `origin/main` into lane
+2. pin comment + release/first-boot/cosign closeout
+3. taskmaster DONE + WORK_LOG/COMPLETED
