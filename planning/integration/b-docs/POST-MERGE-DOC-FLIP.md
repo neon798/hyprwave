@@ -194,6 +194,12 @@ rg -n 'default launcher is [Ww]ofi|uses swaybg|Thunar as default' INSTALL.md CHA
 
 **Out of scope for docs flip:** enabling duress PAM, making GHCR public, capturing screenshot binaries (unless someone already added files under `docs/assets/`).
 
+### Wave 2–4 flip (B-W6-001)
+
+Executed 2026-08-13 after A–G W2–W4 merged to `main`. CHANGELOG Unreleased no
+longer treats those docs as lane-only; dated section records residual merge.
+**VM smoke still open.** GHCR still not public.
+
 ---
 
 ## Related

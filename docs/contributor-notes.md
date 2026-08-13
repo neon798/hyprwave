@@ -89,8 +89,10 @@ pending** for features that actually shipped. Summary:
 5. **Screenshots** — still optional; ops checklist in
    [screenshots.md](screenshots.md) / b-docs screenshot-checklist.
 
-After Wave 1, prefer documenting **what is on `main` / the built image** over
-lane-only language. Use [POST-MERGE-DOC-FLIP.md](../planning/integration/b-docs/POST-MERGE-DOC-FLIP.md)
+After Waves 1–4 landed on `main` (2026-08-13), prefer documenting **what is on
+`main` / the built image** over lane-only language. **VM smoke is still open**;
+GHCR remains private (403). Use
+[POST-MERGE-DOC-FLIP.md](../planning/integration/b-docs/POST-MERGE-DOC-FLIP.md)
 when a later wave lands.
 
 ---

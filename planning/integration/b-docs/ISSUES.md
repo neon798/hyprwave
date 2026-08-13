@@ -15,13 +15,18 @@ Docs lane does **not** fix product code. Gaps for stabilizer / integrator.
 No docs blocker for describing current desktop design (Walker, hyprpaper, 11 themes,
 COSMIC, companions).
 
-## Merge-prep (W4 / B-W4-001)
+## On main (Waves 2–4 / B-W6-001)
 
-| ID | State for integrator |
-|----|----------------------|
-| B-5 | Closed — Assistant on image + Super+Shift+A in handbook; duress **off by default** |
-| B-6 | Closed — IMAGE_NAME=`image-template` documented; override in INSTALL |
+W2–W4 product + handbook deltas are **on `main`** (not lane-only merge-prep).
+VM smoke and public GHCR are **not** closed.
+
+| ID | State |
+|----|--------|
+| B-5 | Closed on main — Assistant on image + Super+Shift+A in handbook; duress **off by default** |
+| B-6 | Closed on main — IMAGE_NAME=`image-template` documented; override in INSTALL |
 | B-7 | **Open** — no screenshot binaries; checklist ready |
 | B-1 | **Open** — GHCR anonymous 403; local build primary in INSTALL/first-boot |
+| B-4 | **Open** — dual-variant E2E / **VM smoke** from the merged tip |
 
 Do **not** flip B-1 closed until A/RELEASE confirms public packages.
+Do **not** flip B-4 closed until VM smoke is signed off.

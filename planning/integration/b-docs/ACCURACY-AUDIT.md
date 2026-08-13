@@ -272,3 +272,11 @@ Merge-prep: CHANGELOG Unreleased records W2–W3 handbook deltas (Assistant Supe
 
 Post-merge verify on tip after B Waves 2–4 land on main: relative link walk **checked=150 missing=0**. Super+Shift+A present in `docs/keybinds.md` Essentials (`ghostty -e hyprwave-assistant`). README lists Assistant as shipped. **No GHCR-public claim**; **duress still off by default**.
 
+---
+
+## B-W6-001 addendum (2026-08-13)
+
+CHANGELOG / ISSUES flip: Unreleased no longer says W2–W4 are lane-only merge-prep.
+Dated `## [2026-08-13] — Waves 2–4 residual merge` records A–G on `main`.
+**VM smoke still open.** **No GHCR-public claim.** **Duress still off by default.**
+
