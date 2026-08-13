@@ -20,6 +20,28 @@ podman run --rm localhost/hyprwave:latest hyprwave-assistant --version
 # expect: hyprwave-assistant 0.2.2
 ```
 
+## Apply order (0.2.2 hooks)
+
+Integrator one-pass (snippets only — Model C does **not** edit live
+`Containerfile` / `build.sh`). Order:
+
+1. **`Containerfile.snippet`** — `FROM … AS assistant-builder`;
+   `ASSISTANT_VERSION=0.2.2`; `go build -trimpath` +
+   `-ldflags="-s -w -X main.version=${ASSISTANT_VERSION}"`;
+   `COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant`.
+2. **`build.sh.snippet`** — install `/usr/share/hyprwave/assistant/`
+   (`catalog.toml` + `kb/*.md`) and
+   `/usr/share/applications/hyprwave-assistant.desktop`; optional
+   fallback copy of the binary to `/usr/bin/hyprwave-assistant`.
+3. **Super+Shift+A** — **Model E / integrator only** (Hyprland skel bind).
+   This lane must not edit skel. COSMIC: pin the desktop entry.
+
+Selftest (fail-closed on hook drift):
+
+```bash
+bash planning/integration/c-assistant/snippet-selftest.sh
+```
+
 ## Runtime paths (fixed)
 
 ```
@@ -62,7 +84,7 @@ COSMIC: pin the desktop entry from the menu.
 bash planning/integration/c-assistant/smoke-host.sh
 ```
 
-Must exit 0. Runs `go test ./...`, ldflags build, `--help`, `--version`, `kb`, `list`, `update --dry-run`.
+Must exit 0. Runs `go test ./...`, ldflags build, `--help`, `--version`, `kb`, `list`, `update --dry-run`, and `snippet-selftest.sh`.
 
 ## Post-image smoke
 
