@@ -150,3 +150,10 @@
 - No product/PAM changes; no `*.sha256`.
 
 - DONE tip: `64aa8ad` (re-poll)
+
+## 2026-08-13T06:34Z — D-W5-001 poll re-verify (OPEN reissue)
+
+- Merged origin/main (already up to date); refreshed taskmaster from origin/main (OPEN reissue, same task_id).
+- `bash planning/integration/d-duress/validate.sh` → **PASSED**
+- `bash planning/qa/run-all.sh --only duress-safety` → **RESULT: OK** (9 PASS)
+- No product/PAM changes; no `*.sha256`; remain DONE.
