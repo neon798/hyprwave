@@ -281,3 +281,74 @@ build.yml + build-disk.yml YAML parse OK
 2. GHCR-VISIBILITY + RELEASE/first-boot/integration links
 3. safe Dependabot SHA bumps in build.yml
 4. taskmaster DONE + WORK_LOG/COMPLETED
+
+## 2026-08-13 — A-W3-001
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`
+
+### Work done
+
+- Stamped `FIRST-BOOT-CHECKLIST.md` Wave 3 image proofs:
+  local `localhost/hyprwave:latest` (9bc0e1e57d6b / sha256:a935dbeb…) and
+  `localhost/hyprwave-cosmic:latest` (189340691cc7 / sha256:a9ca6920…);
+  CI run `31662742064` dual-image **PASS**; VM smoke **OPEN**.
+- GHCR remains documented as 403/`unauthorized` (not public).
+- **Pins still current** (no `versions.env` bump).
+
+### Pin verify
+
+```
+verify-pins.sh --head --light     exit 0  (4× HTTP 200)
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+releases/latest                   CLEAN
+```
+
+### Commits
+
+1. merge `origin/main` (A-W3-001 assignment)
+2. FIRST-BOOT-CHECKLIST Wave 3 stamp + run log
+3. taskmaster DONE
+
+## 2026-08-13 — A-W3-001 reconfirm (main still OPEN)
+
+**status:** DONE (no new product work)
+
+Director copy on `origin/main` still listed A-W3-001 OPEN. Stamp already on
+lane (`c845521`). Re-ran gates:
+
+```
+verify-pins.sh --head --light     exit 0
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+```
+
+Pins still current. GHCR still documented 403. VM smoke still OPEN.
+No invented follow-up.
+
+## 2026-08-13 — A-W4-001
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`
+
+### Work done
+
+- MERGE-READY.md Wave 4 exclusive inventory vs `origin/main` /
+  `post-integration-20260807` (commits + files; `build.sh` pin block unchanged).
+- INTEGRATION-DAY points at that section.
+- pin_guards still pass. GHCR still documented private. No Dependabot majors.
+
+### Pin verify
+
+```
+verify-pins.sh --head --light                 exit 0
+planning/qa/run-all.sh --only pins-static     RESULT: OK (11 PASS)
+releases/latest                               CLEAN
+```
+
+**Pins still current.**
+
+### Commits
+
+1. merge `origin/main` (A-W4-001 assignment)
+2. MERGE-READY / INTEGRATION-DAY inventory
+3. taskmaster DONE

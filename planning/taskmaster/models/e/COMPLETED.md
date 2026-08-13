@@ -16,3 +16,7 @@ E-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip 935fd96 | c722
 E-W2-001 | 2026-08-13 | Assistant Super+Shift+A active; float rules; KEYBIND-MAP 87; Wave2 smoke | e364669
 
 E-W2-002 | 2026-08-13 | hyprlock/hypridle comments + waybar tooltips (no redesign) | 7c1b044
+
+E-W3-001 | 2026-08-13 | SESSION-SMOKE image inspect + dwindle comments | d8db11f
+
+E-W4-001 | 2026-08-13 | merge-prep: new/existing home caveat + KEYBIND tip d8db11f | 39d5d7c

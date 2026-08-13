@@ -432,3 +432,30 @@
   **D-W3-001** (negative fixture: no pam.d install from build.sh).
 - C still OPEN C-W2-002. B/E/F/G already on W3-001.
 
+## 2026-08-13T03:37:13Z — Issue C-W3-001
+
+- Verified **C-W2-002 DONE**: About/preflight GHCR `9fd9714`; tip `0364b74`.
+- Issued **C-W3-001** (tests for private-GHCR / dual-DE; catalog IDs real).
+- A-W3-001 + E-W3-001 complete; no WAVE3 next — leave idle (no invented W4).
+- B/D/F/G still OPEN W3-001 on main.
+
+## 2026-08-13T03:39:11Z — Issue A-W4-001 B-W4-001 E-W4-001
+
+- WAVE4-QUEUE on main (`fe1bcba`). Verified W3 exclusive: A `c845521`,
+  B `ce0c737`, E `d8db11f`.
+- Issued merge-prep **A-W4-001** (MERGE-READY + pins), **B-W4-001**
+  (CHANGELOG/ISSUES W2–W3), **E-W4-001** (new-user vs home + KEYBIND SHA).
+- C/D/F/G remain OPEN W3-001. Do not merge lanes onto main.
+
+## 2026-08-13T03:44:30Z — Issue C-W4-001 D-W4-001 F-W4-001 G-W4-001
+
+- Verified W3 DONE exclusive-only: C tests `96f1b6e`, D pam.d fixtures
+  `41ec128`, F ISO/inspect `60718bc`, G cosmic check-image `32b310d`.
+- Issued merge-prep **C-W4-001** (HANDOFF + snippet-selftest 0.2.2),
+  **D-W4-001** (INTEGRATOR-CHECKLIST + PAM off), **F-W4-001**
+  (checklist + vendor script + ISO note), **G-W4-001** (product-only
+  probe; note A already on main).
+- A already **A-W5-001** OPEN (`42450b1` merge). B-W4-001 still OPEN.
+- E-W4-001 DONE (`39d5d7c`); no WAVE5 — idle. WAVE4 fully issued.
+
+

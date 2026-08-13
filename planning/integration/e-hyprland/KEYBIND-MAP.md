@@ -1,9 +1,18 @@
-# Hyprland keybind map (frozen E-W1-004)
+# Hyprland keybind map (E-W2-001 → E-W4-001)
 
 **Source of truth:** `build_files/etc/skel/.config/hypr/bindings.conf`  
 **Modifier:** `$mainMod = SUPER`  
 **Layout assumption:** `dwindle` (theme `looknfeel.conf`)  
-**Audit:** 2026-08-07 — every active `bind`/`binde`/`bindm` line counted (**86** active + **1** commented). Map matches skel; do not ship silent drift.
+**Audit:** 2026-08-13 (E-W2-001) — every active `bind`/`binde`/`bindm` line counted (**87** active, **0** commented binds). Map matches skel.
+
+### Lane product tip (E-W4-001 merge-prep)
+
+| Ref | SHA | Notes |
+|-----|-----|-------|
+| **Product tip** (integrator) | **`d8db11f`** (`d8db11f5ac70922c724db5ef4278404a033a7f83`) | Last `hyprland:` product commit on `lane/e-hyprland` — E-W3-001 SESSION-SMOKE inspect + dwindle comments; includes W2 binds/lock/tooltip work |
+| Prior product | `7c1b044` | E-W2-002 lock/idle comments + waybar tooltips |
+| Prior product | `e364669` | E-W2-001 assistant bind + float rules + KEYBIND-MAP 87 |
+| Bind count | **87** | Unchanged since E-W2-001; W3/W4 were comments/docs only |
 
 Machine-readable table. Columns: `keys | dispatcher | args | notes`
 
@@ -15,7 +24,7 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 | SUPER+T | exec | ghostty | same terminal (alt muscle memory) |
 | SUPER+E | exec | ghostty -e yazi | file manager |
 | SUPER+B | exec | neonwolf | default browser |
-| SUPER+A | exec | ghostty -e flatarcade | app store TUI |
+| SUPER+A | exec | ghostty -e flatarcade | app store TUI (**not** Assistant) |
 
 ## Launcher
 
@@ -30,22 +39,13 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 
 | keys | dispatcher | args | notes |
 |------|------------|------|-------|
-| SUPER+SHIFT+T | exec | hyprwave-theme-gui | theme picker GUI |
+| SUPER+SHIFT+T | exec | hyprwave-theme-gui | theme picker GUI (float `dev.hyprwave.ThemeSwitcher`) |
 
-## Future / commented binds (not active in skel)
+## Assistant
 
-These lines exist as **comments** in `bindings.conf` so integrators can enable
-them after the binary ships. They are **not** active keybinds.
-
-| keys | intended dispatcher | args | status | owner |
-|------|---------------------|------|--------|-------|
-| SUPER+SHIFT+A | exec | hyprwave-assistant | commented out | Model C + HANDOFF |
-
-Skel line:
-
-```
-# bind = $mainMod SHIFT, A, exec, hyprwave-assistant
-```
+| keys | dispatcher | args | notes |
+|------|------------|------|-------|
+| SUPER+SHIFT+A | exec | ghostty --class=dev.hyprwave.Assistant --title="Hyprwave Assistant" -e hyprwave-assistant | TUI; floats via windowrules; Super+A stays FlatArcade |
 
 ## Window management
 
@@ -140,7 +140,7 @@ Skel line:
 
 | keys | dispatcher | args | notes |
 |------|------------|------|-------|
-| SUPER+SHIFT+L | exec | loginctl lock-session | uppercase **L**; via hypridle `lock_cmd` |
+| SUPER+SHIFT+L | exec | loginctl lock-session | uppercase **L** → hypridle `lock_cmd` = `pidof hyprlock \|\| hyprlock` (no direct hyprlock bind) |
 | SUPER+SHIFT+P | exec | hyprpicker -a | color pick → clipboard |
 
 ## Screenshots (hyprshot)
@@ -178,7 +178,8 @@ Skel line:
 | keys | why not bound |
 |------|----------------|
 | SUPER+M | formerly exit; removed — fat-finger risk; exit is SUPER+SHIFT+E |
-| SUPER+SHIFT+A | reserved (commented) for Assistant — see HANDOFF |
+| wofi / rofi / dmenu / cliphist | not shipped; Walker + elephant (+ wl-clipboard) |
+| swaybg | wallpaper is hyprpaper |
 
 ## Walker in-app prefixes (not Hypr binds)
 
@@ -191,14 +192,16 @@ Configured in `walker/config.toml`:
 | `:` | symbols |
 | `=` | calc |
 | `@` | websearch |
-| `$` | clipboard |
+| `$` | clipboard (elephant-clipboard; no cliphist daemon) |
 | `>` | runner (via Super+R) |
 
-## Wave 1 change log (historical)
+## Change log
 
 | Wave | Change | Why |
 |------|--------|-----|
 | E-W1-001 | exit SUPER+SHIFT+E; dwindle binds; Walker exec-once | first session |
 | E-W1-002 | lock via loginctl; idle lock before DPMS | security / single hyprlock |
-| E-W1-003 | commented SUPER+SHIFT+A; windowrule/hyprpaper docs | C HANDOFF |
-| E-W1-004 | map/smoke freeze; explicit workspace/resize rows | pre-merge gate |
+| E-W1-003 | reserved SUPER+SHIFT+A (comment); windowrule/hyprpaper docs | C HANDOFF |
+| E-W1-004 | map/smoke freeze | pre-merge gate |
+| E-W2-001 | **active** SUPER+SHIFT+A with Ghostty `--class=dev.hyprwave.Assistant`; float rules for assistant + theme-gui size | day-1 UX; assistant ships in image |
+| E-W2-002 | lock/idle comment hygiene; waybar tooltips name nm-connection-editor / pavucontrol / blueman-manager | no redesign; copy only |

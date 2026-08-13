@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: C-W2-002
-wave: 2
-issued: 2026-08-13T03:29:05Z
+task_id: C-W4-001
+wave: 4
+issued: 2026-08-13T03:44:30Z
 poll: 2m
-title: Assistant About/preflight polish; bootc status copy matches private GHCR
+title: HANDOFF + snippet-selftest: Containerfile/build.sh hooks still match 0.2.2
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-C-W2-001 aligned KB/catalog with the shipped OS. Polish **About** +
-**preflight / `status --check`** so `bootc status` copy does not tell the user
-to pull a public GHCR image (anonymous pull is still **403**).
+C-W3-001 locked private-GHCR / dual-DE / catalog tests. Wave 4 is
+**merge-prep**: prove HANDOFF + snippets still describe 0.2.2 hooks
+(`assistant-builder`, ldflags version, desktop + data COPY). Add or
+refresh a snippet-selftest so drift fails closed.
 
 Refresh first:
 
@@ -37,30 +38,31 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Forbidden
 
-- Skel bindings, `build.sh` / Containerfile (snippets only), duress enablement,
-  CI, handbook
+- Skel bindings, live `build.sh` / Containerfile, duress enablement, CI, handbook
 - Claiming GHCR is public
+- Inventing Flathub IDs
+- Merging this lane onto main
 
 ## Requirements
 
-- [ ] About tab / `--version` strings: dual DE, assistant 0.2.2, Super+Shift+A;
-      no “not installed” / Wofi / swaybg
-- [ ] `hyprwave-assistant status [--check]` / preflight: if image ref is GHCR,
-      say private/auth may be required; localhost tags are valid
-- [ ] KB `updates.md` / `ghcr.md` stay consistent with private GHCR
+- [ ] HANDOFF.md still lists 0.2.2 apply order (Containerfile.snippet +
+      build.sh.snippet, Super+Shift+A is E/integrator-only)
+- [ ] snippet-selftest (new or existing under `planning/integration/c-assistant/`)
+      checks snippets mention version `0.2.2`, `assistant-builder`, and
+      `/usr/bin/hyprwave-assistant` — FAIL on drift
 - [ ] `cd apps/hyprwave-assistant && go test ./...`
-- [ ] `bash planning/integration/c-assistant/smoke-host.sh` still exit 0
+- [ ] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
+- [ ] Do not edit live Containerfile/build.sh (snippets + HANDOFF only)
 
 ## Deliverables
 
-- About + preflight copy fix
-- Green `go test` + smoke-host
+- HANDOFF + snippet-selftest green
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] `go test ./...` PASS
-- [ ] No public-GHCR install claim in About/preflight
+- [ ] Hooks still 0.2.2; selftest PASS
+- [ ] No public-GHCR claim
 - [ ] `git push -u origin lane/c-assistant`
 
 ## On completion

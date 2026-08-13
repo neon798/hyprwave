@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: F-W3-001
-wave: 3
-issued: 2026-08-13T03:33:03Z
+task_id: F-W4-001
+wave: 4
+issued: 2026-08-13T03:44:30Z
 poll: 2m
-title: ISO-cosmic.toml operator note + SESSION-SMOKE image-inspect results committed
+title: INTEGRATOR-CHECKLIST + vendor script; ISO-cosmic note current
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-F-W2-002 added IMAGE-INSPECT.md. Wave 3: operator note on
-`disk_config/iso-cosmic.toml` (how to build the COSMIC ISO) and **commit**
-SESSION-SMOKE / inspect results from `localhost/hyprwave-cosmic:latest`.
+F-W3-001 added the ISO-cosmic operator note + inspect reconfirm. Wave 4 is
+**merge-prep**: refresh INTEGRATOR-CHECKLIST, keep `check-vendor-paths.sh`
+green, and confirm the iso-cosmic.toml note is still current.
 
 Refresh first:
 
@@ -40,27 +40,27 @@ git checkout origin/main -- planning/taskmaster/models/f/
 ## Forbidden
 
 - Hyprland skel, duress, assistant app, shared pin section of build.sh
-- Do not merge other lanes onto main
+- Claiming GHCR is public; claiming SDDM on cosmic
+- Merging this lane onto main
 
 ## Requirements
 
-- [ ] Comment or short operator blurb for `iso-cosmic.toml`: used by
-      `just build-iso-cosmic`; cosmic-greeter not SDDM; do not claim GHCR public
-- [ ] SESSION-SMOKE / IMAGE-INSPECT: commit actual inspect output (or SKIP if
-      image missing). Expected: cosmic-greeter, no cosmic-store, FlatArcade,
-      theme GUI, no SDDM required
-- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` still exit 0
-      if you touch vendor files (prefer docs + toml comments)
+- [ ] INTEGRATOR-CHECKLIST: vendor script, greeter ≠ SDDM, ISO note, W3 inspect
+      SHA/id if known (`189340691cc7` or SKIP if image gone)
+- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` exit 0
+- [ ] `disk_config/iso-cosmic.toml` still valid TOML; operator blurb current
+      (`just build-iso-cosmic`; cosmic-greeter not SDDM)
+- [ ] Prefer docs + checklist — no vendor rewrite unless a path is wrong
 
 ## Deliverables
 
-- ISO operator note + committed inspect results
+- Checklist + vendor script green; ISO note current
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
 - [ ] Docs do not claim SDDM on cosmic
-- [ ] iso-cosmic.toml still valid TOML
+- [ ] check-vendor-paths exit 0; iso-cosmic.toml valid
 - [ ] `git push -u origin lane/f-cosmic`
 
 ## On completion
