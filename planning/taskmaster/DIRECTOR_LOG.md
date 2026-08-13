@@ -391,3 +391,12 @@
 - A–F remain OPEN on W2-001; lane tips still W1-HOLD (stale refresh). No HOLD.
 - Program `WAVE2_ISSUED`. VM smoke + GHCR public still open.
 
+## 2026-08-13T03:27:11Z — Issue A-W2-002 B-W2-002 F-W2-002
+
+- Verified DONE exclusive-only: A `85f5c74` pins/docs; B `072e972` handbook;
+  F `395eb13`/`ac500cc` vendor stamp + inspect notes.
+- Issued **A-W2-002** (GHCR visibility ops + dependabot), **B-W2-002** (B-6
+  IMAGE_NAME note + screenshot checklist; no Justfile edit), **F-W2-002**
+  (cosmic IMAGE-INSPECT card).
+- C/D/E still OPEN W2-001 (stale HOLD tips). G-W2-003 already issued.
+
