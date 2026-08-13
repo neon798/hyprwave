@@ -386,6 +386,8 @@ releases/latest in build.sh / verify-pins.sh   CLEAN
 Still documented **private** (`GHCR-VISIBILITY.md`: anonymous hyprwave 403).
 No visibility flip.
 
+Poll 2026-08-13T05:59:41Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+
 ### Commits
 
 1. taskmaster DONE + WORK_LOG/COMPLETED (reconfirm cycle)
