@@ -1,29 +1,13 @@
 # CURRENT_TASK
 
-status: OPEN
-task_id: G-W5-001
-wave: 5
-issued: 2026-08-13T04:05:00Z
+status: DONE
+task_id: G-W6-001
+wave: 6
+issued: 2026-08-13T04:15:00Z
 poll: 2m
-title: Post-merge harness + check-image (G Wave 2–4 on main)
+title: Fix no-wofi-swaybg false FAIL on “not used” comments
 
-## Objective
+## Note
 
-QA Waves 2–4 are on `main`. Full `run-all.sh` must be RESULT OK; image checks
-PASS or SKIP against local tags.
-
-```bash
-git fetch origin && git checkout lane/g-qa
-git merge origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/g/
-```
-
-## Exclusive paths
-
-planning/qa/** planning/integration/g-qa/** planning/taskmaster/models/g/**
-
-## Done criteria
-
-- [ ] `bash planning/qa/run-all.sh` RESULT OK
-- [ ] check-image hyprland + cosmic PASS if images present
-- [ ] `git push -u origin lane/g-qa`
+Shipped as G-W5-001 `9f50998` (allowlist for “not used” / “no wofi”). Merged to
+main. `planning/qa/run-all.sh` → RESULT OK. No further exclusive G work.
