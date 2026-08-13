@@ -162,3 +162,10 @@
 - `cd apps/hyprwave-assistant && go test ./...` PASS
 - `bash planning/integration/c-assistant/snippet-selftest.sh` PASS
 - no product work; status → DONE
+
+## 2026-08-13 — poll re-verify C-W5-001 (G-W5 on main)
+
+- main still OPEN for C-W5-001; lane already contains origin/main (c712cbd G-W5 allowlist)
+- `cd apps/hyprwave-assistant && go test ./...` PASS
+- `bash planning/integration/c-assistant/snippet-selftest.sh` PASS
+- no product work; status left DONE
