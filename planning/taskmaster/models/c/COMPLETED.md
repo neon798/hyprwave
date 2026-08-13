@@ -10,4 +10,5 @@ C-W2-001 | 2026-08-13 | Day-1 KB+catalog vs shipped OS (ghcr, dual DE, 11 themes
 C-W2-002 | 2026-08-13 | About/preflight private GHCR + localhost guidance | 9fd9714
 C-W3-001 | 2026-08-13 | Tests lock private-GHCR / dual-DE copy + real Flathub IDs | a78d8c4
 C-W4-001 | 2026-08-13 | HANDOFF + snippet-selftest 0.2.2 hooks | 845843a
+C-W5-001 | 2026-08-13 | Post-merge go test + snippet-selftest on main tip | f2fcb76
 

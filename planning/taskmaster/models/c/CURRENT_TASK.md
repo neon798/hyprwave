@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: C-W5-001
 wave: 5
 issued: 2026-08-13T04:00:00Z
@@ -25,6 +25,6 @@ apps/hyprwave-assistant/** build_files/usr/share/hyprwave/assistant/** planning/
 
 ## Done criteria
 
-- [ ] `cd apps/hyprwave-assistant && go test ./...`
-- [ ] `bash planning/integration/c-assistant/snippet-selftest.sh` if present
-- [ ] `git push -u origin lane/c-assistant`
+- [x] `cd apps/hyprwave-assistant && go test ./...`
+- [x] `bash planning/integration/c-assistant/snippet-selftest.sh` if present
+- [x] `git push -u origin lane/c-assistant`

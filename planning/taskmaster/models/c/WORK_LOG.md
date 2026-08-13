@@ -136,3 +136,12 @@
 
 - main still OPEN for C-W4-001; lane already complete (tip 646f1ee / mark 845843a). Re-assert DONE; no re-implement.
 - snippet-selftest still PASS (0.2.2 hooks)
+
+## 2026-08-13 — C-W5-001
+
+- Fast-forwarded lane to origin/main (Waves 2–4 merged at 83f6f8c; tip f2fcb76)
+- `cd apps/hyprwave-assistant && go test ./...` PASS
+- `bash planning/integration/c-assistant/snippet-selftest.sh` PASS
+- smoke-host also exit 0 (extra confirm)
+- no product changes; post-merge verify only
+- status → DONE
