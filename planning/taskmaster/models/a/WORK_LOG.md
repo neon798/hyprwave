@@ -430,3 +430,11 @@ metadata-action `dc802804` v6.2.0; login-action `abd2ef45` v4.5.1;
 cosign-installer `6f9f1778` v4.1.2; checkout v6; push-to-registry v2.
 GHCR still documented private (`GHCR-VISIBILITY.md` 403). No pin bump.
 No invented follow-up.
+
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
+
+**status:** DONE (no new product work)
+
+`origin/main` still `07be046`; already merged (`754ed9e`). Re-ran
+`pins-static` PASS (11). Action SHAs unchanged. GHCR still private.
+No invented follow-up.
