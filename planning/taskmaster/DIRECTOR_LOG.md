@@ -376,3 +376,9 @@
   G-W2-001 image smoke harness.
 - Models must refresh CURRENT_TASK from `origin/main` (new task_id ≠ `*-W1-HOLD`).
 - Program `WAVE2_ISSUED`. VM smoke still human/T8 after cosmic image.
+
+## 2026-08-13T03:30:00Z — Cadence 2 minutes
+
+- Protocol/README/CURRENT_TASK: poll **2m**. Queue: `WAVE2-QUEUE.md`.
+- Director loop restarted at 2m; quiet cycles **do not** commit main.
+

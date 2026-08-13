@@ -20,7 +20,8 @@
 - HOLD cancelled. Wave 2 tasks issued on `origin/main` `CURRENT_TASK.md`.
 - Models must **refresh** `planning/taskmaster/models/<x>/` from `origin/main`,
   merge/rebase onto latest main, then execute. New `task_id` (not `*-W1-HOLD`).
-- Director 10m loop remains **off** (was starving CI).
+- Cadence is **2 minutes** (Director + A–G). See `CADENCE.md`.
+- Director **must not** push empty heartbeats to `main` (CI thrash).
 - T8: CI dual-image PASS (`31662742064`); local `localhost/hyprwave:latest`
   inspected (assistant 0.2.2, PAM duress off, 11 themes); cosmic local build running.
 
@@ -32,7 +33,7 @@
 | Handbook flip | **DONE** (`70e5616`) |
 | CI hyprland + cosmic | **PASS** |
 | Local hyprland image | **PASS** (inspect) |
-| Local cosmic image | **IN PROGRESS** |
+| Local cosmic image | **PASS** (`localhost/hyprwave-cosmic:latest` 189340691cc7; inspect OK) |
 | GHCR anonymous public | **NO** (403) |
 | VM smokes | **OPEN** (after images) |
 

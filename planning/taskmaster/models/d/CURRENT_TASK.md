@@ -4,7 +4,13 @@ status: OPEN
 task_id: D-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
+poll: 2m
 title: Image-backed duress safety pass (stay OFF)
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 

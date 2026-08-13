@@ -4,22 +4,19 @@ status: DONE
 task_id: G-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
+poll: 2m
 title: Container image smoke check + T8 residual update
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
 Host tree harness is green. We now have `localhost/hyprwave:latest` (and soon
 cosmic). Add a **skip-if-missing** image inspect check so T8 is automated next
 time, and flip ENDPOINT residuals to match CI + local build.
-
-Refresh first:
-
-```bash
-git fetch origin
-git checkout lane/g-qa
-git merge --ff-only origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/g/
-```
 
 ## Exclusive paths (only these)
 

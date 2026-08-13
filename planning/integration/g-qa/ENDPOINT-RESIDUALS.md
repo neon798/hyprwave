@@ -51,7 +51,7 @@ bash planning/qa/run-all.sh --only image
 | F COSMIC | **met on main** | cosmic image + greeter; vendor on main |
 | G QA on main | **met on main** | harness + integration docs; image check added G-W2-001 |
 
-**Residual:** Wave 2 follow-ups only; Wave 1 integration complete on main.
+**Residual:** Wave 1 integration complete on main. Image builds **met** (CI + local). VM smokes + GHCR public-pull decision still open.
 
 ---
 
@@ -59,9 +59,9 @@ bash planning/qa/run-all.sh --only image
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| No `/releases/latest` on main | **met on main** | pins-static PASS |
+| No `/releases/latest` on main | **met on main** | 0 hits; pins-static PASS |
 | A lane pinned | **met on main** | versions.env |
-| `just build` green | **met** (local + CI) | local `localhost/hyprwave:latest`; CI run `31662742064` PASS |
+| `just build` green | **met** (local + CI) | local `localhost/hyprwave:latest` `9bc0e1e57d6b`; CI run `31662742064` PASS |
 | Image content smoke | **met** | `bash planning/qa/run-all.sh --only image` PASS |
 
 ---
@@ -72,7 +72,7 @@ bash planning/qa/run-all.sh --only image
 |---|---|---|
 | DE=cosmic path | **met on main** | |
 | Vendor + Mode dark / favorites | **met on main** | |
-| `just build-cosmic` | **met** (local + CI) | `localhost/hyprwave-cosmic:latest`; CI `31662742064` |
+| `just build-cosmic` | **met** (local + CI) | local `localhost/hyprwave-cosmic:latest` `189340691cc7`; CI `31662742064` |
 | Image content smoke | **met** | check-image cosmic asserts PASS |
 
 ---

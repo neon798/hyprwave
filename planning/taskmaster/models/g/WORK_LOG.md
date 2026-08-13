@@ -142,30 +142,19 @@ Harness still **FAIL** only on `pins-static` until A merges (expected).
 **Status:** OPEN HOLD — idle  
 Wave 1 frozen at G-W1-005. Awaiting human integration via INTEGRATION-DAY.md. No product work; no DONE on HOLD.
 
-## G-W2-001 — 2026-08-13
+## G-W2-001 — 2026-08-13 (merge + verify)
 
 **Status:** DONE  
-**Branch:** `lane/g-qa` (worktree `/home/zen/hyprwave-g-qa`, rebased onto `origin/main`)  
-**Task:** Container image smoke check + T8 residual update
+**Branch tip work:** merge origin/main; conflict-resolve ENDPOINT-RESIDUALS; re-verify harness
 
-### Work performed
+### Delivered (already on lane; re-verified after main merge)
 
-1. `planning/qa/check-image.sh` — skip-if-missing podman inspect:
-   - `HYPRWAVE_IMAGE` (default `localhost/hyprwave:latest`): assistant version, hyprwave-theme, walker, hyprpaper, ≥11 themes, catalog.toml, ENABLE.md, no pam_duress, sddm enabled, no wofi/swaybg
-   - Optional cosmic (`HYPRWAVE_COSMIC_IMAGE` / `--cosmic`): cosmic-greeter, no cosmic-store, flatarcade, hyprwave-theme
-2. Registered `image` in `run-all.sh` after `assistant`; README + help docs for `--only image`
-3. Refreshed ENDPOINT-RESIDUALS / PROGRAM-CLOSEOUT / SMOKE-MATRIX §9.0:
-   - CI run `31662742064` both variants PASS
-   - Local hyprland + cosmic image inspect PASS
-   - GHCR anonymous still 403; VM smoke still open
-   - Residuals no longer claim “all T8 pending”
+- `planning/qa/check-image.sh` — skip-if-missing; PASS on `localhost/hyprwave:latest` + cosmic
+- Registered in `run-all.sh` after `assistant` (`--only image`)
+- ENDPOINT-RESIDUALS: CI `31662742064` met; local digests; VM open; GHCR 403 open
+- Full `bash planning/qa/run-all.sh` → RESULT OK (image 18 PASS)
 
-### Host run
+### Notes
 
-- `bash planning/qa/run-all.sh` → **RESULT OK** (image PASS 18/0 on local tags)
-- `bash planning/qa/run-all.sh --only image` → PASS
-
-### Notes for Director
-
-- Lane tip reset onto post-merge `origin/main` (HOLD heartbeats discarded; product already on main).
-- PROGRAM_COMPLETE still open until VM + GHCR policy.
+- No product/handbook edits
+- Idle for next OPEN task
