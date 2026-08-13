@@ -424,3 +424,5 @@ Poll 2026-08-13T07:00:19Z: `git checkout origin/main -- models/a/` reissued
 OPEN. Re-ran pins-static RESULT OK (11 PASS). A-W2-002 SHAs on `c712cbd`
 unchanged (dc802804 / abd2ef45 / 6f9f1778). GHCR still documented private.
 No versions.env / build.sh / workflow edits. No A-W6.
+
+Poll 2026-08-13T07:01:42Z: still DONE; main `c712cbd`; pins-static 11 PASS.
