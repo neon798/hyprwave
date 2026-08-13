@@ -251,3 +251,30 @@ Totals: PASS=18 FAIL=0 WARN=0 SKIP=0
 ### Notes
 
 - No product/workflow edits. Local image build no longer tracked as pending.
+
+## G-W4-001 — 2026-08-13
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** product-only merge probe + PRE-MERGE-DRY-RUN refresh
+
+### Work performed
+
+1. `git fetch origin` + lane refs; `bash planning/qa/probe-merge-conflicts.sh --product-only` vs `origin/main` @ `f2fcb76`.
+2. All seven lanes **PASS**; **0** product CONFLICT lines; `--fail-on-conflict` exit 0.
+3. Refreshed `PRE-MERGE-DRY-RUN.md`: tip SHAs; **A already on main** (`42450b1`); also B (`5ef86b6`) and C (`83f6f8c`). Remaining product: D(12), E(2), F(6), G(7).
+4. ENDPOINT-RESIDUALS Wave 4 note; residuals still **VM + GHCR only** (no VM/GHCR claims).
+5. `run-all.sh` → RESULT OK.
+
+### Probe summary
+
+```
+PASS a-stabilize@bd02d47 product_files=0
+PASS b-docs@6356b4e product_files=0
+PASS c-assistant@2496ff6 product_files=0
+PASS d-duress@176aecd product_files=12
+PASS e-hyprland@f472267 product_files=2
+PASS f-cosmic@c596cf6 product-clean files=6
+PASS g-qa@5ecfd60 product-clean files=7
+Total CONFLICT lines: 0
+```

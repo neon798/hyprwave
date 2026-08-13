@@ -193,3 +193,16 @@ bash planning/qa/run-all.sh --only image
 | local build | image | SKIP→PASS when `localhost/hyprwave:latest` exists |
 | G | full run-all | RESULT OK |
 
+## Wave 4 merge-prep (G-W4-001)
+
+| Item | Status |
+|---|---|
+| Product-only probe vs `origin/main` @ `f2fcb76` | **GO** — 0 product conflicts |
+| A Wave 2–4 on main | **met** — `42450b1` |
+| B Wave 2–4 on main | **met** — `5ef86b6` |
+| C Wave 2–4 on main | **met** — `83f6f8c` |
+| D/E/F/G residual product | **open to merge** — product-clean pairwise |
+| VM + GHCR | **open** (unchanged) |
+
+See [PRE-MERGE-DRY-RUN.md](./PRE-MERGE-DRY-RUN.md).
+

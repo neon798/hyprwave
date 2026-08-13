@@ -10,3 +10,4 @@ G-W1-005 | 2026-08-07 | PROGRAM-CLOSEOUT ENDPOINT verify matrix | fb18b31
 G-W2-001 | 2026-08-13 | check-image.sh + T8 residual flip (CI+local PASS; VM/GHCR open) | d13e250
 G-W2-003 | 2026-08-13 | ci-snippet packaging-qa-image advisory job + README/residuals | 04f54b4
 G-W3-001 | 2026-08-13 | check-image --cosmic PASS; residuals narrowed to VM+GHCR | 32b310d
+G-W4-001 | 2026-08-13 | product-only probe clean; PRE-MERGE-DRY-RUN A/B/C on main | 613afbd
