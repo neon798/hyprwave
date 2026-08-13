@@ -80,12 +80,34 @@ grep -qiE '\b11\b|eleven' "$DATA/kb/theming.md" \
   || die "theming.md must state 11 themes"
 grep -qiE 'may be private' "$DATA/kb/ghcr.md" \
   || die "ghcr.md must state GHCR may be private"
+grep -qi 'localhost' "$DATA/kb/ghcr.md" \
+  || die "ghcr.md must treat localhost tags as valid"
+if grep -RqiE 'ghcr is public|publicly available on ghcr' "$DATA/kb" --include='*.md'; then
+  die "KB must not claim GHCR is public"
+fi
+grep -qi 'Hyprland' "$DATA/kb/variants.md" && grep -qi 'COSMIC' "$DATA/kb/variants.md" \
+  || die "variants.md must describe dual DE (Hyprland + COSMIC)"
 grep -q 'com.discordapp.Discord' "$DATA/catalog.toml" \
   || die "catalog missing verified Discord Flatpak ID"
 grep -q 'org.mozilla.Thunderbird' "$DATA/catalog.toml" \
   || die "catalog missing verified Thunderbird Flatpak ID"
 grep -q 'com.spotify.Client' "$DATA/catalog.toml" \
   || die "catalog missing verified Spotify Flatpak ID"
+grep -q 'org.libreoffice.LibreOffice' "$DATA/catalog.toml" \
+  || die "catalog missing verified LibreOffice Flatpak ID"
+grep -q 'com.valvesoftware.Steam' "$DATA/catalog.toml" \
+  || die "catalog missing verified Steam Flatpak ID"
 
-ok "all probes passed (version=${VERSION}, data=${DATA}, kb day-1 guards)"
+ver_low="$(printf '%s' "$ver_out" | tr '[:upper:]' '[:lower:]')"
+echo "$ver_low" | grep -q 'hyprland' || die "version must mention Hyprland"
+echo "$ver_low" | grep -q 'cosmic' || die "version must mention COSMIC"
+echo "$ver_low" | grep -q 'private' || die "version must mention private GHCR"
+echo "$ver_low" | grep -q 'localhost' || die "version must mention localhost tags"
+echo "$ver_low" | grep -q 'super+shift+a' || die "version must mention Super+Shift+A"
+echo "$ver_low" | grep -qi 'ghcr is public' && die "version must not claim public GHCR"
+
+help_out="$("$BIN" help)"
+echo "$help_out" | grep -qi 'Not Wofi/swaybg' || die "help must deny Wofi/swaybg"
+
+ok "all probes passed (version=${VERSION}, data=${DATA}, kb day-1 + wave-3 guards)"
 exit 0
