@@ -66,6 +66,7 @@ probe_head 20 "$BIN" update --dry-run
 # Day-1 accuracy guards (C-W2-001)
 [[ -f "$DATA/kb/ghcr.md" ]] || die "missing kb/ghcr.md"
 [[ -f "$DATA/kb/first-boot.md" ]] || die "missing kb/first-boot.md"
+[[ -f "$DATA/kb/variants.md" ]] || die "missing kb/variants.md"
 # Every wofi/swaybg mention must be a clear denial (not the default stack)
 while IFS= read -r line; do
   echo "$line" | grep -qiE 'not[[:space:]]|never[[:space:]]|is not used' \
@@ -77,8 +78,14 @@ grep -qiE 'off by default|OFF by default|OFF in the stock' "$DATA/kb/duress.md" 
   || die "duress.md must state off by default / stock image"
 grep -qiE '\b11\b|eleven' "$DATA/kb/theming.md" \
   || die "theming.md must state 11 themes"
-grep -qiE 'discord|spotify' "$DATA/catalog.toml" \
-  || die "catalog should include day-1 Discord/Spotify entries"
+grep -qiE 'may be private' "$DATA/kb/ghcr.md" \
+  || die "ghcr.md must state GHCR may be private"
+grep -q 'com.discordapp.Discord' "$DATA/catalog.toml" \
+  || die "catalog missing verified Discord Flatpak ID"
+grep -q 'org.mozilla.Thunderbird' "$DATA/catalog.toml" \
+  || die "catalog missing verified Thunderbird Flatpak ID"
+grep -q 'com.spotify.Client' "$DATA/catalog.toml" \
+  || die "catalog missing verified Spotify Flatpak ID"
 
 ok "all probes passed (version=${VERSION}, data=${DATA}, kb day-1 guards)"
 exit 0
