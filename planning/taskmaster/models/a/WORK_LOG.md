@@ -360,8 +360,8 @@ releases/latest                               CLEAN
 **main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`  
 `merge: G-W5 wofi-comment allowlist (harness RESULT OK)`
 
-Director re-issued OPEN from `origin/main`. Re-verified exclusive pin/CI
-surface only. No pin or workflow edits. No invented A-W6.
+Director copy on `origin/main` still lists A-W5-001 OPEN. Re-verified
+exclusive pin/CI surface only. No pin or workflow edits. No invented A-W6.
 
 ### Validation
 
@@ -383,9 +383,9 @@ releases/latest in build.sh / verify-pins.sh   CLEAN
 
 ### GHCR
 
-Still documented **private** (`GHCR-VISIBILITY.md`, README registry note:
-anonymous pull 403). No visibility flip.
+Still documented **private** (`GHCR-VISIBILITY.md`: anonymous hyprwave 403).
+No visibility flip.
 
 ### Commits
 
-1. taskmaster DONE + WORK_LOG/COMPLETED (this cycle)
+1. taskmaster DONE + WORK_LOG/COMPLETED (reconfirm cycle)
