@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: G-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
@@ -35,20 +35,20 @@ git checkout origin/main -- planning/taskmaster/models/g/
 
 ## Requirements
 
-- [ ] New `planning/qa/check-image.sh`:
+- [x] New `planning/qa/check-image.sh`:
       - Env `HYPRWAVE_IMAGE` default `localhost/hyprwave:latest`
       - If image missing → SKIP (not FAIL)
       - `podman run --rm --entrypoint bash "$img" -lc` asserts:
         assistant version, hyprwave-theme, walker, hyprpaper, 11 themes,
         catalog.toml, ENABLE.md, **no** `pam_duress` in `/etc/pam.d`,
         sddm enabled, no wofi/swaybg binaries as defaults
-- [ ] Register in `run-all.sh` (after assistant). Document `--only image`
-- [ ] Optional second image `HYPRWAVE_COSMIC_IMAGE` or `--cosmic` : cosmic-greeter,
+- [x] Register in `run-all.sh` (after assistant). Document `--only image`
+- [x] Optional second image `HYPRWAVE_COSMIC_IMAGE` or `--cosmic` : cosmic-greeter,
       no sddm required, no cosmic-store, FlatArcade present — SKIP if missing
-- [ ] Update ENDPOINT-RESIDUALS.md / PROGRAM-CLOSEOUT.md / SMOKE-MATRIX.md:
+- [x] Update ENDPOINT-RESIDUALS.md / PROGRAM-CLOSEOUT.md / SMOKE-MATRIX.md:
       CI run `31662742064` both variants PASS; GHCR anonymous still 403;
       local hyprland image inspected; VM smoke still open
-- [ ] `bash planning/qa/run-all.sh` still RESULT OK (image check PASS or SKIP)
+- [x] `bash planning/qa/run-all.sh` still RESULT OK (image check PASS or SKIP)
 
 ## Deliverables
 
@@ -57,10 +57,10 @@ git checkout origin/main -- planning/taskmaster/models/g/
 
 ## Done criteria
 
-- [ ] Harness RESULT OK
-- [ ] Image check PASS against `localhost/hyprwave:latest` if present
-- [ ] Residuals no longer say “all T8 pending”
-- [ ] `git push -u origin lane/g-qa`
+- [x] Harness RESULT OK
+- [x] Image check PASS against `localhost/hyprwave:latest` if present
+- [x] Residuals no longer say “all T8 pending”
+- [x] `git push -u origin lane/g-qa`
 
 ## On completion
 
