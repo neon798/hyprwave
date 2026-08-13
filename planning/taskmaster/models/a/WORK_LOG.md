@@ -353,11 +353,39 @@ releases/latest                               CLEAN
 2. MERGE-READY / INTEGRATION-DAY inventory
 3. taskmaster DONE
 
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
+## 2026-08-13 — A-W5-001
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main merge tip:** `c712cbd`
+**main merge tip:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac` (`merge: G-W5 wofi-comment allowlist`)  
+**lane merge-base:** same (`Already up to date` with `origin/main`)
 
-`git merge origin/main` already up to date. `pins-static` PASS (11) at 05:33:41Z.
-A-W2-002 SHAs unchanged. GHCR still 403. No invented work.
+### Refresh
+
+- `git fetch origin` + `git merge origin/main` → Already up to date
+- `git checkout origin/main -- planning/taskmaster/models/a/` (Director still OPEN)
+
+### Pin verify (merged main tree)
+
+```
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS, 0 FAIL)
+releases/latest in build.sh / versions.env CLEAN
+```
+
+### A-W2-002 action SHAs on HEAD (`origin/main` `c712cbd` / lane merge-base)
+
+| Action | Pin on `build.yml` |
+|--------|--------------------|
+| `docker/metadata-action` | `dc802804…` **v6.2.0** |
+| `docker/login-action` | `abd2ef45…` **v4.5.1** |
+| `sigstore/cosign-installer` | `6f9f1778…` **v4.1.2** (`cosign-release` still v2.6.3) |
+
+Majors still skipped: `actions/checkout` v6, `redhat-actions/push-to-registry` v2.
+
+### GHCR
+
+Still documented **private**. `GHCR-VISIBILITY.md`: anonymous `hyprwave` **FAIL** `unauthorized`; do not claim public. Human Settings → Public still required.
+
+### Notes
+
+No `versions.env` / pin / workflow product change. No A-W6 issued. Exclusive paths only.
