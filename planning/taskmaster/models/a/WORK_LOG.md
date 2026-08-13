@@ -390,3 +390,11 @@ up to date. Re-ran exclusive gates only:
 
 Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR/exclusive files
 unchanged. No A-W6. No invented work.
+
+## 2026-08-13 — A-W5-001 poll (still c712cbd)
+
+**status:** DONE  
+**main:** `c712cbd`
+
+Director inbox still OPEN. pins-static 11 PASS. A-W2-002 SHAs + GHCR private
+unchanged. Exclusive files match origin/main. No A-W6.
