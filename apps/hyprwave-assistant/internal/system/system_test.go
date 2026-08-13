@@ -85,9 +85,53 @@ func TestCollectStatus(t *testing.T) {
 	if !strings.Contains(s.FlatpakStatus, "1 installed") {
 		t.Fatalf("flatpak status: %s", s.FlatpakStatus)
 	}
+	if s.ImageRef != "ghcr.io/neon798/hyprwave:latest" {
+		t.Fatalf("image ref: %q", s.ImageRef)
+	}
+	if s.ImageNote == "" || !strings.Contains(strings.ToLower(s.ImageNote), "private") {
+		t.Fatalf("expected GHCR private note: %q", s.ImageNote)
+	}
+	// Preflight should surface GHCR warning for status --check UX.
+	found := false
+	for _, w := range s.Preflight.Warnings {
+		if strings.Contains(strings.ToLower(w), "private") {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("preflight warnings missing GHCR note: %v", s.Preflight.Warnings)
+	}
 	// "Staged: none" still contains "staged" — DetectNeedsReboot is heuristic.
 	// That is acceptable; document via test awareness.
 	_ = s.NeedsReboot
+}
+
+func TestCollectStatusLocalhost(t *testing.T) {
+	restore := OnlineForTests()
+	defer restore()
+	f := &fakeRunner{
+		paths: map[string]bool{"bootc": true, "flatpak": true},
+		responses: map[string]struct {
+			out string
+			err error
+		}{
+			"bootc status": {
+				out: "Booted image: localhost/hyprwave:latest\nStaged: none",
+			},
+			"flatpak list --columns=application,version,origin": {
+				out: "",
+			},
+		},
+	}
+	s := CollectStatus(f)
+	if s.ImageRef != "localhost/hyprwave:latest" {
+		t.Fatalf("ref=%q", s.ImageRef)
+	}
+	if !strings.Contains(strings.ToLower(s.ImageNote), "localhost") &&
+		!strings.Contains(strings.ToLower(s.ImageNote), "local") {
+		t.Fatalf("note=%q", s.ImageNote)
+	}
 }
 
 func TestCollectStatusMissingTools(t *testing.T) {

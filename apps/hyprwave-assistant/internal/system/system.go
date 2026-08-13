@@ -62,6 +62,9 @@ type Status struct {
 	FlatpakError     string
 	NeedsReboot      bool
 	Preflight        Preflight
+	// ImageRef / ImageNote are derived from bootc status when available.
+	ImageRef  string
+	ImageNote string
 }
 
 // CollectStatus runs bootc status and a flatpak summary.
@@ -79,6 +82,11 @@ func CollectStatus(r Runner) Status {
 		} else {
 			s.BootcStatus = out
 			s.NeedsReboot = DetectNeedsReboot(out)
+			s.ImageRef, s.ImageNote = ImageGuidance(out)
+			// Surface GHCR privacy in preflight warnings (once).
+			if s.ImageNote != "" && ClassifyImageRef(s.ImageRef) == ImageRefGHCR {
+				s.Preflight.Warnings = append(s.Preflight.Warnings, s.ImageNote)
+			}
 		}
 	} else {
 		s.BootcError = "bootc not found (not an atomic/bootc host?)"

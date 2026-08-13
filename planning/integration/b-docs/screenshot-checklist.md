@@ -19,6 +19,8 @@ Do **not** block INSTALL or the handbook on images.
 | Nested remote desktop only | Quality / keybind oddities | Prefer local KVM VM with virtio-gpu |
 | Real passwords / PII on screen | Privacy fail | Use throwaway user; empty password field; no accounts in browser |
 | Private GHCR (403) | Cannot pull published image for shots | Build local image + qcow2 (Path C in INSTALL) |
+| Wrong local image tag | Overlay/docs expect `hyprwave:latest` | Justfile default `IMAGE_NAME=image-template` — use `just build hyprwave latest` / `IMAGE_NAME=hyprwave` (see INSTALL Path C) |
+| Hyprland vs COSMIC mix-up | Wrong greeter/bar in shot | Hyprland: SDDM + Waybar/Walker. COSMIC: `just build-cosmic` / `run-vm-qcow2-cosmic`; cosmic-greeter + dock |
 
 ---
 
@@ -78,7 +80,7 @@ cp ~/Pictures/YOUR.png docs/assets/hyprland-desktop.png
 | H5 | TODO | Neonwolf | Default browser | `docs/assets/hyprland-neonwolf.png` | Neonwolf browser with neutral page; no personal accounts | Super+B; open `about:blank` or local page. Super+Shift+S. |
 | H6 | TODO | Yazi | Default file manager | `docs/assets/hyprland-yazi.png` | Yazi TUI inside Ghostty | Super+E. Super+Shift+S. |
 | H7 | TODO | FlatArcade | App install path | `docs/assets/hyprland-flatarcade.png` | FlatArcade Flathub TUI arcade chrome | Super+A. Super+Shift+S. |
-| H8 | TODO | Themes GUI | Theme product | `docs/assets/hyprland-themes-gui.png` | Hyprwave Themes GUI listing packs | Super+Shift+T or `hyprwave-theme-gui`. Super+Shift+S. |
+| H8 | TODO | Themes GUI | Theme product | `docs/assets/hyprland-themes-gui.png` | Hyprwave Themes GUI listing packs | Super+Shift+T (`hyprwave-theme-gui` from skel). Super+Shift+S region. |
 | H9 | TODO | Theme variety | Multi-pack proof | `docs/assets/hyprland-theme-<name>.png` | Desktop under vaporwave / fjord-dark / verdant-haven | `hyprwave-theme set vaporwave` then H2 capture; repeat for other names. |
 | H10 | TODO | Waybar crop | Bar modules | `docs/assets/hyprland-waybar.png` | Close-up Waybar: workspaces, network, clock | Super+Shift+S region over bar **or** `grim -g "$(slurp)" ~/Pictures/waybar.png`. |
 | H11 | TODO | Mako | Notifications | `docs/assets/hyprland-mako.png` | Mako notification bubble themed | `notify-send 'Hyprwave' 'Test notification'` then Super+Shift+S quickly. |
@@ -88,7 +90,7 @@ cp ~/Pictures/YOUR.png docs/assets/hyprland-desktop.png
 | # | Status | Shot | Purpose | Suggested file | Alt text | Exact capture command / sequence |
 |---|--------|------|---------|----------------|----------|----------------------------------|
 | C1 | TODO | cosmic-greeter | Greeter differs from SDDM | `docs/assets/cosmic-greeter.png` | cosmic-greeter login on hyprwave-cosmic | Boot **hyprwave-cosmic** to greeter. Prefer VM host screenshot. **Blocker:** no compositor on capture host. |
-| C2 | TODO | COSMIC desktop | Dock + wallpaper | `docs/assets/cosmic-desktop.png` | COSMIC desktop Hyprwave wallpaper and dock favorites | Fresh session after login. `grim ~/Pictures/cosmic-desktop.png` **or** COSMIC screenshot UI. |
+| C2 | TODO | COSMIC desktop | Dock + wallpaper | `docs/assets/cosmic-desktop.png` | COSMIC desktop Hyprwave wallpaper and dock favorites (Neonwolf, FlatArcade, Ghostty, Cosmic Files, Hyprwave Themes, Cosmic Settings) | Fresh session after login on **hyprwave-cosmic**. `grim ~/Pictures/cosmic-desktop.png` **or** COSMIC screenshot UI. Confirm dock matches vendor favorites. |
 | C3 | TODO | Companions | Shared apps | `docs/assets/cosmic-companions.png` | Ghostty and FlatArcade on COSMIC | Open from dock. `grim -g "$(slurp)" …` or DE screenshot. |
 | C4 | TODO | Theme switcher | Themes on COSMIC | `docs/assets/cosmic-themes.png` | Theme UI or post-apply desktop | `hyprwave-theme-gui` or dock **Hyprwave Themes**. Capture with grim/slurp or DE tool. |
 | C5 | TODO | Settings | Accent identity | `docs/assets/cosmic-settings.png` | Cosmic Settings with Hyprwave colors | Open Cosmic Settings. grim/slurp or DE tool. |
@@ -115,5 +117,6 @@ cp ~/Pictures/YOUR.png docs/assets/hyprland-desktop.png
 |------|------|
 | Purpose + alt text for each shot | **yes** |
 | Exact capture command / sequence per item | **yes** |
-| Host/compositor blockers documented | **yes** |
-| Binary assets | **no** (not blocking handbook) |
+| Host/compositor blockers documented | **yes** (incl. IMAGE_NAME + DE mix-up; B-W2-002) |
+| Binary assets | **no** / B-7 open (not blocking handbook) |
+| Status column | All rows remain **TODO** — no captures invented |

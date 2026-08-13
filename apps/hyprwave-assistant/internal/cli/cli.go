@@ -57,7 +57,7 @@ func Run(cfg Config, args []string) error {
 		PrintHelp(cfg.out(), cfg.Version)
 		return nil
 	case "version":
-		fmt.Fprintln(cfg.out(), "hyprwave-assistant", cfg.Version)
+		PrintVersion(cfg.out(), cfg.Version)
 		return nil
 	case "status":
 		return runStatus(cfg, args[1:])
@@ -74,9 +74,20 @@ func Run(cfg Config, args []string) error {
 	}
 }
 
+// PrintVersion writes version + short product identity (no public-GHCR claims).
+func PrintVersion(w io.Writer, version string) {
+	if version == "" {
+		version = "0.2.2"
+	}
+	fmt.Fprintln(w, "hyprwave-assistant", version)
+	fmt.Fprintln(w, "Hyprwave system companion for Hyprland + COSMIC images.")
+	fmt.Fprintln(w, "Hyprland: Super+Shift+A · menu entry · CLI. Never auto-reboots.")
+	fmt.Fprintln(w, "GHCR packages may be private; localhost image tags are valid for local builds.")
+}
+
 // PrintHelp writes usage.
 func PrintHelp(w io.Writer, version string) {
-	fmt.Fprintf(w, `hyprwave-assistant %s — updater, installer & knowledge base
+	fmt.Fprintf(w, `hyprwave-assistant %s — updater, installer & knowledge base (Hyprland + COSMIC)
 
 Usage:
   hyprwave-assistant                      Launch TUI
@@ -110,6 +121,8 @@ Notes:
   • Base upgrades need root/sudo/polkit; failures are reported clearly.
   • Prefer Flatpak for apps; layer catalog entries print instructions only.
   • Offline: KB + catalog still work; updater blocks remote ops clearly.
+  • GHCR may be private (401/403) — localhost tags are valid; see: kb ghcr
+  • Hyprland keybind: Super+Shift+A (Ghostty). Not Wofi/swaybg — those are not the stack.
 `, version)
 }
 
@@ -126,6 +139,12 @@ func runStatus(cfg Config, args []string) error {
 		fmt.Fprintln(cfg.out(), st.BootcError)
 	} else {
 		fmt.Fprintln(cfg.out(), st.BootcStatus)
+	}
+	if st.ImageRef != "" {
+		fmt.Fprintln(cfg.out(), "\nimage ref:", st.ImageRef)
+	}
+	if st.ImageNote != "" {
+		fmt.Fprintln(cfg.out(), "note:", st.ImageNote)
 	}
 	if st.NeedsReboot {
 		fmt.Fprintln(cfg.out(), "\nWARNING: staged/pending changes — reboot yourself when ready (never forced).")

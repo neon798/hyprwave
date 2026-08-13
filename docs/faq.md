@@ -133,9 +133,12 @@ installs do **not** enable it. Do not assume a second password exists.
 
 ### 15. Will Hyprwave Assistant manage updates for me?
 
-Assistant is an **upcoming / parallel-lane** feature until it is merged and hooked into
-the published image. Until then use `bootc` and Flatpak CLI (or FlatArcade).
-[CHANGELOG.md](../CHANGELOG.md), [updating.md](updating.md).
+**Hyprwave Assistant** ships in the image (`hyprwave-assistant`). On Hyprland, open it
+with **Super+Shift+A** (or the desktop entry). It is a convenience TUI for `bootc`
+status/upgrade, Flatpak, a curated catalog, and offline KB — confirm destructive
+actions, and still **reboot** after a base upgrade. You can always use
+`sudo bootc upgrade` and FlatArcade instead.
+[updating.md](updating.md), [keybinds.md](keybinds.md).
 
 ---
 

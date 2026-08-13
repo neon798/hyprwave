@@ -64,7 +64,7 @@ func main() {
 	_ = fs.Parse(global)
 
 	if *showVersion {
-		fmt.Println("hyprwave-assistant", version)
+		cli.PrintVersion(os.Stdout, version)
 		os.Exit(0)
 	}
 

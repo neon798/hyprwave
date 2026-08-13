@@ -78,6 +78,7 @@ Inventoried share tree (repo → image):
   - `kb/extending.md`
   - `kb/first-boot.md`
   - `kb/flatarcade.md`
+  - `kb/ghcr.md`
   - `kb/hyprpaper.md`
   - `kb/keybindings.md`
   - `kb/philosophy.md`
@@ -123,4 +124,4 @@ Accent from `HYPRWAVE_THEME` or `~/.config/hyprwave/theme` (file or symlink). Un
 
 ## Image integration
 
-Dormant until integrator applies `planning/integration/c-assistant/` snippets. Keybind Super+Shift+A is documented in `HANDOFF-WAVE2.md` (do not edit skel from this package).
+Wave 1 snippets are applied on `main`: binary at `/usr/bin/hyprwave-assistant` (usr-merge), data under `/usr/share/hyprwave/assistant/`, desktop entry installed. Verified on `localhost/hyprwave:latest` as **0.2.2**. Hyprland skel binds Super+Shift+A (Model C does not edit skel — see HANDOFF).
