@@ -309,6 +309,8 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T04:04Z — E-W5-001 poll re-verify (remain DONE)
+## 2026-08-13T04:05Z — E-W5-001 poll re-verify after main move
 
-- main still OPEN E-W5-001 @ 07be046; lane up to date; 87 binds OK
+- Merged origin/main `f97680d` → lane `977e38d` (taskmaster STATUS/B/G only)
+- 87 binds; Shift+A/T/E match KEYBIND-MAP; no forbidden; no product edits
+- Status → DONE
