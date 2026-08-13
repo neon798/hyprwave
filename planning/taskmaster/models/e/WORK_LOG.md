@@ -319,3 +319,9 @@
 - origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
 - Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
 - Poll re-verify only; no product changes; push `lane/e-hyprland`
+
+## 2026-08-13T06:55Z — E-W5-001 poll re-verify (remain DONE)
+
+- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
+- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
+- Poll re-verify only; no product changes; push `lane/e-hyprland`
