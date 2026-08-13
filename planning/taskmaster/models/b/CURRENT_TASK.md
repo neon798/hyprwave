@@ -1,9 +1,10 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: B-W3-001
 wave: 3
 issued: 2026-08-13T03:31:08Z
+completed: 2026-08-13T03:40:00Z
 poll: 2m
 title: first-boot.md + INSTALL: local just build path vs GHCR private; no screenshot binaries
 
@@ -43,15 +44,15 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Requirements
 
-- [ ] `docs/first-boot.md` + `INSTALL.md`: primary path for a new operator
+- [x] `docs/first-boot.md` + `INSTALL.md`: primary path for a new operator
       includes local build (`just build` / IMAGE_NAME note already on main);
       GHCR pull is **authenticated or private** — do not write `podman pull`
       as if anonymous works
-- [ ] Dual-variant: hyprland vs cosmic first-boot greeter still accurate
+- [x] Dual-variant: hyprland vs cosmic first-boot greeter still accurate
       (SDDM vs cosmic-greeter)
-- [ ] B-7 screenshots remain TODO — no new PNG/JPG
-- [ ] Link walk 0 missing for files you touch
-- [ ] ACCURACY-AUDIT addendum for B-W3-001
+- [x] B-7 screenshots remain TODO — no new PNG/JPG
+- [x] Link walk 0 missing for files you touch
+- [x] ACCURACY-AUDIT addendum for B-W3-001
 
 ## Deliverables
 
@@ -60,10 +61,10 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Done criteria
 
-- [ ] No anonymous-public GHCR claim
-- [ ] No screenshot binaries
-- [ ] Duress still off in any security sentence you touch
-- [ ] `git push -u origin lane/b-docs`
+- [x] No anonymous-public GHCR claim
+- [x] No screenshot binaries
+- [x] Duress still off in any security sentence you touch
+- [x] `git push -u origin lane/b-docs`
 
 ## On completion
 
