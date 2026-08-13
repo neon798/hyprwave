@@ -304,3 +304,7 @@
 - origin/main still OPEN E-W4-001; lane product tip 39d5d7c intact (KEYBIND d8db11f)
 - new/existing home + exclusive HANDOFF list present; no product changes
 - status remains DONE; idle until new task_id
+
+## 2026-08-13T03:45Z — E-W4-001 poll re-verify
+
+- origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
