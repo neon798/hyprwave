@@ -309,13 +309,8 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T03:51Z — E-W5-001 (re-verify after B/C merge on main)
+## 2026-08-13T03:53Z — E-W5-001 poll re-verify (remain DONE)
 
-- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
-- Status → DONE
-- Merged `origin/main` (`f2fcb76` — B-W5/C-W5 issued; B/C Wave 2–4 already on main) → tip `0d4e365`
-- E product merge still `878d38e` (ancestor of main); skel exclusive paths unchanged vs main except prior KEYBIND/HANDOFF stamps
-- Re-count: **87** binds; SUPER+SHIFT+A/T/E match KEYBIND-MAP
-- Forbidden: no cliphist/wofi/swaybg execs (comment-only)
-- No product skel edits this cycle
-- Push: `lane/e-hyprland`
+- origin/main still OPEN E-W5-001 at f2fcb76; lane already up to date (9d13d57)
+- 87 binds; Shift+A/T/E match KEYBIND-MAP; no forbidden tools
+- no product changes; idle until new task_id or coordinator accepts DONE on main
