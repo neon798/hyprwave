@@ -3,15 +3,18 @@
 // style.css → ~/.config/hyprwave/theme/waybar/style.css (hyprwave-theme)
 // Modules are only those that ship in Fedora waybar builds we install.
 // No custom/script modules that need extra packages.
+// No Wofi / rofi / cliphist. App launcher is Walker (Super+D / Super+Space).
+// Theme switcher is Super+SHIFT+T (hyprwave-theme-gui), not a bar module.
+// Session lock is Super+SHIFT+L (loginctl → hypridle → hyprlock), not a bar click.
 //
 // Left:   hyprland/workspaces — click to activate
 // Center: hyprland/window     — focused title (per output)
 // Right:  network | pulseaudio | bluetooth | cpu | memory | clock | tray
 //
-// Clicks:
-//   network   → nm-connection-editor
+// Clicks (shipped tools only):
+//   network    → nm-connection-editor
 //   pulseaudio → pavucontrol
-//   bluetooth → blueman-manager
+//   bluetooth  → blueman-manager
 {
     "layer": "top",
     "position": "top",
@@ -54,6 +57,7 @@
     "cpu": {
         "interval": 10,
         "format": "CPU {usage:2}%",
+        "tooltip-format": "CPU load {usage}%",
         "states": {
             "warning": 70,
             "critical": 90
@@ -61,16 +65,17 @@
     },
     "memory": {
         "interval": 30,
-        "format": "RAM {percentage:2}%"
+        "format": "RAM {percentage:2}%",
+        "tooltip-format": "Memory {used:0.1f} GiB / {total:0.1f} GiB"
     },
     "network": {
         "format-wifi": " {signalStrength}%",
         "format-ethernet": " eth",
         "format-disconnected": " offline",
         "format-linked": "",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": "{ifname}: wired",
-        "tooltip-format-disconnected": "Disconnected",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) — click: nm-connection-editor",
+        "tooltip-format-ethernet": "{ifname}: wired — click: nm-connection-editor",
+        "tooltip-format-disconnected": "Offline — click: nm-connection-editor",
         "on-click": "nm-connection-editor"
     },
     "pulseaudio": {
@@ -79,6 +84,7 @@
         "format-icons": {
             "default": ["", "", ""]
         },
+        "tooltip-format": "{desc} — click: pavucontrol; scroll: volume",
         "on-click": "pavucontrol",
         "scroll-step": 5
     },
@@ -86,6 +92,7 @@
         "format": "",
         "format-disabled": "",
         "format-connected": " {num_connections}",
+        "tooltip-format": "Bluetooth — click: blueman-manager",
         "on-click": "blueman-manager"
     },
     "tray": {
