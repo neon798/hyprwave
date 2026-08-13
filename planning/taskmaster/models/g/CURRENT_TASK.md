@@ -1,16 +1,17 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: G-W5-001
-wave: 5
-issued: 2026-08-13T04:05:00Z
+task_id: G-W6-001
+wave: 6
+issued: 2026-08-13T04:15:00Z
 poll: 2m
-title: Post-merge harness + check-image (G Wave 2–4 on main)
+title: Fix no-wofi-swaybg false FAIL on “not used” comments
 
 ## Objective
 
-QA Waves 2–4 are on `main`. Full `run-all.sh` must be RESULT OK; image checks
-PASS or SKIP against local tags.
+`planning/qa/run-all.sh` is **RESULT FAIL** on current main: `check-no-wofi-swaybg`
+flags comments that *forbid* Wofi/swaybg (skel autostart/bindings/waybar +
+assistant KB). Those are not a stack regression. Extend the allowlist.
 
 ```bash
 git fetch origin && git checkout lane/g-qa
@@ -20,10 +21,23 @@ git checkout origin/main -- planning/taskmaster/models/g/
 
 ## Exclusive paths
 
-planning/qa/** planning/integration/g-qa/** planning/taskmaster/models/g/**
+- `planning/qa/check-no-wofi-swaybg.sh`
+- `planning/qa/theme-exceptions.list` only if needed
+- `planning/taskmaster/models/g/**`
+
+## Forbidden
+
+- Deleting the “not used” comments from skel (that is E’s tree)
+- Product/handbook edits
+
+## Requirements
+
+- [ ] Allow lines that say NOT used / No wofi / Wofi is not used (case-insensitive)
+- [ ] Still FAIL if a real exec/bind/package of wofi or swaybg appears
+- [ ] `bash planning/qa/run-all.sh` → RESULT OK on main+your fix
+- [ ] `git push -u origin lane/g-qa`
 
 ## Done criteria
 
-- [ ] `bash planning/qa/run-all.sh` RESULT OK
-- [ ] check-image hyprland + cosmic PASS if images present
-- [ ] `git push -u origin lane/g-qa`
+- [ ] Harness RESULT OK
+- [ ] Lane pushed
