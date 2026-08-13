@@ -169,7 +169,63 @@ func TestVersion(t *testing.T) {
 	if err := Run(Config{Stdout: &out, Version: "9.9.9"}, []string{"version"}); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(out.String(), "9.9.9") {
-		t.Fatal(out.String())
+	s := out.String()
+	if !strings.Contains(s, "9.9.9") {
+		t.Fatal(s)
 	}
+	if !strings.Contains(s, "Hyprland") || !strings.Contains(s, "COSMIC") {
+		t.Fatalf("version should mention dual DE: %s", s)
+	}
+	if !strings.Contains(s, "Super+Shift+A") {
+		t.Fatalf("version should mention Super+Shift+A: %s", s)
+	}
+	if strings.Contains(strings.ToLower(s), "ghcr is public") {
+		t.Fatalf("must not claim public GHCR: %s", s)
+	}
+}
+
+func TestStatusImageNoteGHCR(t *testing.T) {
+	restore := system.OnlineForTests()
+	defer restore()
+	var out bytes.Buffer
+	// Reuse system fake via cli fakeRunner with canned bootc status is hard;
+	// exercise ImageGuidance through CollectStatus path using a runner that
+	// answers bootc status.
+	r := statusFake{
+		paths: map[string]bool{"bootc": true, "flatpak": true, "sudo": true},
+		bootc: "Booted image: ghcr.io/neon798/hyprwave:latest\nStaged: none",
+	}
+	if err := Run(Config{Stdout: &out, Runner: r, Version: "0.2.2"}, []string{"status"}); err != nil {
+		t.Fatal(err)
+	}
+	s := out.String()
+	if !strings.Contains(s, "ghcr.io/neon798/hyprwave:latest") {
+		t.Fatal(s)
+	}
+	if !strings.Contains(strings.ToLower(s), "private") {
+		t.Fatalf("expected private GHCR note: %s", s)
+	}
+}
+
+type statusFake struct {
+	paths map[string]bool
+	bootc string
+}
+
+func (f statusFake) LookPath(name string) (string, error) {
+	if f.paths[name] {
+		return "/bin/" + name, nil
+	}
+	return "", errors.New("missing")
+}
+
+func (f statusFake) Run(_ context.Context, name string, args ...string) (string, error) {
+	key := name + " " + strings.Join(args, " ")
+	if key == "bootc status" {
+		return f.bootc, nil
+	}
+	if strings.HasPrefix(key, "flatpak list") {
+		return "org.foo.Bar\t1\tflathub", nil
+	}
+	return "ok", nil
 }
