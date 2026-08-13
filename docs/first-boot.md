@@ -9,6 +9,17 @@ checklist:
 
 Install methods: [INSTALL.md](../INSTALL.md). Updates later: [updating.md](updating.md).
 
+### How you should have gotten the image (today)
+
+| How you installed | Image ref you should see | Greeter |
+|-------------------|--------------------------|---------|
+| **Local build + VM/ISO** (Path C/B) — **recommended** while GHCR is private | `localhost/hyprwave:latest` or `localhost/hyprwave-cosmic:latest` (after `just build hyprwave latest` / `just build-cosmic`) | SDDM / cosmic-greeter |
+| **Authenticated** `bootc switch` to GHCR (Path A) | `ghcr.io/neon798/hyprwave:latest` or `…-cosmic:latest` | SDDM / cosmic-greeter |
+| Anonymous `podman pull` / `bootc switch` to GHCR | **Usually fails with 403** — not a supported public path yet | — |
+
+Do not assume GHCR is public. If install failed at pull time, rebuild locally:
+[INSTALL.md — Path C](../INSTALL.md#path-c-local).
+
 ---
 
 ## 0. Which image am I on?
@@ -19,8 +30,8 @@ bootc status
 
 | Image ref (typical) | Greeter | Desktop |
 |---------------------|---------|---------|
-| `…/hyprwave:latest` | **SDDM** | Hyprland + Waybar, Walker, Mako, hyprpaper |
-| `…/hyprwave-cosmic:latest` | **cosmic-greeter** | Fedora COSMIC + Hyprwave vendor theme |
+| `localhost/hyprwave:latest` or `…/hyprwave:latest` | **SDDM** | Hyprland + Waybar, Walker, Mako, hyprpaper |
+| `localhost/hyprwave-cosmic:latest` or `…/hyprwave-cosmic:latest` | **cosmic-greeter** | Fedora COSMIC + Hyprwave vendor theme |
 
 Both share Neonwolf, FlatArcade, Yazi, Ghostty, fonts, wallpapers, and
 `hyprwave-theme`. See [cosmic.md](cosmic.md) for COSMIC-only differences.
@@ -130,9 +141,9 @@ flatpak update               # apps installed via Flatpak / FlatArcade
 ```
 
 - Full narrative: [updating.md](updating.md)
-- If `bootc upgrade` or the first `bootc switch` fails with **403**, GHCR may still be
-  **private** — that is a registry visibility issue, not a broken command. See
-  [INSTALL.md](../INSTALL.md#important-ghcr-may-be-private) and
+- If `bootc upgrade` or `bootc switch` fails with **403**, GHCR is **private to
+  anonymous clients** — use a local image (rebuild / Path C) or authenticate. See
+  [INSTALL.md](../INSTALL.md#important-ghcr-is-private-anonymous-pull-fails) and
   [troubleshooting](troubleshooting.md#install--registry).
 - Companion pins live in `build_files/versions.env` on `main`. A published GHCR
   `:latest` only matches this tree after a post-merge rebuild — confirm with

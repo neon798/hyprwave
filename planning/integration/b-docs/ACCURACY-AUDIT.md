@@ -245,3 +245,18 @@ Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR
 | GHCR public | **Not claimed** |
 | Justfile | **Untouched** |
 
+---
+
+## B-W3-001 addendum (2026-08-13)
+
+| Check | Result |
+|-------|--------|
+| Anonymous GHCR public claim | **Avoided** — INSTALL says private / 403; podman pull framed as diagnostic |
+| Primary path | Local build Path C (`just build hyprwave latest` → `localhost/hyprwave:latest`) |
+| Path A | Requires public GHCR **or** `podman login` |
+| first-boot.md | How-you-got-image table; localhost refs; greeters SDDM vs cosmic-greeter |
+| Dual-variant greeters | Unchanged accuracy (SDDM / cosmic-greeter) |
+| Screenshot binaries | **None** (B-7 still open) |
+| Duress default on | **Not claimed** (first-boot still off by default) |
+| IMAGE_NAME | Path C still documents image-template default |
+

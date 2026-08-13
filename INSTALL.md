@@ -48,58 +48,71 @@ More comparison: [docs/cosmic.md](docs/cosmic.md). After install: [docs/first-bo
 
 ---
 
-## Important: GHCR may be private
+<a id="important-ghcr-is-private-anonymous-pull-fails"></a>
 
-Published refs use GitHub Container Registry:
+## Important: GHCR is private (anonymous pull fails)
+
+Published refs are intended to live on GitHub Container Registry:
 
 ```text
 ghcr.io/neon798/hyprwave:latest
 ghcr.io/neon798/hyprwave-cosmic:latest
 ```
 
-**Until package visibility is set to public**, anonymous `bootc switch` / `podman pull`
-can fail with **401/403**. That is an ops/registry setting, not a missing install command.
+**Today, anonymous access still returns 401/403.** Do **not** treat
+`podman pull ghcr.io/neon798/hyprwave:latest` or bare `bootc switch` to those
+refs as a public install path. That is a registry visibility / auth setting, not a
+broken command.
 
-| If pull works | If pull fails (private/403) |
-|---------------|----------------------------|
-| Use **Path A** (`bootc switch`) below | Use **Path B** (build ISO/image from this repo) or wait for public GHCR |
-| Then `bootc upgrade` for later updates | After a local/private publish, authenticate or retarget your own registry |
+| Situation | What to do |
+|-----------|------------|
+| You **clone this repo** and can run Podman | **Primary path:** local build → Path **C** (VM) or Path **B** (ISO). Tags: `localhost/hyprwave:latest` when you pass `IMAGE_NAME=hyprwave` / `just build hyprwave latest` |
+| You have **GHCR credentials** (collaborator / PAT) | `podman login ghcr.io`, then Path **A** if desired |
+| You only have the public internet, no clone | Wait for public packages, or get a mirror the maintainer publishes |
 
-Test without switching:
+Optional diagnostic (expect **403** while packages stay private):
 
 ```bash
+# Does NOT mean GHCR is public — use this only to confirm access
 podman pull ghcr.io/neon798/hyprwave:latest
+# 403/unauthorized → use Path C or B; do not keep retrying anonymous pull
 ```
 
 Details: [docs/troubleshooting.md](docs/troubleshooting.md#install--registry).
 
 ---
 
-## Choose an install path (ISO vs rebase)
+## Choose an install path (local build first)
 
-After you know **which variant** you want:
+After you know **which variant** you want, pick how you will **obtain the image**.
+While GHCR is private, **build from this repository** is the reliable default.
 
 ```text
-Already on Fedora Atomic / Universal Blue / any bootc host?
-    ├─ Yes, and GHCR pull works ──► Path A: bootc switch (fastest rebase)
-    ├─ Yes, but GHCR is private ──► Path B (local build / ISO) or fix registry access
-    └─ No / bare metal / VM from installer media ──► Path B: ISO
-Developer iterating on the image ──► Path C: local container + qcow2 VM
+Can you clone this repo and run Podman/just?
+    ├─ Yes — try the desktop in a VM ──► Path C: just build + qcow2  (no GHCR)
+    ├─ Yes — need installer media     ──► Path B: just build-iso     (retarget if kickstart needs GHCR)
+    └─ No, but you have GHCR auth     ──► Path A: bootc switch       (after podman login)
+Already on Atomic and GHCR is public later ──► Path A becomes the short path
 ```
 
 | Path | When | Needs public GHCR? |
 |------|------|--------------------|
-| **A — `bootc switch`** | Existing Atomic/bootc host | Yes (or auth / your mirror) |
-| **B — ISO** | Clean install media | Kickstart still pulls published image unless you retarget |
-| **C — local build + VM** | Contributors | No — uses `localhost/…` images |
+| **C — local build + VM** | **Primary today** — anyone with the git repo | **No** — `localhost/hyprwave:latest` (and cosmic) |
+| **B — ISO** | Clean install media from a local build | Kickstart may still pull GHCR unless you retarget |
+| **A — `bootc switch`** | Existing Atomic host **and** registry access | Yes (public) **or** `podman login` / your mirror |
 
-Private GHCR contingency remains in the [section above](#important-ghcr-may-be-private).
+Registry status: [section above](#important-ghcr-is-private-anonymous-pull-fails).
 
 ---
 
 ## Path A — Rebase an existing Atomic host (`bootc switch`)
 
-**Requirements:** a bootc-capable OS, `sudo`, network, ability to reboot.
+**Requirements:** a bootc-capable OS, `sudo`, network, ability to reboot, and
+**registry access** (public GHCR **or** `podman login ghcr.io` with a token that can
+read the package). If anonymous pull is 403, use **Path C** or **B** instead of
+retrying Path A.
+
+**Requirements (summary):** bootc host + authenticated or public image pull.
 
 ### Hyprland (default)
 
@@ -168,7 +181,11 @@ image you control before relying on Path B for end users.
 
 ---
 
-## Path C — Developers (local image + VM)
+<a id="path-c-local"></a>
+
+## Path C — Local image + VM (**recommended while GHCR is private**)
+
+Build `localhost/hyprwave:latest` (and cosmic) from this tree — no anonymous GHCR.
 
 ```bash
 just build hyprwave latest
@@ -287,7 +304,7 @@ Full guide: [docs/updating.md](docs/updating.md).
 
 | Symptom | Start here |
 |---------|------------|
-| 403 on pull / switch | [GHCR section](#important-ghcr-may-be-private), [troubleshooting](docs/troubleshooting.md#install--registry) |
+| 403 on pull / switch | [GHCR section](#important-ghcr-is-private-anonymous-pull-fails), [troubleshooting](docs/troubleshooting.md#install--registry) |
 | Black screen (Hyprland) | [troubleshooting — black screen](docs/troubleshooting.md#black-screen-after-sddm-login) |
 | No wallpaper | [troubleshooting — wallpaper](docs/troubleshooting.md#no-wallpaper) |
 | Walker empty | [troubleshooting — Walker](docs/troubleshooting.md#walker-empty--no-apps--does-nothing) |

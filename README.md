@@ -18,8 +18,9 @@ sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest && sudo systemctl reboo
 Full guide (variant pick, ISO vs rebase, first login): **[INSTALL.md](INSTALL.md)** ·
 **[docs/first-boot.md](docs/first-boot.md)**.
 
-> **Registry note:** GHCR packages may be **private** until visibility is fixed. If
-> `bootc switch` / `podman pull` returns 403, see INSTALL or build from source.
+> **Registry note:** Anonymous GHCR pull is **still 403**. Prefer local
+> `just build hyprwave latest` → `localhost/hyprwave:latest` (see [INSTALL.md](INSTALL.md)).
+> Path A needs public packages **or** `podman login ghcr.io`.
 
 **Docs:** [Handbook index](docs/README.md) ·
 **[First boot](docs/first-boot.md)** ·

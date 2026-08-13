@@ -4,7 +4,7 @@ Docs lane does **not** fix product code. Gaps for stabilizer / integrator.
 
 | ID | Severity | Issue | Notes |
 |----|----------|--------|-------|
-| B-1 | Ops | GHCR may be private (403) | INSTALL + troubleshooting document this; A/RELEASE should fix visibility |
+| B-1 | Ops | GHCR still private (anonymous 403) | B-W3-001: INSTALL/first-boot treat **local build** as primary; Path A needs auth. A/RELEASE owns public visibility |
 | B-2 | Build | External app pins | Owned by lane A (`versions.env`); docs point at philosophy only |
 | B-3 | Docs/UX | README still long on SDDM QML | Wave 2 proposes sections in README-sections.md; partial install links applied |
 | B-4 | Product | E2E first-boot both DEs | Still ops proof; not docs-blocked |
