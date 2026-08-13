@@ -1,9 +1,10 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: B-W4-001
 wave: 4
 issued: 2026-08-13T03:39:11Z
+completed: 2026-08-13T03:50:00Z
 poll: 2m
 title: CHANGELOG / ISSUES: record W2–W3 handbook deltas; no GHCR-public claim
 
@@ -43,11 +44,11 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Requirements
 
-- [ ] CHANGELOG: Wave 2–3 handbook bullets (Super+Shift+A, IMAGE_NAME,
+- [x] CHANGELOG: Wave 2–3 handbook bullets (Super+Shift+A, IMAGE_NAME,
       local `just build` primary / GHCR 403)
-- [ ] ISSUES.md: B-5/B-6 closed state accurate; B-7 screenshots still TODO
-- [ ] No anonymous-public GHCR sentence
-- [ ] Link walk 0 missing for files you touch
+- [x] ISSUES.md: B-5/B-6 closed state accurate; B-7 screenshots still TODO
+- [x] No anonymous-public GHCR sentence
+- [x] Link walk 0 missing for files you touch
 
 ## Deliverables
 
@@ -57,9 +58,9 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Done criteria
 
-- [ ] Deltas recorded; GHCR still private
-- [ ] No screenshot binaries
-- [ ] `git push -u origin lane/b-docs`
+- [x] Deltas recorded; GHCR still private
+- [x] No screenshot binaries
+- [x] `git push -u origin lane/b-docs`
 
 ## On completion
 
