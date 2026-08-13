@@ -148,3 +148,5 @@
 - `bash planning/integration/d-duress/validate.sh` → **PASSED**
 - `bash planning/qa/run-all.sh --only duress-safety` → **RESULT: OK** (9 PASS)
 - No product/PAM changes; no `*.sha256`.
+
+- DONE tip: `fd776fa` (re-poll)
