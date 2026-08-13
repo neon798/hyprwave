@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: C-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
@@ -73,3 +73,10 @@ git checkout origin/main -- planning/taskmaster/models/c/
 1. Set status: DONE
 2. Append WORK_LOG.md + COMPLETED.md
 3. Do not start unassigned work
+
+
+## Completion
+
+status: DONE  
+completed: 2026-08-13T03:28:12Z  
+notes: Day-1 KB/catalog aligned with shipped OS; smoke-host + go test green; HANDOFF notes image-hooked 0.2.2 on localhost/hyprwave:latest.
