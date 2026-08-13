@@ -369,11 +369,35 @@ else
 	ok "no signatures leaked into packaging tree"
 fi
 
-# DRILL.md present with VM procedure markers
+# DRILL.md present with VM procedure markers + image-path rehearsal (no PAM enable)
 if grep -qiE 'disposable|Phase|30|45' planning/integration/d-duress/DRILL.md; then
 	ok "DRILL.md looks like operator procedure"
 else
 	fail "DRILL.md missing procedure markers"
+fi
+if grep -q '/usr/bin/hyprwave-duress-setup' planning/integration/d-duress/DRILL.md &&
+	grep -q '/usr/share/hyprwave/duress' planning/integration/d-duress/DRILL.md &&
+	grep -q '/etc/duress.d' planning/integration/d-duress/DRILL.md &&
+	grep -q '/usr/lib64/security/pam_duress.so' planning/integration/d-duress/DRILL.md; then
+	ok "DRILL.md documents real image paths (/usr/bin setup, share, /etc/duress.d, module)"
+else
+	fail "DRILL.md missing real image path inventory"
+fi
+if grep -qiE 'rehearsal|REHEARSAL' planning/integration/d-duress/DRILL.md &&
+	grep -qiE 'does not|never|do not' planning/integration/d-duress/DRILL.md &&
+	grep -qiE 'ENABLE\.md' planning/integration/d-duress/DRILL.md &&
+	grep -qiE 'dry-run|--help|--status|--verify' planning/integration/d-duress/DRILL.md; then
+	ok "DRILL.md is rehearsal-only (dry-run/help; production enable via ENABLE.md)"
+else
+	fail "DRILL.md missing rehearsal banner / dry-run scope / ENABLE.md pointer"
+fi
+# Drill must not prescribe installing pam_duress into live PAM as a drill step
+if grep -nE '^\| C[0-9] |^\| B[0-9] |^\| A[0-9] |^\| D[0-9] ' planning/integration/d-duress/DRILL.md |
+	grep -iE 'pam\.d|pam_duress\.so' |
+	grep -viE 'grep|no pam|Zero|zero|OK:|not |never|without|reference|inventory|enable lines|stock' >/dev/null; then
+	fail "DRILL phase table may prescribe PAM enable during drill"
+else
+	ok "DRILL phase tables stay PAM-inert (inspect/grep only)"
 fi
 
 # Recovery language in ENABLE
