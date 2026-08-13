@@ -63,6 +63,9 @@ probe_head 8 "$BIN" list
 ok "$BIN update --dry-run"
 probe_head 20 "$BIN" update --dry-run
 
+ok "snippet-selftest.sh (0.2.2 hooks)"
+bash "${ROOT}/planning/integration/c-assistant/snippet-selftest.sh"
+
 # Day-1 accuracy guards (C-W2-001)
 [[ -f "$DATA/kb/ghcr.md" ]] || die "missing kb/ghcr.md"
 [[ -f "$DATA/kb/first-boot.md" ]] || die "missing kb/first-boot.md"
