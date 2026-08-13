@@ -81,6 +81,8 @@ Mark each line **PASS / FAIL / SKIP** (SKIP only where hardware-dependent and no
 
 ## Idle ladder (reference)
 
+Manual lock path (same as idle @600): **Super+SHIFT+L** → `loginctl lock-session` → hypridle `lock_cmd` (`pidof hyprlock || hyprlock`). Do not expect a direct `hyprlock` keybind.
+
 | Seconds | Action |
 |--------:|--------|
 | 300 | dim (`brightnessctl` best-effort) |

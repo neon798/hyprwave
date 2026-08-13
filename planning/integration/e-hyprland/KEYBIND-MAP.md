@@ -131,7 +131,7 @@ Machine-readable table. Columns: `keys | dispatcher | args | notes`
 
 | keys | dispatcher | args | notes |
 |------|------------|------|-------|
-| SUPER+SHIFT+L | exec | loginctl lock-session | uppercase **L**; via hypridle `lock_cmd` |
+| SUPER+SHIFT+L | exec | loginctl lock-session | uppercase **L** → hypridle `lock_cmd` = `pidof hyprlock \|\| hyprlock` (no direct hyprlock bind) |
 | SUPER+SHIFT+P | exec | hyprpicker -a | color pick → clipboard |
 
 ## Screenshots (hyprshot)
@@ -195,3 +195,4 @@ Configured in `walker/config.toml`:
 | E-W1-003 | reserved SUPER+SHIFT+A (comment); windowrule/hyprpaper docs | C HANDOFF |
 | E-W1-004 | map/smoke freeze | pre-merge gate |
 | E-W2-001 | **active** SUPER+SHIFT+A with Ghostty `--class=dev.hyprwave.Assistant`; float rules for assistant + theme-gui size | day-1 UX; assistant ships in image |
+| E-W2-002 | lock/idle comment hygiene; waybar tooltips name nm-connection-editor / pavucontrol / blueman-manager | no redesign; copy only |
