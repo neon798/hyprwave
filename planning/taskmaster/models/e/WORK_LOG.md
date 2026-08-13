@@ -348,3 +348,9 @@
 - origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
 - 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
 - status remains DONE; no product edits
+
+## 2026-08-13T05:28Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
+- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
+- status remains DONE; no product edits
