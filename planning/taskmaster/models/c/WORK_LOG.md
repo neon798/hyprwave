@@ -115,3 +115,8 @@
 - smoke-host wave-3 probes (version/help + catalog IDs + no public-GHCR claim)
 - go test ./... PASS; bash planning/integration/c-assistant/smoke-host.sh exit 0
 - status → DONE
+
+## 2026-08-13 — poll re-assert C-W3-001
+
+- main still OPEN for C-W3-001; lane already complete (tip 96f1b6e / mark a78d8c4). Re-assert DONE; no re-implement.
+- product tests still present (knownFlathubIDs, About/help/KB wave-3 guards)
