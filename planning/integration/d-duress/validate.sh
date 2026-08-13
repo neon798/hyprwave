@@ -18,6 +18,30 @@ ok() {
 	echo "OK: $*"
 }
 
+# Return 0 if FILE has an active (non-comment) install/copy of pam snippets
+# (or any write) into live /etc/pam.d. Share-only destinations are fine.
+# Used for real-tree audit + negative fixtures (Wave 3 / D-W3-001).
+active_pam_snippet_to_etc() {
+	local f="$1"
+	[[ -f "$f" ]] || return 1
+	# Any active write tool targeting /etc/pam.d
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE '(^|[[:space:]])(cp|install|rsync|tee|cat|install)([[:space:]].*)?/etc/pam\.d' >/dev/null 2>&1; then
+		return 0
+	fi
+	# Explicit: source under */pam.d (snippets) with destination /etc/pam.d
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE '(cp|install|rsync)[[:space:]].*pam\.d.*/etc/pam\.d' >/dev/null 2>&1; then
+		return 0
+	fi
+	# install -Dm0644 SRC /etc/pam.d/...
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE 'install[[:space:]].+/etc/pam\.d/' >/dev/null 2>&1; then
+		return 0
+	fi
+	return 1
+}
+
 FAILED=0
 TMPDIR_V="${TMPDIR:-/tmp}/hyprwave-duress-validate-$$"
 mkdir -p "$TMPDIR_V"
@@ -369,11 +393,41 @@ else
 	ok "no signatures leaked into packaging tree"
 fi
 
-# DRILL.md present with VM procedure markers
+# DRILL.md present with VM procedure markers + image-path rehearsal (no PAM enable)
 if grep -qiE 'disposable|Phase|30|45' planning/integration/d-duress/DRILL.md; then
 	ok "DRILL.md looks like operator procedure"
 else
 	fail "DRILL.md missing procedure markers"
+fi
+if grep -q '/usr/bin/hyprwave-duress-setup' planning/integration/d-duress/DRILL.md &&
+	grep -q '/usr/share/hyprwave/duress' planning/integration/d-duress/DRILL.md &&
+	grep -q '/etc/duress.d' planning/integration/d-duress/DRILL.md &&
+	grep -q '/usr/lib64/security/pam_duress.so' planning/integration/d-duress/DRILL.md; then
+	ok "DRILL.md documents real image paths (/usr/bin setup, share, /etc/duress.d, module)"
+else
+	fail "DRILL.md missing real image path inventory"
+fi
+if grep -qiE 'rehearsal|REHEARSAL' planning/integration/d-duress/DRILL.md &&
+	grep -qiE 'does not|never|do not' planning/integration/d-duress/DRILL.md &&
+	grep -qiE 'ENABLE\.md' planning/integration/d-duress/DRILL.md &&
+	grep -qiE 'dry-run|--help|--status|--verify' planning/integration/d-duress/DRILL.md; then
+	ok "DRILL.md is rehearsal-only (dry-run/help; production enable via ENABLE.md)"
+else
+	fail "DRILL.md missing rehearsal banner / dry-run scope / ENABLE.md pointer"
+fi
+# Drill must not prescribe installing pam_duress into live PAM as a drill step
+if grep -nEiE 'auth[[:space:]]+(sufficient|required|requisite|optional)[[:space:]]+pam_duress|cp[[:space:]].*/etc/pam\.d|sed[[:space:]].*pam_duress|insert.*pam_duress' \
+	planning/integration/d-duress/DRILL.md |
+	grep -viE 'Prefer|never start|do not|STOP|ENABLE\.md|runbook|sufficient pam_duress\.so` after|out of this drill|Production enable' >/dev/null; then
+	# Allow prose that forbids enable or points to ENABLE.md; fail on instructional enable recipes in-drill
+	if grep -nE '^\| [ABCD][0-9] ' planning/integration/d-duress/DRILL.md |
+		grep -iE 'auth[[:space:]]+.*pam_duress|cp .*/etc/pam\.d|sed .*/etc/pam\.d|Insert `auth' >/dev/null; then
+		fail "DRILL phase table may prescribe PAM enable during drill"
+	else
+		ok "DRILL phase tables stay PAM-inert (no enable recipe in phases)"
+	fi
+else
+	ok "DRILL has no pam_duress enable recipe (inspect/dry-run only)"
 fi
 
 # Recovery language in ENABLE
@@ -471,6 +525,16 @@ if [[ -f planning/integration/d-duress/INTEGRATOR-CHECKLIST.md ]]; then
 		ok "INTEGRATOR-CHECKLIST covers merge → no PAM → validate → operator ENABLE docs"
 	else
 		fail "INTEGRATOR-CHECKLIST incomplete freeze steps"
+	fi
+	# Wave 4 merge-prep: W2–W3 accuracy + never default-on reaffirmation
+	if grep -qiE 'never default-on|never default' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'DRILL|rehearsal|PAM-inert' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'pam\.d.* /etc/pam\.d|snippets.* /etc/pam\.d|N7|active_pam_snippet' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'duress-safety' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -q '/usr/bin/hyprwave-duress-setup' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md; then
+		ok "INTEGRATOR-CHECKLIST covers W2–W3 (DRILL paths, N7 pam.d, duress-safety, never default-on)"
+	else
+		fail "INTEGRATOR-CHECKLIST missing W2–W4 merge-prep markers (DRILL/N7/duress-safety/never default-on)"
 	fi
 fi
 # Integration README must index full operator set + checklist
@@ -583,6 +647,115 @@ for snip in planning/integration/d-duress/build.sh.snippet \
 done
 if [[ "$snippet_pam_write" -eq 0 ]]; then
 	ok "audit: build/Containerfile snippets have no active /etc/pam.d paths"
+fi
+
+# N6: live build.sh (post-merge) must not install pam.d snippets under /etc/pam.d
+# Read-only audit — Model D must not edit production build.sh (A owns pins).
+if [[ -f build_files/build.sh ]]; then
+	if grep -vE '^\s*#|^\s*$' build_files/build.sh | grep -nE '/etc/pam\.d' >/dev/null 2>&1; then
+		fail "build_files/build.sh has active /etc/pam.d reference"
+	else
+		ok "audit: build_files/build.sh has no active /etc/pam.d paths"
+	fi
+	if active_pam_snippet_to_etc build_files/build.sh; then
+		fail "build_files/build.sh would install/copy pam snippets into /etc/pam.d"
+	else
+		ok "audit: build.sh does not copy pam snippets into /etc/pam.d"
+	fi
+	if grep -vE '^\s*#|^\s*$' build_files/build.sh | grep -E '/usr/share/hyprwave/duress/pam\.d' >/dev/null; then
+		ok "audit: build.sh deploys reference pam.d under /usr/share only"
+	else
+		fail "audit: build.sh missing share-only pam.d deploy path"
+	fi
+	if grep -qiE 'OFF BY DEFAULT|no PAM enable' build_files/build.sh; then
+		ok "audit: build.sh documents duress OFF BY DEFAULT"
+	else
+		fail "audit: build.sh missing OFF BY DEFAULT language for duress"
+	fi
+else
+	ok "audit: build_files/build.sh not present (snippet-only tree)"
+fi
+
+# N7 (D-W3-001): negative fixtures — pam *snippet tree* install into /etc/pam.d
+# must be detected (stricter than generic /etc/pam.d write).
+printf '%s\n' \
+	'install -d /usr/share/hyprwave/duress/pam.d' \
+	'# BAD: reference snippets must never land on live stacks' \
+	'cp -a /ctx/duress/pam.d/. /etc/pam.d/' \
+	>"$NEG/buildhook/bad-pam-snippets-to-etc.sh"
+if active_pam_snippet_to_etc "$NEG/buildhook/bad-pam-snippets-to-etc.sh"; then
+	ok "negative: cp pam.d snippets → /etc/pam.d is detected (would fail)"
+else
+	fail "negative: pam.d snippet tree copy into /etc/pam.d was NOT detected"
+fi
+
+printf '%s\n' \
+	'install -d /etc/pam.d' \
+	'install -m0644 /ctx/duress/pam.d/system-auth.snippet /etc/pam.d/system-auth' \
+	>"$NEG/buildhook/bad-install-snippet-over-system-auth.sh"
+if active_pam_snippet_to_etc "$NEG/buildhook/bad-install-snippet-over-system-auth.sh"; then
+	ok "negative: install snippet over /etc/pam.d/system-auth is detected"
+else
+	fail "negative: install snippet → /etc/pam.d/system-auth was NOT detected"
+fi
+
+# Good fixture: share-only deploy must NOT trip the helper
+printf '%s\n' \
+	'install -d /usr/share/hyprwave/duress/pam.d' \
+	'cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/' \
+	'install -m0755 /ctx/duress/hyprwave-duress-setup /usr/bin/hyprwave-duress-setup' \
+	>"$NEG/buildhook/ok-share-only-pam-snippets.sh"
+if active_pam_snippet_to_etc "$NEG/buildhook/ok-share-only-pam-snippets.sh"; then
+	fail "negative: share-only pam.d deploy wrongly flagged as /etc/pam.d install"
+else
+	ok "negative: share-only pam.d deploy is allowed (not flagged)"
+fi
+
+# Real snippet + live build must pass the same helper
+for real in planning/integration/d-duress/build.sh.snippet build_files/build.sh; do
+	[[ -f "$real" ]] || continue
+	if active_pam_snippet_to_etc "$real"; then
+		fail "real $real copies pam snippets into /etc/pam.d"
+	else
+		ok "audit: $real passes pam-snippet→/etc/pam.d gate"
+	fi
+done
+
+# N8: docs/layout language matches stock image paths
+for doc in build_files/duress/ENABLE.md build_files/duress/README.md; do
+	if grep -qE '/usr/share/hyprwave/duress' "$doc" && grep -qE '/etc/duress\.d' "$doc"; then
+		ok "layout paths present in $doc"
+	else
+		fail "layout paths missing in $doc"
+	fi
+done
+if grep -qiE 'Zero|zero|no pam_duress|/etc/pam\.d' build_files/duress/ENABLE.md &&
+	grep -qiE 'OFF|Default: OFF|stock' build_files/duress/ENABLE.md; then
+	ok "ENABLE.md documents stock PAM-inert residual"
+else
+	fail "ENABLE.md missing stock PAM-inert residual language"
+fi
+if grep -qiE 'still OFF|Still OFF|OFF by default' planning/integration/d-duress/RESIDUALS.md; then
+	ok "RESIDUALS.md has still-OFF residual"
+else
+	fail "RESIDUALS.md missing still-OFF residual"
+fi
+
+# setup --help / dry-run operator-only + PAM off language
+if bash build_files/duress/hyprwave-duress-setup --help 2>&1 | grep -qiE 'OFF BY DEFAULT|operator'; then
+	ok "setup --help states operator-only / PAM OFF BY DEFAULT"
+else
+	fail "setup --help missing operator-only / OFF BY DEFAULT language"
+fi
+if bash build_files/duress/hyprwave-duress-setup --dry-run --mild-template >/tmp/duress-dry3.out 2>/tmp/duress-dry3.err; then
+	if grep -qiE 'PAM stays OFF|never edits /etc/pam\.d|operator preview' /tmp/duress-dry3.err; then
+		ok "setup --dry-run banner states PAM stays OFF"
+	else
+		fail "setup --dry-run missing PAM-off banner"
+		cat /tmp/duress-dry3.err >&2 || true
+	fi
+else
+	fail "setup --dry-run --mild-template failed after banner change"
 fi
 
 # cleanup negative fixtures early (also covered by EXIT trap)

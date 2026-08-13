@@ -11,3 +11,7 @@ D-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip adbb4f4; valid
 D-W2-001 | 2026-08-13 | Image-backed safety: validate/snippet-selftest, ENABLE layout, setup PAM-off banner | 5cc25bd
 
 D-W2-002 | 2026-08-13 | Operator drill vs image paths; PAM-inert rehearsal; validate green | 7663596
+
+D-W3-001 | 2026-08-13 | Negative fixture: fail if build/snippet copies pam.d to /etc/pam.d | ef5c41e
+
+D-W4-001 | 2026-08-13 | Merge-prep INTEGRATOR-CHECKLIST; never default-on; validate green | 1fc067d

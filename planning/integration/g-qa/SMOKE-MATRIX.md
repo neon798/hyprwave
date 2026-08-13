@@ -195,6 +195,34 @@ signer/tester:
 
 Do **not** push/sign a “Wave 1 integrated” image to GHCR until **all** hard gates pass. Soft gates may ship with a tracked residual in `ENDPOINT-RESIDUALS.md`.
 
+### 9.0 T8 status snapshot (2026-08-13, G-W3-001)
+
+| Gate | Status | Evidence |
+|---|---|---|
+| P1 host harness | **met** | `run-all.sh` RESULT OK (includes `image`) |
+| P2 pins | **met** | pins-static PASS on main |
+| P3 Hyprland image | **met** | CI run `31662742064` PASS; local `localhost/hyprwave:latest` |
+| P4 COSMIC image | **met** | CI `31662742064`; local `localhost/hyprwave-cosmic:latest`; **`check-image.sh --cosmic` PASS** |
+| P5 duress OFF | **met** | harness + image PAM inspect (no `pam_duress`) |
+| P6 assistant | **met** | `go test` + image `hyprwave-assistant 0.2.2` |
+| Image content smoke | **met** | `--only image` + `--cosmic` (skip-if-missing) |
+| VM qcow2 session smokes | **open** | human only — **not** claimed done |
+| GHCR anonymous pull | **open** | still **403** |
+
+**Residual policy (W3):** local/CI image builds are **not** pending. Remaining open = **VM smokes + GHCR 403**.
+
+Automated image re-check (does not require rebuild if tags exist):
+
+```bash
+bash planning/qa/run-all.sh --only image
+# or:
+HYPRWAVE_IMAGE=localhost/hyprwave:latest \
+HYPRWAVE_COSMIC_IMAGE=localhost/hyprwave-cosmic:latest \
+  bash planning/qa/check-image.sh
+```
+
+CI: `planning/qa/ci-snippet.yml` job `packaging-qa-image` is **advisory-only** (`continue-on-error: true`, skip-if-missing). Live workflows stay under Model A; GH-hosted runners typically SKIP.
+
 ### 9.1 Hard gates (block publish)
 
 | # | Gate | Command / proof | Owner |
@@ -206,6 +234,7 @@ Do **not** push/sign a “Wave 1 integrated” image to GHCR until **all** hard 
 | P5 | Duress still OFF by default | `duress-safety` PASS; no default `pam_duress` in image PAM; no `*.sha256` in tree | D |
 | P6 | Assistant present if claimed | If release notes claim assistant: binary in image + `go test` green on sources | C + snippets applied |
 | P7 | Pre-merge product conflicts resolved | `probe-merge-conflicts.sh --product-only` was clean before merge; no leftover conflict markers in product paths | G probe / integrator |
+| P8 | Image content smoke (when local tags exist) | `--only image` PASS or SKIP-if-missing; asserts assistant/theme/walker/hyprpaper/themes/catalog/ENABLE/pam/sddm | G |
 
 ### 9.2 Soft gates (publish allowed with residual)
 

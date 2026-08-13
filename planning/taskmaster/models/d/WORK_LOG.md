@@ -117,3 +117,27 @@
 - `bash planning/integration/d-duress/validate.sh` → PASSED
 - `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
 - Commits: c897ee1, 5bc50c1, c904dd1, 411c9c6, 7663596 (+ DONE meta)
+
+## 2026-08-13 — D-W3-001 (pam snippets must not install to /etc/pam.d)
+
+- Merged origin/main; accepted D-W3-001.
+- `validate.sh`: `active_pam_snippet_to_etc` helper + N7 negative fixtures
+  (cp pam.d → /etc/pam.d, install snippet over system-auth, share-only OK).
+- Real-tree audit: `build.sh.snippet` + read-only `build_files/build.sh` must pass.
+- `snippet-selftest.sh`: same helper + temp negative fixtures.
+- Did **not** edit production `build.sh` (A owns pins); no PAM enable; no `*.sha256`.
+- RESIDUALS still OFF.
+- `bash planning/integration/d-duress/validate.sh` → PASSED
+- `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
+- Commits: 8924251, 045536f, + this series (+ DONE meta); tip ef5c41e
+
+## 2026-08-13 — D-W4-001 (merge-prep checklist + validate green)
+
+- Merged origin/main; accepted D-W4-001.
+- Refreshed `INTEGRATOR-CHECKLIST.md` for W2–W4: never default-on, DRILL
+  PAM-inert paths, N7 pam-snippet→/etc/pam.d, duress-safety, stock image paths.
+- validate gates checklist merge-prep markers; integration README wave index.
+- RESIDUALS still OFF; no PAM enable; no `*.sha256`; no live build.sh edit.
+- `bash planning/integration/d-duress/validate.sh` → PASSED
+- `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
+- Commits: 2973b5c, 73334ad, + this series; tip 1fc067d

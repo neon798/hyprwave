@@ -19,25 +19,31 @@ install -d /usr/share/hyprwave/duress/pam.d
 install -d /etc/duress.d
 
 # Templates (unsigned). Users copy via hyprwave-duress-setup.
-#   00-wipe-sensitive.sh  — AGGRESSIVE
-#   10-clear-histories.sh — MILD
+#   00-wipe-sensitive.sh   — AGGRESSIVE
+#   10-clear-histories.sh  — MILD
+#   20-local-only-clear.sh — MILD (browser session caches under ~/.cache only)
 if [ -d /ctx/duress/templates ]; then
 	cp -a /ctx/duress/templates/. /usr/share/hyprwave/duress/templates/
 	# Templates should be readable; setup tool re-installs as mode 500 when copying.
 	find /usr/share/hyprwave/duress/templates -type f -name '*.sh' -exec chmod 0644 {} +
 fi
 
-# Reference PAM snippets + security README (documentation only).
+# Security README + ENABLE (operator-only enable path — not auto-applied).
 if [ -f /ctx/duress/README.md ]; then
 	install -m0644 /ctx/duress/README.md /usr/share/hyprwave/duress/README.md
 fi
-if [ -d /ctx/duress/pam.d ]; then
-	cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/
-fi
-
-# ENABLE.md ships with the image so admins can find enable steps offline.
 if [ -f /ctx/duress/ENABLE.md ]; then
 	install -m0644 /ctx/duress/ENABLE.md /usr/share/hyprwave/duress/ENABLE.md
+fi
+# Threat model (repo packaging); optional ship for offline operators.
+if [ -f /ctx/duress/THREAT-MODEL.md ]; then
+	install -m0644 /ctx/duress/THREAT-MODEL.md /usr/share/hyprwave/duress/THREAT-MODEL.md
+fi
+
+# Reference PAM snippets — documentation ONLY under /usr/share (never /etc/pam.d).
+# Live stacks stay stock until a human follows ENABLE.md.
+if [ -d /ctx/duress/pam.d ]; then
+	cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/
 fi
 
 # Setup tool (opt-in; does not enable PAM). Supports --dry-run / --mild-template.

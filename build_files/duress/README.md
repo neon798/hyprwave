@@ -72,9 +72,14 @@ of *live coercion*; it does not replace encryption or operational security.
 | `build_files/build-duress.sh` | (builder only) | Compile/pin pam-duress into `/install` |
 | `build_files/duress/hyprwave-duress-setup` | `/usr/bin/hyprwave-duress-setup` | Opt-in user setup (`--dry-run`, `--json`, …) |
 | `build_files/duress/templates/*.sh` | `/usr/share/hyprwave/duress/templates/…` | **Templates only** — not auto-signed |
-| `build_files/duress/pam.d/*.snippet` | docs only | Reference PAM fragments |
-| empty dir created at build | `/etc/duress.d/` | Global scripts; empty until admin signs |
+| `build_files/duress/pam.d/*.snippet` | `/usr/share/hyprwave/duress/pam.d/` | Reference PAM fragments (**never** `/etc/pam.d`) |
+| `build_files/duress/README.md` + `ENABLE.md` | `/usr/share/hyprwave/duress/` | Operator docs offline |
+| `build_files/duress/THREAT-MODEL.md` | `/usr/share/hyprwave/duress/` when installed | Formal threat model |
+| empty dir created at build | `/etc/duress.d/` | Global scripts; README only until admin signs |
 | (user creates) | `~/.duress/` | Per-user scripts (upstream path; **not** `~/.duress.d`) |
+
+**Stock image residual (still OFF):** module + setup tool ship; `grep -R pam_duress /etc/pam.d`
+returns nothing; no `*.sha256` under templates or `/etc/duress.d`.
 
 Upstream env for scripts: **`PAMUSER`**.
 
