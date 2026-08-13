@@ -357,24 +357,12 @@ releases/latest                               CLEAN
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main merge tip:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac` (`merge: G-W5 wofi-comment allowlist`)  
-**lane merge-base:** same (`Already up to date`)
-
-### Pin verify
+**main merge tip:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`  
+**lane:** already merged (`Already up to date`)
 
 ```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS, 0 FAIL)  2026-08-13T05:37:43Z
-releases/latest in build.sh / versions.env CLEAN
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)  2026-08-13T05:39:41Z
 ```
 
-### A-W2-002 SHAs on `origin/main` / HEAD
-
-- `docker/metadata-action@dc802804…` v6.2.0
-- `docker/login-action@abd2ef45…` v4.5.1
-- `sigstore/cosign-installer@6f9f1778…` v4.1.2
-
-### GHCR
-
-Still documented **private** (`GHCR-VISIBILITY.md`: hyprwave anonymous `unauthorized`).
-
-No product change. No A-W6. Director copy on main still OPEN — reconfirmed only.
+A-W2-002 SHAs still on HEAD: metadata v6.2.0, login v4.5.1, cosign-installer v4.1.2.  
+GHCR still documented private. No product change. No A-W6.
