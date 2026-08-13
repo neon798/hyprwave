@@ -1,53 +1,75 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: B-W1-001  
-wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Ship a full operator handbook and accuracy audit  
+status: OPEN
+task_id: B-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+poll: 2m
+title: Handbook residual polish after post-merge flip
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Produce a **handbook-quality** doc set so a new user and a contributor can install, update, troubleshoot, and understand Hyprland vs COSMIC without reading planning theory docs. Depth over speed.
+Integrator already flipped most “pending merge” language (`70e5616`). Finish
+the user-facing handbook so a new user can run the **shipped** desktop without
+lane folklore.
 
-## Exclusive paths
+Refresh first:
+
+```bash
+git fetch origin
+git checkout lane/b-docs
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/b/
+```
+
+## Exclusive paths (only these)
 
 - `INSTALL.md`, `CHANGELOG.md`, `README.md`
 - `docs/**`
 - `planning/integration/b-docs/**`
+- `planning/taskmaster/models/b/**`
 
 ## Forbidden
 
-- Editing `build_files/**`
-- Claiming duress is enabled by default
-- Claiming GHCR is public unless verified
-- Inventing keybinds not present in skel `bindings.conf` (read from main or describe as “typical”)
+- `build_files/**`, workflows, apps, duress packaging
+- Claiming GHCR is public; claiming duress is on by default
 
 ## Requirements
 
-- [ ] `docs/README.md` index of all user docs
-- [ ] Expand or create: troubleshooting, architecture, updating, security, cosmic, theming, keybinds (link `docs/keybinds.md` if exists)
-- [ ] `docs/faq.md` — ≥12 real Q&As (bootc, skel caveat, themes, Walker, FlatArcade, dual DE, updates)
-- [ ] `docs/contributor-notes.md` — how lanes work, where not to edit, link Task Master PROTOCOL
-- [ ] INSTALL.md: Atomic rebase + ISO paths + private GHCR contingency + first hour after login
-- [ ] CHANGELOG Unreleased section matches **lane reality** (Walker, themes, pins pending merge, assistant/duress as pending merge if not on main)
-- [ ] Accuracy pass: grep docs for Wofi, swaybg, Thunar-as-default — remove/fix
-- [ ] Screenshot checklist: every planned shot has purpose + alt text + capture command notes
-- [ ] `planning/integration/b-docs/ACCURACY-AUDIT.md` listing sources checked (file paths)
-- [ ] ≥3 commits; push `lane/b-docs`
+- [ ] Add **Hyprwave Assistant** to README companion table (ships in image;
+      Super+Shift+A on Hyprland; optional)
+- [ ] Document Super+Shift+A on [docs/keybinds.md](../../../docs/keybinds.md)
+      Essentials table (missing today)
+- [ ] Close or rewrite ISSUES.md **B-5** (Assistant/Duress are on main:
+      assistant hooked; duress packaged OFF)
+- [ ] Sweep `docs/` + `INSTALL.md` + `planning/integration/b-docs/` for leftover
+      “pending merge / until merge / on lane” that is now false
+- [ ] README COSMIC dock line already updated — confirm it matches
+      `build_files/usr/share/cosmic/.../favorites`
+- [ ] Keep screenshot binaries TODO (B-7); do not invent captures
+- [ ] Re-run POST-MERGE link walk (0 missing)
 
 ## Deliverables
 
-- Handbook under `docs/` + polished INSTALL/CHANGELOG/README
-- ACCURACY-AUDIT.md
+- Handbook matches skel + CHANGELOG Wave 1 section
+- ISSUES.md updated
+- ACCURACY-AUDIT addendum for B-W2-001
 
 ## Done criteria
 
-- [ ] All Requirements met
-- [ ] Relative links between docs resolve
+- [ ] Super+Shift+A documented
+- [ ] Assistant listed as shipped (not “upcoming”)
+- [ ] Duress still **off by default** in security/faq
+- [ ] Link check 0 missing
 - [ ] `git push -u origin lane/b-docs`
-- [ ] WORK_LOG + COMPLETED; status DONE
 
 ## On completion
 
-Set DONE, log, idle for next task.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

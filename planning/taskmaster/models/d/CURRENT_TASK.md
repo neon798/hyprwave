@@ -1,48 +1,71 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: D-W1-001  
-wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Security review pack + extra templates + validate expansion  
+status: OPEN
+task_id: D-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+poll: 2m
+title: Image-backed duress safety pass (stay OFF)
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Harden duress beyond Wave 2: formal threat model, more safe-by-default tooling, expanded automated guards, and operator drills — **without ever enabling PAM by default**.
+Image inspect of `localhost/hyprwave:latest` (2026-08-13): `pam_duress.so` and
+`hyprwave-duress-setup` ship; **zero** `pam_duress` lines in `/etc/pam.d`; no
+`*.sha256`. Harden packaging/docs/tests so that cannot regress.
 
-## Exclusive paths
+Refresh first:
+
+```bash
+git fetch origin
+git checkout lane/d-duress
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/d/
+```
+
+## Exclusive paths (only these)
 
 - `build_files/duress/**`
 - `build_files/build-duress.sh`
 - `planning/integration/d-duress/**`
+- `planning/taskmaster/models/d/**`
 
 ## Forbidden
 
-- Enabling pam_duress in shipped PAM configs
-- Pre-signed `*.sha256` in repo
-- Skel / assistant / README product docs
-- “Quick” DONE without validate.sh green
+- Enabling pam_duress in any default PAM file shipped by the image
+- Pre-signing templates; skel; assistant; handbook; CI
 
 ## Requirements
 
-- [ ] `build_files/duress/THREAT-MODEL.md` — assets, adversaries, residual risks, explicit non-goals (LUKS, forensics)
-- [ ] New template `20-decoy-notice.sh` **or** `20-local-only-clear.sh` that only clears browser session caches under a single path — still mild/unsigned; document severity table update in README
-- [ ] Setup tool: `--verify` mode that checks modes + presence of matching `.sha256` for scripts in target dir (read-only)
-- [ ] `validate.sh` gains: forbids `required pam_duress` in any snippet that claims to be default; ensures THREAT-MODEL exists; ensures no `*.sha256`; runs `--verify` dry paths
-- [ ] `planning/integration/d-duress/DRILL.md` — step-by-step disposable VM drill (30–45 min operator procedure)
-- [ ] ENABLE.md: recovery if locked out; bootc upgrade PAM drift warning expanded with example commands
-- [ ] build-duress.sh: print pin + date; optional `PAM_DURESS_COMMIT` env documented in BUMP-style comment block
-- [ ] ≥3 commits; push `lane/d-duress`
-- [ ] `bash planning/integration/d-duress/validate.sh` exits 0
+- [ ] `bash planning/integration/d-duress/validate.sh` PASS
+- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [ ] ENABLE.md / README / THREAT-MODEL paths match image layout
+      (`/usr/share/hyprwave/duress`, `/etc/duress.d` empty + README)
+- [ ] Add or tighten a validate gate: shipped `pam.d` snippets must **not** be
+      installed under `/etc/pam.d` by `build.sh` (snippet-selftest already
+      exists — extend if a hole remains)
+- [ ] `hyprwave-duress-setup --help` / `--dry-run` text: operator-only, PAM off
+- [ ] WORK_LOG: record image inspect facts (module present, PAM inert)
 
 ## Deliverables
 
-- Threat model, drill, verify mode, extra template, stronger validate
+- validate.sh still green
+- Docs/tests match built image
+- Explicit “still OFF” residual in RESIDUALS.md if present
 
 ## Done criteria
 
-- [ ] Requirements met; validate green; push; WORK_LOG + COMPLETED; status DONE
+- [ ] No default PAM enablement introduced
+- [ ] No `*.sha256` added under templates
+- [ ] validate + duress-safety PASS
+- [ ] `git push -u origin lane/d-duress`
 
 ## On completion
 
-Idle for next OPEN task.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

@@ -1,7 +1,7 @@
 # Hyprwave Task Master System
 
-**Director (Task Master):** issues work, reviews every ~10 minutes, advances toward the endpoint.  
-**Models A–G:** independent workers; each polls **only its own** task files every ~10 minutes.
+**Director (Task Master):** issues work, reviews every **2 minutes**, advances toward the endpoint.  
+**Models A–G:** independent workers; each polls **only its own** task files every **2 minutes**.
 
 ## Layout
 
@@ -20,7 +20,7 @@ planning/taskmaster/
       COMPLETED.md          # archive of finished task_ids
 ```
 
-## Model duty cycle (every 10 minutes)
+## Model duty cycle (every 2 minutes)
 
 1. `git pull` your lane branch (and optionally `git fetch origin` for `planning/taskmaster` if merged to main — **or** read task files from `origin/main` without merging product code).
 2. Open `planning/taskmaster/models/<letter>/CURRENT_TASK.md`.
@@ -41,7 +41,10 @@ git show origin/main:planning/taskmaster/models/a/CURRENT_TASK.md
 
 Recommended: keep product work on `lane/*` and **periodically** `git checkout origin/main -- planning/taskmaster/models/<you>/` to refresh task files only.
 
-## Director duty cycle (every 10 minutes)
+## Director duty cycle (every 2 minutes)
+
+**Do not** commit/push `main` on a quiet cycle (empty STATUS heartbeats starve CI).
+Only push `main` when issuing/cancelling tasks or recording a real state change.
 
 1. Read each `CURRENT_TASK.md` + latest `WORK_LOG.md`.
 2. If DONE → verify deliverables exist on the lane branch; archive; issue **next** OPEN task.

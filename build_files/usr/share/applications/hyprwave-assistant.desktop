@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Hyprwave Assistant
+GenericName=System Assistant
+Comment=Update base & Flatpaks, install curated apps, browse Hyprwave docs (offline-friendly TUI)
+Exec=ghostty -e hyprwave-assistant
+TryExec=hyprwave-assistant
+# Generic theme icon until a branded asset ships (see HANDOFF for optional icon path)
+Icon=utilities-system-monitor
+Terminal=false
+Type=Application
+Categories=System;Settings;Utility;
+StartupNotify=true
+Keywords=update;install;knowledge;base;help;assistant;hyprwave;bootc;flatpak;offline;

@@ -1,0 +1,13 @@
+# REFERENCE ONLY — hyprlock uses PAM.
+#
+# On many systems hyprlock uses /etc/pam.d/hyprlock if present, otherwise
+# falls back toward login/system-auth. Inspect the image:
+#   cat /etc/pam.d/hyprlock 2>/dev/null || echo "no hyprlock pam file"
+#
+# If hyprlock includes system-auth, enabling pam_duress there covers unlock.
+# If hyprlock has a standalone stack, insert the same sufficient line after
+# pam_unix (see system-auth.snippet).
+#
+# Test plan after enable:
+#   1. hyprlock with normal password → unlock, no wipe
+#   2. hyprlock with signed duress password → unlock + scripts run

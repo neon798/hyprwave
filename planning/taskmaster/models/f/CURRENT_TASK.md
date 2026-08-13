@@ -1,54 +1,74 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: F-W1-001  
-wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: COSMIC vendor-default audit and greeter/session cohesion  
+status: OPEN
+task_id: F-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+poll: 2m
+title: COSMIC vendor + greeter vs merged main (wake F)
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Verify and improve the **COSMIC** variant’s Hyprwave identity: dock favorites, wallpaper, theme keys, declutter story, and greeter expectations — with written proof of what the image should contain.
+F has been **quiet since 2026-08-07**. COSMIC image CI already succeeded;
+local `just build-cosmic` is in flight. Prove vendor defaults and operator
+docs match `main`, and prepare a session-smoke card for the new image.
 
-## Branch setup
+Refresh first:
 
 ```bash
 git fetch origin
-git checkout -B lane/f-cosmic origin/main
+git checkout lane/f-cosmic
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/f/
 ```
 
-## Exclusive paths
+## Exclusive paths (only these)
 
-See IDENTITY.md.
+- `build_files/usr/share/cosmic/**`
+- `disk_config/iso-cosmic.toml`
+- COSMIC-only `build.sh` `cosmic)` arm **only if required** (prefer snippets
+  under `planning/integration/f-cosmic/`)
+- `planning/bin/generate-cosmic-themes.sh` (do not commit `themegen/target/`)
+- `planning/integration/f-cosmic/**`
+- `planning/taskmaster/models/f/**`
 
 ## Forbidden
 
-- Hyprland skel rewrites
-- Removing packages that break cosmic-session (e.g. cosmic-term hard dep)
-- Enabling duress
-- Touching Yazi/Neonwolf pin URLs (A)
+- Hyprland skel, duress, assistant app, shared pin section of build.sh
 
 ## Requirements
 
-- [ ] Inventory every file under `build_files/usr/share/cosmic/` in `planning/integration/f-cosmic/VENDOR-INVENTORY.md` (path → purpose)
-- [ ] Confirm favorites include Neonwolf, FlatArcade, Ghostty, CosmicFiles, CosmicSettings (or document intentional diffs)
-- [ ] Background/wallpaper keys point at Hyprwave wallpaper paths that exist in repo
-- [ ] Theme Dark keys match Hyprwave palette (document hex vs RON fields)
-- [ ] `planning/integration/f-cosmic/SESSION-SMOKE.md` — COSMIC first-login checklist (≥12 items)
-- [ ] `planning/integration/f-cosmic/GREETER.md` — cosmic-greeter expectations, wallpaper, known limits
-- [ ] iso-cosmic.toml reviewed; comments for image name / kickstart-like notes if applicable
-- [ ] If build.sh cosmic case needs a fix: either minimal edit only in `cosmic)` arm **or** snippet + HANDOFF — note choice in WORK_LOG
-- [ ] Optional: regenerate notes for themegen without committing `target/`
-- [ ] ≥3 commits; push `lane/f-cosmic`
+- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` exit 0
+- [ ] Dock favorites file matches SESSION-SMOKE / GREETER claims:
+      neonwolf, flatarcade, Ghostty, CosmicFiles, hyprwave-theme, CosmicSettings
+- [ ] Mode `is_dark` + wallpaper vendor keys still present
+- [ ] GREETER.md: stock greeter face vs session branding (still true?)
+- [ ] SESSION-SMOKE.md: add “image inspect” rows for
+      `localhost/hyprwave-cosmic:latest` when the tag is new (cosmic-store
+      absent, FlatArcade present, theme GUI present, no SDDM)
+- [ ] If local cosmic image exists: `podman run --rm --entrypoint bash
+      localhost/hyprwave-cosmic:latest -lc '...'` and record results
+- [ ] No cosmic-store regression
 
 ## Deliverables
 
-- Inventory, smoke, greeter docs; any justified vendor file fixes
+- Vendor script green
+- SESSION-SMOKE / GREETER / FREEZE-STATUS stamped 2026-08-13
+- WORK_LOG with inspect output or “image not local yet”
 
 ## Done criteria
 
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] check-vendor-paths.sh PASS
+- [ ] Docs do not claim SDDM on cosmic
+- [ ] `git push -u origin lane/f-cosmic`
 
 ## On completion
 
-Idle for next OPEN task.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work
