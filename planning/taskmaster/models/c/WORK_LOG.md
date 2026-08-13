@@ -131,3 +131,8 @@
 - go test ./... PASS; smoke-host + snippet-selftest exit 0
 - did not edit live Containerfile/build.sh
 - status → DONE
+
+## 2026-08-13 — poll re-assert C-W4-001
+
+- main still OPEN for C-W4-001; lane already complete (tip 646f1ee / mark 845843a). Re-assert DONE; no re-implement.
+- snippet-selftest still PASS (0.2.2 hooks)
