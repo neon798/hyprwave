@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: D-W2-002
-wave: 2
-issued: 2026-08-13T03:29:05Z
+status: OPEN
+task_id: D-W3-001
+wave: 3
+issued: 2026-08-13T03:35:03Z
 poll: 2m
-title: Operator drill (DRILL.md) vs image paths; still OFF
+title: Extra negative fixture: build.sh must not copy pam snippets to /etc/pam.d
 
 ## Duty cycle
 
@@ -14,10 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-D-W2-001 proved the image ships the module and stays PAM-inert. Walk
-`planning/integration/d-duress/DRILL.md` against **real image paths**
-(`/usr/share/hyprwave/duress`, `/etc/duress.d` empty + README,
-`hyprwave-duress-setup`) so an operator can rehearse **without enabling PAM**.
+D-W2-002 aligned DRILL.md with image paths (still OFF). Wave 3: add a
+**negative fixture** so validate/snippet-selftest FAIL if `build.sh` (or the
+duress snippet) would install pam snippets into `/etc/pam.d`.
 
 Refresh first:
 
@@ -38,32 +37,30 @@ git checkout origin/main -- planning/taskmaster/models/d/
 ## Forbidden
 
 - Enabling pam_duress in any default PAM file
+- Editing live `build_files/build.sh` (A owns pins; use `build.sh.snippet`
+  + validate against tree `build.sh` **read-only**)
 - Pre-signing templates; skel; assistant; handbook; CI
 
 ## Requirements
 
-- [x] DRILL.md steps match image layout; dry-run / `--help` only — **no**
-      `pam_duress` install into `/etc/pam.d`
-- [x] Banner: drill is rehearsal; production enable is still operator-only
-      (ENABLE.md)
-- [x] Paths: `/usr/share/hyprwave/duress`, `/usr/sbin/hyprwave-duress-setup`
-      or actual usr-merge path, `/etc/duress.d`
-- [x] `bash planning/integration/d-duress/validate.sh` PASS
-- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [x] RESIDUALS.md still **OFF**
+- [ ] Extend `validate.sh` and/or `snippet-selftest.sh`: FAIL if snippet or
+      `build.sh` copies `pam.d` / `pam_duress` into `/etc/pam.d`
+- [ ] Do not change production enablement; stay OFF
+- [ ] `bash planning/integration/d-duress/validate.sh` PASS
+- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [ ] RESIDUALS.md still **OFF**
 
 ## Deliverables
 
-- Updated DRILL.md (and OPERATOR-RUNBOOK link if stale)
-- Green validate + duress-safety
+- Negative fixture + green validate
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [x] Drill never enables PAM
-- [x] No `*.sha256` templates added
-- [x] validate + duress-safety PASS
-- [x] `git push -u origin lane/d-duress`
+- [ ] No default PAM enablement introduced
+- [ ] No `*.sha256` templates added
+- [ ] validate + duress-safety PASS
+- [ ] `git push -u origin lane/d-duress`
 
 ## On completion
 
