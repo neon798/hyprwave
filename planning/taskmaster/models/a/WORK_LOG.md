@@ -393,3 +393,12 @@ hyprwave `unauthorized`; cosmic inspect OK. Docs still say do not claim public.
 
 1. already merged `origin/main` (`18ffa3a`)
 2. taskmaster DONE + WORK_LOG/COMPLETED
+
+## 2026-08-13 — A-W5-001 idle (G-W5 allowlist on main)
+
+**status:** DONE — idle, no invented work
+
+Director STATUS still **A free / can retask** (`W5_DONE`). No A-W6.
+Merged `origin/main` `c712cbd` (G-W5 wofi-comment allowlist) → lane `0a6f99a`.
+Re-ran `pins-static` PASS (11). Action SHAs unchanged. GHCR still 403.
+**Not inventing A-W6.**
