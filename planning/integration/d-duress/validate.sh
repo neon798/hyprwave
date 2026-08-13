@@ -526,6 +526,16 @@ if [[ -f planning/integration/d-duress/INTEGRATOR-CHECKLIST.md ]]; then
 	else
 		fail "INTEGRATOR-CHECKLIST incomplete freeze steps"
 	fi
+	# Wave 4 merge-prep: W2–W3 accuracy + never default-on reaffirmation
+	if grep -qiE 'never default-on|never default' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'DRILL|rehearsal|PAM-inert' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'pam\.d.* /etc/pam\.d|snippets.* /etc/pam\.d|N7|active_pam_snippet' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -qiE 'duress-safety' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md &&
+		grep -q '/usr/bin/hyprwave-duress-setup' planning/integration/d-duress/INTEGRATOR-CHECKLIST.md; then
+		ok "INTEGRATOR-CHECKLIST covers W2–W3 (DRILL paths, N7 pam.d, duress-safety, never default-on)"
+	else
+		fail "INTEGRATOR-CHECKLIST missing W2–W4 merge-prep markers (DRILL/N7/duress-safety/never default-on)"
+	fi
 fi
 # Integration README must index full operator set + checklist
 for doc in SIGNING RESIDUALS FAQ OPERATOR-RUNBOOK DRILL INTEGRATOR-CHECKLIST INTEGRATION-DAY; do
