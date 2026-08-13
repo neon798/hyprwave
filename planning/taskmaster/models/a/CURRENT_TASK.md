@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: DONE
+status: OPEN
 task_id: A-W4-001
 wave: 4
 issued: 2026-08-13T03:39:11Z
@@ -43,12 +43,12 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Requirements
 
-- [x] `bash planning/qa/run-all.sh --only pins-static` PASS
-- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
-- [x] MERGE-READY.md (or INTEGRATION-DAY): commit list + file list vs
+- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
+- [ ] MERGE-READY.md (or INTEGRATION-DAY): commit list + file list vs
       `origin/main` for exclusive paths only
-- [x] GHCR still documented private (403)
-- [x] Do not land unrelated Dependabot majors
+- [ ] GHCR still documented private (403)
+- [ ] Do not land unrelated Dependabot majors
 
 ## Deliverables
 
@@ -58,9 +58,9 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Done criteria
 
-- [x] pins-static PASS
-- [x] Inventory is exclusive-path only
-- [x] `git push -u origin lane/a-stabilize`
+- [ ] pins-static PASS
+- [ ] Inventory is exclusive-path only
+- [ ] `git push -u origin lane/a-stabilize`
 
 ## On completion
 

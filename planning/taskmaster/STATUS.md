@@ -1,26 +1,26 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** **3 in progress**  
-**Updated:** 2026-08-13T03:37:13Z  
+**Director wave:** **4 issuing (A/B/E); C/D/F/G still on W3**  
+**Updated:** 2026-08-13T03:39:11Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
 |---|---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | **A-W3-001** | DONE (queue empty) |
-| B | Docs / handbook | `lane/b-docs` | **B-W3-001** | OPEN |
+| A | Build / CI / pins / release | `lane/a-stabilize` | **A-W4-001** | OPEN |
+| B | Docs / handbook | `lane/b-docs` | **B-W4-001** | OPEN |
 | C | Hyprwave Assistant | `lane/c-assistant` | **C-W3-001** | OPEN |
 | D | Duress / security packaging | `lane/d-duress` | **D-W3-001** | OPEN |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W3-001** | DONE (queue empty) |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W4-001** | OPEN |
 | F | COSMIC variant | `lane/f-cosmic` | **F-W3-001** | OPEN |
 | G | QA automation | `lane/g-qa` | **G-W3-001** | OPEN |
 
 ## This check-in
 
-- Verified **C-W2-002 DONE** (`9fd9714` / `0364b74`) exclusive assistant paths.
-- Issued **C-W3-001** (private-GHCR / dual-DE tests; real catalog IDs).
-- **A-W3-001** and **E-W3-001** DONE on lanes; WAVE3-QUEUE has no next — idle
-  (no HOLD, no invented W4). B/D/F/G W3 still OPEN (await refresh).
+- WAVE4-QUEUE seeded (`fe1bcba`). Verified W3 DONE exclusive-only:
+  **A-W3-001** `c845521`, **B-W3-001** `ce0c737`, **E-W3-001** `d8db11f`.
+- Issued **A-W4-001**, **B-W4-001**, **E-W4-001** (merge-prep).
+- C/D/F/G still OPEN on W3-001 (lanes not refreshed). No HOLD.
 
 ## Integration readiness
 

@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: B-W3-001
-wave: 3
-issued: 2026-08-13T03:31:08Z
+task_id: B-W4-001
+wave: 4
+issued: 2026-08-13T03:39:11Z
 poll: 2m
-title: first-boot.md + INSTALL: local just build path vs GHCR private; no screenshot binaries
+title: CHANGELOG / ISSUES: record W2–W3 handbook deltas; no GHCR-public claim
 
 ## Duty cycle
 
@@ -14,10 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-B-W2-002 closed IMAGE_NAME / B-6. Wave 3: make **first-boot + INSTALL** tell
-the truth about how to get an image today — local `just build` /
-`localhost/hyprwave:latest` works; **anonymous GHCR is still 403**. Do not
-add screenshot binaries.
+Wave 4 is **merge-prep**. Record handbook deltas from W2–W3 (Assistant
+keybind, IMAGE_NAME, local-build vs private GHCR) in CHANGELOG / ISSUES.
+No screenshot binaries. No public-GHCR claim.
 
 Refresh first:
 
@@ -39,30 +38,27 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 - `build_files/**`, workflows, apps, duress packaging, Justfile
 - Claiming GHCR is public; claiming duress is on by default
-- Committing screenshot binaries or fake `docs/assets/` images
+- Screenshot binaries
+- Merging this lane onto main
 
 ## Requirements
 
-- [ ] `docs/first-boot.md` + `INSTALL.md`: primary path for a new operator
-      includes local build (`just build` / IMAGE_NAME note already on main);
-      GHCR pull is **authenticated or private** — do not write `podman pull`
-      as if anonymous works
-- [ ] Dual-variant: hyprland vs cosmic first-boot greeter still accurate
-      (SDDM vs cosmic-greeter)
-- [ ] B-7 screenshots remain TODO — no new PNG/JPG
+- [ ] CHANGELOG: Wave 2–3 handbook bullets (Super+Shift+A, IMAGE_NAME,
+      local `just build` primary / GHCR 403)
+- [ ] ISSUES.md: B-5/B-6 closed state accurate; B-7 screenshots still TODO
+- [ ] No anonymous-public GHCR sentence
 - [ ] Link walk 0 missing for files you touch
-- [ ] ACCURACY-AUDIT addendum for B-W3-001
 
 ## Deliverables
 
-- Honest install/first-boot vs private GHCR + local images
+- CHANGELOG + ISSUES merge-prep
+- ACCURACY-AUDIT one-liner if needed
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] No anonymous-public GHCR claim
+- [ ] Deltas recorded; GHCR still private
 - [ ] No screenshot binaries
-- [ ] Duress still off in any security sentence you touch
 - [ ] `git push -u origin lane/b-docs`
 
 ## On completion
