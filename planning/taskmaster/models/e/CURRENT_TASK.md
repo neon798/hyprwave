@@ -16,13 +16,6 @@ Poll **every 2 minutes**. Exclusive paths only.
 `lane/e-hyprland` Waves 2–4 are **merged to main**. Confirm KEYBIND-MAP still
 matches `bindings.conf` on the merge tip. No redesign.
 
-```bash
-git fetch origin
-git checkout lane/e-hyprland
-git merge origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/e/
-```
-
 ## Exclusive paths
 
 - `build_files/etc/skel/.config/hypr/**`

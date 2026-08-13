@@ -309,11 +309,7 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T07:13Z — E-W5-001 poll re-verify
+## 2026-08-13T07:15Z — E-W5-001 poll re-verify
 
-- origin/main CURRENT_TASK still OPEN E-W5-001 (director not cleared)
-- origin/main tip `c712cbd` (G-W5 merge); Wave 2–4 E merge `878d38e` on main history
-- lane already includes origin/main (merge-base == main tip); skel product paths match main
-- Re-count: **87** active binds; SUPER+SHIFT+A (assistant), +T (theme-gui), +E (exit) match KEYBIND-MAP
-- No cliphist/wofi/swaybg under build_files/etc/skel
-- Status remains **DONE**; no product changes; idle until new task_id
+- origin/main still OPEN E-W5-001; tip `c712cbd`; lane DONE
+- 87 binds; Shift+A/T/E OK; no forbidden in skel; no product changes
