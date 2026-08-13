@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: C-W4-001
 wave: 4
 issued: 2026-08-13T03:44:30Z
@@ -45,14 +45,14 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Requirements
 
-- [ ] HANDOFF.md still lists 0.2.2 apply order (Containerfile.snippet +
+- [x] HANDOFF.md still lists 0.2.2 apply order (Containerfile.snippet +
       build.sh.snippet, Super+Shift+A is E/integrator-only)
-- [ ] snippet-selftest (new or existing under `planning/integration/c-assistant/`)
+- [x] snippet-selftest (new or existing under `planning/integration/c-assistant/`)
       checks snippets mention version `0.2.2`, `assistant-builder`, and
       `/usr/bin/hyprwave-assistant` — FAIL on drift
-- [ ] `cd apps/hyprwave-assistant && go test ./...`
-- [ ] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
-- [ ] Do not edit live Containerfile/build.sh (snippets + HANDOFF only)
+- [x] `cd apps/hyprwave-assistant && go test ./...`
+- [x] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
+- [x] Do not edit live Containerfile/build.sh (snippets + HANDOFF only)
 
 ## Deliverables
 
@@ -61,9 +61,9 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Done criteria
 
-- [ ] Hooks still 0.2.2; selftest PASS
-- [ ] No public-GHCR claim
-- [ ] `git push -u origin lane/c-assistant`
+- [x] Hooks still 0.2.2; selftest PASS
+- [x] No public-GHCR claim
+- [x] `git push -u origin lane/c-assistant`
 
 ## On completion
 

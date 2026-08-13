@@ -1,21 +1,46 @@
-# Model C HANDOFF — Hyprwave Assistant (freeze 0.2.2)
+# Model C HANDOFF — Hyprwave Assistant (0.2.2 image-hooked)
 
-**Pre-merge freeze (C-W1-003).** Integrator applies in one pass. Do not invent alternate paths.
+**Status (C-W2-001):** Assistant is **integrated on main** and present in local T8 image builds. Lane keeps data/KB quality; do not re-open dormant wiring unless a real hook bug appears.
 
-## Apply order
+## Image verification (local T8)
 
-1. **Containerfile** — merge `Containerfile.snippet`
-   - Stage `assistant-builder` (Go 1.23, `CGO_ENABLED=0`, `-trimpath`, `-ldflags "-s -w -X main.version=0.2.2"`)
-   - Final image: `COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant`
-2. **build.sh** — merge `build.sh.snippet` **or** use the commented `COPY` block in the Containerfile snippet for data + desktop
-3. **Skel keybind (Model E / integrator only — Model C does not edit skel):**
-
-```conf
-# Hyprwave Assistant
-bind = SUPER SHIFT, A, exec, ghostty -e hyprwave-assistant
+```text
+Image:    localhost/hyprwave:latest
+Binary:   /usr/bin/hyprwave-assistant  (usr-merge may also list /usr/sbin)
+Version:  0.2.2
+Data:     /usr/share/hyprwave/assistant/{catalog.toml,kb/*.md}
+Desktop:  /usr/share/applications/hyprwave-assistant.desktop
+Themes:   11 under /usr/share/hyprwave/themes/
 ```
 
-4. Build both DE variants; run host smoke (below) then image smoke after boot.
+Probe:
+
+```bash
+podman run --rm localhost/hyprwave:latest hyprwave-assistant --version
+# expect: hyprwave-assistant 0.2.2
+```
+
+## Apply order (0.2.2 hooks)
+
+Integrator one-pass (snippets only — Model C does **not** edit live
+`Containerfile` / `build.sh`). Order:
+
+1. **`Containerfile.snippet`** — `FROM … AS assistant-builder`;
+   `ASSISTANT_VERSION=0.2.2`; `go build -trimpath` +
+   `-ldflags="-s -w -X main.version=${ASSISTANT_VERSION}"`;
+   `COPY --from=assistant-builder /out/hyprwave-assistant /usr/bin/hyprwave-assistant`.
+2. **`build.sh.snippet`** — install `/usr/share/hyprwave/assistant/`
+   (`catalog.toml` + `kb/*.md`) and
+   `/usr/share/applications/hyprwave-assistant.desktop`; optional
+   fallback copy of the binary to `/usr/bin/hyprwave-assistant`.
+3. **Super+Shift+A** — **Model E / integrator only** (Hyprland skel bind).
+   This lane must not edit skel. COSMIC: pin the desktop entry.
+
+Selftest (fail-closed on hook drift):
+
+```bash
+bash planning/integration/c-assistant/snippet-selftest.sh
+```
 
 ## Runtime paths (fixed)
 
@@ -26,8 +51,6 @@ bind = SUPER SHIFT, A, exec, ghostty -e hyprwave-assistant
 /usr/share/hyprwave/assistant/kb/*.md
 ```
 
-Repo sources → targets:
-
 | Source | Target |
 |--------|--------|
 | `apps/hyprwave-assistant/` (built binary) | `/usr/bin/hyprwave-assistant` |
@@ -35,6 +58,16 @@ Repo sources → targets:
 | `build_files/usr/share/applications/hyprwave-assistant.desktop` | `/usr/share/applications/…` |
 
 Override data dir: `HYPRWAVE_ASSISTANT_DATA` or `--data DIR`.
+
+## Skel keybind (do not edit skel from this lane)
+
+Already on main Hyprland bindings:
+
+```conf
+bind = $mainMod SHIFT, A, exec, ghostty -e hyprwave-assistant
+```
+
+COSMIC: pin the desktop entry from the menu.
 
 ## Package deps
 
@@ -45,19 +78,13 @@ Override data dir: `HYPRWAVE_ASSISTANT_DATA` or `--data DIR`.
 | `flatpak` | App updates / curated installs |
 | Go 1.23+ | **Build stage only** (not shipped) |
 
-No exclusive extra packages beyond the image stack.
-
-## Icon
-
-Desktop uses `Icon=utilities-system-monitor`. Optional brand: hicolor `hyprwave-assistant` + set `Icon=` (see `build.sh.snippet` comments).
-
 ## Host smoke (no image)
 
 ```bash
 bash planning/integration/c-assistant/smoke-host.sh
 ```
 
-Must exit 0. Runs `go test ./...`, ldflags build, `--help`, `--version`, `kb`, `list`, `update --dry-run`.
+Must exit 0. Runs `go test ./...`, ldflags build, `--help`, `--version`, `kb`, `list`, `update --dry-run`, and `snippet-selftest.sh`.
 
 ## Post-image smoke
 
@@ -79,9 +106,8 @@ hyprwave-assistant update --dry-run
 
 - `HANDOFF-WAVE2.md` — CLI detail / dual-DE notes
 - `RELEASE-NOTES-0.2.md` — CHANGELOG blurb
-- `README-blurb.md` — optional project README section
-- Snippets only — **not** production `build.sh` / `Containerfile` edits from this lane
+- Snippets remain under this tree for reference; production wiring is already on main
 
 ## Forbidden (Model C)
 
-skel · production build.sh/Containerfile · duress/PAM · other models’ trees
+skel · production build.sh/Containerfile (except real hook bug via snippets) · duress/PAM · other models’ trees

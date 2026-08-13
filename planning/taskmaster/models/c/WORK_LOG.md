@@ -106,3 +106,33 @@
 
 - main still OPEN for C-W2-002; lane already complete (tip 449ccf6 / mark 9fd9714). Re-assert DONE; no re-implement.
 - go test + smoke-host green
+
+## 2026-08-13 — C-W3-001
+
+- Regression tests lock C-W2-002 copy: private/auth GHCR, localhost tags valid,
+  dual DE (Hyprland+COSMIC), Super+Shift+A, Wofi/swaybg denial, duress OFF
+- catalog: knownFlathubIDs table must match every shipped flathub row
+- smoke-host wave-3 probes (version/help + catalog IDs + no public-GHCR claim)
+- go test ./... PASS; bash planning/integration/c-assistant/smoke-host.sh exit 0
+- status → DONE
+
+## 2026-08-13 — poll re-assert C-W3-001
+
+- main still OPEN for C-W3-001; lane already complete (tip 96f1b6e / mark a78d8c4). Re-assert DONE; no re-implement.
+- product tests still present (knownFlathubIDs, About/help/KB wave-3 guards)
+
+## 2026-08-13 — C-W4-001
+
+- HANDOFF: 0.2.2 apply order (Containerfile.snippet → build.sh.snippet;
+  Super+Shift+A is Model E / integrator only)
+- snippet-selftest.sh fail-closed: assistant-builder, 0.2.2, ldflags,
+  /usr/bin/hyprwave-assistant; no public-GHCR claim
+- smoke-host invokes snippet-selftest
+- go test ./... PASS; smoke-host + snippet-selftest exit 0
+- did not edit live Containerfile/build.sh
+- status → DONE
+
+## 2026-08-13 — poll re-assert C-W4-001
+
+- main still OPEN for C-W4-001; lane already complete (tip 646f1ee / mark 845843a). Re-assert DONE; no re-implement.
+- snippet-selftest still PASS (0.2.2 hooks)

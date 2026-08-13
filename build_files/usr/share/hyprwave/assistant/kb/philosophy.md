@@ -18,7 +18,13 @@ Hyprwave is built on **bootc** (bootable container) technology on top of Fedora 
 | App store | FlatArcade (Flathub TUI) |
 | Files | Yazi (in Ghostty) |
 | Terminal | Ghostty |
+| Launcher (Hyprland) | Walker + elephant (not Wofi) |
+| Wallpaper (Hyprland) | hyprpaper (not swaybg) |
+| Themes | 11 packs via `hyprwave-theme` |
+| System companion | Hyprwave Assistant (Super+Shift+A on Hyprland) |
 | Desktop | Hyprland **or** COSMIC (`hyprwave` / `hyprwave-cosmic`) |
+
+Skel defaults apply to **new users only**. Duress is **OFF** in the stock image. GHCR packages **may be private** — see `ghcr`.
 
 ## Why not a traditional package manager for the base?
 

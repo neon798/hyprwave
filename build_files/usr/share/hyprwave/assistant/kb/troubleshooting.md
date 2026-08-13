@@ -18,7 +18,17 @@ bootc status
 
 - Diff against `/etc/skel/.config/...`
 - Or create a fresh test user to see current defaults.
-- Theme issues: `hyprwave-theme list` / `hyprwave-theme set <name>`
+- Theme issues: `hyprwave-theme list` / `hyprwave-theme set <name>` (11 themes ship in the store)
+
+## bootc / GHCR pull fails (401/403)
+
+**GHCR may be private.** Anonymous `podman pull` / `bootc upgrade` / `bootc switch` can fail without that meaning the command is wrong. See article **`ghcr`**.
+
+```bash
+podman pull ghcr.io/neon798/hyprwave:latest
+```
+
+Use a local ISO/image build, wait for public packages, or log in only if you have access.
 
 ## Offline mode
 
@@ -34,10 +44,11 @@ Fix connectivity, then retry. No reboot is forced by the Assistant.
 - Ensure the elephant daemon is running (autostart).
 - Icon cache: `gtk-update-icon-cache -f /usr/share/icons/hicolor`
 - Restart Walker: `systemctl --user restart app-walker@autostart.service`
+- Walker is the launcher — **Wofi is not used**.
 
 ## Wallpaper wrong or blank (Hyprland)
 
-- See the hyprpaper article.
+- Wallpaper daemon is **hyprpaper** (not swaybg) — see that article.
 - Re-apply theme: `hyprwave-theme set <name>`
 - Check `~/.config/hypr/hyprpaper.conf` paths exist on disk.
 
@@ -58,6 +69,17 @@ CLI mutations need **double confirm**:
 hyprwave-assistant update --dry-run
 hyprwave-assistant update --yes --confirm
 ```
+
+## Assistant missing?
+
+On stock Hyprwave Hyprland images, Assistant **0.2.2** is installed:
+
+```bash
+hyprwave-assistant --version
+# Super+Shift+A on Hyprland, or menu entry "Hyprwave Assistant"
+```
+
+If missing, you are not on a fully integrated image build — report `bootc status` and image ref.
 
 ## Reporting bugs
 

@@ -27,7 +27,8 @@ Hyprwave is a **bootable container** (bootc) OS. Day-to-day package installs are
    # when ready:
    hyprwave-assistant update --flatpak --yes --confirm
    ```
-3. **Switch image** (example registry/owner — use your published refs):
+3. **Switch image** (example registry/owner — use your published refs).
+   **GHCR may be private** (401/403) — test with `podman pull` first; see article `ghcr`.
    ```bash
    # Toward COSMIC
    sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest
@@ -48,7 +49,7 @@ Hyprwave is a **bootable container** (bootc) OS. Day-to-day package installs are
 |-------|-----|
 | `bootc status` | Confirms booted image ref |
 | Theme | Run `hyprwave-theme list` / `set` for the DE you are on |
-| Assistant | Same binary + data; Super+Shift+A if wired on Hyprland |
+| Assistant | Same binary + data; **Super+Shift+A** on Hyprland (skel) |
 | Flatpaks | Usually still installed; open FlatArcade if something is missing |
 | Hypr-only tools | Walker / Waybar only on Hyprland image |
 

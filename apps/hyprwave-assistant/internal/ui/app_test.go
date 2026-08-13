@@ -161,3 +161,37 @@ func TestKBOpen(t *testing.T) {
 		t.Fatalf("kb view: %s", view)
 	}
 }
+
+func TestAboutCopyWave3(t *testing.T) {
+	m := New(Config{Runner: stubRunner{}, Catalog: testCatalog(), KB: testKB(), Version: "0.2.2"})
+	m.active = tabAbout
+	m.statusLoaded = true
+	m.status.ImageRef = "ghcr.io/neon798/hyprwave:latest"
+	m.status.ImageNote = "GHCR image ref — package may be private; anonymous pull/upgrade can return 401/403."
+	view := m.View()
+	low := strings.ToLower(view)
+	need := []string{
+		"hyprland",
+		"cosmic",
+		"dual",
+		"super+shift+a",
+		"private",
+		"localhost",
+		"wofi",
+		"swaybg",
+	}
+	for _, n := range need {
+		if !strings.Contains(low, n) {
+			t.Errorf("About missing %q\n%s", n, view)
+		}
+	}
+	if !strings.Contains(low, "not wofi") && !strings.Contains(low, "not wofi/swaybg") {
+		t.Errorf("About must deny Wofi/swaybg\n%s", view)
+	}
+	if strings.Contains(low, "ghcr is public") || strings.Contains(low, "publicly available") {
+		t.Errorf("About must not claim public GHCR\n%s", view)
+	}
+	if !strings.Contains(view, "ghcr.io/neon798/hyprwave:latest") {
+		t.Errorf("About should show image ref\n%s", view)
+	}
+}
