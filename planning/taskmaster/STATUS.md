@@ -2,12 +2,12 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **MERGED + PUSHED; T8 pending**  
-**Updated:** 2026-08-13T02:43:34Z (director check-in)  
+**Updated:** 2026-08-13T02:53:28Z (director check-in)  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Status |
 |---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main; **HOLD OPEN** |
+| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main; **HOLD OPEN** (quiet) |
 | B | Docs / handbook | `lane/b-docs` | merged → main; **HOLD OPEN** |
 | C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets; **HOLD OPEN** |
 | D | Duress / security packaging | `lane/d-duress` | merged → main + snippets; **HOLD OPEN** |
@@ -15,12 +15,12 @@
 | F | COSMIC variant | `lane/f-cosmic` | merged → main; **HOLD OPEN** (quiet tip) |
 | G | QA automation / integration prep | `lane/g-qa` | merged → main; **HOLD OPEN** |
 
-## This check-in (2026-08-13T02:43:34Z)
+## This check-in (2026-08-13T02:53:28Z)
 
-- Main tip `135ecf9`; origin in sync.
+- Main tip `5e849f9`; origin in sync.
 - Harness: **RESULT OK** (33 PASS, 0 FAIL).
 - All models **\*-W1-HOLD OPEN** — no DONE/BLOCKED/IN_PROGRESS; no new task_ids.
-- Lane tips: A `cdabba0` (quiet), B `965efe1` (heartbeat), C `68f6b83` (quiet), D `443c51b` (heartbeat), E `1ca1b21` (heartbeat), F `9f59118` (quiet since 2026-08-07), G `02c3678` (heartbeat).
+- Lane tips: A `cdabba0` (quiet multi-cycle), B `965efe1`, C `d56685c` (heartbeat), D `443c51b`, E `1ca1b21`, F `9f59118` (quiet since 2026-08-07), G `02c3678`.
 - Program state unchanged: await human T8.
 
 ## Integration readiness
