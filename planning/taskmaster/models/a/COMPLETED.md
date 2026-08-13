@@ -12,13 +12,4 @@ A-W2-002 | 2026-08-13 | GHCR-VISIBILITY card + safe action bumps; skip checkout 
 A-W3-001 | 2026-08-13 | Stamp FIRST-BOOT local+CI proofs; GHCR still 403; pins current | c845521
 A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 | a31ecce
 A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
-A-W5-001 | 2026-08-13 | Post-merge pin verify; 42450b1 on main; action SHAs present | 9b0949f
-A-W5-001 | 2026-08-13 | Reconfirm: pins-static PASS, action SHAs still on 42450b1 | b2df954
-A-W5-001 | 2026-08-13 | Reconfirm after B/C W5 issue: pins-static PASS, still 42450b1 | 348a6a0
-A-W5-001 | 2026-08-13 | Reconfirm after D/F/G W4 merge: pins-static PASS; merge 754ed9e | 754ed9e
-A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still 07be046 / merge 754ed9e | cf13324
-A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; director STATUS still stale OPEN | 06e9a3c
-A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still OPEN at 07be046 | 9852135
-A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; director STATUS still stale | c1be5e8
-A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still 07be046 OPEN | b7990c2
-A-W5-001 | 2026-08-13 | Director W5_DONE: A free/can retask; idle; merge 18ffa3a | 4ebbf48
+A-W5-001 | 2026-08-13 | Post-merge pin verify; pins-static PASS; A-W2-002 SHAs on HEAD; GHCR 403 | 0ca7e10

@@ -358,123 +358,38 @@ releases/latest                               CLEAN
 **status:** DONE  
 **branch:** `lane/a-stabilize`
 
-### Merge SHA
+Post-merge pin verify on `origin/main` after A Waves 2–4 landed.
+No product edits (`versions.env` / `build.sh` pins / workflows unchanged).
 
-`42450b1` — `merge: lane/a-stabilize Wave 2–4 (pins, GHCR card, CI action bumps)`
-(`origin/main` = `42450b12bb0f7652503a6a21668f881008d3fa66`)
+### Merge SHAs
 
-Lane catch-up: `17cf678` Merge origin/main into lane/a-stabilize.
+- **origin/main tip:** `f97680db95cdb46ead69913000a27420b48cb1a5` (W5 complete)
+- **lane merge of main:** `18ffa3a` (`Merge remote-tracking branch 'origin/main' into lane/a-stabilize`)
+- **A Waves 2–4 on main:** `42450b1` (prior inventory; still ancestor of HEAD)
 
-### Confirmations
+### Pin verify
 
-- `pins-static` PASS (11) on merged tree
-- `build.yml` on main HEAD has A-W2-002 SHAs:
-  metadata-action `dc802804` v6.2.0; login-action `abd2ef45` v4.5.1;
-  cosign-installer `6f9f1778` v4.1.2; checkout still v6; push-to-registry still v2
-- GHCR still documented private (`GHCR-VISIBILITY.md` / `RELEASE.md` 403)
-- Exclusive paths vs `origin/main`: empty (already landed)
-- No new features
+```
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+releases/latest                            CLEAN
+```
+
+### build.yml A-W2-002 SHAs (HEAD blob == origin/main)
+
+| Action | Pin | Tag |
+|--------|-----|-----|
+| docker/metadata-action | `dc802804100637a589fabce1cb79ff13a1411302` | v6.2.0 |
+| docker/login-action | `abd2ef45e78c5afb21d64d4ca52ee8550d9572c7` | v4.5.1 |
+| sigstore/cosign-installer | `6f9f17788090df1f26f669e9d70d6ae9567deba6` | v4.1.2 |
+| actions/checkout | `df4cb1c069e1874edd31b4311f1884172cec0e10` | **v6** (no v7) |
+| redhat-actions/push-to-registry | `5ed88d269cf581ea9ef6dd6806d01562096bee9c` | **v2** (no v3) |
+
+### GHCR
+
+Still private. `ghcr-pull-test.sh --owner neon798` **exit 1**:
+hyprwave `unauthorized`; cosmic inspect OK. Docs still say do not claim public.
 
 ### Commits
 
-1. merge `origin/main` (`42450b1`)
-2. taskmaster DONE
-
-## 2026-08-13 — A-W5-001 reconfirm (main still OPEN)
-
-**status:** DONE (no new product work)
-
-Re-merged `origin/main` (director STATUS only). Re-ran `pins-static` PASS.
-Action SHAs still on HEAD. Merge SHA still `42450b1`. GHCR still private.
-No invented follow-up.
-
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
-
-**status:** DONE — no product work. Merged E-hyprland from main onto lane.
-`pins-static` PASS; action SHAs unchanged. Still `42450b1`.
-
-## 2026-08-13 — A-W5-001 reconfirm (B/C W5 issued; A still OPEN)
-
-**status:** DONE (no new product work)
-
-`origin/main` still lists **A-W5-001 OPEN** (director STATUS stale vs B/C
-CURRENT_TASK files, which are now B-W5-001 / C-W5-001). Re-merged: already
-up to date. Re-ran:
-
-```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
-```
-
-Action SHAs unchanged (`dc802804` / `abd2ef45` / `6f9f1778`; checkout v6;
-push-to-registry v2). GHCR still documented 403. Merge SHA still `42450b1`.
-No invented follow-up.
-
-## 2026-08-13 — A-W5-001 reconfirm (D/F/G Wave 4 on main)
-
-**status:** DONE (no new product work)
-
-Director copy on `origin/main` still lists **A-W5-001 OPEN**. Merged
-`origin/main` (`07be046` g-qa W2–4 + f-cosmic + d-duress) into the lane:
-
-- **lane merge SHA:** `754ed9e`
-- **A product merge on main:** still `42450b1`
-
-Re-ran:
-
-```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
-```
-
-`build.yml` A-W2-002 SHAs still on HEAD:
-metadata-action `dc802804` v6.2.0; login-action `abd2ef45` v4.5.1;
-cosign-installer `6f9f1778` v4.1.2; checkout v6; push-to-registry v2.
-GHCR still documented private (`GHCR-VISIBILITY.md` 403). No pin bump.
-No invented follow-up.
-
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
-
-**status:** DONE (no new product work)
-
-`origin/main` still `07be046`; already merged (`754ed9e`). Re-ran
-`pins-static` PASS (11). Action SHAs unchanged. GHCR still private.
-No invented follow-up.
-
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
-
-**status:** DONE (no new product work)
-
-Still `07be046` / lane merge `754ed9e`. `pins-static` PASS (11).
-A-W2-002 SHAs unchanged. GHCR still 403. No invented follow-up.
-
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
-
-**status:** DONE (no new product work)
-
-Unchanged tip `07be046` / `754ed9e`. `pins-static` PASS (11).
-SHAs `dc802804`/`abd2ef45`/`6f9f1778`. GHCR still private. No invented work.
-
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
-
-**status:** DONE (no new product work)
-
-Still `07be046` / `754ed9e`. `pins-static` PASS (11). Action SHAs
-unchanged. GHCR still private. No invented follow-up.
-
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
-
-**status:** DONE (no new product work)
-
-Still `07be046` / `754ed9e`. `pins-static` PASS (11). SHAs unchanged.
-GHCR still private. No invented follow-up.
-
-## 2026-08-13 — A-W5-001 idle (director: free / can retask)
-
-**status:** DONE — idle, no invented work
-
-Director STATUS `f97680d` (`W5_DONE`): **A-W5-001 DONE — free / can retask**.
-A CURRENT_TASK on main still says OPEN (stale file); STATUS is authoritative.
-Issued next: **B-W6-001**, **G-W6-001** only. Quote: "A/C/D/E/F have no
-exclusive product left without inventing work."
-
-Merged `origin/main` into lane (`18ffa3a`). Re-ran `pins-static` PASS (11).
-Action SHAs unchanged. GHCR still 403. **Not inventing A-W6.**
+1. already merged `origin/main` (`18ffa3a`)
+2. taskmaster DONE + WORK_LOG/COMPLETED
