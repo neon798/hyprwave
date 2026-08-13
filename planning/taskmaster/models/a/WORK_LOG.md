@@ -387,3 +387,8 @@ Lane catch-up: `17cf678` Merge origin/main into lane/a-stabilize.
 Re-merged `origin/main` (director STATUS only). Re-ran `pins-static` PASS.
 Action SHAs still on HEAD. Merge SHA still `42450b1`. GHCR still private.
 No invented follow-up.
+
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
+
+**status:** DONE — no product work. Merged E-hyprland from main onto lane.
+`pins-static` PASS; action SHAs unchanged. Still `42450b1`.
