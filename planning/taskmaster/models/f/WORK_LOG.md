@@ -76,3 +76,20 @@
 - Status remains **OPEN** HOLD — not marked DONE
 - Freeze tip still F-W1-006 / 7b19270; standby for integration
 - No product edits
+
+## 2026-08-13 — F-W2-001 COSMIC vendor + greeter vs merged main
+
+- Branch: `lane/f-cosmic` fast-forwarded to `origin/main` (c9b3085 tip family)
+- `check-vendor-paths.sh`: **exit 0** (fail=0)
+- Favorites (unchanged, match SESSION-SMOKE): neonwolf, flatarcade, com.mitchellh.ghostty,
+  com.system76.CosmicFiles, hyprwave-theme, com.system76.CosmicSettings
+- Mode is_dark=true; wallpaper → /usr/share/backgrounds/hyprwave/default.png
+- Image inspect `localhost/hyprwave-cosmic:latest` (id 189340691cc7, ~10.1GB, created 2026-08-13T03:22Z):
+  - cosmic-store: **not installed**
+  - cosmic-greeter enabled; display-manager → cosmic-greeter.service
+  - **no SDDM** unit
+  - flatarcade, neonwolf, hyprwave-theme-gui present
+  - vendor favorites + Mode + wallpaper PNG match tree
+- Docs: SESSION-SMOKE #48–#56 image-inspect; GREETER reconfirm stock face; FREEZE-STATUS stamped 2026-08-13
+- No build_files/usr/share/cosmic or build.sh edits required
+- Forbidden paths untouched (Hyprland skel, pins, duress, assistant)

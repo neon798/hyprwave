@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: B-W2-001
-wave: 2
-issued: 2026-08-13T03:25:00Z
+task_id: B-W3-001
+wave: 3
+issued: 2026-08-13T03:31:08Z
 poll: 2m
-title: Handbook residual polish after post-merge flip
+title: first-boot.md + INSTALL: local just build path vs GHCR private; no screenshot binaries
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Integrator already flipped most “pending merge” language (`70e5616`). Finish
-the user-facing handbook so a new user can run the **shipped** desktop without
-lane folklore.
+B-W2-002 closed IMAGE_NAME / B-6. Wave 3: make **first-boot + INSTALL** tell
+the truth about how to get an image today — local `just build` /
+`localhost/hyprwave:latest` works; **anonymous GHCR is still 403**. Do not
+add screenshot binaries.
 
 Refresh first:
 
@@ -36,36 +37,32 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Forbidden
 
-- `build_files/**`, workflows, apps, duress packaging
+- `build_files/**`, workflows, apps, duress packaging, Justfile
 - Claiming GHCR is public; claiming duress is on by default
+- Committing screenshot binaries or fake `docs/assets/` images
 
 ## Requirements
 
-- [ ] Add **Hyprwave Assistant** to README companion table (ships in image;
-      Super+Shift+A on Hyprland; optional)
-- [ ] Document Super+Shift+A on [docs/keybinds.md](../../../docs/keybinds.md)
-      Essentials table (missing today)
-- [ ] Close or rewrite ISSUES.md **B-5** (Assistant/Duress are on main:
-      assistant hooked; duress packaged OFF)
-- [ ] Sweep `docs/` + `INSTALL.md` + `planning/integration/b-docs/` for leftover
-      “pending merge / until merge / on lane” that is now false
-- [ ] README COSMIC dock line already updated — confirm it matches
-      `build_files/usr/share/cosmic/.../favorites`
-- [ ] Keep screenshot binaries TODO (B-7); do not invent captures
-- [ ] Re-run POST-MERGE link walk (0 missing)
+- [ ] `docs/first-boot.md` + `INSTALL.md`: primary path for a new operator
+      includes local build (`just build` / IMAGE_NAME note already on main);
+      GHCR pull is **authenticated or private** — do not write `podman pull`
+      as if anonymous works
+- [ ] Dual-variant: hyprland vs cosmic first-boot greeter still accurate
+      (SDDM vs cosmic-greeter)
+- [ ] B-7 screenshots remain TODO — no new PNG/JPG
+- [ ] Link walk 0 missing for files you touch
+- [ ] ACCURACY-AUDIT addendum for B-W3-001
 
 ## Deliverables
 
-- Handbook matches skel + CHANGELOG Wave 1 section
-- ISSUES.md updated
-- ACCURACY-AUDIT addendum for B-W2-001
+- Honest install/first-boot vs private GHCR + local images
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] Super+Shift+A documented
-- [ ] Assistant listed as shipped (not “upcoming”)
-- [ ] Duress still **off by default** in security/faq
-- [ ] Link check 0 missing
+- [ ] No anonymous-public GHCR claim
+- [ ] No screenshot binaries
+- [ ] Duress still off in any security sentence you touch
 - [ ] `git push -u origin lane/b-docs`
 
 ## On completion

@@ -1,4 +1,4 @@
-# Wave 2 follow-up queue (Director issues when *-W2-001 is DONE)
+# Wave 2 follow-up queue — **fully issued** 2026-08-13 (see WAVE3-QUEUE.md)
 
 Do not issue these until the matching W2-001 is **DONE** on the lane.
 
