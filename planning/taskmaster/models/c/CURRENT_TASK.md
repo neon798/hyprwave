@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: C-W2-002
 wave: 2
 issued: 2026-08-13T03:29:05Z
@@ -68,3 +68,10 @@ git checkout origin/main -- planning/taskmaster/models/c/
 1. Set status: DONE
 2. Append WORK_LOG.md + COMPLETED.md
 3. Do not start unassigned work
+
+
+## Completion
+
+status: DONE
+completed: 2026-08-13T03:35:11Z
+notes: About/version dual DE + Super+Shift+A; status/preflight GHCR-private + localhost-valid guidance; go test + smoke green.

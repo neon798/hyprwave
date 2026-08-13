@@ -92,3 +92,12 @@
 
 - main still OPEN for C-W2-001; lane already complete (tip d21ead0). Re-assert DONE; no re-implement.
 - smoke-host + go test green
+
+## 2026-08-13 — C-W2-002
+
+- About + `--version`: dual DE, 0.2.2, Super+Shift+A; no public-GHCR install claim
+- `status`/`--check`/preflight: GHCR private/auth note; localhost tags valid
+- Image ref parse (`image_ref.go`); ClassifyError 401/403
+- KB `ghcr.md` + `updates.md` consistent
+- go test ./... PASS; smoke-host exit 0
+- status → DONE
