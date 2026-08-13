@@ -3,16 +3,6 @@
 (append only)
 
 
-## 2026-08-13 — B-W5-001
-
-- status OPEN → IN_PROGRESS → DONE
-- Merged origin/main (B W2–4 handbook already on main)
-- Link walk checked=150 missing=0
-- Super+Shift+A + Assistant companions confirmed in keybinds.md + README
-- No GHCR-public claim; duress off-by-default intact
-- ACCURACY-AUDIT B-W5-001 addendum
-
-
 ## 2026-08-13 — B-W4-001
 
 - status OPEN → IN_PROGRESS → DONE
