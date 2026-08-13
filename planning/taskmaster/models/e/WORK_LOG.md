@@ -446,3 +446,9 @@
 - origin/main still OPEN E-W5-001; lane DONE at b7d0412
 - Main tip c712cbd; 87 binds; Shift+A/T/E OK; no forbidden in skel
 - Poll re-verify only; push lane/e-hyprland
+
+## 2026-08-13T08:11Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001; lane DONE at 031bb0b
+- Main tip c712cbd; 87 binds; Shift+A/T/E OK; no forbidden in skel
+- Poll re-verify only; push lane/e-hyprland
