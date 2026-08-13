@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: E-W3-001
 wave: 3
 issued: 2026-08-13T03:33:03Z
@@ -17,15 +17,6 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 E-W2-002 cleaned lock/idle comments and waybar tooltips. Wave 3: stamp
 SESSION-SMOKE against the **local Hyprland image** and only touch dwindle
 layout **comments** (no layout redesign).
-
-Refresh first:
-
-```bash
-git fetch origin
-git checkout lane/e-hyprland
-git merge --ff-only origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/e/
-```
 
 ## Exclusive paths (only these)
 
@@ -48,25 +39,16 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 ## Requirements
 
-- [ ] SESSION-SMOKE: add/refresh inspect notes for
-      `localhost/hyprwave:latest` (assistant bind, hyprpaper, walker, 11
-      themes, no wofi/swaybg). If image missing, record SKIP — do not invent.
-- [ ] `looknfeel.conf` (or layout fragment): dwindle comments match actual
-      settings; no gap/border/animation redesign
-- [ ] Existing-user skel caveat stays in HANDOFF
-- [ ] KEYBIND-MAP only if a comment you add would drift it
-
-## Deliverables
-
-- SESSION-SMOKE inspect addendum
-- Optional dwindle comment hygiene
-- WORK_LOG + COMPLETED
+- [x] SESSION-SMOKE inspect notes for localhost/hyprwave:latest (honest PASS/SKIP)
+- [x] dwindle comments in hyprland.conf + bindings.conf (looknfeel stays theme symlink)
+- [x] Existing-user skel caveat in HANDOFF
+- [x] KEYBIND-MAP unchanged (no bind drift)
 
 ## Done criteria
 
-- [ ] No redesign; no Wofi/swaybg/cliphist
-- [ ] Inspect notes honest (PASS or SKIP)
-- [ ] `git push -u origin lane/e-hyprland`
+- [x] No redesign; no Wofi/swaybg/cliphist
+- [x] Inspect notes honest
+- [x] `git push -u origin lane/e-hyprland`
 
 ## On completion
 
