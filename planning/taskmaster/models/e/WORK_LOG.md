@@ -309,10 +309,6 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T05:33Z — E-W5-001
+## 2026-08-13T05:35Z — E-W5-001 poll re-verify
 
-- Branch: `lane/e-hyprland` (up-to-date with origin/main `c712cbd`)
-- Status → DONE
-- Wave 2–4 merge SHA on main: **`878d38e`**
-- KEYBIND-MAP ↔ bindings.conf: **87** binds; SUPER+SHIFT+A/T/E match; no cliphist/wofi/swaybg in skel
-- No product redesign; lane push after this log
+- origin/main still OPEN; lane DONE; main tip c712cbd; 87 binds Shift+A/T/E OK; no product change

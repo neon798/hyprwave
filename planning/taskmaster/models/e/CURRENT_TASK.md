@@ -49,10 +49,8 @@ git checkout origin/main -- planning/taskmaster/models/e/
 - [x] Map/skel in sync on merged main
 - [x] Lane pushed
 
-## Result (2026-08-13T05:33Z)
+## Result (2026-08-13T05:33Z; re-verify 05:35Z)
 
-- **main tip:** `c712cbd` (includes `878d38e` merge of lane Wave 2–4)
-- **Lane:** merged/up-to-date with `origin/main`; product skel identical for bindings
-- **Binds:** 87 active; SUPER+SHIFT+A (assistant), SUPER+SHIFT+T (theme-gui), SUPER+SHIFT+E (exit) match KEYBIND-MAP
-- **Forbidden:** no cliphist/wofi/swaybg under skel
+- **main tip:** `c712cbd` (Wave 2–4 merge `878d38e`)
+- **Binds:** 87; SUPER+SHIFT+A/T/E match KEYBIND-MAP; no forbidden in skel
 - Idle until director issues a new task_id
