@@ -18,6 +18,30 @@ ok() {
 	echo "OK: $*"
 }
 
+# Return 0 if FILE has an active (non-comment) install/copy of pam snippets
+# (or any write) into live /etc/pam.d. Share-only destinations are fine.
+# Used for real-tree audit + negative fixtures (Wave 3 / D-W3-001).
+active_pam_snippet_to_etc() {
+	local f="$1"
+	[[ -f "$f" ]] || return 1
+	# Any active write tool targeting /etc/pam.d
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE '(^|[[:space:]])(cp|install|rsync|tee|cat|install)([[:space:]].*)?/etc/pam\.d' >/dev/null 2>&1; then
+		return 0
+	fi
+	# Explicit: source under */pam.d (snippets) with destination /etc/pam.d
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE '(cp|install|rsync)[[:space:]].*pam\.d.*/etc/pam\.d' >/dev/null 2>&1; then
+		return 0
+	fi
+	# install -Dm0644 SRC /etc/pam.d/...
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE 'install[[:space:]].+/etc/pam\.d/' >/dev/null 2>&1; then
+		return 0
+	fi
+	return 1
+}
+
 FAILED=0
 TMPDIR_V="${TMPDIR:-/tmp}/hyprwave-duress-validate-$$"
 mkdir -p "$TMPDIR_V"
@@ -616,11 +640,17 @@ if [[ "$snippet_pam_write" -eq 0 ]]; then
 fi
 
 # N6: live build.sh (post-merge) must not install pam.d snippets under /etc/pam.d
+# Read-only audit — Model D must not edit production build.sh (A owns pins).
 if [[ -f build_files/build.sh ]]; then
 	if grep -vE '^\s*#|^\s*$' build_files/build.sh | grep -nE '/etc/pam\.d' >/dev/null 2>&1; then
 		fail "build_files/build.sh has active /etc/pam.d reference"
 	else
 		ok "audit: build_files/build.sh has no active /etc/pam.d paths"
+	fi
+	if active_pam_snippet_to_etc build_files/build.sh; then
+		fail "build_files/build.sh would install/copy pam snippets into /etc/pam.d"
+	else
+		ok "audit: build.sh does not copy pam snippets into /etc/pam.d"
 	fi
 	if grep -vE '^\s*#|^\s*$' build_files/build.sh | grep -E '/usr/share/hyprwave/duress/pam\.d' >/dev/null; then
 		ok "audit: build.sh deploys reference pam.d under /usr/share only"
@@ -636,7 +666,52 @@ else
 	ok "audit: build_files/build.sh not present (snippet-only tree)"
 fi
 
-# N7: docs/layout language matches stock image paths
+# N7 (D-W3-001): negative fixtures — pam *snippet tree* install into /etc/pam.d
+# must be detected (stricter than generic /etc/pam.d write).
+printf '%s\n' \
+	'install -d /usr/share/hyprwave/duress/pam.d' \
+	'# BAD: reference snippets must never land on live stacks' \
+	'cp -a /ctx/duress/pam.d/. /etc/pam.d/' \
+	>"$NEG/buildhook/bad-pam-snippets-to-etc.sh"
+if active_pam_snippet_to_etc "$NEG/buildhook/bad-pam-snippets-to-etc.sh"; then
+	ok "negative: cp pam.d snippets → /etc/pam.d is detected (would fail)"
+else
+	fail "negative: pam.d snippet tree copy into /etc/pam.d was NOT detected"
+fi
+
+printf '%s\n' \
+	'install -d /etc/pam.d' \
+	'install -m0644 /ctx/duress/pam.d/system-auth.snippet /etc/pam.d/system-auth' \
+	>"$NEG/buildhook/bad-install-snippet-over-system-auth.sh"
+if active_pam_snippet_to_etc "$NEG/buildhook/bad-install-snippet-over-system-auth.sh"; then
+	ok "negative: install snippet over /etc/pam.d/system-auth is detected"
+else
+	fail "negative: install snippet → /etc/pam.d/system-auth was NOT detected"
+fi
+
+# Good fixture: share-only deploy must NOT trip the helper
+printf '%s\n' \
+	'install -d /usr/share/hyprwave/duress/pam.d' \
+	'cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/' \
+	'install -m0755 /ctx/duress/hyprwave-duress-setup /usr/bin/hyprwave-duress-setup' \
+	>"$NEG/buildhook/ok-share-only-pam-snippets.sh"
+if active_pam_snippet_to_etc "$NEG/buildhook/ok-share-only-pam-snippets.sh"; then
+	fail "negative: share-only pam.d deploy wrongly flagged as /etc/pam.d install"
+else
+	ok "negative: share-only pam.d deploy is allowed (not flagged)"
+fi
+
+# Real snippet + live build must pass the same helper
+for real in planning/integration/d-duress/build.sh.snippet build_files/build.sh; do
+	[[ -f "$real" ]] || continue
+	if active_pam_snippet_to_etc "$real"; then
+		fail "real $real copies pam snippets into /etc/pam.d"
+	else
+		ok "audit: $real passes pam-snippet→/etc/pam.d gate"
+	fi
+done
+
+# N8: docs/layout language matches stock image paths
 for doc in build_files/duress/ENABLE.md build_files/duress/README.md; do
 	if grep -qE '/usr/share/hyprwave/duress' "$doc" && grep -qE '/etc/duress\.d' "$doc"; then
 		ok "layout paths present in $doc"
