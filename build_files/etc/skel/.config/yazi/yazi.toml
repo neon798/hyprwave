@@ -1,5 +1,9 @@
-# Hyprwave Yazi config. Merged over Yazi's built-in defaults — only overrides here.
+# Hyprwave Yazi — default file manager (launched via Super+E → ghostty -e yazi)
+# Merged over Yazi's built-in defaults — only overrides here.
 # Full reference: https://yazi-rs.github.io/docs/configuration/yazi
+#
+# Browser for http(s)/html is Neonwolf (mimeapps.list + Super+B). Yazi keymap
+# `o` `n` opens the selection in Neonwolf (see keymap.toml).
 
 [mgr]
 # Enable mouse support. With "click", the first click hovers an item and clicking

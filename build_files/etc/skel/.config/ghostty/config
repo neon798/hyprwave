@@ -1,3 +1,7 @@
+# Hyprwave default terminal (Ghostty)
+# Keybinds: Super+Return / Super+T open Ghostty; Super+E runs yazi inside Ghostty.
+# Colors: theme.conf → ~/.config/hyprwave/theme/ghostty/config (hyprwave-theme)
+
 font-family = JetBrains Mono
 font-size = 12
 font-feature = calt

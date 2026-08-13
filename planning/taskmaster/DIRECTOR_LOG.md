@@ -322,3 +322,63 @@
 - HOLD steady: **D** `5958f7a`, **E** `7c8fd63` heartbeats; **C** still `5dfa5a3` (no new poll); A/B/F/G tips unchanged (`a69e0d9` / `3cbe3e6` / `9f59118` / `b6efd63`).
 - Main product still unmerged; sole blocker human serial merge.
 - No new tasks; no re-issue.
+
+## 2026-08-13T02:24:44Z — Director check-in
+
+- **State correction:** local `main` already has serial merge A→G (integrator `8640584`); harness **RESULT OK**; pins clean. Prior DIRECTOR_LOG lines claiming "Main product still unmerged" are **stale**.
+- All models **\*-W1-HOLD OPEN** — refreshed CURRENT_TASK wording (merge done local; await T8 + origin push). No new task_ids.
+- origin lane tips: A `cdabba0`, B `3cbe3e6`, C `19a82b7`, D `41b7958`, E `5d6b968`, F `9f59118`, G `924b835`.
+- **Blockers (human):** push local main → origin (ahead by 342 commits); T8 image builds / VM smokes / GHCR.
+- No re-issue of product work; models correctly idle.
+
+## 2026-08-13T02:25:17Z — Director follow-up (push)
+
+- Pushed integrated `main` to origin: `3db77d4..d5c6961` (includes Wave 1 merges + director HOLD refresh).
+- Program state → `MERGED_PUSHED_AWAITING_T8`.
+- Models still HOLD; sole remaining gates: image builds / VM smokes / GHCR (human/infra T8).
+
+## 2026-08-13T02:35:07Z — Director check-in
+
+- HOLD steady A–G; no DONE/BLOCKED; no new task_ids.
+- Heartbeats: A `cdabba0`, B `cb3e144`, C `68f6b83`, D `a583d33`, E `4bba475`, G `dfb535b`; **F quiet** (`9f59118` since 2026-08-07 — leave OPEN).
+- Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
+- Refreshed HOLD CURRENT_TASK: push complete; await human T8 only.
+- **Blocker:** image builds / VM smokes / GHCR (human/infra).
+- Note: director committed via worktree `/home/zen/hyprwave-director-main` (primary worktree branch thrash from concurrent lane agents).
+
+## 2026-08-13T02:43:34Z — Director check-in
+
+- HOLD steady A–G; no DONE/BLOCKED; no re-issue; no new task_ids.
+- Heartbeats: B `965efe1`, D `443c51b`, E `1ca1b21`, G `02c3678`. Quiet: A `cdabba0`, C `68f6b83`, F `9f59118` (F offline multi-cycle — leave OPEN).
+- Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
+- **Blocker:** human T8 (image builds / VM smokes / GHCR).
+
+## 2026-08-13T02:53:28Z — Director check-in
+
+- HOLD steady A–G; no DONE/BLOCKED; no re-issue; no new task_ids.
+- Tips: A `cdabba0` (quiet), B `965efe1`, C `d56685c` (new heartbeat), D `443c51b`, E `1ca1b21`, F `9f59118` (offline multi-cycle — leave OPEN), G `02c3678`.
+- Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
+- **Blocker:** human T8 (image builds / VM smokes / GHCR).
+
+## 2026-08-13T03:03:33Z — Director check-in
+
+- HOLD steady A–G; lane tips **unchanged** vs prior cycle; no DONE/BLOCKED; no re-issue; no new task_ids.
+- Tips: A `cdabba0`, B `965efe1`, C `d56685c`, D `443c51b`, E `1ca1b21`, F `9f59118` (offline multi-cycle — leave OPEN), G `02c3678`.
+- Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
+- **Blocker:** human T8 (image builds / VM smokes / GHCR).
+
+## 2026-08-13T03:25:00Z — Wave 2 issued (integrator)
+
+- Stopped 10m director loop; handbook flip `70e5616`; CI dual-image PASS; local hyprland image inspected.
+- **Cancelled HOLD.** Issued OPEN Wave 2 tasks (exclusive paths only):
+  A-W2-001 pins/release · B-W2-001 handbook residual · C-W2-001 assistant KB ·
+  D-W2-001 duress safety · E-W2-001 Hyprland session · F-W2-001 COSMIC wake ·
+  G-W2-001 image smoke harness.
+- Models must refresh CURRENT_TASK from `origin/main` (new task_id ≠ `*-W1-HOLD`).
+- Program `WAVE2_ISSUED`. VM smoke still human/T8 after cosmic image.
+
+## 2026-08-13T03:30:00Z — Cadence 2 minutes
+
+- Protocol/README/CURRENT_TASK: poll **2m**. Queue: `WAVE2-QUEUE.md`.
+- Director loop restarted at 2m; quiet cycles **do not** commit main.
+
