@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: A-W2-002
-wave: 2
-issued: 2026-08-13T03:27:11Z
+task_id: A-W4-001
+wave: 4
+issued: 2026-08-13T03:39:11Z
 poll: 2m
-title: GHCR visibility operator steps + dependabot workflow bumps if still open
+title: MERGE-READY: pin_guards still pass; list exclusive commits since post-integration-20260807
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-A-W2-001 closed pins/docs vs private GHCR. Next: a **human-runnable** visibility
-checklist (operator only — do not flip repo settings yourself unless you are
-the package owner) and finish leftover Dependabot workflow bumps.
+Wave 4 is **merge-prep**, not new features. Make MERGE-READY list the
+exclusive commits on `lane/a-stabilize` since `post-integration-20260807`
+(or the Wave 1 merge base) and prove pin guards still pass.
 
 Refresh first:
 
@@ -38,31 +38,28 @@ git checkout origin/main -- planning/taskmaster/models/a/
 ## Forbidden
 
 - Enabling duress PAM, handbook prose (B), assistant/duress product, skel
-- Force-push main; do not invent floating `/releases/latest`
-- Do not claim GHCR is already public (anonymous pull is still 403)
+- Merging this lane onto main
+- Force-push; floating `/releases/latest`
 
 ## Requirements
 
-- [ ] Tighten `RELEASE.md` (or a short `GHCR-VISIBILITY.md`) operator steps:
-      Packages → visibility Public for **both** `hyprwave` and `hyprwave-cosmic`;
-      re-run `ghcr-pull-test.sh` after; record expected 403 until then
-- [ ] Dependabot / Renovate action bumps (`actions/checkout`, `docker/login-action`,
-      etc.): land **only** if exclusive to `.github/workflows/*` and CI-safe.
-      If skipped, WORK_LOG why (scope, pin policy, or needs human review)
-- [ ] No pin policy change unless a bump forces it (still fail-closed)
 - [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
+- [ ] MERGE-READY.md (or INTEGRATION-DAY): commit list + file list vs
+      `origin/main` for exclusive paths only
+- [ ] GHCR still documented private (403)
+- [ ] Do not land unrelated Dependabot majors
 
 ## Deliverables
 
-- Operator GHCR visibility steps (still private until human clicks)
-- Workflow bump commit **or** explicit skip note
-- WORK_LOG + COMPLETED
+- MERGE-READY commit/file inventory
+- Pin verify snippet in WORK_LOG
+- COMPLETED line
 
 ## Done criteria
 
-- [ ] Visibility steps are copy-pasteable and do not claim public GHCR
-- [ ] Dependabot items resolved or documented skip
 - [ ] pins-static PASS
+- [ ] Inventory is exclusive-path only
 - [ ] `git push -u origin lane/a-stabilize`
 
 ## On completion

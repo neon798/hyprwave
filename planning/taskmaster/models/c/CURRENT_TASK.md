@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: C-W2-002
-wave: 2
-issued: 2026-08-13T03:29:05Z
+status: OPEN
+task_id: C-W3-001
+wave: 3
+issued: 2026-08-13T03:37:13Z
 poll: 2m
-title: Assistant About/preflight polish; bootc status copy matches private GHCR
+title: Assistant tests for private-GHCR / dual-DE copy; catalog IDs still real
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-C-W2-001 aligned KB/catalog with the shipped OS. Polish **About** +
-**preflight / `status --check`** so `bootc status` copy does not tell the user
-to pull a public GHCR image (anonymous pull is still **403**).
+C-W2-002 polished About/preflight for private GHCR. Wave 3: **lock that in
+with tests** — private-GHCR / dual-DE copy cannot regress; catalog Flathub
+IDs stay real.
 
 Refresh first:
 
@@ -37,30 +37,28 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Forbidden
 
-- Skel bindings, `build.sh` / Containerfile (snippets only), duress enablement,
-  CI, handbook
+- Skel bindings, `build.sh` / Containerfile, duress enablement, CI, handbook
 - Claiming GHCR is public
+- Inventing Flathub IDs
 
 ## Requirements
 
-- [ ] About tab / `--version` strings: dual DE, assistant 0.2.2, Super+Shift+A;
-      no “not installed” / Wofi / swaybg
-- [ ] `hyprwave-assistant status [--check]` / preflight: if image ref is GHCR,
-      say private/auth may be required; localhost tags are valid
-- [ ] KB `updates.md` / `ghcr.md` stay consistent with private GHCR
+- [ ] Tests (kb/cli/preflight/catalog as appropriate) assert:
+      private/auth GHCR language; localhost tags valid; dual DE; Super+Shift+A;
+      no Wofi/swaybg; duress not enabled
+- [ ] Catalog IDs used in tests/docs still match real Flathub apps
 - [ ] `cd apps/hyprwave-assistant && go test ./...`
-- [ ] `bash planning/integration/c-assistant/smoke-host.sh` still exit 0
+- [ ] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
 
 ## Deliverables
 
-- About + preflight copy fix
-- Green `go test` + smoke-host
+- Regression tests + green go test / smoke-host
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
 - [ ] `go test ./...` PASS
-- [ ] No public-GHCR install claim in About/preflight
+- [ ] No public-GHCR claim
 - [ ] `git push -u origin lane/c-assistant`
 
 ## On completion
@@ -68,10 +66,3 @@ git checkout origin/main -- planning/taskmaster/models/c/
 1. Set status: DONE
 2. Append WORK_LOG.md + COMPLETED.md
 3. Do not start unassigned work
-
-
-## Completion
-
-status: DONE
-completed: 2026-08-13T03:35:11Z
-notes: About/version dual DE + Super+Shift+A; status/preflight GHCR-private + localhost-valid guidance; go test + smoke green.

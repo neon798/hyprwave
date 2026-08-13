@@ -169,3 +169,24 @@ Wave 1 frozen at G-W1-005. Awaiting human integration via INTEGRATION-DAY.md. No
 
 - Lane tip reset onto post-merge `origin/main` (HOLD heartbeats discarded; product already on main).
 - PROGRAM_COMPLETE still open until VM + GHCR policy.
+
+## G-W2-003 — 2026-08-13
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** Wire check-image into CI snippet as continue-on-error / skip-ok
+
+### Work performed
+
+1. `planning/qa/ci-snippet.yml` — new job `packaging-qa-image`:
+   - `continue-on-error: true` (advisory; never blocks)
+   - `bash planning/qa/run-all.sh --only image`
+   - env `HYPRWAVE_IMAGE` / `HYPRWAVE_COSMIC_IMAGE`; no secrets / no GHCR pull
+   - Comments: GH-hosted typically SKIP; enable on self-hosted after build
+2. README: section “Advisory image job (self-hosted / image-bearing runners)”
+3. SMOKE-MATRIX §9.0 + ENDPOINT-RESIDUALS: snippet advisory-only; live workflows remain A
+4. No `.github/workflows/*` edits
+
+### Host run
+
+- `bash planning/qa/run-all.sh` → **RESULT OK**

@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: E-W2-002
-wave: 2
-issued: 2026-08-13T03:29:05Z
+task_id: E-W4-001
+wave: 4
+issued: 2026-08-13T03:39:11Z
 poll: 2m
-title: hyprlock/hypridle copy + waybar tooltip sanity (no redesign)
+title: INTEGRATION-DAY / SESSION-SMOKE: new-user vs existing-home; KEYBIND-MAP tip SHA
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-E-W2-001 locked binds, window rules, and autostart. Small **copy/sanity** pass
-on lock/idle comments and waybar tooltips so a new user is not confused.
-**No visual redesign.**
+Wave 4 is **merge-prep**. Stamp INTEGRATION-DAY / SESSION-SMOKE: skel applies
+to **new users only**; existing homes unchanged. Record KEYBIND-MAP tip SHA
+for the integrator.
 
 Refresh first:
 
@@ -42,31 +42,28 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 ## Forbidden
 
-- COSMIC vendor, duress, apps/, `build.sh`, wholesale theme store rewrites
-- Do not reintroduce Wofi/swaybg/cliphist
-- No bar/layout redesign
+- COSMIC vendor, duress, apps/, `build.sh`, wholesale theme rewrites
+- Wofi/swaybg/cliphist
+- Layout redesign
+- Merging this lane onto main
 
 ## Requirements
 
-- [ ] `hyprlock.conf` / `hypridle.conf`: comments match real binds
-      (Super+Shift+L → loginctl → hypridle `pidof hyprlock || hyprlock`);
-      timeout ladder still documented
-- [ ] Waybar tooltips / module labels: no Wofi, no “coming soon” Assistant,
-      theme/lock/network text matches shipped tools
-- [ ] KEYBIND-MAP / SESSION-SMOKE: one-line lock/idle note if drift
-- [ ] Existing-user skel caveat stays in HANDOFF
-- [ ] Typos/comments only unless a tooltip is factually wrong
+- [ ] INTEGRATION-DAY + SESSION-SMOKE: new-user vs existing-home caveat
+- [ ] KEYBIND-MAP: tip SHA of current lane product commit (W3 inspect /
+      W2 lock comments)
+- [ ] HANDOFF: exclusive file list vs `origin/main` for merge
+- [ ] No bind/layout behavior change unless a comment is factually wrong
 
 ## Deliverables
 
-- Comment/tooltip hygiene
-- HANDOFF note (what new users see)
+- Integration cards + KEYBIND-MAP SHA
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] No Wofi/swaybg/cliphist
-- [ ] No redesign
+- [ ] New-user/existing-home is explicit
+- [ ] Tip SHA recorded
 - [ ] `git push -u origin lane/e-hyprland`
 
 ## On completion

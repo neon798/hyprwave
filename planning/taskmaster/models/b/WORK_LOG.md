@@ -3,6 +3,15 @@
 (append only)
 
 
+## 2026-08-13 — B-W3-001
+
+- status OPEN → IN_PROGRESS → DONE
+- INSTALL: GHCR framed as private (anonymous 403); Path C local build primary; Path A needs auth
+- first-boot: how-you-got-image table (localhost vs GHCR); greeters SDDM/cosmic-greeter kept
+- README registry note: prefer just build → localhost/hyprwave
+- ISSUES B-1 note; ACCURACY-AUDIT B-W3-001; no screenshot binaries; link check 0 missing
+
+
 ## 2026-08-13 — B-W2-002
 
 - status OPEN → IN_PROGRESS → DONE

@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: G-W2-003
-wave: 2
-issued: 2026-08-13T03:25:30Z
+task_id: G-W3-001
+wave: 3
+issued: 2026-08-13T03:33:03Z
 poll: 2m
-title: Wire check-image into CI snippet as continue-on-error / skip-ok
+title: check-image.sh --cosmic PASS on localhost/hyprwave-cosmic:latest; residuals VM-only
 
 ## Duty cycle
 
@@ -14,10 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-G-W2-001 landed `planning/qa/check-image.sh` (skip-if-missing) and hooked it
-in `run-all.sh`. CI still uses the **copy-paste** snippet only. Add an
-**advisory** image-inspect job so integrators can paste it without turning a
-missing GH runner image into a red build.
+G-W2-003 wired the advisory CI snippet. Wave 3: prove
+`check-image.sh --cosmic` against `localhost/hyprwave-cosmic:latest` and
+narrow residuals to **VM smoke + GHCR public** only.
 
 Refresh first:
 
@@ -38,31 +37,29 @@ git checkout origin/main -- planning/taskmaster/models/g/
 ## Forbidden
 
 - Product skel, cosmic vendor, apps, duress, pins, handbook prose
-- Do **not** edit `.github/workflows/*` (A owns live CI). Snippet only.
+- Do not edit `.github/workflows/*` (A owns live CI)
 - Do not merge other lanes onto main
 
 ## Requirements
 
-- [ ] Extend `planning/qa/ci-snippet.yml` with a job (e.g. `packaging-qa-image`):
-      - `continue-on-error: true` (advisory; never blocks the workflow)
-      - Runs `bash planning/qa/run-all.sh --only image` (SKIP if no image/podman)
-      - Document that GH-hosted runners will typically **SKIP** (no local tag)
-      - Optional cosmic: `HYPRWAVE_COSMIC_IMAGE` / note `--cosmic` — still SKIP-ok
-      - No secrets; do not require a GHCR pull
-- [ ] README: how to enable the job after a self-hosted / image-bearing runner exists
-- [ ] SMOKE-MATRIX or ENDPOINT-RESIDUALS: one line that snippet is advisory-only
-- [ ] `bash planning/qa/run-all.sh` still RESULT OK (do not change skip-if-missing)
+- [ ] `bash planning/qa/check-image.sh --cosmic` PASS if
+      `localhost/hyprwave-cosmic:latest` exists; SKIP (not FAIL) if missing
+- [ ] Record output snippet in WORK_LOG
+- [ ] ENDPOINT-RESIDUALS / PROGRAM-CLOSEOUT / SMOKE-MATRIX: T8 **image builds
+      met**; remaining open = VM qcow2 smokes + anonymous GHCR 403
+- [ ] `bash planning/qa/run-all.sh` still RESULT OK
+- [ ] Do not claim VM smoke done
 
 ## Deliverables
 
-- ci-snippet.yml image job + README note
-- Residual: live workflow still A's copy step (not done in this task)
+- Cosmic image check PASS or honest SKIP
+- Residuals VM + GHCR only
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] Snippet job is skip-ok / continue-on-error
-- [ ] No live workflow change
 - [ ] Harness RESULT OK
+- [ ] Residuals no longer list local image build as pending
 - [ ] `git push -u origin lane/g-qa`
 
 ## On completion
