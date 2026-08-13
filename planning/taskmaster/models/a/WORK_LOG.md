@@ -359,13 +359,16 @@ releases/latest                               CLEAN
 **branch:** `lane/a-stabilize`  
 **main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
 
-Director still OPEN on `origin/main`. Re-verified exclusive pin/CI only.
-No pin/workflow edits. No invented A-W6.
+A Waves 2–4 landed on main as `42450b1`. Director copy on `origin/main`
+still lists A-W5-001 OPEN. Re-verified exclusive pin/CI only. No
+`versions.env` / `build.sh` / workflow edits. No invented A-W6.
 
 ```
 planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
 A-W2-002 SHAs on HEAD                      metadata 6.2.0 / login 4.5.1 / cosign 4.1.2
+                                           (dc802804 / abd2ef45 / 6f9f1778)
 GHCR                                       still documented private
+                                           (GHCR-VISIBILITY.md + README 403)
 ```
 
-Poll 2026-08-13T06:17:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+Poll 2026-08-13T06:20:01Z: still DONE; main `c712cbd`; pins-static 11 PASS.
