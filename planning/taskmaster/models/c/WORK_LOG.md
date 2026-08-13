@@ -87,3 +87,8 @@
 - HANDOFF: image-hooked 0.2.2 verified on localhost/hyprwave:latest; smoke-host day-1 guards
 - `go test ./...` PASS; `bash planning/integration/c-assistant/smoke-host.sh` exit 0
 - status → DONE
+
+## 2026-08-13 — poll re-assert C-W2-001
+
+- main still OPEN for C-W2-001; lane already complete (tip d21ead0). Re-assert DONE; no re-implement.
+- smoke-host + go test green
