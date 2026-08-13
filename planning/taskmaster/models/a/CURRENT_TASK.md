@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: A-W5-001
 wave: 5
 issued: 2026-08-13T03:50:00Z
@@ -38,12 +38,12 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Requirements
 
-- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS on merged main
-- [ ] Confirm `build.yml` action SHA bumps from A-W2-002 are on HEAD
-- [ ] GHCR still documented private
-- [ ] WORK_LOG: merge commit SHA
+- [x] `bash planning/qa/run-all.sh --only pins-static` PASS on merged main
+- [x] Confirm `build.yml` action SHA bumps from A-W2-002 are on HEAD
+- [x] GHCR still documented private
+- [x] WORK_LOG: merge commit SHA
 
 ## Done criteria
 
-- [ ] pins-static PASS
-- [ ] `git push -u origin lane/a-stabilize`
+- [x] pins-static PASS
+- [x] `git push -u origin lane/a-stabilize`

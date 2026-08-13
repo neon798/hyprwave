@@ -352,3 +352,30 @@ releases/latest                               CLEAN
 1. merge `origin/main` (A-W4-001 assignment)
 2. MERGE-READY / INTEGRATION-DAY inventory
 3. taskmaster DONE
+
+## 2026-08-13 — A-W5-001
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`
+
+### Merge SHA
+
+`42450b1` — `merge: lane/a-stabilize Wave 2–4 (pins, GHCR card, CI action bumps)`
+(`origin/main` = `42450b12bb0f7652503a6a21668f881008d3fa66`)
+
+Lane catch-up: `17cf678` Merge origin/main into lane/a-stabilize.
+
+### Confirmations
+
+- `pins-static` PASS (11) on merged tree
+- `build.yml` on main HEAD has A-W2-002 SHAs:
+  metadata-action `dc802804` v6.2.0; login-action `abd2ef45` v4.5.1;
+  cosign-installer `6f9f1778` v4.1.2; checkout still v6; push-to-registry still v2
+- GHCR still documented private (`GHCR-VISIBILITY.md` / `RELEASE.md` 403)
+- Exclusive paths vs `origin/main`: empty (already landed)
+- No new features
+
+### Commits
+
+1. merge `origin/main` (`42450b1`)
+2. taskmaster DONE
