@@ -1,21 +1,27 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: F-W4-001
-wave: 4
-issued: 2026-08-13T03:44:30Z
-completed: 2026-08-13T04:30:00Z
-title: INTEGRATOR-CHECKLIST + vendor script; ISO-cosmic note current
+status: OPEN
+task_id: F-W5-001
+wave: 5
+issued: 2026-08-13T04:05:00Z
+poll: 2m
+title: Post-merge vendor paths (F Wave 2–4 on main)
 
-## Summary
+## Objective
 
-Wave 4 merge-prep: refreshed INTEGRATOR-CHECKLIST with host stamp (vendor script
-exit 0, greeter ≠ SDDM, ISO F-W3-001 note current, image id 189340691cc7).
-iso-cosmic.toml TOML OK; no vendor rewrite. FREEZE-STATUS / README linked.
-Pushed lane/f-cosmic.
+COSMIC Waves 2–4 are on `main`. Re-run check-vendor-paths.sh.
+
+```bash
+git fetch origin && git checkout lane/f-cosmic
+git merge origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/f/
+```
+
+## Exclusive paths
+
+build_files/usr/share/cosmic/** disk_config/iso-cosmic.toml planning/integration/f-cosmic/** planning/taskmaster/models/f/**
 
 ## Done criteria
 
-- [x] Docs do not claim SDDM on cosmic
-- [x] check-vendor-paths exit 0; iso-cosmic.toml valid
-- [x] `git push -u origin lane/f-cosmic`
+- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` exit 0
+- [ ] `git push -u origin lane/f-cosmic`
