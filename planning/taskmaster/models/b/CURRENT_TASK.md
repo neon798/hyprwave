@@ -1,30 +1,29 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: B-W5-001
-wave: 5
-issued: 2026-08-13T04:00:00Z
+task_id: B-W6-001
+wave: 6
+issued: 2026-08-13T04:15:00Z
 poll: 2m
-title: Post-merge handbook check (B Wave 2–4 on main)
+title: CHANGELOG — Wave 2–4 is on main
 
 ## Objective
 
-Handbook Waves 2–4 are on `main`. Re-run the link walk. Confirm Super+Shift+A
-and Assistant companions are present. No GHCR-public claim. No duress-on.
+A–G Waves 2–4 are merged to `main`. Flip CHANGELOG / ISSUES so Unreleased
+does not still read like those docs are lane-only. GHCR still not public.
 
 ```bash
-git fetch origin
-git checkout lane/b-docs
+git fetch origin && git checkout lane/b-docs
 git merge origin/main || git rebase origin/main
 git checkout origin/main -- planning/taskmaster/models/b/
 ```
 
 ## Exclusive paths
 
-INSTALL.md CHANGELOG.md README.md docs/** planning/integration/b-docs/** planning/taskmaster/models/b/**
+CHANGELOG.md docs/** planning/integration/b-docs/** planning/taskmaster/models/b/**
 
 ## Done criteria
 
-- [ ] Link walk 0 missing
-- [ ] Super+Shift+A in keybinds.md
+- [ ] Dated or Unreleased note: W2–W4 on main; VM smoke still open
+- [ ] No GHCR-public / duress-on claims
 - [ ] `git push -u origin lane/b-docs`
