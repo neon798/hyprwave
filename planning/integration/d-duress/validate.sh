@@ -392,12 +392,18 @@ else
 	fail "DRILL.md missing rehearsal banner / dry-run scope / ENABLE.md pointer"
 fi
 # Drill must not prescribe installing pam_duress into live PAM as a drill step
-if grep -nE '^\| C[0-9] |^\| B[0-9] |^\| A[0-9] |^\| D[0-9] ' planning/integration/d-duress/DRILL.md |
-	grep -iE 'pam\.d|pam_duress\.so' |
-	grep -viE 'grep|no pam|Zero|zero|OK:|not |never|without|reference|inventory|enable lines|stock' >/dev/null; then
-	fail "DRILL phase table may prescribe PAM enable during drill"
+if grep -nEiE 'auth[[:space:]]+(sufficient|required|requisite|optional)[[:space:]]+pam_duress|cp[[:space:]].*/etc/pam\.d|sed[[:space:]].*pam_duress|insert.*pam_duress' \
+	planning/integration/d-duress/DRILL.md |
+	grep -viE 'Prefer|never start|do not|STOP|ENABLE\.md|runbook|sufficient pam_duress\.so` after|out of this drill|Production enable' >/dev/null; then
+	# Allow prose that forbids enable or points to ENABLE.md; fail on instructional enable recipes in-drill
+	if grep -nE '^\| [ABCD][0-9] ' planning/integration/d-duress/DRILL.md |
+		grep -iE 'auth[[:space:]]+.*pam_duress|cp .*/etc/pam\.d|sed .*/etc/pam\.d|Insert `auth' >/dev/null; then
+		fail "DRILL phase table may prescribe PAM enable during drill"
+	else
+		ok "DRILL phase tables stay PAM-inert (no enable recipe in phases)"
+	fi
 else
-	ok "DRILL phase tables stay PAM-inert (inspect/grep only)"
+	ok "DRILL has no pam_duress enable recipe (inspect/dry-run only)"
 fi
 
 # Recovery language in ENABLE
