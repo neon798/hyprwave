@@ -11,17 +11,14 @@ title: Post-merge skel verify (E Wave 2–4 landed on main)
 ## Result
 
 Post-merge KEYBIND-MAP verify complete. No redesign / no product skel
-changes required.
+changes required. Poll 03:58Z still green (main `07be046`, lane `dd2e161`).
 
 | Check | Result |
 |-------|--------|
-| Bind count | **87** active binds in `bindings.conf` |
-| SUPER+SHIFT+T | `hyprwave-theme-gui` ✓ |
-| SUPER+SHIFT+A | Ghostty class `dev.hyprwave.Assistant` → `hyprwave-assistant` ✓ |
-| SUPER+SHIFT+E | `exit` ✓ |
-| No cliphist/wofi/swaybg | comment-only forbids ✓ |
-| Main merge (E W2–4) | `878d38e` |
-| Re-merged main | `07be046` → lane `0eee777` |
+| Bind count | **87** |
+| SUPER+SHIFT+T/A/E | match KEYBIND-MAP ✓ |
+| No cliphist/wofi/swaybg | ✓ |
+| E merge on main | `878d38e` |
 
 ## Done criteria
 
