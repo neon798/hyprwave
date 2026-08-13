@@ -1,10 +1,18 @@
-# Integration-day card — Hyprland (E-W1-005)
+# Integration-day card — Hyprland (E-W1-005 / E-W4-001 merge-prep)
 
 One-page operator log for **post-merge VM** smoke. Full detail: [SESSION-SMOKE.md](./SESSION-SMOKE.md).  
 Binds: [KEYBIND-MAP.md](./KEYBIND-MAP.md) · Residuals: [HANDOFF.md](./HANDOFF.md) · Start order: [AUTOSTART.md](./AUTOSTART.md)
 
-**Setup:** Hyprland image · **new** test user · SDDM → Hyprland  
-**Pass rule:** items **1–30** all PASS (31–36 optional)
+## New user vs existing home (critical — E-W4-001)
+
+| Audience | What happens |
+|----------|----------------|
+| **New user** (account created **after** image/skel install) | Gets full `/etc/skel/.config/**` (hypr, waybar, walker, …). This card assumes that path. |
+| **Existing home** (user already has `~/.config`) | Image/skel updates **do not** rewrite their home. Binds/windowrules/autostart from this lane **will not appear** until manual merge or a fresh test account. **Do not** run a destructive migrator. |
+
+**Setup:** Hyprland image · **new** test user (required for fair skel smoke) · SDDM → Hyprland  
+**Pass rule:** items **1–30** all PASS (31–36 optional)  
+**Lane product tip (KEYBIND-MAP / skel):** `d8db11f` — see [KEYBIND-MAP.md](./KEYBIND-MAP.md)
 
 ---
 
@@ -16,7 +24,8 @@ Binds: [KEYBIND-MAP.md](./KEYBIND-MAP.md) · Residuals: [HANDOFF.md](./HANDOFF.m
 | Tester | |
 | Image ref / tag | |
 | Image digest (`sha256:…`) | |
-| Git commit (hyprwave / skel) | |
+| Git commit (hyprwave / skel) | prefer **`d8db11f`** product tip or later merge commit on main |
+| Test account type | **new user** / existing (existing = not full skel smoke) |
 | VM host notes | |
 | Overall **1–30** | PASS / FAIL |
 | Optional 31–36 | PASS / FAIL / SKIP |
@@ -88,7 +97,7 @@ Binds: [KEYBIND-MAP.md](./KEYBIND-MAP.md) · Residuals: [HANDOFF.md](./HANDOFF.m
 | 33 | Multi-mon focus + wallpaper all outputs | |
 | 34 | hyprpaper restart restores art | |
 | 35 | Idle ~10m locks before DPMS | |
-| 36 | Super+SHIFT+A inactive (bind commented) | |
+| 36 | Super+SHIFT+A → Assistant floats (class dev.hyprwave.Assistant) | |
 
 ---
 
