@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-VERSION="1.2.0"
+VERSION="1.2.1"
 TEMPLATE_DIR="${HYPRWAVE_DURESS_TEMPLATE_DIR:-/usr/share/hyprwave/duress/templates}"
 WIPE_TEMPLATE="00-wipe-sensitive.sh"
 MILD_TEMPLATE="10-clear-histories.sh"
@@ -24,19 +24,24 @@ usage() {
 	cat <<'EOF'
 Usage: hyprwave-duress-setup [OPTIONS]
 
-Opt-in setup for a personal duress password (pam-duress).
+Operator-only opt-in setup for a personal duress password (pam-duress).
 
-This tool:
+Stock Hyprwave ships pam_duress.so + this tool with PAM OFF BY DEFAULT.
+  - No /etc/pam.d line is written by packaging or by this tool.
+  - Signing scripts alone does nothing until an admin enables PAM (ENABLE.md).
+  - Prefer --dry-run first; test only in a disposable VM.
+
+This tool (operator actions only):
   - warns about irreversible data loss (aggressive wipe) or milder clears
   - optionally installs a Hyprwave template into ~/.duress/ (or /etc/duress.d)
   - signs a script with duress_sign (you choose the duress password)
   - sets permissions required by pam_duress (500 on script / 400 on .sha256)
 
 It does NOT:
-  - enable pam_duress in /etc/pam.d (admin/integrator only)
+  - enable pam_duress in /etc/pam.d (admin/integrator only — still OFF by default)
   - sign any global script under /etc/duress.d unless you pass --system
   - run wipe/clear scripts during setup
-  - ship or create pre-signed .sha256 files in the OS image
+  - ship or create pre-signed .sha256 files in the OS image or git tree
 
 Templates (unsigned in the image; severity):
   00-wipe-sensitive.sh     AGGRESSIVE — keys, browsers, common secrets
@@ -50,6 +55,7 @@ Options:
   --script PATH           Sign an existing script (copied into target dir if needed)
   --system                Operate on /etc/duress.d (requires root); still no PAM enable
   --dry-run               Print planned actions; do not copy/sign/remove anything
+                          (never enables PAM; never writes .sha256)
   --list                  List scripts and signatures in the target directory
   --remove NAME           Remove script NAME and its .sha256 from the target directory
   --verify [DIR]          Read-only: check modes + matching .sha256 for scripts
@@ -63,9 +69,8 @@ Environment:
   HYPRWAVE_DURESS_TEMPLATE_DIR   Override template directory
                                  (default: /usr/share/hyprwave/duress/templates)
 
-After setup, ensure an administrator has enabled pam_duress per
-/usr/share/hyprwave/duress/ENABLE.md (if installed) or the Hyprwave docs.
-Stock Hyprwave: PAM OFF BY DEFAULT.
+After opt-in signing, PAM remains OFF until an administrator enables pam_duress
+per /usr/share/hyprwave/duress/ENABLE.md (if installed) or the Hyprwave docs.
 EOF
 }
 
@@ -89,6 +94,15 @@ dry() {
 		return 0
 	fi
 	return 1
+}
+
+dry_run_banner() {
+	[[ "${DRY_RUN:-0}" == "1" ]] || return 0
+	cat >&2 <<'EOF'
+[dry-run] operator preview only — no files written, no duress_sign, no .sha256
+[dry-run] PAM stays OFF (this tool never edits /etc/pam.d)
+[dry-run] stock image: module may exist; zero pam_duress lines until admin ENABLE.md
+EOF
 }
 
 confirm() {
@@ -623,6 +637,9 @@ while [[ $# -gt 0 ]]; do
 		;;
 	esac
 done
+
+# Dry-run is operator preview only; never implies PAM enablement.
+dry_run_banner
 
 case "${ACTION:-}" in
 "")

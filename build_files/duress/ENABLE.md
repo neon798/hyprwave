@@ -6,6 +6,23 @@ This file is the image-local copy of the enable procedure. The full copy is
 **Default: OFF.** Packaging alone does not activate duress authentication.  
 There is no supported `DURESS=enable` image build mode (assets only).
 
+## Image layout (stock Hyprwave)
+
+Inspected on `localhost/hyprwave:latest` (2026-08-13):
+
+| Path | Stock state |
+|---|---|
+| `/usr/lib64/security/pam_duress.so` | Present (module ships) |
+| `/usr/bin/hyprwave-duress-setup` | Present (opt-in tool) |
+| `/usr/share/hyprwave/duress/` | README, ENABLE.md, `templates/`, `pam.d/` (docs only), BUILD-INFO |
+| `/usr/share/hyprwave/duress/pam.d/*.snippet` | **Reference only** — not installed into `/etc/pam.d` |
+| `/etc/duress.d/` | Exists; empty of scripts (README marker only) |
+| `/etc/pam.d/*` | **Zero** `pam_duress` lines |
+| `*.sha256` under duress paths | **None** |
+
+Repo packaging also has `THREAT-MODEL.md` under `build_files/duress/` (may be
+copied into `/usr/share/hyprwave/duress/` on later image rebuilds).
+
 ## Quick path (Fedora Atomic / ublue)
 
 1. Keep a **root shell open** for the entire change + test window.
