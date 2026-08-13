@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: D-W5-001
 wave: 5
 issued: 2026-08-13T04:05:00Z
@@ -23,6 +23,6 @@ build_files/duress/** build_files/build-duress.sh planning/integration/d-duress/
 
 ## Done criteria
 
-- [ ] `bash planning/integration/d-duress/validate.sh` PASS
-- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [ ] `git push -u origin lane/d-duress`
+- [x] `bash planning/integration/d-duress/validate.sh` PASS
+- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [x] `git push -u origin lane/d-duress`
