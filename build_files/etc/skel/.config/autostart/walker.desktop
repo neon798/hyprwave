@@ -1,7 +1,10 @@
 [Desktop Entry]
 Name=Walker
-Comment=Walker Service
+Comment=Walker GApplication service (Hyprland also exec-once this — D-Bus singleton)
 Exec=walker --gapplication-service
 StartupNotify=false
 Terminal=false
 Type=Application
+X-GNOME-Autostart-enabled=true
+# Backup path when systemd-xdg-autostart-generator runs under graphical-session.target.
+# Primary start is exec-once in ~/.config/hypr/autostart.conf for raw Hyprland sessions.

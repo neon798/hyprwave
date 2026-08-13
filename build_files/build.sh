@@ -53,6 +53,48 @@ install -m0755 /ctx/usr/bin/hyprwave-theme-gui /usr/bin/hyprwave-theme-gui
 install -d /usr/share/applications
 install -m0644 /ctx/usr/share/applications/hyprwave-theme.desktop /usr/share/applications/hyprwave-theme.desktop
 
+### ---- duress packaging (OFF BY DEFAULT — no PAM enablement) ----
+### Module binaries (pam_duress.so, duress_sign) come from the duressbuilder
+### stage COPY. Here we only deploy templates, setup tool, docs, and an empty
+### global script dir. Enabling pam_duress in /etc/pam.d is a human post-boot
+### step (see /usr/share/hyprwave/duress/ENABLE.md) — never done in this build.
+install -d /usr/share/hyprwave/duress/templates
+install -d /usr/share/hyprwave/duress/pam.d
+install -d /etc/duress.d
+
+if [ -d /ctx/duress/templates ]; then
+	cp -a /ctx/duress/templates/. /usr/share/hyprwave/duress/templates/
+	find /usr/share/hyprwave/duress/templates -type f -name '*.sh' -exec chmod 0644 {} +
+fi
+
+if [ -f /ctx/duress/README.md ]; then
+	install -m0644 /ctx/duress/README.md /usr/share/hyprwave/duress/README.md
+fi
+if [ -d /ctx/duress/pam.d ]; then
+	cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/
+fi
+
+if [ -f /ctx/duress/ENABLE.md ]; then
+	install -m0644 /ctx/duress/ENABLE.md /usr/share/hyprwave/duress/ENABLE.md
+fi
+
+if [ -f /ctx/duress/hyprwave-duress-setup ]; then
+	install -m0755 /ctx/duress/hyprwave-duress-setup /usr/bin/hyprwave-duress-setup
+fi
+
+cat >/etc/duress.d/README <<'EOF'
+# /etc/duress.d — global pam-duress scripts (run as root when signed password matches)
+#
+# Stock Hyprwave ships this directory EMPTY and does NOT enable pam_duress.so.
+# To configure:
+#   1. Enable PAM (see /usr/share/hyprwave/duress/ENABLE.md) — admin decision
+#   2. Preview: hyprwave-duress-setup --dry-run --mild-template
+#   3. sudo hyprwave-duress-setup --system --mild-template   # or --wipe-template
+# Scripts must be mode 500/540/550 with a matching .sha256 from duress_sign.
+# Never commit or bake .sha256 into the image.
+EOF
+chmod 0644 /etc/duress.d/README
+
 ### ---- desktop: ${DE} ----
 
 case "$DE" in
@@ -417,6 +459,29 @@ Categories=System;PackageManager;Settings;
 StartupNotify=true
 Terminal=false
 EOF
+
+### Hyprwave Assistant — data + desktop entry (binary built in the
+### assistant-builder stage of the Containerfile and COPYed into the final image).
+### Runtime deps are already on the image (ghostty, flatpak, bootc). No network
+### services. Safe on both DE=hyprland and DE=cosmic.
+ASSISTANT_SRC="${ASSISTANT_SRC:-/ctx}"
+ASSISTANT_DATA_SRC="${ASSISTANT_SRC}/usr/share/hyprwave/assistant"
+ASSISTANT_DESKTOP_SRC="${ASSISTANT_SRC}/usr/share/applications/hyprwave-assistant.desktop"
+
+if [[ -d "${ASSISTANT_DATA_SRC}" ]]; then
+	install -d /usr/share/hyprwave/assistant
+	cp -a "${ASSISTANT_DATA_SRC}/." /usr/share/hyprwave/assistant/
+	chmod -R a+rX /usr/share/hyprwave/assistant
+fi
+
+if [[ -f "${ASSISTANT_DESKTOP_SRC}" ]]; then
+	install -d /usr/share/applications
+	install -m 0644 "${ASSISTANT_DESKTOP_SRC}" /usr/share/applications/hyprwave-assistant.desktop
+fi
+
+if [[ -x /tmp/hyprwave-assistant && ! -x /usr/bin/hyprwave-assistant ]]; then
+	install -m 0755 /tmp/hyprwave-assistant /usr/bin/hyprwave-assistant
+fi
 
 ### Refresh the hicolor icon cache so GTK launchers (Walker) pick up the icons we
 ### just added (flatarcade.svg). The base image ships a prebuilt icon-theme.cache;

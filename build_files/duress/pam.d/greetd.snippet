@@ -1,0 +1,12 @@
+# REFERENCE ONLY — COSMIC uses cosmic-greeter (greetd).
+# Check the actual stack on the image:
+#   ls /etc/pam.d/greetd /etc/pam.d/cosmic-greeter
+# Prefer a surgical insert of pam_duress after pam_unix (sufficient), or
+# enable once via system-auth if greetd includes it.
+#
+# Illustrative Debian-style auth block (merge with vendor session/account):
+
+#%PAM-1.0
+auth     [success=2 default=ignore]      pam_unix.so
+auth     [success=1 default=ignore]      pam_duress.so
+auth     requisite                       pam_deny.so

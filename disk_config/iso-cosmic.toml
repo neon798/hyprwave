@@ -1,3 +1,56 @@
+# Hyprwave COSMIC installable ISO — bootc-image-builder config
+#
+# =============================================================================
+# FINAL OPERATOR NOTES (F-W1-003) — keep in sync with CI / Justfile / GHCR
+# =============================================================================
+#
+# Image names
+#   Build arg:     DE=cosmic
+#   Image name:    hyprwave-cosmic   (CI matrix / Just `build-cosmic`)
+#   Local tag:     localhost/hyprwave-cosmic:<tag>   (default tag often `latest`)
+#   Published:     ghcr.io/neon798/hyprwave-cosmic:latest
+#
+# Expected bootc ref after install (kickstart %post below)
+#   transport: registry
+#   image:     ghcr.io/neon798/hyprwave-cosmic:latest
+#   Do NOT use ghcr.io/neon798/hyprwave:latest here — that is the Hyprland ISO
+#   (disk_config/iso.toml). A wrong ref yields a Hyprland session on a “cosmic” ISO.
+#
+# How to build
+#   just build-iso-cosmic
+#   # Internally: bootc-image-builder --type iso -f disk_config/iso-cosmic.toml
+#   # Target image: localhost/hyprwave-cosmic (see Justfile build-iso-cosmic)
+#   Prerequisites: rootful Podman, KVM, pre-built hyprwave-cosmic container.
+#
+# Installer (Anaconda) modules
+#   Enabled: Storage, Runtime, Network, Security, Services, Users, Timezone
+#   Disabled: Subscription (not a RHEL subscription flow)
+#
+# Known installer / first-boot limits
+#   1. Kickstart only switches the bootc image; it does not pre-create users beyond
+#      what Anaconda Users module / disk customizations provide.
+#   2. No autologin — cosmic-greeter remains the day-1 login gate (see GREETER.md).
+#   3. Greeter wallpaper/theme is not Hyprwave-branded (session is). Do not treat
+#      stock greeter chrome as a failed install.
+#   4. Network during install depends on Anaconda Network module; post-install
+#      NetworkManager is the guest default (smoke network items in SESSION-SMOKE).
+#   5. ISO size/time track the full cosmic container (comps group + shared apps);
+#      declutter removes only store/edit/player/wallpapers packages (DECLUTTER.md).
+#   6. After first boot, verify: display-manager → cosmic-greeter, rpm -q declines
+#      for cosmic-store, and /usr/share/backgrounds/hyprwave/default.png exists.
+#   7. Mutate-in-place switch requires registry pull access to ghcr.io on first
+#      bootc switch; offline airgap needs a mirrored ref (out of scope for this file).
+#
+# Sibling configs
+#   disk_config/iso.toml   → Hyprland variant (hyprwave:latest)
+#   disk_config/disk.toml  → shared qcow2/raw customizations (user, filesystem)
+#
+# Integration docs
+#   planning/integration/f-cosmic/SESSION-SMOKE.md
+#   planning/integration/f-cosmic/DECLUTTER.md
+#   planning/integration/f-cosmic/GREETER.md
+# =============================================================================
+
 [customizations.installer.kickstart]
 contents = """
 %post
@@ -5,6 +58,8 @@ bootc switch --mutate-in-place --transport registry ghcr.io/neon798/hyprwave-cos
 %end
 """
 
+# Anaconda module set: storage/runtime/network/security/services/users/timezone.
+# Subscription module disabled (not a RHEL subscription flow).
 [customizations.installer.modules]
 enable = [
   "org.fedoraproject.Anaconda.Modules.Storage",
