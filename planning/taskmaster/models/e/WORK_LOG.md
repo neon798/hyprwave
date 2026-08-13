@@ -309,48 +309,10 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T04:05Z — E-W5-001 poll re-verify after main move
+## 2026-08-13T05:33Z — E-W5-001
 
-- Merged origin/main `f97680d` → lane `977e38d` (taskmaster STATUS/B/G only)
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no forbidden; no product edits
+- Branch: `lane/e-hyprland` (up-to-date with origin/main `c712cbd`)
 - Status → DONE
-
-## 2026-08-13T04:54Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001; lane already DONE (tip 0b535c6)
-- merge origin/main: already up to date (f97680d); 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg
-- status remains DONE; no product edits
-
-## 2026-08-13T04:55Z — E-W5-001 poll re-verify after main move
-
-- Merged origin/main `c712cbd` → lane `fd6b9e2` (G-W5 wofi-comment allowlist only)
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
-- Status → DONE; no product edits
-
-## 2026-08-13T04:57Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001 @ c712cbd; lane already merged; 87 binds OK; status remains DONE
-
-## 2026-08-13T04:58Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
-- status remains DONE; no product edits
-
-## 2026-08-13T05:08Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
-- status remains DONE; no product edits
-
-## 2026-08-13T05:18Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
-- status remains DONE; no product edits
-
-## 2026-08-13T05:28Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
-- status remains DONE; no product edits
+- Wave 2–4 merge SHA on main: **`878d38e`**
+- KEYBIND-MAP ↔ bindings.conf: **87** binds; SUPER+SHIFT+A/T/E match; no cliphist/wofi/swaybg in skel
+- No product redesign; lane push after this log
