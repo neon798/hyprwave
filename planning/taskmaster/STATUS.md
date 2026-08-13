@@ -2,27 +2,27 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **HUMAN INTEGRATION DONE (local)**  
-**Updated:** 2026-08-07 (integrator, serial merge A→G)  
+**Updated:** 2026-08-13T02:24:44Z (director check-in)  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Status |
 |---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main |
-| B | Docs / handbook | `lane/b-docs` | merged → main |
-| C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets |
-| D | Duress / security packaging | `lane/d-duress` | merged → main + snippets |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | merged → main |
-| F | COSMIC variant | `lane/f-cosmic` | merged → main |
-| G | QA automation / integration prep | `lane/g-qa` | merged → main |
+| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main; **HOLD OPEN** |
+| B | Docs / handbook | `lane/b-docs` | merged → main; **HOLD OPEN** |
+| C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets; **HOLD OPEN** |
+| D | Duress / security packaging | `lane/d-duress` | merged → main; **HOLD OPEN** |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | merged → main; **HOLD OPEN** |
+| F | COSMIC variant | `lane/f-cosmic` | merged → main; **HOLD OPEN** |
+| G | QA automation / integration prep | `lane/g-qa` | merged → main; **HOLD OPEN** |
 
-## This check-in
+## This check-in (2026-08-13T02:24:44Z)
 
-- Serial merge **A→B→C→D→E→F→G** performed by integrator on `main`.
-- C and D **snippets applied** (assistant-builder stage + duress packaging, PAM OFF).
-- Super+Shift+A bind enabled for assistant; wofi/swaybg comment clarified.
+- Reconfirmed serial merge **A→B→C→D→E→F→G** on local `main` (tip `8640584`).
 - Host harness: `planning/qa/run-all.sh` → **RESULT OK** (33 PASS, 0 FAIL).
-- `just lint` → pre-existing info-level findings only (SC1091/SC2015); fails on `set -e` (was already failing pre-integration).
-- Tagged `pre-integration-20260807` before merges.
+- Pins: `build_files/build.sh` has **no** `/releases/latest`; `build_files/versions.env` present.
+- All models remain **\*-W1-HOLD** OPEN (no new product tasks; T8 is human/infra).
+- Lane tips (origin): A/G still heartbeat; B/F quiet; C/D/E last heartbeats ~2026-08-07 UTC.
+- Refreshed HOLD CURRENT_TASK wording: local merge done; await T8 + origin push.
 
 ## Integration readiness
 
@@ -33,9 +33,9 @@
 | Pins on main | **PASS** (pins-static) |
 | Harness on main | **PASS** (RESULT OK) |
 | Image builds / VM smokes / GHCR publish | **PENDING (T8)** |
-| Push local main → origin | **PENDING** |
+| Push local main → origin | **PENDING** (main ahead by 342) |
 
-**Remaining:** `just build` / `just build-cosmic`, VM smokes, GHCR publish decision, push to origin.
+**Remaining:** push `main` → origin, `just build` / `just build-cosmic`, VM smokes, GHCR publish decision. Then Director may issue residual/Wave-2 task_ids or `PROGRAM_COMPLETE`.
 
 ## Program state
 

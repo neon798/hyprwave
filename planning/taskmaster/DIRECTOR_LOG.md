@@ -322,3 +322,11 @@
 - HOLD steady: **D** `5958f7a`, **E** `7c8fd63` heartbeats; **C** still `5dfa5a3` (no new poll); A/B/F/G tips unchanged (`a69e0d9` / `3cbe3e6` / `9f59118` / `b6efd63`).
 - Main product still unmerged; sole blocker human serial merge.
 - No new tasks; no re-issue.
+
+## 2026-08-13T02:24:44Z — Director check-in
+
+- **State correction:** local `main` already has serial merge A→G (integrator `8640584`); harness **RESULT OK**; pins clean. Prior DIRECTOR_LOG lines claiming "Main product still unmerged" are **stale**.
+- All models **\*-W1-HOLD OPEN** — refreshed CURRENT_TASK wording (merge done local; await T8 + origin push). No new task_ids.
+- origin lane tips: A `cdabba0`, B `3cbe3e6`, C `19a82b7`, D `41b7958`, E `5d6b968`, F `9f59118`, G `924b835`.
+- **Blockers (human):** push local main → origin (ahead by 342 commits); T8 image builds / VM smokes / GHCR.
+- No re-issue of product work; models correctly idle.
