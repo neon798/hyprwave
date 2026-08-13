@@ -82,3 +82,10 @@
 - No product work; did not mark DONE.
 - Freeze tip unchanged: `adbb4f4`.
 - Idle until Director changes `task_id`.
+
+## 2026-08-13 — D-W1-HOLD poll heartbeat
+
+- Fetched `origin/main`; refreshed `planning/taskmaster/models/d/` (`reissued: 2026-08-13T02:24:44Z`; still `D-W1-HOLD` OPEN).
+- Director: serial merge A→G done on local main; program `MERGED_LOCAL_AWAITING_T8_AND_PUSH`.
+- No product work; did not mark DONE; freeze tip `adbb4f4` unchanged.
+- Idle until Director issues a new `task_id` (post-T8 / Wave 2).
