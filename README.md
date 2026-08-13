@@ -18,8 +18,9 @@ sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest && sudo systemctl reboo
 Full guide (variant pick, ISO vs rebase, first login): **[INSTALL.md](INSTALL.md)** ·
 **[docs/first-boot.md](docs/first-boot.md)**.
 
-> **Registry note:** GHCR packages may be **private** until visibility is fixed. If
-> `bootc switch` / `podman pull` returns 403, see INSTALL or build from source.
+> **Registry note:** Anonymous GHCR pull is **still 403**. Prefer local
+> `just build hyprwave latest` → `localhost/hyprwave:latest` (see [INSTALL.md](INSTALL.md)).
+> Path A needs public packages **or** `podman login ghcr.io`.
 
 **Docs:** [Handbook index](docs/README.md) ·
 **[First boot](docs/first-boot.md)** ·
@@ -49,6 +50,7 @@ Full guide (variant pick, ISO vs rebase, first login): **[INSTALL.md](INSTALL.md
 | Files | Yazi |
 | App store | FlatArcade |
 | Themes | 11 packs via `hyprwave-theme` / Super+Shift+T |
+| Assistant | Hyprwave Assistant (optional; Super+Shift+A) |
 
 COSMIC variant differences: [docs/cosmic.md](docs/cosmic.md).
 
@@ -60,6 +62,7 @@ Hyprwave ships with a small suite of synthwave-themed apps that share its `synth
 |---|---|---|
 | 🕹️ | **[FlatArcade](https://github.com/neon798/flatarcade)** | A synthwave 8-bit arcade TUI for browsing Flathub and managing Flatpaks. Rust + ratatui. |
 | 🐺 | **[Neonwolf](https://github.com/neon798/neonwolf)** | A synthwave, privacy-focused Firefox fork — a thin neon overlay on LibreWolf. |
+| 📟 | **Hyprwave Assistant** | Offline-friendly TUI for `bootc` / Flatpak updates, a curated catalog, and the on-image knowledge base. Ships in both variants (`/usr/bin/hyprwave-assistant`). Hyprland: **Super+Shift+A** (Ghostty). Optional — not required for a usable desktop. |
 
 ## SDDM Theme
 
@@ -91,7 +94,7 @@ Hyprland remains the default desktop. A second image variant ships the **COSMIC 
 - Local build: `just build-cosmic`
 - ISO: `just build-iso-cosmic`
 
-Shared components on both variants: Neonwolf (browser), FlatArcade (Flathub TUI), Yazi (file manager), Ghostty (terminal), CLI tools, fonts, wallpapers.
+Shared components on both variants: Neonwolf (browser), FlatArcade (Flathub TUI), Yazi (file manager), Ghostty (terminal), Hyprwave Assistant, CLI tools, fonts, wallpapers.
 
 The COSMIC image uses `cosmic-greeter` (no SDDM) and does not include Hyprland-specific packages or dotfiles (walker, waybar, mako, hypr configs). It installs the official Fedora `@cosmic-desktop-environment` group plus `cosmic-greeter`. Vendor defaults for the desktop (dock, wallpaper) are overridden from `build_files/usr/share/cosmic/`.
 
@@ -128,14 +131,12 @@ hyprwave-theme menu    # launches the same GUI in a graphical session
 
 Theme store: `/usr/share/hyprwave/themes/`. Ghostty picks up colors on new windows. COSMIC writes Appearance + wallpaper under `~/.config/cosmic/`; Hyprland live-reloads borders/waybar/walker/mako/hyprpaper.
 
-## Upcoming (optional)
-
-Not required for a usable desktop; may land after parallel lanes merge into the published image:
+## Optional extras
 
 | Feature | Notes |
 |---------|--------|
-| **Hyprwave Assistant** | Go TUI for updates / Flatpak / knowledge base — treat as **upcoming** until listed as shipped in the changelog |
-| **Duress password** | Optional PAM tooling — **off by default**; never enabled on a stock install. Overview: [docs/security.md](docs/security.md) |
+| **Hyprwave Assistant** | **Ships** in the image. Hyprland: Super+Shift+A. COSMIC: app menu / `hyprwave-assistant`. Confirm upgrades; reboot still required after `bootc upgrade`. |
+| **Duress password** | Packaged **off by default** — stock login is ordinary PAM. Never enabled on a fresh install. Overview: [docs/security.md](docs/security.md) |
 
 ## Building from source
 
