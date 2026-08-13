@@ -314,3 +314,9 @@
 - Merged origin/main `f97680d` → lane `977e38d` (taskmaster STATUS/B/G only)
 - 87 binds; Shift+A/T/E match KEYBIND-MAP; no forbidden; no product edits
 - Status → DONE
+
+## 2026-08-13T04:54Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001; lane already DONE (tip 0b535c6)
+- merge origin/main: already up to date (f97680d); 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg
+- status remains DONE; no product edits
