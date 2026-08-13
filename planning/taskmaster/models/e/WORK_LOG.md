@@ -298,3 +298,9 @@
 - KEYBIND-MAP product tip SHA d8db11f (E-W3-001; W2 stack included)
 - HANDOFF exclusive merge file list vs origin/main
 - No bind/layout behavior change; did not merge lane onto main
+
+## 2026-08-13T03:43Z — E-W4-001 poll re-verify
+
+- origin/main still OPEN E-W4-001; lane product tip 39d5d7c intact (KEYBIND d8db11f)
+- new/existing home + exclusive HANDOFF list present; no product changes
+- status remains DONE; idle until new task_id
