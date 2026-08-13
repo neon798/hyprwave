@@ -309,21 +309,13 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T03:47Z — E-W5-001
+## 2026-08-13T03:51Z — E-W5-001 (re-verify after B/C merge on main)
 
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
 - Status → DONE
-- Fast-forward `lane/e-hyprland` to origin/main after Waves 2–4 land
-- **Main merge SHA:** `878d38e` (`merge: lane/e-hyprland Wave 2–4 (session hardening)`)
-- KEYBIND-MAP vs bindings.conf: Super+SHIFT+A (assistant class), Super+SHIFT+T, Super+SHIFT+E match; **87** binds
-- No wofi/swaybg/cliphist in skel (negation comments only)
-- KEYBIND-MAP + HANDOFF stamped with merge SHA 878d38e
-
-## 2026-08-13T03:48Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001; lane already DONE at bab5f0e (tip set 192eef2)
-- Re-count binds: 87; Super+SHIFT+A/T/E match; merge SHA 878d38e; no product changes
-- status remains DONE; idle until new task_id
-
-## 2026-08-13T03:49Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001; lane DONE (bab5f0e); merge 878d38e; no product changes
+- Merged `origin/main` (`f2fcb76` — B-W5/C-W5 issued; B/C Wave 2–4 already on main) → tip `0d4e365`
+- E product merge still `878d38e` (ancestor of main); skel exclusive paths unchanged vs main except prior KEYBIND/HANDOFF stamps
+- Re-count: **87** binds; SUPER+SHIFT+A/T/E match KEYBIND-MAP
+- Forbidden: no cliphist/wofi/swaybg execs (comment-only)
+- No product skel edits this cycle
+- Push: `lane/e-hyprland`

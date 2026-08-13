@@ -21,4 +21,4 @@ E-W3-001 | 2026-08-13 | SESSION-SMOKE image inspect + dwindle comments | d8db11f
 
 E-W4-001 | 2026-08-13 | merge-prep: new/existing home caveat + KEYBIND tip d8db11f | 39d5d7c
 
-E-W5-001 | 2026-08-13 | post-merge verify KEYBIND-MAP vs bindings; merge 878d38e | bab5f0e
+E-W5-001 | 2026-08-13 | Post-merge KEYBIND-MAP=bindings (87; Shift+A/T/E); no skel product change | 0d4e365
