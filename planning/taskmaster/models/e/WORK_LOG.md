@@ -309,77 +309,11 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T06:51Z — E-W5-001 poll re-verify (remain DONE)
+## 2026-08-13T07:13Z — E-W5-001 poll re-verify
 
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- 87 binds; Shift+A/T/E OK; bindings == main; no forbidden; no product changes
-
-## 2026-08-13T06:53Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T06:55Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T06:57Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T06:58Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- 87 binds; Shift+A/T/E OK; bindings == main; no forbidden; no product changes
-
-## 2026-08-13T06:59Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T07:01Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T07:03Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T07:05Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T07:07Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T07:08Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- 87 binds; Shift+A/T/E OK; bindings == main; no forbidden; no product changes
-
-## 2026-08-13T07:09Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
-
-## 2026-08-13T07:11Z — E-W5-001 poll re-verify (remain DONE)
-
-- origin/main still OPEN E-W5-001; tip `c712cbd`; merge `878d38e`
-- Main tip unchanged; 87 binds; Shift+A/T/E OK; no forbidden in skel
-- Poll re-verify only; no product changes; push `lane/e-hyprland`
+- origin/main CURRENT_TASK still OPEN E-W5-001 (director not cleared)
+- origin/main tip `c712cbd` (G-W5 merge); Wave 2–4 E merge `878d38e` on main history
+- lane already includes origin/main (merge-base == main tip); skel product paths match main
+- Re-count: **87** active binds; SUPER+SHIFT+A (assistant), +T (theme-gui), +E (exit) match KEYBIND-MAP
+- No cliphist/wofi/swaybg under build_files/etc/skel
+- Status remains **DONE**; no product changes; idle until new task_id
