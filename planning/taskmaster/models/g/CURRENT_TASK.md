@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: G-W3-001
-wave: 3
-issued: 2026-08-13T03:33:03Z
+task_id: G-W4-001
+wave: 4
+issued: 2026-08-13T03:44:30Z
 poll: 2m
-title: check-image.sh --cosmic PASS on localhost/hyprwave-cosmic:latest; residuals VM-only
+title: probe-merge-conflicts.sh --product-only all lanes vs main; refresh PRE-MERGE-DRY-RUN
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-G-W2-003 wired the advisory CI snippet. Wave 3: prove
-`check-image.sh --cosmic` against `localhost/hyprwave-cosmic:latest` and
-narrow residuals to **VM smoke + GHCR public** only.
+G-W3-001 proved `check-image.sh --cosmic` and narrowed residuals to VM +
+GHCR. Wave 4 is **merge-prep**: re-probe all lanes vs current `origin/main`
+(`--product-only`) and refresh PRE-MERGE-DRY-RUN. **A Wave 2–4 is already
+merged** (`42450b1`) — record that.
 
 Refresh first:
 
@@ -42,24 +43,21 @@ git checkout origin/main -- planning/taskmaster/models/g/
 
 ## Requirements
 
-- [ ] `bash planning/qa/check-image.sh --cosmic` PASS if
-      `localhost/hyprwave-cosmic:latest` exists; SKIP (not FAIL) if missing
-- [ ] Record output snippet in WORK_LOG
-- [ ] ENDPOINT-RESIDUALS / PROGRAM-CLOSEOUT / SMOKE-MATRIX: T8 **image builds
-      met**; remaining open = VM qcow2 smokes + anonymous GHCR 403
+- [ ] `git fetch origin && bash planning/qa/probe-merge-conflicts.sh --product-only`
+- [ ] PRE-MERGE-DRY-RUN: current lane tip SHAs; note **A already on main**
+- [ ] Commit probe summary (or honest SKIP if a lane ref is missing)
 - [ ] `bash planning/qa/run-all.sh` still RESULT OK
-- [ ] Do not claim VM smoke done
+- [ ] Do not claim VM smoke done; GHCR still private/403
 
 ## Deliverables
 
-- Cosmic image check PASS or honest SKIP
-- Residuals VM + GHCR only
+- Fresh product-only probe + PRE-MERGE-DRY-RUN
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] Harness RESULT OK
-- [ ] Residuals no longer list local image build as pending
+- [ ] Probe run recorded; harness RESULT OK
+- [ ] Residuals still VM + GHCR only
 - [ ] `git push -u origin lane/g-qa`
 
 ## On completion

@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: C-W3-001
-wave: 3
-issued: 2026-08-13T03:37:13Z
+status: OPEN
+task_id: C-W4-001
+wave: 4
+issued: 2026-08-13T03:44:30Z
 poll: 2m
-title: Assistant tests for private-GHCR / dual-DE copy; catalog IDs still real
+title: HANDOFF + snippet-selftest: Containerfile/build.sh hooks still match 0.2.2
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-C-W2-002 polished About/preflight for private GHCR. Wave 3: **lock that in
-with tests** — private-GHCR / dual-DE copy cannot regress; catalog Flathub
-IDs stay real.
+C-W3-001 locked private-GHCR / dual-DE / catalog tests. Wave 4 is
+**merge-prep**: prove HANDOFF + snippets still describe 0.2.2 hooks
+(`assistant-builder`, ldflags version, desktop + data COPY). Add or
+refresh a snippet-selftest so drift fails closed.
 
 Refresh first:
 
@@ -37,29 +38,32 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Forbidden
 
-- Skel bindings, `build.sh` / Containerfile, duress enablement, CI, handbook
+- Skel bindings, live `build.sh` / Containerfile, duress enablement, CI, handbook
 - Claiming GHCR is public
 - Inventing Flathub IDs
+- Merging this lane onto main
 
 ## Requirements
 
-- [x] Tests (kb/cli/preflight/catalog as appropriate) assert:
-      private/auth GHCR language; localhost tags valid; dual DE; Super+Shift+A;
-      no Wofi/swaybg; duress not enabled
-- [x] Catalog IDs used in tests/docs still match real Flathub apps
-- [x] `cd apps/hyprwave-assistant && go test ./...`
-- [x] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
+- [ ] HANDOFF.md still lists 0.2.2 apply order (Containerfile.snippet +
+      build.sh.snippet, Super+Shift+A is E/integrator-only)
+- [ ] snippet-selftest (new or existing under `planning/integration/c-assistant/`)
+      checks snippets mention version `0.2.2`, `assistant-builder`, and
+      `/usr/bin/hyprwave-assistant` — FAIL on drift
+- [ ] `cd apps/hyprwave-assistant && go test ./...`
+- [ ] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
+- [ ] Do not edit live Containerfile/build.sh (snippets + HANDOFF only)
 
 ## Deliverables
 
-- Regression tests + green go test / smoke-host
+- HANDOFF + snippet-selftest green
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [x] `go test ./...` PASS
-- [x] No public-GHCR claim
-- [x] `git push -u origin lane/c-assistant`
+- [ ] Hooks still 0.2.2; selftest PASS
+- [ ] No public-GHCR claim
+- [ ] `git push -u origin lane/c-assistant`
 
 ## On completion
 

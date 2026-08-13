@@ -38,6 +38,12 @@ Anonymous **pull** must work for the package (or you must be logged in). If
 pull fails with `unauthorized` / `403`, fix GHCR visibility first (`RELEASE.md`)
 or authenticate — verify cannot succeed on an unreadable image.
 
+**2026-08-13:** CI signed both variants on `77755f1` (run `31662742064`).
+Anonymous `ghcr.io/neon798/hyprwave:latest` is still **unauthorized**, so
+unauthenticated `cosign verify` of that tag will fail until Package visibility
+is Public (or you `podman login ghcr.io`). Cosmic inspect can succeed while
+hyprland stays private — treat that as **not** a verified public release.
+
 ## Verify a tag
 
 ```bash

@@ -25,14 +25,21 @@ requires pins + static checks; use this list when a machine is free.
 
 ## GHCR public pull (status snapshot)
 
-Recorded during lane A stabilize (2026-08-06; re-probe with
-`scripts/ghcr-pull-test.sh` on 2026-08-07). **Does not block other lanes.**
-See also `RELEASE.md` for the visibility fix checklist and private contingency.
+**Do not claim GHCR is anonymously public.** CI has pushed both variants
+(`77755f1`, Actions run `31662742064`, 2026-08-13) but package visibility
+is still private for at least `hyprwave`. Local images exist:
+
+- `localhost/hyprwave:latest`
+- `localhost/hyprwave-cosmic:latest`
+
+Re-probe 2026-08-13 (`scripts/ghcr-pull-test.sh --owner neon798`):
 
 | Image | Result | Notes |
 |-------|--------|-------|
-| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` / cannot pull without auth — package private or unpublished |
-| `ghcr.io/neon798/hyprwave-cosmic:latest` | **FAIL / mixed** | previously 403; re-check both with empty authfile via `ghcr-pull-test.sh` |
+| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` — Package settings → Public (hyprland first) |
+| `ghcr.io/neon798/hyprwave-cosmic:latest` | inspect **OK** | not a dual-package pass; `ghcr-pull-test.sh` still exits 1 |
+
+See `GHCR-VISIBILITY.md` (copy-paste Public clicks) and `RELEASE.md` (private contingency).
 
 ```bash
 bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh
@@ -43,6 +50,18 @@ Action for maintainer: make packages public (or document auth), confirm CI push
 on `main` succeeds, then re-check anonymous pull.
 
 Local-only validation remains valid: build from this tree and boot a qcow2/ISO.
+
+## Wave 3 image proofs (2026-08-13, A-W3-001)
+
+| Proof | Result | Evidence |
+|-------|--------|----------|
+| Local Hyprland image | **PASS** (inspect) | `localhost/hyprwave:latest` Id `9bc0e1e57d6b` Digest `sha256:a935dbeb23d1…` Created 2026-08-13T03:16:36Z |
+| Local COSMIC image | **PASS** (inspect) | `localhost/hyprwave-cosmic:latest` Id `189340691cc7` Digest `sha256:a9ca6920971a…` Created 2026-08-13T03:22:53Z |
+| CI dual-image build + GHCR push | **PASS** | Actions run `31662742064` on `77755f1` (hyprland + cosmic, signed) |
+| Anonymous GHCR | **FAIL** 403/`unauthorized` | `hyprwave` unauthorized; cosmic inspect OK; `ghcr-pull-test.sh` exit 1 — **not public** |
+| VM / first-boot smoke | **OPEN** | No qcow2/ISO boot this tick; greeter/session rows stay unchecked |
+
+Operator next step for public pull: [`GHCR-VISIBILITY.md`](./GHCR-VISIBILITY.md). Do **not** document GHCR as anonymously readable.
 
 ## Out of scope (do not block first-boot “usable”)
 
@@ -231,4 +250,58 @@ Follow-ups: re-run this log on qcow2 with digest filled
 Overall: PASS for pin pipeline; ship still blocked on GHCR public visibility
 Blockers for ship: GHCR public packages; dual-variant image + one filled VM log
 Follow-ups: none on lane A exclusive paths
+```
+
+```
+### Run log
+- Date (UTC): 2026-08-13
+- Operator: Model A (A-W2-001)
+- Branch / commit: lane/a-stabilize (post origin/main merge; Wave 1 on main)
+- Artifact: localhost/hyprwave:latest + localhost/hyprwave-cosmic:latest (local); GHCR pushed by CI 77755f1 / run 31662742064
+- Image digest: n/a (local only this session)
+- Image ID / RepoDigest: localhost/hyprwave:latest 9bc0e1e57d6b; localhost/hyprwave-cosmic:latest 189340691cc7
+- Variant: both local images present
+- Host notes: no VM; pin verify + anonymous GHCR probe
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS | no /releases/latest |
+| verify-pins.sh (--head) | PASS | 4× HTTP 200; pins match latest tags |
+| verify-pins.sh --checksum [--light] | PASS | Yazi + FlatArcade + SVG sha256 |
+| pins-static QA | PASS | planning/qa/run-all.sh --only pins-static |
+| image/disk build | SKIP | local images already present |
+| greeter appears | SKIP | |
+| GHCR anonymous pull | FAIL | hyprwave unauthorized; cosmic inspect OK; test exit 1 |
+| Cosign verify (digest/tag) | SKIP | blocked by hyprwave unauthorized |
+
+Overall: pins current + fail-closed; CI dual-push real; GHCR **not** anonymously public
+Blockers for ship: Package visibility Public on hyprwave (and confirm both via ghcr-pull-test.sh)
+Follow-ups: Dependabot skipped this cycle (see WORK_LOG)
+```
+
+```
+### Run log
+- Date (UTC): 2026-08-13
+- Operator: Model A (A-W3-001)
+- Branch / commit: lane/a-stabilize (Wave 3 stamp)
+- Artifact: localhost/hyprwave:latest + localhost/hyprwave-cosmic:latest; CI 77755f1 / run 31662742064
+- Image digest: sha256:a935dbeb23d13191ad05da0e876d46e97a0839c8931bca87adef240945618886 (hyprland); sha256:a9ca6920971a9c4f8b17ba7faa64f6d618fdd9e3e6890b7321be5b81b0fb4dfa (cosmic)
+- Image ID / RepoDigest: 9bc0e1e57d6b / 189340691cc7
+- Variant: both local images inspected
+- Host notes: no VM; pin HEAD --light + pins-static
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS | no /releases/latest |
+| verify-pins.sh (--head --light) | PASS | 4× HTTP 200 |
+| pins-static QA | PASS | 11 PASS |
+| image/disk build | PASS | local inspects only (images already present) |
+| CI dual-image | PASS | run 31662742064 |
+| greeter / VM smoke | OPEN | not run |
+| GHCR anonymous pull | FAIL | 403/unauthorized; do not claim public |
+| Cosign verify (digest/tag) | SKIP | blocked by hyprwave unauthorized |
+
+Overall: local+CI image proofs stamped; pins still current; GHCR still private
+Blockers for ship: GHCR Public on both packages; VM first-boot still OPEN
+Follow-ups: none invented
 ```

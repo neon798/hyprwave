@@ -324,3 +324,31 @@ planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
 
 Pins still current. GHCR still documented 403. VM smoke still OPEN.
 No invented follow-up.
+
+## 2026-08-13 — A-W4-001
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`
+
+### Work done
+
+- MERGE-READY.md Wave 4 exclusive inventory vs `origin/main` /
+  `post-integration-20260807` (commits + files; `build.sh` pin block unchanged).
+- INTEGRATION-DAY points at that section.
+- pin_guards still pass. GHCR still documented private. No Dependabot majors.
+
+### Pin verify
+
+```
+verify-pins.sh --head --light                 exit 0
+planning/qa/run-all.sh --only pins-static     RESULT: OK (11 PASS)
+releases/latest                               CLEAN
+```
+
+**Pins still current.**
+
+### Commits
+
+1. merge `origin/main` (A-W4-001 assignment)
+2. MERGE-READY / INTEGRATION-DAY inventory
+3. taskmaster DONE
