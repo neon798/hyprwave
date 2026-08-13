@@ -13,4 +13,4 @@ E-W1-005 | 2026-08-07 | INTEGRATION-DAY one-page smoke card (gates 1-30 + run lo
 
 E-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip 935fd96 | c722fd5
 
-E-W2-001 | 2026-08-13 | Assistant Super+Shift+A active; float rules; KEYBIND-MAP 87; Wave2 smoke | pending
+E-W2-001 | 2026-08-13 | Assistant Super+Shift+A active; float rules; KEYBIND-MAP 87; Wave2 smoke | e364669
