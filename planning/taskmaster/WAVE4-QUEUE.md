@@ -1,7 +1,8 @@
-# Wave 4 queue — integration prep (issue when matching W3-001 is DONE)
+# Wave 4 queue — **fully issued** 2026-08-13 (A/B/E earlier; C/D/F/G this check-in)
 
-Product of Waves 2–3 is still on **lanes**. Next work is merge-readiness, not
-new features. Integrator still owns VM qcow2 smokes.
+Product of Waves 2–3 is still on **lanes** (except **A Waves 2–4 merged**
+`42450b1`). Next work is merge-readiness, not new features. Integrator
+still owns VM qcow2 smokes. Do not invent Wave 5 here.
 
 | Next id | After | Title |
 |---|---|---|
