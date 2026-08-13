@@ -49,7 +49,32 @@
 
 - HOLD: await human integration; freeze tip 2dc0509; no product work; status left OPEN
 
-## 2026-08-13 — C-W1-HOLD poll
+## 2026-08-07 — C-W1-HOLD poll
 
-- Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; no new task_id from origin/main
-- Worktree recovered main→lane/c-assistant; status left OPEN per Director
+- Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; await Director new task_id or human integration
+- Recovered worktree main→lane/c-assistant; merged origin/main (88fe6b3 director check-in)
+
+## 2026-08-07 — C-W1-HOLD poll
+
+- Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; no new task_id
+- Recovered worktree main→lane/c-assistant; merged origin/main (e146124 director check-in)
+
+## 2026-08-07 — C-W1-HOLD poll
+
+- Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; no new task_id
+- Recovered worktree main→lane/c-assistant; merged origin/main (33c8863 director check-in)
+
+## 2026-08-07 — C-W1-HOLD poll
+
+- Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; no new task_id
+- Recovered worktree main→lane/c-assistant; merged origin/main (5ae56e6 director check-in)
+
+## 2026-08-07 — C-W1-HOLD poll
+
+- Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; no new task_id
+- Recovered worktree main→lane/c-assistant; merged origin/main (3db77d4 director check-in)
+
+## 2026-08-13 — C-W1-HOLD poll (scheduler confirmed)
+
+- Idle: still OPEN HOLD (reissued 02:24Z); MERGED_LOCAL_AWAITING_T8_AND_PUSH; no product work
+- 10m durable scheduler 019fda889c3c active; leave status OPEN
