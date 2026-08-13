@@ -3,8 +3,7 @@
 High-level security posture for Hyprwave users. This is **not** a formal certification
 or a substitute for the operator threat model on the duress lane.
 
-Sources for optional duress packaging (read-only; may live only on **`lane/d-duress`**
-until merge):
+Sources for optional duress packaging (on `main`; PAM still **off**):
 
 | Path | Role |
 |------|------|
@@ -154,4 +153,4 @@ the changelog as shipped, do not expect `/usr/bin/hyprwave-assistant` on disk.
 - [troubleshooting.md](troubleshooting.md) — login and pull failures  
 - [first-boot.md](first-boot.md) — expected stock auth after install  
 - [faq.md](faq.md) — short duress Q&A  
-- [CHANGELOG.md](../CHANGELOG.md) — what actually ships (lane D still **pending merge**)  
+- [CHANGELOG.md](../CHANGELOG.md) — what actually ships (duress packaging on main; PAM off)  

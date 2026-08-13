@@ -1,27 +1,26 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** 1 complete → **MERGED + PUSHED; T8 pending**  
-**Updated:** 2026-08-13T03:03:33Z (director check-in)  
+**Director wave:** 1 complete → **T8 IN PROGRESS**  
+**Updated:** 2026-08-13T03:15:00Z (integrator)  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Status |
 |---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main; **HOLD OPEN** (quiet) |
-| B | Docs / handbook | `lane/b-docs` | merged → main; **HOLD OPEN** |
-| C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets; **HOLD OPEN** |
-| D | Duress / security packaging | `lane/d-duress` | merged → main + snippets; **HOLD OPEN** |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | merged → main; **HOLD OPEN** |
-| F | COSMIC variant | `lane/f-cosmic` | merged → main; **HOLD OPEN** (quiet tip) |
-| G | QA automation / integration prep | `lane/g-qa` | merged → main; **HOLD OPEN** |
+| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main; HOLD |
+| B | Docs / handbook | `lane/b-docs` | merged → main; POST-MERGE-DOC-FLIP on main |
+| C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets; HOLD |
+| D | Duress / security packaging | `lane/d-duress` | merged → main + snippets; HOLD |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | merged → main; HOLD |
+| F | COSMIC variant | `lane/f-cosmic` | merged → main; HOLD |
+| G | QA automation / integration prep | `lane/g-qa` | merged → main; HOLD |
 
-## This check-in (2026-08-13T03:03:33Z)
+## This update (2026-08-13T03:15Z)
 
-- Main tip `a15bb1c`; origin in sync.
-- Harness: **RESULT OK** (33 PASS, 0 FAIL).
-- All models **\*-W1-HOLD OPEN** — no DONE/BLOCKED/IN_PROGRESS; no new task_ids.
-- Lane tips unchanged vs prior cycle: A `cdabba0`, B `965efe1`, C `d56685c`, D `443c51b`, E `1ca1b21`, F `9f59118` (offline multi-cycle), G `02c3678`.
-- Program state unchanged: await human T8.
+- Director 10-minute `main` commits **stopped** (was cancelling CI).
+- Handbook POST-MERGE-DOC-FLIP executed on `main` (honest: GHCR `:latest` not claimed).
+- Local T8: `just build hyprwave latest` then `just build-cosmic` from `77755f1`.
+- Host harness last run: **RESULT OK** (33 PASS).
 
 ## Integration readiness
 
@@ -30,12 +29,14 @@
 | Wave 1 freeze + docs on lanes | **GO** |
 | Serial merge A→G | **DONE** |
 | Pins on main | **PASS** |
-| Harness on main | **PASS** (RESULT OK) |
-| Push local main → origin | **DONE** |
-| Image builds / VM smokes / GHCR publish | **PENDING (T8)** |
-
-**Remaining:** `just build` / `just build-cosmic`, VM smokes, GHCR publish decision. Then residual tasks or `PROGRAM_COMPLETE`.
+| Harness on main | **PASS** |
+| Push local main → origin | **DONE** (pre-flip tip) |
+| Handbook pending-merge flip | **DONE** (this tree; push after CI) |
+| Image builds (CI hyprland + cosmic) | **PASS** (run `31662742064` on `77755f1`) |
+| GHCR anonymous public pull | **NO** (403) |
+| VM smokes | **PENDING** |
+| Local `just build` / `build-cosmic` | **IN PROGRESS** |
 
 ## Program state
 
-`MERGED_PUSHED_AWAITING_T8`
+`T8_IN_PROGRESS`

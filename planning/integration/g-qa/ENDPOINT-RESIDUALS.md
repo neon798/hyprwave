@@ -71,9 +71,9 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| DE=cosmic path | **partial** | on main; F checklist on lane |
-| Vendor + Mode dark / favorites | **met on main** + F delta **met on lane** | |
-| `just build-cosmic` | **open** | T8 |
+| DE=cosmic path | **met on main** | F checklist + vendor on main |
+| Vendor + Mode dark / favorites | **met on main** | |
+| `just build-cosmic` | **open** | T8 (in progress 2026-08-13) |
 
 ---
 
@@ -101,9 +101,9 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| Walker/waybar/hyprpaper stack | **met on main** + E on lane | no-wofi PASS on G tree |
+| Walker/waybar/hyprpaper stack | **met on main** | no-wofi PASS |
 | Themes structure | **met on main** | themes PASS (11) |
-| Keybinds docs | **partial** | B+E on lanes |
+| Keybinds docs | **met on main** | POST-MERGE-DOC-FLIP 2026-08-13 |
 
 ---
 
@@ -111,7 +111,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| Greeter/inventory/checklist | **met on lane** F | |
+| Greeter/inventory/checklist | **met on main** | F docs on main |
 | Session smoke | **open** | VM |
 
 ---
@@ -121,7 +121,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 | Criterion | Status | Evidence |
 |---|---|---|
 | INSTALL/CHANGELOG/docs | **met on main** | merged `lane/b-docs` |
-| Accuracy post-merge | **open** | B POST-MERGE-DOC-FLIP |
+| Accuracy post-merge | **met on main** | POST-MERGE-DOC-FLIP 2026-08-13; GHCR not claimed |
 
 ---
 
@@ -139,7 +139,7 @@ Probe (G-W1-004): all seven lanes **product-clean** vs main (taskmaster-only con
 
 | Criterion | Status | Evidence |
 |---|---|---|
-| RELEASE/COSIGN/FIRST-BOOT | **met on lane** A | |
+| RELEASE/COSIGN/FIRST-BOOT | **met on main** | A docs merged |
 | Publish minimum green | **open** | SMOKE-MATRIX §9 + INTEGRATION-DAY §8 |
 | Pins on main | **open** | item 2 |
 

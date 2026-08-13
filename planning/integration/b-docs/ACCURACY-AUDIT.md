@@ -204,12 +204,12 @@ Post-merge template checkboxes, drop obsolete “pending merge” banners.
 
 | Check | Result |
 |-------|--------|
-| main tip | |
-| Link check | |
-| Keybinds match skel | |
-| Duress still off-by-default in docs | |
-| GHCR public claim avoided unless verified | |
-| CHANGELOG dated release section | |
-| Pending-merge banners reduced accurately | |
+| main tip | `77755f1` (docs flip on top of this; merge tag `post-integration-20260807`) |
+| Link check | checked=263 missing=0 (2026-08-13 flip) |
+| Keybinds match skel | Super+Shift+E exit; Super+Shift+A assistant; Super+Shift+T themes |
+| Duress still off-by-default in docs | **Yes** |
+| GHCR public claim avoided unless verified | **Yes** — GHCR `:latest` not claimed as this tip |
+| CHANGELOG dated release section | `## [2026-08-13] — Wave 1 integration` |
+| Pending-merge banners reduced accurately | Handbook flipped; historical planning docs left as-is |
 
-Do not mark the pass complete without product merge evidence.
+Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR still open.

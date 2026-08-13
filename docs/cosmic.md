@@ -59,23 +59,23 @@ keyboard settings. Launch apps from the COSMIC launcher or dock. First-hour path
 
 ---
 
-## Greeter & session smoke (lane F)
+## Greeter & session smoke
 
-COSMIC image greeter and first-session expectations are written on **`lane/f-cosmic`**
-under `planning/integration/f-cosmic/` (not always present on `main` until merge):
+COSMIC image greeter and first-session expectations live under
+`planning/integration/f-cosmic/` on `main`:
 
-| Doc (on lane / after merge) | Contents |
-|-----------------------------|----------|
-| `planning/integration/f-cosmic/GREETER.md` | `cosmic-greeter.service` as DM; session wallpaper vs greeter face; known limits (no SDDM-parity greeter theme) |
-| `planning/integration/f-cosmic/SESSION-SMOKE.md` | Post-login checks (≥12): dock, wallpaper, Neonwolf, FlatArcade, Ghostty, theme switcher, no cosmic-store |
-| `planning/integration/f-cosmic/VENDOR-INVENTORY.md` | Dock favorites order, CosmicBackground path, theme keys |
-| `planning/integration/f-cosmic/VENDOR-FIXES.md` | Mode `is_dark`, dock reorder rationale |
+| Doc | Contents |
+|-----|----------|
+| [GREETER.md](../planning/integration/f-cosmic/GREETER.md) | `cosmic-greeter.service` as DM; session wallpaper vs greeter face; known limits (no SDDM-parity greeter theme) |
+| [SESSION-SMOKE.md](../planning/integration/f-cosmic/SESSION-SMOKE.md) | Post-login checks (≥12): dock, wallpaper, Neonwolf, FlatArcade, Ghostty, theme switcher, no cosmic-store |
+| [VENDOR-INVENTORY.md](../planning/integration/f-cosmic/VENDOR-INVENTORY.md) | Dock favorites order, CosmicBackground path, theme keys |
+| [VENDOR-FIXES.md](../planning/integration/f-cosmic/VENDOR-FIXES.md) | Mode `is_dark`, dock reorder rationale |
 
 **Operator takeaway:** greeter must yield a COSMIC session; Hyprwave branding is
 **session**-oriented. Do not treat a stock greeter background as a failed install.
 
-Dual-variant integration matrix (when present):
-`planning/integration/g-qa/SMOKE-MATRIX.md` on **`lane/g-qa`**.
+Dual-variant integration matrix:
+[SMOKE-MATRIX.md](../planning/integration/g-qa/SMOKE-MATRIX.md).
 
 ---
 
@@ -94,8 +94,8 @@ auto-migrate. Decision tree: [INSTALL.md](../INSTALL.md#choose-a-variant-hyprlan
 
 ## Troubleshooting pointers
 
-- Greeter issues → [troubleshooting.md](troubleshooting.md) (cosmic-greeter unit); F’s
-  `GREETER.md` on `lane/f-cosmic` for enable/symlink expectations  
+- Greeter issues → [troubleshooting.md](troubleshooting.md) (cosmic-greeter unit);
+  [GREETER.md](../planning/integration/f-cosmic/GREETER.md) for enable/symlink expectations  
 - Updates → [updating.md](updating.md)  
 - Architecture → [architecture.md](architecture.md)  
 - First boot → [first-boot.md](first-boot.md)  
