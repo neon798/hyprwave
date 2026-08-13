@@ -309,13 +309,6 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T03:58Z — E-W5-001 poll re-verify (remain DONE)
+## 2026-08-13T04:00Z — E-W5-001 poll re-verify (remain DONE)
 
-- origin/main still OPEN E-W5-001 at 07be046; lane dd2e161 up to date
-- 87 binds; Shift+A/T/E match; no forbidden; no product changes
-
-## 2026-08-13T03:57Z — E-W5-001 poll re-verify
-
-- origin/main still OPEN E-W5-001; lane remains DONE (tip 0eee777 / re-verify dd2e161)
-- binds 87; Super+SHIFT+A/T/E match; merge 878d38e; no product changes
-- status remains DONE; idle until new task_id
+- main still OPEN E-W5-001 @ 07be046; lane fc55dbb up to date; 87 binds OK

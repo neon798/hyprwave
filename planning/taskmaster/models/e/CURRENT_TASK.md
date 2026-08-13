@@ -10,15 +10,8 @@ title: Post-merge skel verify (E Wave 2–4 landed on main)
 
 ## Result
 
-Post-merge KEYBIND-MAP verify complete. No redesign / no product skel
-changes required. Poll 03:58Z still green (main `07be046`, lane `dd2e161`).
-
-| Check | Result |
-|-------|--------|
-| Bind count | **87** |
-| SUPER+SHIFT+T/A/E | match KEYBIND-MAP ✓ |
-| No cliphist/wofi/swaybg | ✓ |
-| E merge on main | `878d38e` |
+KEYBIND-MAP matches bindings.conf (87 binds; Super+Shift+A/T/E). No
+cliphist/wofi/swaybg. E merge `878d38e` on main. No product skel changes.
 
 ## Done criteria
 
