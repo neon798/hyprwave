@@ -64,6 +64,6 @@
 ## 2026-08-13 — B-W1-HOLD heartbeat
 
 - status remains OPEN (HOLD; not DONE)
-- Polled origin/main: still task_id B-W1-HOLD (reissued 2026-08-13T02:24:44Z)
-- Local main merge A→G done; await human T8 / push origin
+- Polled origin/main: task_id B-W1-HOLD (reissued 2026-08-13T02:35:07Z)
+- Wave 1 on origin/main (MERGED_PUSHED_AWAITING_T8); human owns build/VM/GHCR
 - No product docs work; no exclusive-path bugs
