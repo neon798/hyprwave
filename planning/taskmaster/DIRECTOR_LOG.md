@@ -424,3 +424,11 @@
   **G-W3-001** (`check-image --cosmic`; residuals VM-only).
 - A/C/D still OPEN on W2-002; B already on W3-001.
 
+## 2026-08-13T03:35:03Z — Issue A-W3-001 D-W3-001
+
+- Verified DONE exclusive-only: A GHCR card + action bumps `c280d16`;
+  D DRILL.md PAM-inert `7663596`.
+- Issued **A-W3-001** (FIRST-BOOT-CHECKLIST proofs + pin re-verify),
+  **D-W3-001** (negative fixture: no pam.d install from build.sh).
+- C still OPEN C-W2-002. B/E/F/G already on W3-001.
+
