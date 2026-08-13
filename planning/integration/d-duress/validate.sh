@@ -585,6 +585,64 @@ if [[ "$snippet_pam_write" -eq 0 ]]; then
 	ok "audit: build/Containerfile snippets have no active /etc/pam.d paths"
 fi
 
+# N6: live build.sh (post-merge) must not install pam.d snippets under /etc/pam.d
+if [[ -f build_files/build.sh ]]; then
+	if grep -vE '^\s*#|^\s*$' build_files/build.sh | grep -nE '/etc/pam\.d' >/dev/null 2>&1; then
+		fail "build_files/build.sh has active /etc/pam.d reference"
+	else
+		ok "audit: build_files/build.sh has no active /etc/pam.d paths"
+	fi
+	if grep -vE '^\s*#|^\s*$' build_files/build.sh | grep -E '/usr/share/hyprwave/duress/pam\.d' >/dev/null; then
+		ok "audit: build.sh deploys reference pam.d under /usr/share only"
+	else
+		fail "audit: build.sh missing share-only pam.d deploy path"
+	fi
+	if grep -qiE 'OFF BY DEFAULT|no PAM enable' build_files/build.sh; then
+		ok "audit: build.sh documents duress OFF BY DEFAULT"
+	else
+		fail "audit: build.sh missing OFF BY DEFAULT language for duress"
+	fi
+else
+	ok "audit: build_files/build.sh not present (snippet-only tree)"
+fi
+
+# N7: docs/layout language matches stock image paths
+for doc in build_files/duress/ENABLE.md build_files/duress/README.md; do
+	if grep -qE '/usr/share/hyprwave/duress' "$doc" && grep -qE '/etc/duress\.d' "$doc"; then
+		ok "layout paths present in $doc"
+	else
+		fail "layout paths missing in $doc"
+	fi
+done
+if grep -qiE 'Zero|zero|no pam_duress|/etc/pam\.d' build_files/duress/ENABLE.md &&
+	grep -qiE 'OFF|Default: OFF|stock' build_files/duress/ENABLE.md; then
+	ok "ENABLE.md documents stock PAM-inert residual"
+else
+	fail "ENABLE.md missing stock PAM-inert residual language"
+fi
+if grep -qiE 'still OFF|Still OFF|OFF by default' planning/integration/d-duress/RESIDUALS.md; then
+	ok "RESIDUALS.md has still-OFF residual"
+else
+	fail "RESIDUALS.md missing still-OFF residual"
+fi
+
+# setup --help / dry-run operator-only + PAM off language
+if bash build_files/duress/hyprwave-duress-setup --help 2>&1 | grep -qiE 'OFF BY DEFAULT|operator'; then
+	ok "setup --help states operator-only / PAM OFF BY DEFAULT"
+else
+	fail "setup --help missing operator-only / OFF BY DEFAULT language"
+fi
+if bash build_files/duress/hyprwave-duress-setup --dry-run --mild-template >/tmp/duress-dry3.out 2>/tmp/duress-dry3.err; then
+	if grep -qiE 'PAM stays OFF|never edits /etc/pam\.d|operator preview' /tmp/duress-dry3.err; then
+		ok "setup --dry-run banner states PAM stays OFF"
+	else
+		fail "setup --dry-run missing PAM-off banner"
+		cat /tmp/duress-dry3.err >&2 || true
+	fi
+else
+	fail "setup --dry-run --mild-template failed after banner change"
+fi
+
 # cleanup negative fixtures early (also covered by EXIT trap)
 rm -rf "$NEG"
 ok "negative fixtures cleaned up"

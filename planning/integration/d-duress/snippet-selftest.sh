@@ -65,6 +65,26 @@ if [[ -f "$BUILD" ]]; then
 	else
 		fail "$BUILD missing OFF BY DEFAULT / assets language"
 	fi
+
+	# Reference PAM snippets may only land under /usr/share/.../pam.d (docs),
+	# never under /etc/pam.d (live stacks).
+	if grep -vE '^\s*#|^\s*$' "$BUILD" | grep -nE '(/etc/pam\.d/|cp\s+-a\s+.*/pam\.d|install\s+.*/pam\.d)' |
+		grep -vE '/usr/share/hyprwave/duress/pam\.d' >/dev/null 2>&1; then
+		# Allow only installs whose destination is under share/hyprwave/duress/pam.d
+		if grep -vE '^\s*#|^\s*$' "$BUILD" | grep -nE '(/etc/pam\.d|/etc/pam\.d/)' >/dev/null 2>&1; then
+			fail "$BUILD installs or references live /etc/pam.d (snippets must stay under /usr/share)"
+		fi
+	fi
+	if grep -vE '^\s*#|^\s*$' "$BUILD" | grep -E '/usr/share/hyprwave/duress/pam\.d' >/dev/null 2>&1; then
+		ok "$BUILD: reference pam.d snippets target /usr/share/hyprwave/duress/pam.d only"
+	else
+		# still OK if no pam.d deploy at all, but stock snippet should document share path
+		if grep -qE 'pam\.d' "$BUILD"; then
+			fail "$BUILD mentions pam.d but not the share-only install path"
+		else
+			ok "$BUILD: no pam.d deploy block (still inert)"
+		fi
+	fi
 fi
 
 # --- Containerfile.snippet ---
@@ -107,6 +127,40 @@ if find build_files/duress "$HERE" -type f -name '*.sha256' 2>/dev/null | grep -
 	find build_files/duress "$HERE" -type f -name '*.sha256' -print >&2 || true
 else
 	ok "no *.sha256 under duress packaging paths"
+fi
+
+# --- live build.sh (if present after merge) must also stay PAM-inert ---
+# Read-only audit: Model D may not edit production build.sh on this lane, but
+# packaging safety must still fail if someone lands a PAM enable regress.
+LIVE_BUILD="build_files/build.sh"
+if [[ -f "$LIVE_BUILD" ]]; then
+	if grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -nE '/etc/pam\.d' >/dev/null 2>&1; then
+		fail "$LIVE_BUILD has active /etc/pam.d reference"
+		grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -nE '/etc/pam\.d' >&2 || true
+	else
+		ok "$LIVE_BUILD: no active /etc/pam.d paths"
+	fi
+	# Must not install reference snippets into live stacks
+	if grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -nE '(cp|install|tee)\s+.*/etc/pam\.d' >/dev/null 2>&1; then
+		fail "$LIVE_BUILD appears to write into /etc/pam.d"
+	else
+		ok "$LIVE_BUILD: no write tools targeting /etc/pam.d"
+	fi
+	# pam.d docs deploy only under share (when present)
+	if grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -E 'duress/pam\.d' >/dev/null 2>&1; then
+		if grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -E '/usr/share/hyprwave/duress/pam\.d' >/dev/null 2>&1; then
+			ok "$LIVE_BUILD: duress pam.d snippets install under /usr/share only"
+		else
+			fail "$LIVE_BUILD: duress pam.d deploy missing share path"
+		fi
+	fi
+	if grep -qiE 'OFF BY DEFAULT|no PAM enable' "$LIVE_BUILD"; then
+		ok "$LIVE_BUILD: documents duress OFF BY DEFAULT"
+	else
+		fail "$LIVE_BUILD missing duress OFF BY DEFAULT language near packaging block"
+	fi
+else
+	ok "live build.sh not present (snippet-only checkout)"
 fi
 
 echo
