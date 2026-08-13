@@ -25,14 +25,21 @@ requires pins + static checks; use this list when a machine is free.
 
 ## GHCR public pull (status snapshot)
 
-Recorded during lane A stabilize (2026-08-06; re-probe with
-`scripts/ghcr-pull-test.sh` on 2026-08-07). **Does not block other lanes.**
-See also `RELEASE.md` for the visibility fix checklist and private contingency.
+**Do not claim GHCR is anonymously public.** CI has pushed both variants
+(`77755f1`, Actions run `31662742064`, 2026-08-13) but package visibility
+is still private for at least `hyprwave`. Local images exist:
+
+- `localhost/hyprwave:latest`
+- `localhost/hyprwave-cosmic:latest`
+
+Re-probe 2026-08-13 (`scripts/ghcr-pull-test.sh --owner neon798`):
 
 | Image | Result | Notes |
 |-------|--------|-------|
-| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` / cannot pull without auth — package private or unpublished |
-| `ghcr.io/neon798/hyprwave-cosmic:latest` | **FAIL / mixed** | previously 403; re-check both with empty authfile via `ghcr-pull-test.sh` |
+| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` — Package settings → Public (hyprland first) |
+| `ghcr.io/neon798/hyprwave-cosmic:latest` | inspect **OK** | not a dual-package pass; `ghcr-pull-test.sh` still exits 1 |
+
+See `RELEASE.md` for the visibility fix checklist and private contingency.
 
 ```bash
 bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh
@@ -231,4 +238,31 @@ Follow-ups: re-run this log on qcow2 with digest filled
 Overall: PASS for pin pipeline; ship still blocked on GHCR public visibility
 Blockers for ship: GHCR public packages; dual-variant image + one filled VM log
 Follow-ups: none on lane A exclusive paths
+```
+
+```
+### Run log
+- Date (UTC): 2026-08-13
+- Operator: Model A (A-W2-001)
+- Branch / commit: lane/a-stabilize (post origin/main merge; Wave 1 on main)
+- Artifact: localhost/hyprwave:latest + localhost/hyprwave-cosmic:latest (local); GHCR pushed by CI 77755f1 / run 31662742064
+- Image digest: n/a (local only this session)
+- Image ID / RepoDigest: localhost/hyprwave:latest 9bc0e1e57d6b; localhost/hyprwave-cosmic:latest 189340691cc7
+- Variant: both local images present
+- Host notes: no VM; pin verify + anonymous GHCR probe
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS | no /releases/latest |
+| verify-pins.sh (--head) | PASS | 4× HTTP 200; pins match latest tags |
+| verify-pins.sh --checksum [--light] | PASS | Yazi + FlatArcade + SVG sha256 |
+| pins-static QA | PASS | planning/qa/run-all.sh --only pins-static |
+| image/disk build | SKIP | local images already present |
+| greeter appears | SKIP | |
+| GHCR anonymous pull | FAIL | hyprwave unauthorized; cosmic inspect OK; test exit 1 |
+| Cosign verify (digest/tag) | SKIP | blocked by hyprwave unauthorized |
+
+Overall: pins current + fail-closed; CI dual-push real; GHCR **not** anonymously public
+Blockers for ship: Package visibility Public on hyprwave (and confirm both via ghcr-pull-test.sh)
+Follow-ups: Dependabot skipped this cycle (see WORK_LOG)
 ```

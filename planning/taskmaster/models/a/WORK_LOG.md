@@ -170,10 +170,3 @@ No invented follow-up. Idle for next OPEN task id.
 
 Idle: no product work. Awaiting human/Director serial merge per INTEGRATION-DAY.
 Exclusive paths frozen. Will not mark HOLD as DONE.
-
-## 2026-08-13 — A-W1-HOLD heartbeat
-
-**status:** OPEN (HOLD — not DONE)  
-**branch:** `lane/a-stabilize` @ a69e0d9 / freeze tip A-W1-004 `435c39b`
-
-Idle poll: refreshed taskmaster from origin/main. No product work. Awaiting human/Director serial merge per INTEGRATION-DAY. Exclusive paths frozen. Will not mark HOLD as DONE.

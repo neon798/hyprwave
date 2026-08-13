@@ -69,26 +69,52 @@ Document `ghcr.io/<owner>/hyprwave@sha256:…` (digest form) in CHANGELOG when
 cutting a release note. Consumers on bootc can switch to the digest ref so a
 later retag of `YYYYMMDD` cannot silently change bits.
 
+## Wave 1 CI closeout (2026-08-13)
+
+Wave 1 is on `main`. GitHub Actions **Build container image** on commit
+`77755f1` (run `31662742064`) **built and pushed both** matrix legs
+(hyprland + cosmic) and ran Cosign sign on default branch.
+
+That is **not** the same as public install:
+
+| Fact | Status |
+|------|--------|
+| Dual-variant CI build + GHCR push | **PASS** (run 31662742064) |
+| Local operator images | `localhost/hyprwave:latest` and `localhost/hyprwave-cosmic:latest` exist |
+| Anonymous GHCR pull (both packages) | **FAIL** — do **not** document public GHCR |
+
+Re-probe 2026-08-13 (`scripts/ghcr-pull-test.sh --owner neon798`):
+
+| Image | Anonymous | Symptom |
+|-------|-----------|---------|
+| `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` |
+| `ghcr.io/neon798/hyprwave-cosmic:latest` | inspect **OK** | still treat as **not public** until *both* packages pass `ghcr-pull-test.sh` |
+
+**Do not claim anonymous GHCR is public.** Cosign verify of the published
+hyprland image is blocked until visibility is fixed or the operator logs in.
+
 ## GHCR visibility (must-fix for public install)
 
-Wave 1 / Wave 2 probe (2026-08-06; re-check with `ghcr-pull-test.sh`):
+Wave 1 / Wave 2 probe (2026-08-06; re-check 2026-08-13 with `ghcr-pull-test.sh`):
 
 | Image | Anonymous pull | Symptom |
 |-------|----------------|---------|
 | `ghcr.io/neon798/hyprwave:latest` | **FAIL** | unauthorized |
-| `ghcr.io/neon798/hyprwave-cosmic:latest` | **FAIL** | 403 Forbidden |
+| `ghcr.io/neon798/hyprwave-cosmic:latest` | mixed / inspect OK | not a green dual-package probe |
 
-Until packages are **public** (or install docs document authenticated pull):
+Until **both** packages are **public** (or install docs document authenticated pull):
 
 - `bootc switch` / anonymous `podman pull` from the internet will fail.
 - Local `just build` + ISO/qcow2 paths still work for validation.
 - Prefer **dated tags** or **digests** over bare `:latest` even after packages
   are public so install targets do not float under operators.
 
-### Maintainer fix checklist (public packages)
+### Maintainer fix checklist (public packages) — next operator step
 
-1. Open the GitHub org/user → **Packages**.
-2. For **each** of `hyprwave` and `hyprwave-cosmic`:
+Packages were **pushed** by CI; visibility is still the human step.
+
+1. Open the GitHub org/user (`neon798`) → **Packages**.
+2. For **each** of `hyprwave` and `hyprwave-cosmic` (hyprland is the failing one):
    - Package settings (⋯ or package name → Package settings)
    - **Change visibility** → **Public**
    - Confirm “Inherit access from repository” is acceptable for your threat model
