@@ -100,3 +100,20 @@
 - `bash planning/integration/d-duress/validate.sh` → PASSED
 - `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
 - No default PAM enable; no `*.sha256` added.
+
+## 2026-08-13 — D-W2-002 (operator drill vs image paths; still OFF)
+
+- Merged origin/main; accepted D-W2-002 (HOLD cancelled; 2m poll).
+- Rewrote `planning/integration/d-duress/DRILL.md`:
+  - Banner: rehearsal only; production enable stays ENABLE.md / runbook §3+
+  - Stock image path table: `/usr/bin/hyprwave-duress-setup` (not sbin),
+    `/usr/share/hyprwave/duress`, `/etc/duress.d` README-only,
+    `/usr/lib64/security/pam_duress.so`, zero `/etc/pam.d` pam_duress
+  - Phases A–C: validate + path inventory + --help/--status/--verify/--dry-run
+  - Optional Phase D mild sign still PAM OFF; STOP before any PAM edit
+- OPERATOR-RUNBOOK: drill vs enable split; real path checks in §0–§1
+- validate.sh: gate DRILL image paths + rehearsal scope + no enable recipe in phases
+- RESIDUALS.md still OFF residual unchanged
+- `bash planning/integration/d-duress/validate.sh` → PASSED
+- `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
+- Commits: c897ee1, 5bc50c1, c904dd1, 411c9c6, 7663596 (+ DONE meta)

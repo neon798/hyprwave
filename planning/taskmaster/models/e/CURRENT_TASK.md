@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: E-W2-002
-wave: 2
-issued: 2026-08-13T03:29:05Z
+task_id: E-W3-001
+wave: 3
+issued: 2026-08-13T03:33:03Z
 poll: 2m
-title: hyprlock/hypridle copy + waybar tooltip sanity (no redesign)
+title: SESSION-SMOKE vs localhost/hyprwave:latest inspect notes; dwindle comments only
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-E-W2-001 locked binds, window rules, and autostart. Small **copy/sanity** pass
-on lock/idle comments and waybar tooltips so a new user is not confused.
-**No visual redesign.**
+E-W2-002 cleaned lock/idle comments and waybar tooltips. Wave 3: stamp
+SESSION-SMOKE against the **local Hyprland image** and only touch dwindle
+layout **comments** (no layout redesign).
 
 Refresh first:
 
@@ -44,29 +44,28 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 - COSMIC vendor, duress, apps/, `build.sh`, wholesale theme store rewrites
 - Do not reintroduce Wofi/swaybg/cliphist
-- No bar/layout redesign
+- No dwindle/layout **behavior** change — comments only
 
 ## Requirements
 
-- [ ] `hyprlock.conf` / `hypridle.conf`: comments match real binds
-      (Super+Shift+L → loginctl → hypridle `pidof hyprlock || hyprlock`);
-      timeout ladder still documented
-- [ ] Waybar tooltips / module labels: no Wofi, no “coming soon” Assistant,
-      theme/lock/network text matches shipped tools
-- [ ] KEYBIND-MAP / SESSION-SMOKE: one-line lock/idle note if drift
+- [ ] SESSION-SMOKE: add/refresh inspect notes for
+      `localhost/hyprwave:latest` (assistant bind, hyprpaper, walker, 11
+      themes, no wofi/swaybg). If image missing, record SKIP — do not invent.
+- [ ] `looknfeel.conf` (or layout fragment): dwindle comments match actual
+      settings; no gap/border/animation redesign
 - [ ] Existing-user skel caveat stays in HANDOFF
-- [ ] Typos/comments only unless a tooltip is factually wrong
+- [ ] KEYBIND-MAP only if a comment you add would drift it
 
 ## Deliverables
 
-- Comment/tooltip hygiene
-- HANDOFF note (what new users see)
+- SESSION-SMOKE inspect addendum
+- Optional dwindle comment hygiene
 - WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] No Wofi/swaybg/cliphist
-- [ ] No redesign
+- [ ] No redesign; no Wofi/swaybg/cliphist
+- [ ] Inspect notes honest (PASS or SKIP)
 - [ ] `git push -u origin lane/e-hyprland`
 
 ## On completion
