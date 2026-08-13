@@ -14,3 +14,4 @@ A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 |
 A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
 A-W5-001 | 2026-08-13 | Post-merge pin verify; 42450b1 on main; action SHAs present | 9b0949f
 A-W5-001 | 2026-08-13 | Reconfirm: pins-static PASS, action SHAs still on 42450b1 | b2df954
+A-W5-001 | 2026-08-13 | Reconfirm after B/C W5 issue: pins-static PASS, still 42450b1 | 348a6a0

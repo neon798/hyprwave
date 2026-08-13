@@ -392,3 +392,19 @@ No invented follow-up.
 
 **status:** DONE — no product work. Merged E-hyprland from main onto lane.
 `pins-static` PASS; action SHAs unchanged. Still `42450b1`.
+
+## 2026-08-13 — A-W5-001 reconfirm (B/C W5 issued; A still OPEN)
+
+**status:** DONE (no new product work)
+
+`origin/main` still lists **A-W5-001 OPEN** (director STATUS stale vs B/C
+CURRENT_TASK files, which are now B-W5-001 / C-W5-001). Re-merged: already
+up to date. Re-ran:
+
+```
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+```
+
+Action SHAs unchanged (`dc802804` / `abd2ef45` / `6f9f1778`; checkout v6;
+push-to-registry v2). GHCR still documented 403. Merge SHA still `42450b1`.
+No invented follow-up.
