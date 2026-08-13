@@ -285,9 +285,3 @@
   - image skel Super+SHIFT+A still without --class (lane has class); full session SKIP
 - dwindle comments only in hyprland.conf + bindings.conf (no looknfeel value change)
 - HANDOFF updated; skel caveat kept
-
-## 2026-08-13T03:37Z — E-W3-001 poll re-verify
-
-- origin/main still OPEN E-W3-001; lane product tip d8db11f intact
-- SESSION-SMOKE inspect + dwindle comments present; no product changes
-- status remains DONE; idle until new task_id
