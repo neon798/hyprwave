@@ -309,7 +309,6 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T07:15Z — E-W5-001 poll re-verify
+## 2026-08-13T07:17Z — E-W5-001 poll re-verify
 
-- origin/main still OPEN E-W5-001; tip `c712cbd`; lane DONE
-- 87 binds; Shift+A/T/E OK; no forbidden in skel; no product changes
+- origin/main still OPEN E-W5-001; tip `c712cbd`; 87 binds; Shift+A/T/E OK; no product changes
