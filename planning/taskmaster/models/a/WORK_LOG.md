@@ -353,17 +353,11 @@ releases/latest                               CLEAN
 2. MERGE-READY / INTEGRATION-DAY inventory
 3. taskmaster DONE
 
-## 2026-08-13 — A-W5-001 heartbeat (main still OPEN at c712cbd)
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`
 
-Director copy on `origin/main` still **A-W5-001 OPEN**. Tip unchanged
-`c712cbd` (already merged `0a6f99a`). Re-ran:
-
-```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
-```
-
-A-W2-002 SHAs unchanged (`dc802804` / `abd2ef45` / `6f9f1778`; checkout v6;
-push-to-registry v2). GHCR still documented 403. No invented work.
+`origin/main` still `c712cbd` / lane merge `0a6f99a`. Re-ran
+`pins-static` PASS (11). A-W2-002 SHAs unchanged. GHCR still 403.
+No invented follow-up.
