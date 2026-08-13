@@ -426,3 +426,5 @@ unchanged (dc802804 / abd2ef45 / 6f9f1778). GHCR still documented private.
 No versions.env / build.sh / workflow edits. No A-W6.
 
 Poll 2026-08-13T07:01:42Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+
+Poll 2026-08-13T07:03:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.

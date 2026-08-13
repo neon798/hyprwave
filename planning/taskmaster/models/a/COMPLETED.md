@@ -25,3 +25,4 @@ A-W5-001 | 2026-08-13 | Poll: still DONE; pins-static 11 PASS; main c712cbd | 8d
 A-W5-001 | 2026-08-13 | Poll: still DONE; pins-static 11 PASS; main c712cbd | 2cce881
 A-W5-001 | 2026-08-13 | Reconfirm OPEN from main: still DONE; pins-static 11 PASS; main c712cbd | e68494b
 A-W5-001 | 2026-08-13 | Poll: still DONE; pins-static 11 PASS; main c712cbd | 2b62b8b
+A-W5-001 | 2026-08-13 | Poll: still DONE; pins-static 11 PASS; main c712cbd | 3a5d26b
