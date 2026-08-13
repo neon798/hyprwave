@@ -1,4 +1,4 @@
-# Hyprland session smoke — Wave 2 gate (E-W2-001)
+# Hyprland session smoke — Wave 2/3 gate (E-W2-001 + E-W3-001 inspect)
 
 **Audience:** QA (Model G) and integrators after merging `lane/e-hyprland`.  
 **Environment:** **new** user (skel applies only at account creation), Hyprland variant, SDDM → Hyprland.  
@@ -6,9 +6,30 @@
 
 **Skel caveat:** existing homes are **not** rewritten by image updates — test with a fresh account (see HANDOFF).
 
-**Image note:** host builds may expose `localhost/hyprwave:latest` for container checks (`command -v hyprwave-assistant`, etc.). Full session smoke still needs a VM/boot.
+**Image note:** host builds may expose `localhost/hyprwave:latest` for container checks (`command -v hyprwave-assistant`, etc.). Full session smoke still needs a VM/boot. Container inspect (below) is **not** a substitute for Gates B–H.
 
 Mark each line **PASS / FAIL / SKIP** (SKIP only where hardware-dependent and noted).
+
+---
+
+## Container inspect — `localhost/hyprwave:latest` (E-W3-001)
+
+Host inspect only (no full Hyprland session). Re-run after rebuilds; do not invent PASS if the image is missing.
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| Image present | **PASS** | `localhost/hyprwave:latest` ID `9bc0e1e57d6b` (Created 2026-08-13T03:16:36Z) |
+| Hyprland session file | **PASS** | `/usr/share/wayland-sessions/hyprland.desktop`; `hyprland` RPM 0.56.2 |
+| `hyprwave-assistant` on PATH | **PASS** | `/usr/sbin/hyprwave-assistant` |
+| Super+SHIFT+A in image skel | **PASS*** | Image skel: `ghostty -e hyprwave-assistant` (no `--class` yet). **Lane** skel uses `--class=dev.hyprwave.Assistant` for float rules — rebuild to pick up. |
+| `hyprpaper` on PATH + skel | **PASS** | Binary present; skel preload/wallpaper → `/usr/share/hyprwave/wallpapers/default.png` (not swaybg) |
+| `walker` + `elephant` on PATH | **PASS** | Both `/usr/sbin/…`; skel `exec-once` elephant then walker service |
+| Theme packs count | **PASS** | **11** under `/usr/share/hyprwave/themes/` (arcade-rain, cozy-harvest, fjord-dark, glitch-horizon, highway-haze, hyprwave, lunar-pulse, retro-arcade, touge-drive, vaporwave, verdant-haven) |
+| Default looknfeel layout | **PASS** | Theme `hyprwave`: `general.layout = dwindle` (gaps_in 5 / gaps_out 10 / border 2) — comments only in skel; no redesign |
+| No wofi / swaybg / cliphist / rofi | **PASS** | `command -v` all absent in image |
+| Full graphical smoke (Gates B–H) | **SKIP** | Needs VM/boot + new user; not run in this inspect |
+
+**Inspect stamp:** 2026-08-13T03:35Z · Model E · branch `lane/e-hyprland`
 
 ---
 

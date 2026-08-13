@@ -1,7 +1,7 @@
 # HANDOFF — Model E (Hyprland skel)
 
 **From:** Model E  
-**Task:** E-W2-002 (builds on E-W2-001)  
+**Task:** E-W3-001 (builds on E-W2-001 / E-W2-002)  
 **Date:** 2026-08-13  
 **Branch:** `lane/e-hyprland`
 
@@ -21,7 +21,14 @@ Integrator / operator options for existing accounts:
 
 **E will not ship a home-directory migrator** that overwrites user config.
 
-## What changed for **new** users (E-W2-002)
+## What changed for **new** users (E-W3-001)
+
+| Area | Change |
+|------|--------|
+| **SESSION-SMOKE** | Container inspect addendum for `localhost/hyprwave:latest` (assistant, hyprpaper, walker, 11 themes, no wofi/swaybg) |
+| **dwindle comments** | `hyprland.conf` + `bindings.conf` document theme `layout = dwindle` and togglesplit/splitratio; **no** gap/border/animation change (`looknfeel` remains theme symlink) |
+
+## Prior (E-W2-002) still in skel
 
 | Area | Change |
 |------|--------|
