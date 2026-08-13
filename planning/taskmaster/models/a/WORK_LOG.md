@@ -357,12 +357,35 @@ releases/latest                               CLEAN
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main merge tip:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`  
-**lane:** already merged (`Already up to date`)
+**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`  
+`merge: G-W5 wofi-comment allowlist (harness RESULT OK)`
+
+Director re-issued OPEN from `origin/main`. Re-verified exclusive pin/CI
+surface only. No pin or workflow edits. No invented A-W6.
+
+### Validation
 
 ```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)  2026-08-13T05:53:41Z
+git merge origin/main                          Already up to date
+planning/qa/run-all.sh --only pins-static      RESULT: OK (11 PASS, 0 FAIL)
+releases/latest in build.sh / verify-pins.sh   CLEAN
 ```
 
-A-W2-002 SHAs still on HEAD: metadata v6.2.0, login v4.5.1, cosign-installer v4.1.2.  
-GHCR still documented private. No product change. No A-W6.
+### A-W2-002 action SHA bumps still on HEAD `build.yml`
+
+| Action | Pin (comment) | Present |
+|--------|---------------|---------|
+| `docker/metadata-action` | `dc802804…` # v6.2.0 | yes |
+| `docker/login-action` | `abd2ef45…` # v4.5.1 | yes |
+| `sigstore/cosign-installer` | `6f9f1778…` # v4.1.2 | yes |
+| `actions/checkout` | `df4cb1c0…` # v6 (no v7) | yes |
+| `redhat-actions/push-to-registry` | `5ed88d26…` # v2 (no v3) | yes |
+
+### GHCR
+
+Still documented **private** (`GHCR-VISIBILITY.md`, README registry note:
+anonymous pull 403). No visibility flip.
+
+### Commits
+
+1. taskmaster DONE + WORK_LOG/COMPLETED (this cycle)
