@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: D-W2-001
+status: OPEN
+task_id: D-W2-002
 wave: 2
-issued: 2026-08-13T03:25:00Z
+issued: 2026-08-13T03:29:05Z
 poll: 2m
-title: Image-backed duress safety pass (stay OFF)
+title: Operator drill (DRILL.md) vs image paths; still OFF
 
 ## Duty cycle
 
@@ -14,9 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Image inspect of `localhost/hyprwave:latest` (2026-08-13): `pam_duress.so` and
-`hyprwave-duress-setup` ship; **zero** `pam_duress` lines in `/etc/pam.d`; no
-`*.sha256`. Harden packaging/docs/tests so that cannot regress.
+D-W2-001 proved the image ships the module and stays PAM-inert. Walk
+`planning/integration/d-duress/DRILL.md` against **real image paths**
+(`/usr/share/hyprwave/duress`, `/etc/duress.d` empty + README,
+`hyprwave-duress-setup`) so an operator can rehearse **without enabling PAM**.
 
 Refresh first:
 
@@ -36,33 +37,33 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Forbidden
 
-- Enabling pam_duress in any default PAM file shipped by the image
+- Enabling pam_duress in any default PAM file
 - Pre-signing templates; skel; assistant; handbook; CI
 
 ## Requirements
 
-- [x] `bash planning/integration/d-duress/validate.sh` PASS
-- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [x] ENABLE.md / README / THREAT-MODEL paths match image layout
-      (`/usr/share/hyprwave/duress`, `/etc/duress.d` empty + README)
-- [x] Add or tighten a validate gate: shipped `pam.d` snippets must **not** be
-      installed under `/etc/pam.d` by `build.sh` (snippet-selftest already
-      exists — extend if a hole remains)
-- [x] `hyprwave-duress-setup --help` / `--dry-run` text: operator-only, PAM off
-- [x] WORK_LOG: record image inspect facts (module present, PAM inert)
+- [ ] DRILL.md steps match image layout; dry-run / `--help` only — **no**
+      `pam_duress` install into `/etc/pam.d`
+- [ ] Banner: drill is rehearsal; production enable is still operator-only
+      (ENABLE.md)
+- [ ] Paths: `/usr/share/hyprwave/duress`, `/usr/sbin/hyprwave-duress-setup`
+      or actual usr-merge path, `/etc/duress.d`
+- [ ] `bash planning/integration/d-duress/validate.sh` PASS
+- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [ ] RESIDUALS.md still **OFF**
 
 ## Deliverables
 
-- validate.sh still green
-- Docs/tests match built image
-- Explicit “still OFF” residual in RESIDUALS.md if present
+- Updated DRILL.md (and OPERATOR-RUNBOOK link if stale)
+- Green validate + duress-safety
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [x] No default PAM enablement introduced
-- [x] No `*.sha256` added under templates
-- [x] validate + duress-safety PASS
-- [x] `git push -u origin lane/d-duress`
+- [ ] Drill never enables PAM
+- [ ] No `*.sha256` templates added
+- [ ] validate + duress-safety PASS
+- [ ] `git push -u origin lane/d-duress`
 
 ## On completion
 
