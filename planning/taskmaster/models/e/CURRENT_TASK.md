@@ -12,7 +12,7 @@ title: Post-merge skel verify (E Wave 2–4 landed on main)
 
 KEYBIND-MAP matches bindings.conf (87 binds; Super+Shift+A/T/E). No
 cliphist/wofi/swaybg. E merge `878d38e` on main. No product skel changes.
-Re-merged main `f97680d` → lane `977e38d`.
+Re-merged main `c712cbd` → lane `fd6b9e2`.
 
 ## Done criteria
 

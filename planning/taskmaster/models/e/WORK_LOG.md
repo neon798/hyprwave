@@ -320,3 +320,9 @@
 - origin/main still OPEN E-W5-001; lane already DONE (tip 0b535c6)
 - merge origin/main: already up to date (f97680d); 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg
 - status remains DONE; no product edits
+
+## 2026-08-13T04:55Z — E-W5-001 poll re-verify after main move
+
+- Merged origin/main `c712cbd` → lane `fd6b9e2` (G-W5 wofi-comment allowlist only)
+- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
+- Status → DONE; no product edits
