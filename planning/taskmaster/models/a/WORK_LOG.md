@@ -403,3 +403,5 @@ Lane already merged with `origin/main` (merge-base == `c712cbd`).
 
 Poll 2026-08-13T06:41:44Z: `pins-static` RESULT OK (11 PASS). SHAs/GHCR
 unchanged. No versions.env / build.sh / workflow edits. No A-W6.
+
+Poll 2026-08-13T06:43:40Z: still DONE; main `c712cbd`; pins-static 11 PASS.
