@@ -205,6 +205,54 @@ func TestStatusImageNoteGHCR(t *testing.T) {
 	if !strings.Contains(strings.ToLower(s), "private") {
 		t.Fatalf("expected private GHCR note: %s", s)
 	}
+	if strings.Contains(strings.ToLower(s), "ghcr is public") {
+		t.Fatalf("must not claim public GHCR: %s", s)
+	}
+}
+
+func TestHelpCopyWave3(t *testing.T) {
+	var out bytes.Buffer
+	if err := Run(Config{Stdout: &out, Version: "0.2.2"}, []string{"help"}); err != nil {
+		t.Fatal(err)
+	}
+	s := out.String()
+	low := strings.ToLower(s)
+	need := []string{"hyprland", "cosmic", "super+shift+a", "private", "localhost", "wofi", "swaybg"}
+	for _, n := range need {
+		if !strings.Contains(low, n) {
+			t.Errorf("help missing %q: %s", n, s)
+		}
+	}
+	if strings.Contains(low, "ghcr is public") {
+		t.Fatalf("help must not claim public GHCR: %s", s)
+	}
+	if !strings.Contains(low, "not wofi") && !strings.Contains(low, "not the stack") {
+		t.Fatalf("help must deny Wofi/swaybg as the stack: %s", s)
+	}
+}
+
+func TestStatusImageNoteLocalhost(t *testing.T) {
+	restore := system.OnlineForTests()
+	defer restore()
+	var out bytes.Buffer
+	r := statusFake{
+		paths: map[string]bool{"bootc": true, "flatpak": true, "sudo": true},
+		bootc: "Booted image: localhost/hyprwave:latest\nStaged: none",
+	}
+	if err := Run(Config{Stdout: &out, Runner: r, Version: "0.2.2"}, []string{"status"}); err != nil {
+		t.Fatal(err)
+	}
+	s := out.String()
+	if !strings.Contains(s, "localhost/hyprwave:latest") {
+		t.Fatal(s)
+	}
+	low := strings.ToLower(s)
+	if !strings.Contains(low, "localhost") && !strings.Contains(low, "local") {
+		t.Fatalf("expected localhost-valid note: %s", s)
+	}
+	if strings.Contains(low, "ghcr is public") {
+		t.Fatalf("must not claim public GHCR: %s", s)
+	}
 }
 
 type statusFake struct {

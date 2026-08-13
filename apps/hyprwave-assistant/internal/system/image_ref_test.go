@@ -54,4 +54,21 @@ func TestClassifyAndGuidance(t *testing.T) {
 	if !strings.Contains(low, "localhost") && !strings.Contains(low, "local") {
 		t.Fatalf("localhost note: %s", note)
 	}
+	if !strings.Contains(low, "valid") {
+		t.Fatalf("localhost tags must be described as valid: %s", note)
+	}
+	if strings.Contains(low, "ghcr is public") {
+		t.Fatalf("localhost note must not claim public GHCR: %s", note)
+	}
+
+	if ClassifyImageRef("localhost/hyprwave-cosmic:latest") != ImageRefLocalhost {
+		t.Fatal("cosmic localhost")
+	}
+	if ClassifyImageRef("ghcr.io/neon798/hyprwave-cosmic:latest") != ImageRefGHCR {
+		t.Fatal("cosmic ghcr")
+	}
+	_, cosmicNote := ImageGuidance("Booted image: localhost/hyprwave-cosmic:latest\n")
+	if !strings.Contains(strings.ToLower(cosmicNote), "local") {
+		t.Fatalf("cosmic localhost note: %s", cosmicNote)
+	}
 }

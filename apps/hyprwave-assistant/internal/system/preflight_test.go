@@ -73,6 +73,24 @@ func TestClassifyErrorMore(t *testing.T) {
 	if strings.Contains(strings.ToLower(e.Error()), "ghcr is public") {
 		t.Fatal(e)
 	}
+	low := strings.ToLower(e.Error())
+	if !strings.Contains(low, "private") {
+		t.Fatalf("401/403 should mention private GHCR: %v", e)
+	}
+	if !strings.Contains(low, "localhost") {
+		t.Fatalf("401/403 should mention localhost tags are valid: %v", e)
+	}
+}
+
+func TestClassifyErrorUnauthorizedMentionsAuth(t *testing.T) {
+	e := ClassifyError(errors.New("unauthorized: authentication required"), "bootc upgrade")
+	low := strings.ToLower(e.Error())
+	if !strings.Contains(low, "private") && !strings.Contains(low, "auth") {
+		t.Fatal(e)
+	}
+	if strings.Contains(low, "ghcr is public") {
+		t.Fatal(e)
+	}
 }
 
 func TestRootOrSudoHintAndEnvHome(t *testing.T) {
