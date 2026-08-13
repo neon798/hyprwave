@@ -363,7 +363,7 @@ Director inbox on `origin/main` still OPEN. Re-verified only:
 
 - merge `origin/main` already up to date (`c712cbd`)
 - `planning/qa/run-all.sh --only pins-static` RESULT: OK (11 PASS)
-- A-W2-002 SHAs on HEAD: metadata `dc802804` v6.2.0, login `abd2ef45` v4.5.1, cosign-installer `6f9f177` v4.1.2; checkout v6; push-to-registry v2
+- A-W2-002 SHAs on HEAD: metadata `dc802804` v6.2.0, login `abd2ef45` v4.5.1, cosign-installer `6f9f177` v4.1.2
 - workflows/`versions.env`/`build.sh` identical to `origin/main`
 - GHCR still documented private
 - No A-W6. No invented follow-up.
