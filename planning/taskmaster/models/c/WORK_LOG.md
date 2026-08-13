@@ -150,3 +150,8 @@
 
 - main still OPEN for C-W5-001; lane already complete (tip 2496ff6). Re-assert DONE; no re-implement.
 - go test + snippet-selftest still PASS on merge tip
+
+## 2026-08-13 — poll re-verify C-W5-001 (main advanced)
+
+- main still OPEN for C-W5-001; merged origin/main (07be046 D/F/G Wave 2–4)
+- go test + snippet-selftest still PASS; no product work; status left DONE
