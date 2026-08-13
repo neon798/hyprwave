@@ -468,3 +468,10 @@ up to date). Re-ran exclusive gates only:
 **main:** `c712cbd`
 
 Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR unchanged. No A-W6.
+
+## 2026-08-13 — A-W5-001 poll 08:03Z
+
+**status:** DONE  
+**main:** `c712cbd`
+
+Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR unchanged. No A-W6.
