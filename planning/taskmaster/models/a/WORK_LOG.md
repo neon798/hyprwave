@@ -367,3 +367,18 @@ Director inbox on `origin/main` still OPEN. Re-verified only:
 - workflows/`versions.env`/`build.sh` identical to `origin/main`
 - GHCR still documented private
 - No A-W6. No invented follow-up.
+
+## 2026-08-13 — A-W5-001 poll re-verify
+
+**status:** DONE (no new product work)  
+**branch:** `lane/a-stabilize`  
+**main:** `c712cbd` (unchanged)
+
+Director copy on `origin/main` still OPEN. Re-synced models/a, merge already
+up to date. Re-ran exclusive gates only:
+
+- `planning/qa/run-all.sh --only pins-static` RESULT: OK (11 PASS)
+- A-W2-002 SHAs unchanged: metadata `dc802804` v6.2.0, login `abd2ef45` v4.5.1, cosign-installer `6f9f177` v4.1.2
+- `versions.env` / `build.sh` / workflows identical to `origin/main`
+- GHCR still documented private (`unauthorized` / 403)
+- No A-W6. No invented follow-up.
