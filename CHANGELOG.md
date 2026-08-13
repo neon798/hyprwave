@@ -17,16 +17,34 @@ Wave 1 lanes **A–G are on `main`** (serial merge 2026-08-13; tag
 `post-integration-20260807`). Product paths (pins, handbook, assistant, duress
 packaging, Hyprland/COSMIC polish, QA harness) live on this branch.
 
-**Published GHCR `:latest` is not automatically this tip.** Confirm with
-`bootc status` / image digest before assuming a `bootc upgrade` already contains
-Wave 1. Local rebuild: `just build` / `just build-cosmic`.
+Waves **2–4** continue residual polish on lane branches (merge-prep). Handbook
+deltas below land via `lane/b-docs` until the integrator merges docs.
+
+**Published GHCR `:latest` is not automatically this tip.** Anonymous GHCR pull
+is **still 403** — do not treat packages as public. Confirm with `bootc status`
+/ digest after you have registry access. **Reliable path:** local rebuild
+`just build hyprwave latest` / `just build-cosmic` → `localhost/…` ([INSTALL.md](INSTALL.md)).
+
+### Handbook deltas (Waves 2–3, docs lane)
+
+- **Hyprwave Assistant** documented as **shipped** (not upcoming): README companion
+  table + stack; Hyprland **Super+Shift+A** → `ghostty -e hyprwave-assistant`
+  in [docs/keybinds.md](docs/keybinds.md) Essentials (matches skel).
+- **`IMAGE_NAME`:** Justfile default remains `image-template`; INSTALL Path C +
+  contributor-notes document `just build hyprwave latest` /
+  `IMAGE_NAME=hyprwave` (CI uses the repo name). Justfile **not** renamed.
+- **Install honesty:** while anonymous GHCR is 403, **Path C local build** is the
+  primary operator path; Path A requires public packages or `podman login`.
+  [docs/first-boot.md](docs/first-boot.md) lists localhost vs GHCR image refs.
+- ISSUES **B-5** (Assistant/duress claims) and **B-6** (`IMAGE_NAME`) **closed**
+  as docs; **B-7** screenshot binaries remain TODO (checklist only).
 
 ### Still open (ops)
 
-- Dual-variant image rebuild + VM smoke from the merged tip (T8)
-- GHCR anonymous public pull (may still 403 — [INSTALL.md](INSTALL.md))
-- Marketing screenshot binaries (`docs/assets/`)
-- `PROGRAM_COMPLETE` after T8 + residual closeout
+- Dual-variant image rebuild + VM smoke from the merged tip (T8 / residual)
+- GHCR anonymous public pull (**still 403** — [INSTALL.md](INSTALL.md); not claimed public)
+- Marketing screenshot binaries (`docs/assets/` — ISSUES B-7)
+- `PROGRAM_COMPLETE` after residual closeout
 
 ### Post-merge template (for later waves)
 

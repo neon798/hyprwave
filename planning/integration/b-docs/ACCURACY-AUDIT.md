@@ -260,3 +260,9 @@ Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR
 | Duress default on | **Not claimed** (first-boot still off by default) |
 | IMAGE_NAME | Path C still documents image-template default |
 
+---
+
+## B-W4-001 addendum (2026-08-13)
+
+Merge-prep: CHANGELOG Unreleased records W2–W3 handbook deltas (Assistant Super+Shift+A, IMAGE_NAME, local-build primary / GHCR 403). ISSUES B-5/B-6 closed, B-7 open. **No public-GHCR claim.** No screenshot binaries.
+

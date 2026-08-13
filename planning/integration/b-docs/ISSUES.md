@@ -14,3 +14,14 @@ Docs lane does **not** fix product code. Gaps for stabilizer / integrator.
 
 No docs blocker for describing current desktop design (Walker, hyprpaper, 11 themes,
 COSMIC, companions).
+
+## Merge-prep (W4 / B-W4-001)
+
+| ID | State for integrator |
+|----|----------------------|
+| B-5 | Closed — Assistant on image + Super+Shift+A in handbook; duress **off by default** |
+| B-6 | Closed — IMAGE_NAME=`image-template` documented; override in INSTALL |
+| B-7 | **Open** — no screenshot binaries; checklist ready |
+| B-1 | **Open** — GHCR anonymous 403; local build primary in INSTALL/first-boot |
+
+Do **not** flip B-1 closed until A/RELEASE confirms public packages.
