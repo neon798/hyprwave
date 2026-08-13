@@ -1,15 +1,21 @@
 # HANDOFF — Model E (Hyprland skel)
 
 **From:** Model E  
-**Task:** E-W3-001 (builds on E-W2-001 / E-W2-002)  
+**Task:** E-W4-001 (merge-prep; builds on E-W2 / E-W3)  
 **Date:** 2026-08-13  
-**Branch:** `lane/e-hyprland`
+**Branch:** `lane/e-hyprland`  
+**Product tip (integrator):** **`d8db11f`** — last `hyprland:` product commit (E-W3-001); KEYBIND-MAP stamps this SHA
 
 ## Existing-user caveat (critical)
 
 Files under `build_files/etc/skel/` become `/etc/skel/` in the image and apply
 **only when a user account is created**. Changing skel **does not** rewrite an
 existing user’s `~/.config/hypr/**` (or walker/waybar/mako/… copies).
+
+| Audience | Effect |
+|----------|--------|
+| **New user** | Full skel on first login; use for SESSION-SMOKE / INTEGRATION-DAY |
+| **Existing home** | Unchanged by this lane; operator may hand-merge from `/etc/skel` |
 
 Integrator / operator options for existing accounts:
 
@@ -21,7 +27,44 @@ Integrator / operator options for existing accounts:
 
 **E will not ship a home-directory migrator** that overwrites user config.
 
-## What changed for **new** users (E-W3-001)
+## Exclusive files vs `origin/main` (E-W4-001 merge list)
+
+Model E **only** touches these paths. Integrator merge should take this list from
+`lane/e-hyprland` (do **not** expect E to PR-merge onto main).
+
+### Skel product (behavior for new users)
+
+| Path | Role |
+|------|------|
+| `build_files/etc/skel/.config/hypr/autostart.conf` | elephant/walker/waybar/mako/hyprpaper/hypridle order |
+| `build_files/etc/skel/.config/hypr/bindings.conf` | Super+SHIFT+A assistant class; dwindle binds; 87 binds |
+| `build_files/etc/skel/.config/hypr/windowrules.conf` | float Assistant + ThemeSwitcher |
+| `build_files/etc/skel/.config/hypr/hyprlock.conf` | lock path comments |
+| `build_files/etc/skel/.config/hypr/hypridle.conf` | lock_cmd + ladder comments |
+| `build_files/etc/skel/.config/hypr/hyprland.conf` | dwindle/theme looknfeel comments |
+| `build_files/etc/skel/.config/waybar/config.jsonc` | tooltips (nm/pavu/blueman) |
+
+### Integration notes (operators / QA)
+
+| Path | Role |
+|------|------|
+| `planning/integration/e-hyprland/KEYBIND-MAP.md` | 87 binds + product tip SHA **`d8db11f`** |
+| `planning/integration/e-hyprland/SESSION-SMOKE.md` | Wave 2–4 gates + image inspect + new/existing caveat |
+| `planning/integration/e-hyprland/INTEGRATION-DAY.md` | one-page smoke card + new/existing caveat |
+| `planning/integration/e-hyprland/HANDOFF.md` | this file |
+| `planning/integration/e-hyprland/README.md` | index (minor) |
+
+Unchanged exclusive trees this wave (no delta vs prior E work, may already match main if partially merged): walker, mako, ghostty, yazi, autostart desktop, systemd user drop-in, AUTOSTART.md, THEME-SYMLINKS.md.
+
+## What changed for **new** users (E-W4-001)
+
+| Area | Change |
+|------|--------|
+| **INTEGRATION-DAY / SESSION-SMOKE** | Explicit new-user vs existing-home tables; product tip `d8db11f` |
+| **KEYBIND-MAP** | Lane product tip SHA table (W3 inspect / W2 lock stack) |
+| **HANDOFF** | Exclusive merge file list vs `origin/main` |
+
+## Prior (E-W3-001) still in skel
 
 | Area | Change |
 |------|--------|

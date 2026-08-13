@@ -18,3 +18,5 @@ E-W2-001 | 2026-08-13 | Assistant Super+Shift+A active; float rules; KEYBIND-MAP
 E-W2-002 | 2026-08-13 | hyprlock/hypridle comments + waybar tooltips (no redesign) | 7c1b044
 
 E-W3-001 | 2026-08-13 | SESSION-SMOKE image inspect + dwindle comments | d8db11f
+
+E-W4-001 | 2026-08-13 | merge-prep: new/existing home caveat + KEYBIND tip d8db11f | TBD

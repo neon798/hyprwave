@@ -289,3 +289,12 @@
 ## 2026-08-13T03:38Z — poll idle/DONE
 
 - origin/main CURRENT_TASK E-W3-001 status DONE; no new OPEN task_id; idle
+
+## 2026-08-13T03:41Z — E-W4-001
+
+- Branch: `lane/e-hyprland`
+- Status → DONE
+- INTEGRATION-DAY + SESSION-SMOKE: new-user vs existing-home explicit
+- KEYBIND-MAP product tip SHA d8db11f (E-W3-001; W2 stack included)
+- HANDOFF exclusive merge file list vs origin/main
+- No bind/layout behavior change; did not merge lane onto main

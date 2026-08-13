@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: E-W4-001
 wave: 4
 issued: 2026-08-13T03:39:11Z
@@ -17,15 +17,6 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 Wave 4 is **merge-prep**. Stamp INTEGRATION-DAY / SESSION-SMOKE: skel applies
 to **new users only**; existing homes unchanged. Record KEYBIND-MAP tip SHA
 for the integrator.
-
-Refresh first:
-
-```bash
-git fetch origin
-git checkout lane/e-hyprland
-git merge --ff-only origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/e/
-```
 
 ## Exclusive paths (only these)
 
@@ -49,22 +40,16 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 ## Requirements
 
-- [ ] INTEGRATION-DAY + SESSION-SMOKE: new-user vs existing-home caveat
-- [ ] KEYBIND-MAP: tip SHA of current lane product commit (W3 inspect /
-      W2 lock comments)
-- [ ] HANDOFF: exclusive file list vs `origin/main` for merge
-- [ ] No bind/layout behavior change unless a comment is factually wrong
-
-## Deliverables
-
-- Integration cards + KEYBIND-MAP SHA
-- WORK_LOG + COMPLETED
+- [x] INTEGRATION-DAY + SESSION-SMOKE: new-user vs existing-home caveat
+- [x] KEYBIND-MAP: tip SHA `d8db11f` (W3 product; includes W2 stack)
+- [x] HANDOFF: exclusive file list vs origin/main
+- [x] No bind/layout behavior change
 
 ## Done criteria
 
-- [ ] New-user/existing-home is explicit
-- [ ] Tip SHA recorded
-- [ ] `git push -u origin lane/e-hyprland`
+- [x] New-user/existing-home is explicit
+- [x] Tip SHA recorded
+- [x] `git push -u origin lane/e-hyprland`
 
 ## On completion
 

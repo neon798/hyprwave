@@ -1,9 +1,18 @@
-# Hyprland keybind map (E-W2-001)
+# Hyprland keybind map (E-W2-001 → E-W4-001)
 
 **Source of truth:** `build_files/etc/skel/.config/hypr/bindings.conf`  
 **Modifier:** `$mainMod = SUPER`  
 **Layout assumption:** `dwindle` (theme `looknfeel.conf`)  
 **Audit:** 2026-08-13 (E-W2-001) — every active `bind`/`binde`/`bindm` line counted (**87** active, **0** commented binds). Map matches skel.
+
+### Lane product tip (E-W4-001 merge-prep)
+
+| Ref | SHA | Notes |
+|-----|-----|-------|
+| **Product tip** (integrator) | **`d8db11f`** (`d8db11f5ac70922c724db5ef4278404a033a7f83`) | Last `hyprland:` product commit on `lane/e-hyprland` — E-W3-001 SESSION-SMOKE inspect + dwindle comments; includes W2 binds/lock/tooltip work |
+| Prior product | `7c1b044` | E-W2-002 lock/idle comments + waybar tooltips |
+| Prior product | `e364669` | E-W2-001 assistant bind + float rules + KEYBIND-MAP 87 |
+| Bind count | **87** | Unchanged since E-W2-001; W3/W4 were comments/docs only |
 
 Machine-readable table. Columns: `keys | dispatcher | args | notes`
 

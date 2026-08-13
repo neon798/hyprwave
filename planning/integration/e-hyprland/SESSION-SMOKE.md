@@ -1,10 +1,15 @@
-# Hyprland session smoke — Wave 2/3 gate (E-W2-001 + E-W3-001 inspect)
+# Hyprland session smoke — Wave 2–4 gate (E-W2-001 + E-W3-001 inspect + E-W4-001 merge-prep)
 
 **Audience:** QA (Model G) and integrators after merging `lane/e-hyprland`.  
 **Environment:** **new** user (skel applies only at account creation), Hyprland variant, SDDM → Hyprland.  
-**Companion:** `KEYBIND-MAP.md` (87 active binds), `AUTOSTART.md`, `THEME-SYMLINKS.md`, `HANDOFF.md`.
+**Companion:** `KEYBIND-MAP.md` (87 active binds; product tip **`d8db11f`**), `AUTOSTART.md`, `THEME-SYMLINKS.md`, `HANDOFF.md`, `INTEGRATION-DAY.md`.
 
-**Skel caveat:** existing homes are **not** rewritten by image updates — test with a fresh account (see HANDOFF).
+## New user vs existing home (E-W4-001)
+
+| | |
+|--|--|
+| **New user** | `/etc/skel` → `~/.config` at **account creation only**. All gates below assume this. |
+| **Existing home** | Image updates **do not** overwrite `~/.config/hypr/**` (or walker/waybar/…). Super+SHIFT+A float class, lock comments, waybar tooltips from this lane **will not** land automatically. Prefer a **fresh test user** for smoke; manual merge is operator-owned. **No home migrator** ships from Model E. |
 
 **Image note:** host builds may expose `localhost/hyprwave:latest` for container checks (`command -v hyprwave-assistant`, etc.). Full session smoke still needs a VM/boot. Container inspect (below) is **not** a substitute for Gates B–H.
 
