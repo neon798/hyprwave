@@ -1,121 +1,176 @@
-# Disposable VM drill — Hyprwave duress (operator procedure)
+# Disposable VM drill — Hyprwave duress (operator **rehearsal**)
 
-**Duration:** 30–45 minutes  
-**Goal:** Prove packaging is inert by default, that opt-in sign + mild clear works,
-and that you can recover from a bad PAM edit — **without** using a daily driver.
+**Duration:** 30–45 minutes (safe path is ~15–25 min)  
+**Goal:** Walk **real image paths** and prove packaging is inert by default —
+module present, scripts unsigned, **PAM OFF** — using only `--help`, `--status`,
+`--verify`, and `--dry-run`.
 
-**Default remains OFF.** This drill never belongs in CI image defaults.
+---
+
+## BANNER — rehearsal only (read first)
+
+| This drill **does** | This drill **does not** |
+|---|---|
+| Inventory stock image paths | Edit `/etc/pam.d/*` |
+| Run `hyprwave-duress-setup --help` / `--status` / `--verify` / `--dry-run` | Install `pam_duress` into any live PAM stack |
+| Optional: sign a **mild** user script (still PAM OFF) | Enable production duress authentication |
+| Confirm `/etc/duress.d` is empty of scripts | Bake or commit `*.sha256` |
+
+**Default remains OFF.** This drill is a **rehearsal**, not production enablement.  
+Production enable stays **operator-only** after a green drill — see `ENABLE.md` and
+`OPERATOR-RUNBOOK.md` §3+. **Never** put a `pam_duress.so` line into `/etc/pam.d`
+during this procedure. CI image defaults must never enable PAM.
+
+---
+
+## Stock image layout (match these paths)
+
+Paths reflect the Wave 2 Hyprwave image (`localhost/hyprwave:latest` inspect
+2026-08-13) and `build.sh` / `build.sh.snippet` install targets. On Fedora
+usr-merge systems, `/usr/bin` is the install path (not `/usr/sbin`).
+
+| Path | Stock state |
+|---|---|
+| `/usr/lib64/security/pam_duress.so` | Present (module ships) |
+| `/usr/bin/hyprwave-duress-setup` | Present (opt-in tool; mode `0755`) |
+| `/usr/bin/duress_sign` | Present (signing helper; used only if you sign) |
+| `/usr/share/hyprwave/duress/` | Docs + assets root (`README.md`, `ENABLE.md`, …) |
+| `/usr/share/hyprwave/duress/templates/` | Unsigned templates (`00`/`10`/`20-*.sh`) |
+| `/usr/share/hyprwave/duress/pam.d/*.snippet` | **Reference only** — not live PAM |
+| `/etc/duress.d/` | Exists; **README only** (no scripts, no `*.sha256`) |
+| `/etc/pam.d/*` | **Zero** `pam_duress` lines |
+| `~/.duress/` | Absent until a user runs setup |
+
+If a binary is missing, stop after **Phase A** (repo host) and schedule an image
+rebuild — do not invent alternate PAM enable paths.
+
+---
 
 ## Prerequisites
 
 - Disposable VM (qcow2 / ISO) of Hyprwave **or** a throwaway user on a lab box
-- Root console path: second TTY, serial, or `sudo -i` left open
-- Image has (or you bind-mount) packaging assets:
-  - `pam_duress.so`, `duress_sign`, `hyprwave-duress-setup`
-  - templates under `/usr/share/hyprwave/duress/templates/`
-- Clock: 30–45 minutes blocked; do not rush PAM edits
+- Optional root console for inspect-only commands (`ls`, `grep`) — **not** for PAM edits
+- Clock: 30–45 minutes blocked if you include optional signing; shorter for dry-run only
 
-If binaries are not in the image yet, stop after **Phase A** packaging checks on the
-host/repo and schedule an integrator build before Phases B–D.
+---
 
-## Phase A — Stock / packaging (5 min)
+## Phase A — Repo packaging host (5 min)
+
+Run on the **git checkout** (no VM required):
 
 | Step | Action | Pass criteria |
 |---|---|---|
-| A1 | On **repo host**: `bash planning/integration/d-duress/validate.sh` | Exit 0 |
-| A2 | In VM (if assets present): `hyprwave-duress-setup --status` | Reports PAM OFF / no enable lines expected |
-| A3 | `hyprwave-duress-setup --verify` | OK empty or OK with no issues; **read-only** |
-| A4 | Confirm no login change with normal password | Session works as before enable |
+| A1 | `bash planning/integration/d-duress/validate.sh` | `RESULT: PASSED` |
+| A2 | `bash planning/qa/run-all.sh --only duress-safety` | Check PASS / RESULT OK |
+| A3 | `bash build_files/duress/hyprwave-duress-setup --help` | Mentions **OFF BY DEFAULT** / operator |
+| A4 | Confirm no packaging `*.sha256` | `find build_files/duress planning/integration/d-duress -name '*.sha256'` empty |
 
-**Stop if validate fails.** Do not enable PAM on a broken tree.
+**Stop if validate or duress-safety fails.** Do not proceed to a VM enable fantasy.
 
-## Phase B — Mild opt-in without PAM (8 min)
+---
 
-| Step | Action | Pass criteria |
-|---|---|---|
-| B1 | `hyprwave-duress-setup --dry-run --mild-template` | Dry-run messages; no `~/.duress/*.sha256` |
-| B2 | `hyprwave-duress-setup --mild-template` | Prompts; produces signed script mode 500 + `.sha256` mode 400 |
-| B3 | `hyprwave-duress-setup --verify` | RESULT OK for signed mild script |
-| B4 | Optional: `--dry-run --local-clear-template` | Previews `20-local-only-clear.sh` only |
+## Phase B — Image path inventory (5–8 min)
 
-Still **no** PAM line. Normal password must not run duress scripts.
-
-## Phase C — Enable PAM carefully (10–12 min)
-
-Keep **root shell open** for the entire phase.
+On the **installed image / disposable VM** (read-only checks):
 
 | Step | Action | Pass criteria |
 |---|---|---|
-| C1 | `sudo cp -a /etc/pam.d/system-auth "/etc/pam.d/system-auth.bak.$(date +%Y%m%d%H%M%S)"` | Backup exists |
-| C2 | Insert `auth sufficient pam_duress.so` **after** `pam_unix` (see `ENABLE.md`) | Prefer `sufficient`, never start with `required` |
-| C3 | `hyprwave-duress-setup --status` | Shows PAM reference in expected file |
-| C4 | Login / unlock with **normal** password | Success; mild clear **does not** run (or no unwanted loss) |
-| C5 | Login / unlock with **duress** password | Success; mild clear runs; no error UI / “duress mode” banner |
-| C6 | Wrong password | Fail as usual |
+| B1 | `test -x /usr/bin/hyprwave-duress-setup && command -v hyprwave-duress-setup` | Tool on PATH via `/usr/bin` |
+| B2 | `ls -la /usr/lib64/security/pam_duress.so` | Module file present |
+| B3 | `ls -la /usr/share/hyprwave/duress/ /usr/share/hyprwave/duress/templates/` | Docs + unsigned templates |
+| B4 | `ls -la /etc/duress.d/` | README present; **no** `*.sh` / `*.sha256` |
+| B5 | `grep -RIn 'pam_duress' /etc/pam.d 2>/dev/null \|\| echo 'OK: no pam_duress'` | No enable lines |
+| B6 | `test ! -e /usr/share/hyprwave/duress/pam.d/*.snippet \|\| ls /usr/share/hyprwave/duress/pam.d/` | Snippets only under share (not `/etc/pam.d`) |
 
-If C4 fails: **immediately** restore backup from the open root shell (Phase D).
+---
 
-## Phase D — Recovery rehearsal (5–8 min)
+## Phase C — Dry-run / help / status / verify only (8–10 min)
 
-Practice lockout recovery **while you still have root**, even if nothing broke.
-
-| Step | Action | Pass criteria |
-|---|---|---|
-| D1 | From root: restore `system-auth` from `.bak.*` **or** delete only the `pam_duress.so` line | File valid |
-| D2 | `grep pam_duress /etc/pam.d/system-auth` (or greeter file) | No unexpected enable, or intentional remaining line documented |
-| D3 | Login with normal password | Success |
-| D4 | `hyprwave-duress-setup --remove 10-clear-histories.sh` (optional cleanup) | Script + sig gone |
-| D5 | `hyprwave-duress-setup --verify` | Empty OK or remaining scripts OK |
-
-### If you are locked out (real failure)
-
-1. Boot recovery / live USB / single-user if available on the lab image.
-2. Mount the system root; edit `/etc/pam.d/system-auth` (or the greeter file you changed).
-3. Remove `pam_duress.so` lines or restore from `*.bak.*`.
-4. Reboot; confirm normal login.
-5. File notes: which file was edited, which control flag was used (`required` is a common footgun).
-
-## Phase E — Upgrade drift awareness (3–5 min)
+**No PAM edits. Prefer `--dry-run` before any sign.**
 
 | Step | Action | Pass criteria |
 |---|---|---|
-| E1 | Read `ENABLE.md` bootc upgrade section | Operator knows PAM may reset |
-| E2 | Simulate check: `grep -n pam_duress /etc/pam.d/system-auth \|\| true` | Command memorized for post-`bootc upgrade` |
-| E3 | Document whether your lab re-applies the line after upgrade | Written note for your runbook |
+| C1 | `hyprwave-duress-setup --help` | OFF BY DEFAULT; does not claim to enable PAM |
+| C2 | `hyprwave-duress-setup --status` | Reports PAM OFF / no enable lines (stock) |
+| C3 | `hyprwave-duress-setup --verify` | OK empty or OK with no issues; **read-only** |
+| C4 | `hyprwave-duress-setup --dry-run --mild-template` | Dry-run banner; **no** `~/.duress/*.sha256` written |
+| C5 | Optional: `hyprwave-duress-setup --dry-run --local-clear-template` | Previews `20-local-only-clear.sh` only |
+| C6 | Optional: `hyprwave-duress-setup --status --json` | `"pam_enabled":false`, `"stock_default":"OFF"` |
 
-Do **not** require a full `bootc upgrade` inside the 45-minute window if bandwidth is limited; the check command is mandatory knowledge.
+Still **no** PAM line. Normal password login must be unchanged.
 
-## Aggressive template (optional, +10 min)
+---
 
-Only on a **throwaway account** with no valued data:
+## Phase D — Optional mild sign (still PAM OFF) (5–8 min)
+
+Only if you want to practice signing **without** enabling authentication:
+
+| Step | Action | Pass criteria |
+|---|---|---|
+| D1 | `hyprwave-duress-setup --mild-template` | Prompts; mode `500` script + `400` `.sha256` under `~/.duress/` |
+| D2 | `hyprwave-duress-setup --verify` | RESULT OK for signed mild script |
+| D3 | Login / unlock with **normal** password | Success; mild clear **does not** run (PAM still OFF) |
+| D4 | Optional cleanup: `hyprwave-duress-setup --remove 10-clear-histories.sh` | Script + sig gone |
+
+Signing alone does **nothing** at login until an admin follows `ENABLE.md`.
+
+---
+
+## STOP — production enable is out of this drill
+
+**Do not continue into PAM edits as part of this drill.**
+
+When (and only when) you intentionally enable on a disposable VM later:
+
+1. Read `/usr/share/hyprwave/duress/ENABLE.md` (or `planning/integration/d-duress/ENABLE.md`).
+2. Follow `OPERATOR-RUNBOOK.md` §3–§5 with an open root shell and timestamped backups.
+3. Prefer `auth sufficient pam_duress.so` after `pam_unix`; never start with `required`.
+4. Rehearse recovery **before** you need it (runbook §5 / ENABLE recovery section).
+
+Those steps are **operator production enablement**, not the Wave 2 path drill.
+
+---
+
+## Aggressive template (optional lab only — still no PAM)
+
+Only on a **throwaway account** with no valued data, and still **without** PAM enable
+unless you have left this drill for full runbook enable:
 
 ```bash
-hyprwave-duress-setup --wipe-template
-# then duress login once; confirm keys/profiles gone; delete account afterward
+hyprwave-duress-setup --dry-run --wipe-template
+# review targets carefully before any real sign
 ```
 
-Prefer stopping after mild success for first drills.
+Prefer stopping after mild dry-run / mild sign for first drills.
+
+---
 
 ## Pass / fail summary
 
 **PASS** when:
 
-- validate.sh green on packaging host
-- Stock state inert before PAM enable
-- Normal password always works when using `sufficient`
-- Duress password runs expected mild script once signed + PAM enabled
-- Recovery path demonstrated from root shell
+- `validate.sh` and `duress-safety` green on packaging host
+- Image paths match the stock layout table above
+- Stock state inert: zero `/etc/pam.d` `pam_duress` lines; `/etc/duress.d` script-empty
+- Drill used only help / status / verify / dry-run (optional user sign); **no** PAM install
+- Normal password still works; signed scripts do not run while PAM is OFF
 
 **FAIL** when:
 
 - Any default image path enables PAM without human edit
-- `required pam_duress` used without recovery plan
-- Pre-signed `*.sha256` found in packaging tree
-- Operator cannot restore PAM from backup
+- Drill instructions or operator action write `pam_duress` into `/etc/pam.d`
+- Pre-signed `*.sha256` found in packaging tree or stock `/etc/duress.d`
+- Paths in docs do not match `/usr/bin/hyprwave-duress-setup`, `/usr/share/hyprwave/duress`, `/etc/duress.d`
+
+---
 
 ## References
 
-- `planning/integration/d-duress/ENABLE.md`
+- Image-local enable (operator only): `/usr/share/hyprwave/duress/ENABLE.md`
+- Repo: `planning/integration/d-duress/ENABLE.md`
+- `planning/integration/d-duress/OPERATOR-RUNBOOK.md` (enable → test → rollback)
+- `planning/integration/d-duress/RESIDUALS.md` (still OFF residual)
+- `planning/integration/d-duress/SIGNING.md`
 - `build_files/duress/THREAT-MODEL.md`
 - `build_files/duress/README.md`
 - Upstream: https://github.com/nuvious/pam-duress
