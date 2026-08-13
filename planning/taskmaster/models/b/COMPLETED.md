@@ -11,3 +11,4 @@ B-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip fb3eb36 | 2ddb
 B-W2-001 | 2026-08-13 | Assistant shipped + Super+Shift+A; close B-5 | 072e972
 B-W2-002 | 2026-08-13 | IMAGE_NAME docs + B-6 close; checklist hygiene (no binaries) | 07d7e9e
 B-W3-001 | 2026-08-13 | Local build primary vs private GHCR; first-boot honesty | ce0c737
+B-W4-001 | 2026-08-13 | CHANGELOG/ISSUES W2–W3 handbook merge-prep | 5f09f2b

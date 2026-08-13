@@ -39,6 +39,7 @@ settings and launcher. Themes still use **Hyprwave Themes** (`hyprwave-theme` /
 | **Super + B** | **Neonwolf** browser |
 | **Super + A** | **FlatArcade** (Flathub TUI, in Ghostty) |
 | **Super + Shift + T** | **Hyprwave Themes** GUI |
+| **Super + Shift + A** | **Hyprwave Assistant** (`ghostty -e hyprwave-assistant`) |
 | **Super + Q** | Close active window |
 | **Super + F** | Fullscreen |
 | **Super + W** | Toggle floating |

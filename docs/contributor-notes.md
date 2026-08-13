@@ -32,7 +32,7 @@ protocol: **[planning/taskmaster/PROTOCOL.md](../planning/taskmaster/PROTOCOL.md
 |-------|--------|----------------|
 | A | `lane/a-stabilize` | pins (`versions.env`), CI guards, stabilize notes |
 | **B** | **`lane/b-docs`** | **INSTALL, CHANGELOG, README, `docs/**`, `planning/integration/b-docs/**`** |
-| C | `lane/c-assistant` | Assistant app + dormant snippets |
+| C | `lane/c-assistant` | Assistant app (now **image-hooked** on main) |
 | D | `lane/d-duress` | Duress packaging (**off by default**) |
 | E | `lane/e-hyprland` | Hyprland skel / keybinds / session |
 | F | `lane/f-cosmic` | COSMIC vendor / greeter / declutter |
@@ -77,7 +77,7 @@ pending** for features that actually shipped. Summary:
 2. **Edit honesty language**
    - [CHANGELOG.md](../CHANGELOG.md): use the **Post-merge template** under Unreleased;
      add `## [YYYY-MM-DD]` and uncheck only what is truly on the image
-   - Drop “on `lane/e-hyprland` until merge” notes when E is merged
+   - Drop leftover “until merge” notes if any remain (E is on main)
    - Keep duress **off by default** even if D assets are on the image
    - Mention Assistant only if the binary is actually installed
 3. **Re-run accuracy**
@@ -114,10 +114,15 @@ when a later wave lands.
 ```bash
 just lint          # shellcheck
 just check         # Justfile format
-just build hyprwave latest
+just build hyprwave latest   # pass name: default IMAGE_NAME is image-template
 just build-cosmic
 # VM (sudo): just run-vm-qcow2
 ```
+
+**`IMAGE_NAME`:** Justfile default is `image-template` (template heritage). CI uses
+the repo name (`hyprwave`). Always pass `just build hyprwave latest` or
+`IMAGE_NAME=hyprwave just build` in local docs/examples — **do not** edit the
+Justfile only to rename the default (see ISSUES B-6, closed as docs note).
 
 Docs-only changes do **not** require a full image build, but INSTALL recipe names must
 match the Justfile.
@@ -135,6 +140,6 @@ image is built and installed. Document that clearly whenever you describe defaul
 
 - [architecture.md](architecture.md)  
 - [security.md](security.md)  
-- [CHANGELOG.md](../CHANGELOG.md) — pending-merge table + post-merge template  
+- [CHANGELOG.md](../CHANGELOG.md) — Wave 1 integration section + history  
 - [planning/integration/b-docs/](../planning/integration/b-docs/)  
 - [PROTOCOL.md](../planning/taskmaster/PROTOCOL.md)  

@@ -4,17 +4,17 @@ Hyprwave publishes two related images from the same repo:
 
 | Image | Desktop | Greeter (typical) | Launcher / shell |
 |-------|---------|-------------------|------------------|
-| `hyprwave` | Hyprland | SDDM | Walker + Waybar + mako |
+| `hyprwave` | Hyprland | SDDM | **Walker** + Waybar + mako + **hyprpaper** |
 | `hyprwave-cosmic` | Fedora COSMIC | cosmic-greeter | COSMIC shell / panels |
 
 ## Shared components
 
-Both variants aim to ship the same companion story:
+Both variants ship the same companion story:
 
 - Ghostty, Yazi, Neonwolf, FlatArcade
-- Hyprwave theme assets where applicable
+- **11** Hyprwave theme packs (`hyprwave-theme`)
 - Immutable **bootc** update model
-- Hyprwave Assistant (once integrated into the image)
+- Hyprwave Assistant (`/usr/bin/hyprwave-assistant`) — already in the image
 
 ## Differences you will notice
 
@@ -24,9 +24,10 @@ Both variants aim to ship the same companion story:
 | App launcher | Walker (elephant plugins) | COSMIC launcher |
 | Status bar | Waybar | COSMIC panel |
 | Notifications | Mako | COSMIC notifications |
+| Wallpaper | **hyprpaper** (theme pack) | COSMIC background keys |
 | Theming | Full theme pack (hypr/waybar/walker/…) | `cosmic/config` + wallpaper |
 | Lock / idle | hyprlock / hypridle | COSMIC session tools |
-| Suggested Assistant keybind | Super+Shift+A → Ghostty | Pin desktop entry / menu |
+| Assistant launch | **Super+Shift+A** → Ghostty | Desktop entry / menu (pin if you want) |
 
 ## Choosing
 
@@ -45,9 +46,11 @@ sudo bootc switch ghcr.io/neon798/hyprwave-cosmic:latest
 sudo systemctl reboot
 ```
 
+**GHCR may be private** (401/403). See article `ghcr` before assuming the command is wrong.
+
 Full walkthrough: KB article **`bootc-rebase`**.
 
-Rebase is a full image switch. Your home directory is kept; greeter and session defaults follow the image.
+Rebase is a full image switch. Your home directory is kept; greeter and session defaults follow the image. **Skel does not rewrite existing `~/.config`.**
 
 ## Assistant on both
 

@@ -12,6 +12,7 @@ items = [
   { id = "onlyoffice", name = "OnlyOffice", source = "flathub", flatpak = "org.onlyoffice.desktopeditors", description = "Lightweight office alternative" },
   { id = "obsidian", name = "Obsidian", source = "flathub", flatpak = "md.obsidian.Obsidian", description = "Markdown knowledge base / notes" },
   { id = "joplin", name = "Joplin", source = "flathub", flatpak = "net.cozic.joplin_desktop", description = "Open-source notes with sync" },
+  { id = "thunderbird", name = "Thunderbird", source = "flathub", flatpak = "org.mozilla.Thunderbird", description = "Email, calendar, and feeds" },
 ]
 
 [[category]]
@@ -65,6 +66,8 @@ items = [
   { id = "element", name = "Element", source = "flathub", flatpak = "im.riot.Riot", description = "Matrix chat client" },
   { id = "signal", name = "Signal Desktop", source = "flathub", flatpak = "org.signal.Signal", description = "Private messaging" },
   { id = "telegram", name = "Telegram Desktop", source = "flathub", flatpak = "org.telegram.desktop", description = "Telegram messenger" },
+  { id = "discord", name = "Discord", source = "flathub", flatpak = "com.discordapp.Discord", description = "Voice, video, and chat" },
+  { id = "spotify", name = "Spotify", source = "flathub", flatpak = "com.spotify.Client", description = "Music streaming" },
   { id = "jellyfin-mp", name = "Jellyfin Media Player", source = "flathub", flatpak = "com.github.iwalton3.jellyfin-media-player", description = "Play from your Jellyfin server" },
   { id = "vlc", name = "VLC", source = "flathub", flatpak = "org.videolan.VLC", description = "Media player" },
   { id = "obs", name = "OBS Studio", source = "flathub", flatpak = "com.obsproject.Studio", description = "Streaming and recording" },

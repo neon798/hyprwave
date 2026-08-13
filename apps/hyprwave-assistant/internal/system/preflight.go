@@ -176,6 +176,14 @@ func ClassifyError(err error, op string) error {
 		strings.Contains(lower, "failed to connect"):
 		return fmt.Errorf("%s failed: network/offline or DNS issue\n\noriginal: %w", op, err)
 
+	case strings.Contains(lower, "401"),
+		strings.Contains(lower, "403"),
+		strings.Contains(lower, "denied"),
+		strings.Contains(lower, "unauthorized"),
+		strings.Contains(lower, "authentication required"),
+		strings.Contains(lower, "access denied"):
+		return fmt.Errorf("%s failed: registry auth/visibility (GHCR packages may be private — anonymous pull can 401/403; localhost tags are valid for local builds). See: hyprwave-assistant kb ghcr\n\noriginal: %w", op, err)
+
 	case strings.Contains(lower, "not found") && strings.Contains(lower, "bootc"):
 		return fmt.Errorf("bootc not available on this host\n\noriginal: %w", err)
 
