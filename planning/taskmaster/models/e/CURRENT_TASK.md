@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: E-W3-001
-wave: 3
-issued: 2026-08-13T03:33:03Z
+status: OPEN
+task_id: E-W4-001
+wave: 4
+issued: 2026-08-13T03:39:11Z
 poll: 2m
-title: SESSION-SMOKE vs localhost/hyprwave:latest inspect notes; dwindle comments only
+title: INTEGRATION-DAY / SESSION-SMOKE: new-user vs existing-home; KEYBIND-MAP tip SHA
 
 ## Duty cycle
 
@@ -14,9 +14,18 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-E-W2-002 cleaned lock/idle comments and waybar tooltips. Wave 3: stamp
-SESSION-SMOKE against the **local Hyprland image** and only touch dwindle
-layout **comments** (no layout redesign).
+Wave 4 is **merge-prep**. Stamp INTEGRATION-DAY / SESSION-SMOKE: skel applies
+to **new users only**; existing homes unchanged. Record KEYBIND-MAP tip SHA
+for the integrator.
+
+Refresh first:
+
+```bash
+git fetch origin
+git checkout lane/e-hyprland
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/e/
+```
 
 ## Exclusive paths (only these)
 
@@ -33,22 +42,29 @@ layout **comments** (no layout redesign).
 
 ## Forbidden
 
-- COSMIC vendor, duress, apps/, `build.sh`, wholesale theme store rewrites
-- Do not reintroduce Wofi/swaybg/cliphist
-- No dwindle/layout **behavior** change — comments only
+- COSMIC vendor, duress, apps/, `build.sh`, wholesale theme rewrites
+- Wofi/swaybg/cliphist
+- Layout redesign
+- Merging this lane onto main
 
 ## Requirements
 
-- [x] SESSION-SMOKE inspect notes for localhost/hyprwave:latest (honest PASS/SKIP)
-- [x] dwindle comments in hyprland.conf + bindings.conf (looknfeel stays theme symlink)
-- [x] Existing-user skel caveat in HANDOFF
-- [x] KEYBIND-MAP unchanged (no bind drift)
+- [ ] INTEGRATION-DAY + SESSION-SMOKE: new-user vs existing-home caveat
+- [ ] KEYBIND-MAP: tip SHA of current lane product commit (W3 inspect /
+      W2 lock comments)
+- [ ] HANDOFF: exclusive file list vs `origin/main` for merge
+- [ ] No bind/layout behavior change unless a comment is factually wrong
+
+## Deliverables
+
+- Integration cards + KEYBIND-MAP SHA
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [x] No redesign; no Wofi/swaybg/cliphist
-- [x] Inspect notes honest
-- [x] `git push -u origin lane/e-hyprland`
+- [ ] New-user/existing-home is explicit
+- [ ] Tip SHA recorded
+- [ ] `git push -u origin lane/e-hyprland`
 
 ## On completion
 

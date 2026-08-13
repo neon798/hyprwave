@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: A-W3-001
-wave: 3
-issued: 2026-08-13T03:35:03Z
+task_id: A-W4-001
+wave: 4
+issued: 2026-08-13T03:39:11Z
 poll: 2m
-title: FIRST-BOOT-CHECKLIST mark local+CI image proofs; GHCR 403 still honest; pin HEAD re-verify
+title: MERGE-READY: pin_guards still pass; list exclusive commits since post-integration-20260807
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-A-W2-002 added GHCR-VISIBILITY + safe action bumps. Wave 3: stamp
-FIRST-BOOT-CHECKLIST with **local + CI** image proofs; keep anonymous GHCR
-as **403**; re-verify pin HEAD.
+Wave 4 is **merge-prep**, not new features. Make MERGE-READY list the
+exclusive commits on `lane/a-stabilize` since `post-integration-20260807`
+(or the Wave 1 merge base) and prove pin guards still pass.
 
 Refresh first:
 
@@ -38,30 +38,28 @@ git checkout origin/main -- planning/taskmaster/models/a/
 ## Forbidden
 
 - Enabling duress PAM, handbook prose (B), assistant/duress product, skel
-- Force-push main; do not invent floating `/releases/latest`
-- Do not claim GHCR is public
+- Merging this lane onto main
+- Force-push; floating `/releases/latest`
 
 ## Requirements
 
-- [ ] FIRST-BOOT-CHECKLIST: mark local `localhost/hyprwave:latest` +
-      `localhost/hyprwave-cosmic:latest` inspects; CI run `31662742064`
-      dual-image PASS; VM smoke still OPEN
-- [ ] GHCR anonymous pull still documented as 403 (visibility card / RELEASE)
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
 - [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
-- [ ] Pin bump only if broken; else WORK_LOG “pins still current”
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
+- [ ] MERGE-READY.md (or INTEGRATION-DAY): commit list + file list vs
+      `origin/main` for exclusive paths only
+- [ ] GHCR still documented private (403)
+- [ ] Do not land unrelated Dependabot majors
 
 ## Deliverables
 
-- Checklist proofs stamped 2026-08-13
+- MERGE-READY commit/file inventory
 - Pin verify snippet in WORK_LOG
 - COMPLETED line
 
 ## Done criteria
 
-- [ ] No public-GHCR claim
-- [ ] Pins still fail-closed
 - [ ] pins-static PASS
+- [ ] Inventory is exclusive-path only
 - [ ] `git push -u origin lane/a-stabilize`
 
 ## On completion

@@ -432,3 +432,18 @@
   **D-W3-001** (negative fixture: no pam.d install from build.sh).
 - C still OPEN C-W2-002. B/E/F/G already on W3-001.
 
+## 2026-08-13T03:37:13Z — Issue C-W3-001
+
+- Verified **C-W2-002 DONE**: About/preflight GHCR `9fd9714`; tip `0364b74`.
+- Issued **C-W3-001** (tests for private-GHCR / dual-DE; catalog IDs real).
+- A-W3-001 + E-W3-001 complete; no WAVE3 next — leave idle (no invented W4).
+- B/D/F/G still OPEN W3-001 on main.
+
+## 2026-08-13T03:39:11Z — Issue A-W4-001 B-W4-001 E-W4-001
+
+- WAVE4-QUEUE on main (`fe1bcba`). Verified W3 exclusive: A `c845521`,
+  B `ce0c737`, E `d8db11f`.
+- Issued merge-prep **A-W4-001** (MERGE-READY + pins), **B-W4-001**
+  (CHANGELOG/ISSUES W2–W3), **E-W4-001** (new-user vs home + KEYBIND SHA).
+- C/D/F/G remain OPEN W3-001. Do not merge lanes onto main.
+
