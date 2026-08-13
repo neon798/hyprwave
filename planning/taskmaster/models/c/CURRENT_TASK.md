@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: C-W3-001
 wave: 3
 issued: 2026-08-13T03:37:13Z
@@ -43,12 +43,12 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Requirements
 
-- [ ] Tests (kb/cli/preflight/catalog as appropriate) assert:
+- [x] Tests (kb/cli/preflight/catalog as appropriate) assert:
       private/auth GHCR language; localhost tags valid; dual DE; Super+Shift+A;
       no Wofi/swaybg; duress not enabled
-- [ ] Catalog IDs used in tests/docs still match real Flathub apps
-- [ ] `cd apps/hyprwave-assistant && go test ./...`
-- [ ] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
+- [x] Catalog IDs used in tests/docs still match real Flathub apps
+- [x] `cd apps/hyprwave-assistant && go test ./...`
+- [x] `bash planning/integration/c-assistant/smoke-host.sh` exit 0
 
 ## Deliverables
 
@@ -57,9 +57,9 @@ git checkout origin/main -- planning/taskmaster/models/c/
 
 ## Done criteria
 
-- [ ] `go test ./...` PASS
-- [ ] No public-GHCR claim
-- [ ] `git push -u origin lane/c-assistant`
+- [x] `go test ./...` PASS
+- [x] No public-GHCR claim
+- [x] `git push -u origin lane/c-assistant`
 
 ## On completion
 

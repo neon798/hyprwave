@@ -8,4 +8,5 @@ C-W1-003 | 2026-08-07 | Pre-merge freeze + smoke-host.sh | 2dc0509
 C-W1-004 | 2026-08-07 | Integration standby heartbeat (freeze 2dc0509) | 2dafc3b
 C-W2-001 | 2026-08-13 | Day-1 KB+catalog vs shipped OS (ghcr, dual DE, 11 themes) | 5df69a3
 C-W2-002 | 2026-08-13 | About/preflight private GHCR + localhost guidance | 9fd9714
+C-W3-001 | 2026-08-13 | Tests lock private-GHCR / dual-DE copy + real Flathub IDs | a78d8c4
 

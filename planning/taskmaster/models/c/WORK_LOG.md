@@ -106,3 +106,12 @@
 
 - main still OPEN for C-W2-002; lane already complete (tip 449ccf6 / mark 9fd9714). Re-assert DONE; no re-implement.
 - go test + smoke-host green
+
+## 2026-08-13 — C-W3-001
+
+- Regression tests lock C-W2-002 copy: private/auth GHCR, localhost tags valid,
+  dual DE (Hyprland+COSMIC), Super+Shift+A, Wofi/swaybg denial, duress OFF
+- catalog: knownFlathubIDs table must match every shipped flathub row
+- smoke-host wave-3 probes (version/help + catalog IDs + no public-GHCR claim)
+- go test ./... PASS; bash planning/integration/c-assistant/smoke-host.sh exit 0
+- status → DONE
