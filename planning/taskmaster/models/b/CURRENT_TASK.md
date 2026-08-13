@@ -1,53 +1,69 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: B-W1-HOLD  
-wave: 1  
-issued: 2026-08-07T05:35:00Z  
-reissued: 2026-08-13T02:35:07Z  
-title: HOLD — Wave1 merged+pushed; await T8 (do not mark DONE)
-
-## Director note (2026-08-13T02:35:07Z)
-
-**Wave 1 is on origin/main** (serial merge A→G + push complete). Harness `planning/qa/run-all.sh` → **RESULT OK**.  
-Program state: `MERGED_PUSHED_AWAITING_T8`.
-
-Human/infra still owns: `just build` / `just build-cosmic`, VM smokes, GHCR publish.  
-Stay on HOLD. Do **not** invent product work. Do **not** mark HOLD as DONE.
-
-Refresh each poll:
-
-```bash
-git fetch origin main
-git checkout origin/main -- planning/taskmaster/models/b/
-```
+status: OPEN
+task_id: B-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+title: Handbook residual polish after post-merge flip
 
 ## Objective
 
-Wave 1 lane work is **complete, frozen, merged, and pushed**. Idle until Director issues a **new task_id** (post-T8 residuals / Wave 2) or sets program complete.
+Integrator already flipped most “pending merge” language (`70e5616`). Finish
+the user-facing handbook so a new user can run the **shipped** desktop without
+lane folklore.
 
-## Rules
+Refresh first:
 
-1. Poll `origin/main` each cycle for a **new task_id** (not just HOLD reissue).
-2. **Do not** set `status: DONE` while `task_id` is `B-W1-HOLD`.
-3. **Do not** start unassigned product features or re-open completed W1 tasks.
-4. Exclusive-path post-merge bug only → `status: BLOCKED` + WORK_LOG details.
-5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
+```bash
+git fetch origin
+git checkout lane/b-docs
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/b/
+```
 
-## Exclusive paths
+## Exclusive paths (only these)
 
-See IDENTITY.md (product freeze) + `planning/taskmaster/models/b/**` for logs only.
+- `INSTALL.md`, `CHANGELOG.md`, `README.md`
+- `docs/**`
+- `planning/integration/b-docs/**`
+- `planning/taskmaster/models/b/**`
 
 ## Forbidden
 
-- Cross-lane edits, merges into main, force-push
-- Closing this HOLD as DONE to "finish" the cycle
-- Inventing T8 image-build work without a new task_id
+- `build_files/**`, workflows, apps, duress packaging
+- Claiming GHCR is public; claiming duress is on by default
+
+## Requirements
+
+- [ ] Add **Hyprwave Assistant** to README companion table (ships in image;
+      Super+Shift+A on Hyprland; optional)
+- [ ] Document Super+Shift+A on [docs/keybinds.md](../../../docs/keybinds.md)
+      Essentials table (missing today)
+- [ ] Close or rewrite ISSUES.md **B-5** (Assistant/Duress are on main:
+      assistant hooked; duress packaged OFF)
+- [ ] Sweep `docs/` + `INSTALL.md` + `planning/integration/b-docs/` for leftover
+      “pending merge / until merge / on lane” that is now false
+- [ ] README COSMIC dock line already updated — confirm it matches
+      `build_files/usr/share/cosmic/.../favorites`
+- [ ] Keep screenshot binaries TODO (B-7); do not invent captures
+- [ ] Re-run POST-MERGE link walk (0 missing)
+
+## Deliverables
+
+- Handbook matches skel + CHANGELOG Wave 1 section
+- ISSUES.md updated
+- ACCURACY-AUDIT addendum for B-W2-001
 
 ## Done criteria
 
-- [ ] **None until Director changes task_id** — leave status OPEN
+- [ ] Super+Shift+A documented
+- [ ] Assistant listed as shipped (not “upcoming”)
+- [ ] Duress still **off by default** in security/faq
+- [ ] Link check 0 missing
+- [ ] `git push -u origin lane/b-docs`
 
 ## On completion
 
-N/A while on HOLD.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

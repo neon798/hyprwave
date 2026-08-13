@@ -1,53 +1,68 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: F-W1-HOLD  
-wave: 1  
-issued: 2026-08-07T05:35:00Z  
-reissued: 2026-08-13T02:35:07Z  
-title: HOLD — Wave1 merged+pushed; await T8 (do not mark DONE)
-
-## Director note (2026-08-13T02:35:07Z)
-
-**Wave 1 is on origin/main** (serial merge A→G + push complete). Harness `planning/qa/run-all.sh` → **RESULT OK**.  
-Program state: `MERGED_PUSHED_AWAITING_T8`.
-
-Human/infra still owns: `just build` / `just build-cosmic`, VM smokes, GHCR publish.  
-Stay on HOLD. Do **not** invent product work. Do **not** mark HOLD as DONE.
-
-Refresh each poll:
-
-```bash
-git fetch origin main
-git checkout origin/main -- planning/taskmaster/models/f/
-```
+status: OPEN
+task_id: F-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+title: COSMIC vendor + greeter vs merged main (wake F)
 
 ## Objective
 
-Wave 1 lane work is **complete, frozen, merged, and pushed**. Idle until Director issues a **new task_id** (post-T8 residuals / Wave 2) or sets program complete.
+F has been **quiet since 2026-08-07**. COSMIC image CI already succeeded;
+local `just build-cosmic` is in flight. Prove vendor defaults and operator
+docs match `main`, and prepare a session-smoke card for the new image.
 
-## Rules
+Refresh first:
 
-1. Poll `origin/main` each cycle for a **new task_id** (not just HOLD reissue).
-2. **Do not** set `status: DONE` while `task_id` is `F-W1-HOLD`.
-3. **Do not** start unassigned product features or re-open completed W1 tasks.
-4. Exclusive-path post-merge bug only → `status: BLOCKED` + WORK_LOG details.
-5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
+```bash
+git fetch origin
+git checkout lane/f-cosmic
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/f/
+```
 
-## Exclusive paths
+## Exclusive paths (only these)
 
-See IDENTITY.md (product freeze) + `planning/taskmaster/models/f/**` for logs only.
+- `build_files/usr/share/cosmic/**`
+- `disk_config/iso-cosmic.toml`
+- COSMIC-only `build.sh` `cosmic)` arm **only if required** (prefer snippets
+  under `planning/integration/f-cosmic/`)
+- `planning/bin/generate-cosmic-themes.sh` (do not commit `themegen/target/`)
+- `planning/integration/f-cosmic/**`
+- `planning/taskmaster/models/f/**`
 
 ## Forbidden
 
-- Cross-lane edits, merges into main, force-push
-- Closing this HOLD as DONE to "finish" the cycle
-- Inventing T8 image-build work without a new task_id
+- Hyprland skel, duress, assistant app, shared pin section of build.sh
+
+## Requirements
+
+- [ ] `bash planning/integration/f-cosmic/check-vendor-paths.sh` exit 0
+- [ ] Dock favorites file matches SESSION-SMOKE / GREETER claims:
+      neonwolf, flatarcade, Ghostty, CosmicFiles, hyprwave-theme, CosmicSettings
+- [ ] Mode `is_dark` + wallpaper vendor keys still present
+- [ ] GREETER.md: stock greeter face vs session branding (still true?)
+- [ ] SESSION-SMOKE.md: add “image inspect” rows for
+      `localhost/hyprwave-cosmic:latest` when the tag is new (cosmic-store
+      absent, FlatArcade present, theme GUI present, no SDDM)
+- [ ] If local cosmic image exists: `podman run --rm --entrypoint bash
+      localhost/hyprwave-cosmic:latest -lc '...'` and record results
+- [ ] No cosmic-store regression
+
+## Deliverables
+
+- Vendor script green
+- SESSION-SMOKE / GREETER / FREEZE-STATUS stamped 2026-08-13
+- WORK_LOG with inspect output or “image not local yet”
 
 ## Done criteria
 
-- [ ] **None until Director changes task_id** — leave status OPEN
+- [ ] check-vendor-paths.sh PASS
+- [ ] Docs do not claim SDDM on cosmic
+- [ ] `git push -u origin lane/f-cosmic`
 
 ## On completion
 
-N/A while on HOLD.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

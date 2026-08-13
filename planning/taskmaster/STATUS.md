@@ -1,42 +1,41 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** 1 complete → **T8 IN PROGRESS**  
-**Updated:** 2026-08-13T03:15:00Z (integrator)  
+**Director wave:** **2 issued** (T8 images in flight)  
+**Updated:** 2026-08-13T03:25:00Z  
 **Endpoint:** see `ENDPOINT.md`
 
-| Model | Role | Branch | Status |
-|---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | merged → main; HOLD |
-| B | Docs / handbook | `lane/b-docs` | merged → main; POST-MERGE-DOC-FLIP on main |
-| C | Hyprwave Assistant | `lane/c-assistant` | merged → main + snippets; HOLD |
-| D | Duress / security packaging | `lane/d-duress` | merged → main + snippets; HOLD |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | merged → main; HOLD |
-| F | COSMIC variant | `lane/f-cosmic` | merged → main; HOLD |
-| G | QA automation / integration prep | `lane/g-qa` | merged → main; HOLD |
+| Model | Role | Branch | Current task | Status |
+|---|---|---|---|---|
+| A | Build / CI / pins / release | `lane/a-stabilize` | **A-W2-001** | OPEN |
+| B | Docs / handbook | `lane/b-docs` | **B-W2-001** | OPEN |
+| C | Hyprwave Assistant | `lane/c-assistant` | **C-W2-001** | OPEN |
+| D | Duress / security packaging | `lane/d-duress` | **D-W2-001** | OPEN |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W2-001** | OPEN |
+| F | COSMIC variant | `lane/f-cosmic` | **F-W2-001** | OPEN |
+| G | QA automation | `lane/g-qa` | **G-W2-001** | OPEN |
 
-## This update (2026-08-13T03:15Z)
+## This check-in
 
-- Director 10-minute `main` commits **stopped** (was cancelling CI).
-- Handbook POST-MERGE-DOC-FLIP executed on `main` (honest: GHCR `:latest` not claimed).
-- Local T8: `just build hyprwave latest` then `just build-cosmic` from `77755f1`.
-- Host harness last run: **RESULT OK** (33 PASS).
+- HOLD cancelled. Wave 2 tasks issued on `origin/main` `CURRENT_TASK.md`.
+- Models must **refresh** `planning/taskmaster/models/<x>/` from `origin/main`,
+  merge/rebase onto latest main, then execute. New `task_id` (not `*-W1-HOLD`).
+- Director 10m loop remains **off** (was starving CI).
+- T8: CI dual-image PASS (`31662742064`); local `localhost/hyprwave:latest`
+  inspected (assistant 0.2.2, PAM duress off, 11 themes); cosmic local build running.
 
 ## Integration readiness
 
 | Gate | Status |
 |---|---|
-| Wave 1 freeze + docs on lanes | **GO** |
 | Serial merge A→G | **DONE** |
-| Pins on main | **PASS** |
-| Harness on main | **PASS** |
-| Push local main → origin | **DONE** (pre-flip tip) |
-| Handbook pending-merge flip | **DONE** (this tree; push after CI) |
-| Image builds (CI hyprland + cosmic) | **PASS** (run `31662742064` on `77755f1`) |
-| GHCR anonymous public pull | **NO** (403) |
-| VM smokes | **PENDING** |
-| Local `just build` / `build-cosmic` | **IN PROGRESS** |
+| Handbook flip | **DONE** (`70e5616`) |
+| CI hyprland + cosmic | **PASS** |
+| Local hyprland image | **PASS** (inspect) |
+| Local cosmic image | **IN PROGRESS** |
+| GHCR anonymous public | **NO** (403) |
+| VM smokes | **OPEN** (after images) |
 
 ## Program state
 
-`T8_IN_PROGRESS`
+`WAVE2_ISSUED`

@@ -366,3 +366,13 @@
 - Tips: A `cdabba0`, B `965efe1`, C `d56685c`, D `443c51b`, E `1ca1b21`, F `9f59118` (offline multi-cycle — leave OPEN), G `02c3678`.
 - Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
 - **Blocker:** human T8 (image builds / VM smokes / GHCR).
+
+## 2026-08-13T03:25:00Z — Wave 2 issued (integrator)
+
+- Stopped 10m director loop; handbook flip `70e5616`; CI dual-image PASS; local hyprland image inspected.
+- **Cancelled HOLD.** Issued OPEN Wave 2 tasks (exclusive paths only):
+  A-W2-001 pins/release · B-W2-001 handbook residual · C-W2-001 assistant KB ·
+  D-W2-001 duress safety · E-W2-001 Hyprland session · F-W2-001 COSMIC wake ·
+  G-W2-001 image smoke harness.
+- Models must refresh CURRENT_TASK from `origin/main` (new task_id ≠ `*-W1-HOLD`).
+- Program `WAVE2_ISSUED`. VM smoke still human/T8 after cosmic image.

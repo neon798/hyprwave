@@ -1,53 +1,69 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: C-W1-HOLD  
-wave: 1  
-issued: 2026-08-07T05:35:00Z  
-reissued: 2026-08-13T02:35:07Z  
-title: HOLD — Wave1 merged+pushed; await T8 (do not mark DONE)
-
-## Director note (2026-08-13T02:35:07Z)
-
-**Wave 1 is on origin/main** (serial merge A→G + push complete). Harness `planning/qa/run-all.sh` → **RESULT OK**.  
-Program state: `MERGED_PUSHED_AWAITING_T8`.
-
-Human/infra still owns: `just build` / `just build-cosmic`, VM smokes, GHCR publish.  
-Stay on HOLD. Do **not** invent product work. Do **not** mark HOLD as DONE.
-
-Refresh each poll:
-
-```bash
-git fetch origin main
-git checkout origin/main -- planning/taskmaster/models/c/
-```
+status: OPEN
+task_id: C-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+title: Assistant day-1 KB + catalog vs shipped OS
 
 ## Objective
 
-Wave 1 lane work is **complete, frozen, merged, and pushed**. Idle until Director issues a **new task_id** (post-T8 residuals / Wave 2) or sets program complete.
+Assistant **0.2.2 is in the Hyprland image** (`/usr/bin` usr-merge). KB/catalog
+still read like pre-merge theory in places. Make offline help match the OS that
+actually shipped.
 
-## Rules
+Refresh first:
 
-1. Poll `origin/main` each cycle for a **new task_id** (not just HOLD reissue).
-2. **Do not** set `status: DONE` while `task_id` is `C-W1-HOLD`.
-3. **Do not** start unassigned product features or re-open completed W1 tasks.
-4. Exclusive-path post-merge bug only → `status: BLOCKED` + WORK_LOG details.
-5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
+```bash
+git fetch origin
+git checkout lane/c-assistant
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/c/
+```
 
-## Exclusive paths
+## Exclusive paths (only these)
 
-See IDENTITY.md (product freeze) + `planning/taskmaster/models/c/**` for logs only.
+- `apps/hyprwave-assistant/**`
+- `build_files/usr/share/hyprwave/assistant/**`
+- `build_files/usr/share/applications/hyprwave-assistant.desktop`
+- `planning/integration/c-assistant/**`
+- `planning/taskmaster/models/c/**`
 
 ## Forbidden
 
-- Cross-lane edits, merges into main, force-push
-- Closing this HOLD as DONE to "finish" the cycle
-- Inventing T8 image-build work without a new task_id
+- Skel bindings (already Super+Shift+A on main — HANDOFF only)
+- `build.sh` / Containerfile (snippets only if a real hook bug)
+- Duress enablement, CI, handbook
+
+## Requirements
+
+- [ ] Re-read KB pages; fix any “pending merge”, Wofi/swaybg, or “assistant not
+      installed” claims
+- [ ] KB must state: dual DE, Walker/hyprpaper, 11 themes, duress **OFF**,
+      GHCR may be private, skel = new users only, Super+Shift+A
+- [ ] Add/refresh pages if missing: first-boot, GHCR/private pull, COSMIC vs
+      Hyprland (do not duplicate whole handbook — short, actionable)
+- [ ] Catalog: keep Flathub IDs real; add 1–2 clearly missing day-1 apps only
+      if IDs are verified (do not invent)
+- [ ] `cd apps/hyprwave-assistant && go test ./...`
+- [ ] Update `planning/integration/c-assistant/smoke-host.sh` / HANDOFF if stale
+- [ ] Desktop entry Name/Comment accurate
+
+## Deliverables
+
+- Corrected KB + catalog
+- Green `go test`
+- HANDOFF note: image-hooked 0.2.2 verified on `localhost/hyprwave:latest`
 
 ## Done criteria
 
-- [ ] **None until Director changes task_id** — leave status OPEN
+- [ ] `go test ./...` PASS
+- [ ] No Wofi/swaybg/Thunar-as-default in assistant KB
+- [ ] Duress not described as enabled
+- [ ] `git push -u origin lane/c-assistant`
 
 ## On completion
 
-N/A while on HOLD.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work
