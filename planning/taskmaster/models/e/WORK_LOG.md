@@ -275,3 +275,9 @@
 - waybar tooltips name nm-connection-editor / pavucontrol / blueman-manager; header notes Walker/theme-gui/lock
 - KEYBIND-MAP + SESSION-SMOKE lock path one-liners; HANDOFF E-W2-002 + existing-home caveat
 - No redesign; no wofi/swaybg/cliphist
+
+## 2026-08-13T03:34Z — E-W2-002 poll re-verify
+
+- Refreshed from origin/main; CURRENT still OPEN E-W2-002 (Director not yet advanced)
+- Product tip 7c1b044 intact: hyprlock/hypridle comments, waybar tooltips, HANDOFF caveat
+- No product changes; status remains DONE; idle until new task_id
