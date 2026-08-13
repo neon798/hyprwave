@@ -118,3 +118,21 @@ or enabling PAM in the same PR as first packaging land, reintroduces lockout ris
 
 **Packaging endpoint:** shipped **OFF by default**. Residual confidence is
 operational, not a crypto guarantee.
+
+---
+
+## Still OFF — image residual (Wave 2 / D-W2-001)
+
+Image inspect of `localhost/hyprwave:latest` (2026-08-13) confirmed:
+
+| Fact | Residual meaning |
+|---|---|
+| `pam_duress.so` present under `/usr/lib64/security/` | Presence ≠ enablement |
+| `hyprwave-duress-setup` present | Operator tooling only |
+| **Zero** `pam_duress` lines under `/etc/pam.d` | Stock auth unchanged |
+| `/etc/duress.d` has README only (no scripts / no `.sha256`) | Nothing runs on login |
+| Reference snippets only under `/usr/share/hyprwave/duress/pam.d/` | Not live PAM stacks |
+
+**Still OFF residual:** Future builds must keep this invariant. `validate.sh` +
+`snippet-selftest.sh` + `planning/qa/check-duress-safety.sh` gate packaging
+regressions; they do not replace a post-build image inspect of `/etc/pam.d`.

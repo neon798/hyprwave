@@ -4,11 +4,30 @@
 authentication. Follow this document only after:
 
 1. You understand the threat model in `/usr/share/hyprwave/duress/README.md`
+   (and `THREAT-MODEL.md` when shipped under the same directory)
 2. You have tested in a **disposable VM** (not your daily driver first)
 3. You accept that mis-editing PAM can lock everyone out of the machine
 
 There is **no** supported Containerfile/CI mode `DURESS=enable`.  
 Build intent is always **assets only** (`DURESS=assets` as documentation).
+
+## Stock image layout (inspect residual)
+
+| Path | Expected stock state |
+|---|---|
+| `/usr/lib64/security/pam_duress.so` | Present |
+| `/usr/bin/hyprwave-duress-setup` | Present |
+| `/usr/share/hyprwave/duress/` | Docs + `templates/` + `pam.d/*.snippet` (docs only) |
+| `/etc/duress.d/` | Empty of scripts (README marker only) |
+| `/etc/pam.d/*` | **No** `pam_duress` lines until you add one |
+
+Quick verify:
+
+```bash
+ls -l /usr/lib64/security/pam_duress.so /usr/bin/hyprwave-duress-setup
+grep -RIn pam_duress /etc/pam.d || echo "stock: zero pam_duress lines (expected)"
+find /etc/duress.d -name '*.sha256' 2>/dev/null | grep . && echo "unexpected signatures" || echo "no signatures"
+```
 
 ## Prerequisites
 
@@ -17,6 +36,7 @@ Build intent is always **assets only** (`DURESS=assets` as documentation).
   - `/usr/bin/duress_sign`
   - `/usr/bin/hyprwave-duress-setup`
   - templates under `/usr/share/hyprwave/duress/templates/`
+  - operator docs under `/usr/share/hyprwave/duress/` (README, ENABLE.md)
 - Root / admin access to edit `/etc/pam.d/`
 - A second root session you can use if login breaks
 
