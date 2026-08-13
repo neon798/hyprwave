@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: B-W2-002
-wave: 2
-issued: 2026-08-13T03:27:11Z
+task_id: B-W3-001
+wave: 3
+issued: 2026-08-13T03:31:08Z
 poll: 2m
-title: Justfile IMAGE_NAME note (B-6) + screenshot checklist remaining rows only
+title: first-boot.md + INSTALL: local just build path vs GHCR private; no screenshot binaries
 
 ## Duty cycle
 
@@ -14,10 +14,10 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-B-W2-001 shipped Assistant + Super+Shift+A. Close ISSUES **B-6** in **docs
-only**: local `just build` defaults `IMAGE_NAME=image-template`; CI sets the
-repo name (`hyprwave`). Keep screenshot binaries TODO (B-7) — polish checklist
-rows, do not invent captures.
+B-W2-002 closed IMAGE_NAME / B-6. Wave 3: make **first-boot + INSTALL** tell
+the truth about how to get an image today — local `just build` /
+`localhost/hyprwave:latest` works; **anonymous GHCR is still 403**. Do not
+add screenshot binaries.
 
 Refresh first:
 
@@ -37,32 +37,32 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Forbidden
 
-- `build_files/**`, workflows, apps, duress packaging, **Justfile** (document
-  IMAGE_NAME — do not edit the Justfile)
+- `build_files/**`, workflows, apps, duress packaging, Justfile
 - Claiming GHCR is public; claiming duress is on by default
 - Committing screenshot binaries or fake `docs/assets/` images
 
 ## Requirements
 
-- [ ] INSTALL.md (and contributor-notes if needed): `IMAGE_NAME` default is
-      `image-template`; override `IMAGE_NAME=hyprwave` / CI uses repo name
-- [ ] Close or rewrite ISSUES.md **B-6** after the note exists
-- [ ] screenshot-checklist.md: remaining TODO rows only — fix stale paths,
-      blockers, or Hyprland vs COSMIC capture notes; leave Status TODO
-- [ ] Do not capture or embed new PNG/JPG
-- [ ] Link walk still 0 missing for files you touch
+- [ ] `docs/first-boot.md` + `INSTALL.md`: primary path for a new operator
+      includes local build (`just build` / IMAGE_NAME note already on main);
+      GHCR pull is **authenticated or private** — do not write `podman pull`
+      as if anonymous works
+- [ ] Dual-variant: hyprland vs cosmic first-boot greeter still accurate
+      (SDDM vs cosmic-greeter)
+- [ ] B-7 screenshots remain TODO — no new PNG/JPG
+- [ ] Link walk 0 missing for files you touch
+- [ ] ACCURACY-AUDIT addendum for B-W3-001
 
 ## Deliverables
 
-- B-6 closed in ISSUES + INSTALL note
-- Checklist hygiene only (B-7 still open)
-- ACCURACY-AUDIT addendum for B-W2-002
+- Honest install/first-boot vs private GHCR + local images
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] IMAGE_NAME default documented; Justfile untouched
-- [ ] No new screenshot binaries
-- [ ] Duress still off / GHCR not claimed public
+- [ ] No anonymous-public GHCR claim
+- [ ] No screenshot binaries
+- [ ] Duress still off in any security sentence you touch
 - [ ] `git push -u origin lane/b-docs`
 
 ## On completion

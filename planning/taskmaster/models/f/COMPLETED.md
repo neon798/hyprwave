@@ -9,3 +9,4 @@ F-W1-004 | 2026-08-07 | Integrator checklist + freeze status | 717f467
 F-W1-005 | 2026-08-07 | Integration-day smoke card | 7b19270
 F-W1-006 | 2026-08-07 | Integration standby heartbeat | a4cdb8a
 F-W2-001 | 2026-08-13 | Wake F: vendor recheck, image inspect, docs stamp 2026-08-13 | ac500cc
+F-W2-002 | 2026-08-13 | IMAGE-INSPECT.md durable podman card + cross-links; re-ran local cosmic image | a068147
