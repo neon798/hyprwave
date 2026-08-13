@@ -1,9 +1,10 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: B-W5-001
 wave: 5
 issued: 2026-08-13T04:00:00Z
+completed: 2026-08-13T03:58:00Z
 poll: 2m
 title: Post-merge handbook check (B Wave 2–4 on main)
 
@@ -25,6 +26,6 @@ INSTALL.md CHANGELOG.md README.md docs/** planning/integration/b-docs/** plannin
 
 ## Done criteria
 
-- [ ] Link walk 0 missing
-- [ ] Super+Shift+A in keybinds.md
-- [ ] `git push -u origin lane/b-docs`
+- [x] Link walk 0 missing
+- [x] Super+Shift+A in keybinds.md
+- [x] `git push -u origin lane/b-docs`

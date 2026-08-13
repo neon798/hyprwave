@@ -266,3 +266,9 @@ Pass executed 2026-08-13 (integrator). Product A–G on `main`. T8 image/VM/GHCR
 
 Merge-prep: CHANGELOG Unreleased records W2–W3 handbook deltas (Assistant Super+Shift+A, IMAGE_NAME, local-build primary / GHCR 403). ISSUES B-5/B-6 closed, B-7 open. **No public-GHCR claim.** No screenshot binaries.
 
+---
+
+## B-W5-001 addendum (2026-08-13)
+
+Post-merge verify on tip after B Waves 2–4 land on main: relative link walk **checked=150 missing=0**. Super+Shift+A present in `docs/keybinds.md` Essentials (`ghostty -e hyprwave-assistant`). README lists Assistant as shipped. **No GHCR-public claim**; **duress still off by default**.
+
