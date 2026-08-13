@@ -24,6 +24,7 @@ declare -a CHECK_ORDER=(
   no-wofi-swaybg
   duress-safety
   assistant
+  image
   lane-artifacts
 )
 
@@ -33,6 +34,7 @@ declare -A CHECK_SCRIPTS=(
   [no-wofi-swaybg]="check-no-wofi-swaybg.sh"
   [duress-safety]="check-duress-safety.sh"
   [assistant]="check-assistant.sh"
+  [image]="check-image.sh"
   [lane-artifacts]="check-lane-artifacts.sh"
 )
 
@@ -42,7 +44,7 @@ Usage: bash planning/qa/run-all.sh [options]
 
 Options:
   --only id[,id...]   Run subset of checks (ids: pins-static, themes,
-                      no-wofi-swaybg, duress-safety, assistant,
+                      no-wofi-swaybg, duress-safety, assistant, image,
                       lane-artifacts)
   --list              List available checks and exit
   -h, --help          Show this help
@@ -52,6 +54,8 @@ Environment:
   ROOT                    Override repo root (default: auto from script path)
   LANE_ARTIFACTS_OFF=1    Skip multi-ref lane checks (also used by CI static job)
   ORIGIN_LANE_A..G        Override git refs for lane-artifacts (default origin/lane/*)
+  HYPRWAVE_IMAGE          Image for check-image (default localhost/hyprwave:latest)
+  HYPRWAVE_COSMIC_IMAGE   Optional cosmic image (default localhost/hyprwave-cosmic:latest)
 
 Exit codes:
   0  no FAIL (WARN/SKIP allowed — e.g. missing lane not yet merged)

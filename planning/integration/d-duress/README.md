@@ -1,6 +1,6 @@
 # Integration: Model D — Duress (lane/d-duress)
 
-## Wave 1 + Wave 2 + security pack delivered
+## Wave 1–4 packaging + security pack (assets only; PAM never default-on)
 
 | Artifact | Purpose |
 |---|---|
@@ -9,14 +9,14 @@
 | `build.sh.snippet` | Deploy packaging; **no PAM enable** (`DURESS=assets` intent) |
 | `Containerfile.snippet` | Optional `duressbuilder` stage |
 | `ENABLE.md` | Admin enable / recovery / bootc PAM drift / root-shell checklist |
-| `DRILL.md` | 30–45 min disposable VM operator procedure |
+| `DRILL.md` | PAM-inert path rehearsal (image layout + `--help`/`--dry-run`; not production enable) |
 | `FAQ.md` | Operator Q&A (off by default, signing, greeter/lock, lockout, bootc, LUKS residual) |
-| `OPERATOR-RUNBOOK.md` | Ordered enable → VM test → disable/rollback (links DRILL) |
+| `OPERATOR-RUNBOOK.md` | Ordered enable → VM test → disable/rollback (after DRILL) |
 | `SIGNING.md` | Local sign / verify workflow; **never** commit `*.sha256`; disposable lab path |
-| `RESIDUALS.md` | What packaging does **not** solve (LUKS, physical access, trust root, bootc drift) |
-| `snippet-selftest.sh` | Asserts build/Containerfile snippets stay PAM-inert |
-| `validate.sh` | Packaging safety gates + negative fixtures (no `.sha256`, no pam.d writes, threat model) |
-| `INTEGRATOR-CHECKLIST.md` | **Pre-merge freeze:** ordered merge → snippets → no PAM → validate → operator ENABLE docs only |
+| `RESIDUALS.md` | What packaging does **not** solve; **still OFF** residual |
+| `snippet-selftest.sh` | Asserts build/Containerfile snippets stay PAM-inert (+ pam-snippet→`/etc/pam.d` negatives) |
+| `validate.sh` | Packaging safety gates + negative fixtures (no `.sha256`, no pam.d writes, W3 N7 snippet copy) |
+| `INTEGRATOR-CHECKLIST.md` | **Pre-merge freeze (W4):** merge → snippets → never default-on → validate + duress-safety |
 | `INTEGRATION-DAY.md` | **One-page day-of card:** merge D → snippets → validate → never enable PAM |
 
 ## Templates (severity — must match `build_files/duress/README.md`)
@@ -37,7 +37,7 @@
 | [OPERATOR-RUNBOOK.md](./OPERATOR-RUNBOOK.md) | Ordered enable → VM test → disable/rollback |
 | [SIGNING.md](./SIGNING.md) | Local `duress_sign` / `--verify`; never commit `*.sha256` |
 | [RESIDUALS.md](./RESIDUALS.md) | What packaging does **not** solve |
-| [DRILL.md](./DRILL.md) | 30–45 min disposable VM procedure |
+| [DRILL.md](./DRILL.md) | PAM-inert image-path rehearsal (not enable) |
 | [ENABLE.md](./ENABLE.md) | PAM insert details, recovery, bootc drift |
 
 ## Setup tool

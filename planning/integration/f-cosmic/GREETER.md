@@ -1,9 +1,15 @@
 # cosmic-greeter expectations (Hyprwave COSMIC)
 
-**Task:** F-W1-001  
+**Task:** F-W1-001 · **Wave 2 reconfirm:** F-W2-001  
+**Stamped:** 2026-08-13  
 **Package:** `cosmic-greeter` (explicit install in `build.sh` `cosmic)` arm)  
 **Unit:** `cosmic-greeter.service`  
 **Alias:** `/etc/systemd/system/display-manager.service` → `cosmic-greeter.service`
+
+**Still true on merged main (2026-08-13):** greeter face is **stock upstream COSMIC**;
+session desktop is **Hyprwave-branded** (vendor Dark + wallpaper). **No SDDM** on
+`hyprwave-cosmic` — inspect of `localhost/hyprwave-cosmic:latest` shows
+`display-manager.service` → `cosmic-greeter.service` and no `sddm.service` unit.
 
 ---
 
@@ -72,11 +78,28 @@ Goals:
 
 ---
 
-## Future improvements (out of F-W1-001 scope unless greeter gains a stable API)
+## Future improvements (out of F-W1-001 / F-W2-001 scope unless greeter gains a stable API)
 
 - Vendor or drop-in wallpaper for greeter if System76 documents `/usr/share/cosmic-greeter/` (or similar) defaults.
 - Optional accent color injection for greeter to match `#ff2d95` / `#15052e`.
 - Document any greeter-specific RON keys next to this file when verified on a live F44 COSMIC build.
+
+---
+
+## F-W2-001 / F-W2-002 image reconfirm (2026-08-13)
+
+Host re-runnable card: [IMAGE-INSPECT.md](./IMAGE-INSPECT.md) (id `189340691cc7`,
+digest `sha256:a9ca6920…`).
+
+| Probe | Result |
+|---|---|
+| `rpm -q cosmic-greeter` | 1.5.0-1.fc44 installed |
+| DM symlink | → `cosmic-greeter.service`, enabled |
+| SDDM | **absent** (do not document SDDM for COSMIC) |
+| Session branding vs greeter | Unchanged: stock greeter face; Hyprwave after login |
+
+**Pass criterion (unchanged):** greeter is the active DM and yields a COSMIC session.
+Wallpaper/theme parity with SDDM remains a **known limit**, not a silent failure.
 
 ---
 

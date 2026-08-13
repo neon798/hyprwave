@@ -3,7 +3,8 @@
 **Audience:** Director / human integrator deciding `PROGRAM_COMPLETE`.  
 **Owner:** Model G (matrix only). **Does not merge** product lanes.  
 **Source:** `planning/taskmaster/ENDPOINT.md` § Product 1–10 + Process.  
-**Inspection baseline (pre-merge):** `origin/main` @ `98fe075` (2026-08-07 UTC).
+**Inspection baseline (pre-merge):** `origin/main` @ `98fe075` (2026-08-07 UTC).  
+**Post-merge refresh:** 2026-08-13 — Wave 1 on main; image builds **met** (CI `31662742064` + local + `check-image.sh --cosmic` PASS G-W3-001). **Open only:** VM qcow2 smokes + GHCR anonymous 403.
 
 ### Linked procedures
 
@@ -180,7 +181,7 @@ Update status after integration day; leave verify commands unchanged.
 | **Owner lane** | G |
 | **Verify** | |
 | | `bash planning/qa/run-all.sh` → **RESULT OK** (no FAIL) after integration |
-| | `bash planning/qa/run-all.sh --list` shows pins-static, themes, no-wofi-swaybg, duress-safety, assistant, lane-artifacts |
+| | `bash planning/qa/run-all.sh --list` shows pins-static, themes, no-wofi-swaybg, duress-safety, assistant, image, lane-artifacts |
 | | `test -f planning/qa/ci-snippet.yml` |
 | | `test -f planning/integration/g-qa/INTEGRATION-DAY.md` |
 | | docs: `planning/qa/README.md` exit codes 0/1/2 |
@@ -254,15 +255,24 @@ Model G does **not** set `PROGRAM_COMPLETE`. Model G does **not** merge lanes.
 
 ## 5. Quick status scoreboard (edit after integration day)
 
-| # | Item | Pre-merge | Post-merge (fill) | Verify owner |
+| # | Item | Pre-merge | Post-merge (2026-08-13) | Verify owner |
 |---|---|---|---|---|
-| 1 | Integrated main | open | | Integrator |
-| 2 | Pins + hypr build | open / lane A | | A / CI |
-| 3 | COSMIC build | partial | | F / CI |
-| 4 | Assistant | open / lane C | | C + snippets |
-| 5 | Duress OFF | open / lane D | | D + snippets |
-| 6 | Hyprland desktop | partial | | E |
-| 7 | COSMIC UX | partial | | F |
-| 8 | Docs | open / lane B | | B |
-| 9 | QA harness | open / lane G | | G |
-| 10 | Release path | open / lane A | | A / Director |
+| 1 | Integrated main | open | **met on main** | Integrator |
+| 2 | Pins + hypr build | open / lane A | **met** (pins + local/CI image) | A / CI |
+| 3 | COSMIC build | partial | **met** (local/CI image) | F / CI |
+| 4 | Assistant | open / lane C | **met** (sources + image binary) | C + snippets |
+| 5 | Duress OFF | open / lane D | **met** (validate + no pam_duress in image) | D + snippets |
+| 6 | Hyprland desktop | partial | **partial** (image OK; **VM smoke open**) | E |
+| 7 | COSMIC UX | partial | **partial** (image OK; **VM smoke open**) | F |
+| 8 | Docs | open / lane B | **met on main** (accuracy polish OK) | B |
+| 9 | QA harness | open / lane G | **met** (+ `check-image.sh`) | G |
+| 10 | Release path | open / lane A | **partial** (CI green; **GHCR anon 403**; publish open) | A / Director |
+
+### T8 residual (do not call “all T8 pending” or “image build pending”)
+
+| Step | Status |
+|---|---|
+| Container image builds (CI + local) | **met** — CI `31662742064`; local hyprland + cosmic tags; `check-image.sh` / `--cosmic` PASS |
+| Image content smoke (automated) | **met** — G-W2-001 / G-W3-001 |
+| VM session smokes (qcow2) | **open** (human) |
+| GHCR public pull / signed Wave-1 publish | **open** (anonymous 403) |

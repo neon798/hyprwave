@@ -3,33 +3,45 @@
 Ordered steps for Hyprwave duress packaging. **PAM stays OFF** until you complete
 the enable section deliberately. Prefer a disposable VM first (`DRILL.md`).
 
-Related docs: `ENABLE.md` · `FAQ.md` · `DRILL.md` · `THREAT-MODEL.md` · `validate.sh`
+Related docs: `ENABLE.md` · `FAQ.md` · `DRILL.md` · `THREAT-MODEL.md` · `validate.sh` · `RESIDUALS.md`
+
+**Drill vs enable:** `DRILL.md` is a **PAM-inert rehearsal** (path inventory +
+`--help` / `--status` / `--verify` / `--dry-run` only). Production enable starts
+at **§3** of this runbook after a green drill — never during the drill itself.
 
 ---
 
 ## 0. Preconditions (always)
 
 - [ ] Repo packaging green: `bash planning/integration/d-duress/validate.sh` → `RESULT: PASSED`
-- [ ] Image (or bind-mount) has: `pam_duress.so`, `duress_sign`, `hyprwave-duress-setup`, templates
-- [ ] You can keep a **root shell open** for the whole window (`sudo -i` or root TTY)
+- [ ] Optional host gate: `bash planning/qa/run-all.sh --only duress-safety`
+- [ ] Image has stock layout: `/usr/lib64/security/pam_duress.so`, `/usr/bin/hyprwave-duress-setup`,
+      `/usr/bin/duress_sign`, `/usr/share/hyprwave/duress/templates/`, `/etc/duress.d/` (README only)
+- [ ] You can keep a **root shell open** for the whole enable window (`sudo -i` or root TTY)
 - [ ] Recovery path known (backup restore commands, or live USB)
 - [ ] Not your only daily driver for first enable
+- [ ] Completed **`DRILL.md`** path inventory (Phases A–C) without touching `/etc/pam.d`
 
 ---
 
 ## 1. Stock image proof (PAM must stay off)
 
-Do this on every build you care about before enable:
+Do this on every build you care about before enable (same checks as `DRILL.md` Phases B–C):
 
 ```bash
 # Repo host
 bash planning/integration/d-duress/validate.sh
+bash planning/qa/run-all.sh --only duress-safety
 
-# In VM / installed system
+# In VM / installed system — real image paths
+test -x /usr/bin/hyprwave-duress-setup
+ls -l /usr/lib64/security/pam_duress.so
+ls -la /usr/share/hyprwave/duress/templates/
+ls -la /etc/duress.d/   # README only; no scripts / no *.sha256
+hyprwave-duress-setup --help
 hyprwave-duress-setup --status
 hyprwave-duress-setup --verify
 grep -n pam_duress /etc/pam.d/* 2>/dev/null || echo "OK: no pam_duress lines"
-ls -l /usr/lib64/security/pam_duress.so
 test -z "$(find /etc/duress.d -name '*.sha256' 2>/dev/null)" && echo "OK: no system signatures"
 ```
 
@@ -99,7 +111,8 @@ If greeter or hyprlock use a separate service file that does **not** include
 
 If step 1 fails: **immediately** jump to §5 rollback from the open root shell.
 
-Full timed procedure: **`DRILL.md`** (Phases A–D, 30–45 minutes).
+PAM-inert path rehearsal: **`DRILL.md`** (Phases A–C dry-run path; optional Phase D
+sign still OFF). Enable + ordered login tests remain **this runbook §3–§4** only.
 
 ---
 
