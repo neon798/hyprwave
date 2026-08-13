@@ -15,4 +15,3 @@ D-W2-002 | 2026-08-13 | Operator drill vs image paths; PAM-inert rehearsal; vali
 D-W3-001 | 2026-08-13 | Negative fixture: fail if build/snippet copies pam.d to /etc/pam.d | ef5c41e
 
 D-W4-001 | 2026-08-13 | Merge-prep INTEGRATOR-CHECKLIST; never default-on; validate green | 1fc067d
-D-W5-001 | 2026-08-13 | Post-merge validate + duress-safety green; PAM still OFF | 1cc7a91
