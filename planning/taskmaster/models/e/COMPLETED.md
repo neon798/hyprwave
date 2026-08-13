@@ -19,4 +19,4 @@ E-W2-002 | 2026-08-13 | hyprlock/hypridle comments + waybar tooltips (no redesig
 
 E-W3-001 | 2026-08-13 | SESSION-SMOKE image inspect + dwindle comments | d8db11f
 
-E-W4-001 | 2026-08-13 | merge-prep: new/existing home caveat + KEYBIND tip d8db11f | TBD
+E-W4-001 | 2026-08-13 | merge-prep: new/existing home caveat + KEYBIND tip d8db11f | 39d5d7c
