@@ -246,3 +246,38 @@ localhost/hyprwave-cosmic:latest  189340691cc7
 
 Pins still current. Docs already match private GHCR + CI run `31662742064`.
 Dependabot still skipped (majors + same-day push path). No invented follow-up.
+
+## 2026-08-13 — A-W2-002
+
+**status:** DONE  
+**branch:** `lane/a-stabilize`
+
+### Work done
+
+- Added `planning/integration/a-stabilize/GHCR-VISIBILITY.md` (copy-paste Public
+  clicks for **both** packages; expected 403 until human; post-click probe).
+- Pointed `RELEASE.md`, `FIRST-BOOT-CHECKLIST.md`, `INTEGRATION-DAY.md` at it.
+  Still **do not** claim anonymous GHCR is public.
+- Workflow bumps (exclusive to `build.yml`, SHA-pinned):
+  - `docker/metadata-action` 6.1.0 → 6.2.0
+  - `docker/login-action` 4.2.0 → 4.5.1
+  - `sigstore/cosign-installer` 4.1.0 → 4.1.2 (`cosign-release` still v2.6.3)
+- **Skipped majors** (need human/CI soak after last dual-push):
+  - `actions/checkout` v6 → v7
+  - `redhat-actions/push-to-registry` v2 → v3
+- No `versions.env` / pin policy change.
+
+### Validation
+
+```
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+releases/latest in build.sh / versions.env  CLEAN
+build.yml + build-disk.yml YAML parse OK
+```
+
+### Commits (this task)
+
+1. merge `origin/main` (A-W2-002 assignment)
+2. GHCR-VISIBILITY + RELEASE/first-boot/integration links
+3. safe Dependabot SHA bumps in build.yml
+4. taskmaster DONE + WORK_LOG/COMPLETED

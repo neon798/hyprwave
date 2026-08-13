@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: A-W2-002
 wave: 2
 issued: 2026-08-13T03:27:11Z
@@ -43,14 +43,14 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Requirements
 
-- [ ] Tighten `RELEASE.md` (or a short `GHCR-VISIBILITY.md`) operator steps:
+- [x] Tighten `RELEASE.md` (or a short `GHCR-VISIBILITY.md`) operator steps:
       Packages → visibility Public for **both** `hyprwave` and `hyprwave-cosmic`;
       re-run `ghcr-pull-test.sh` after; record expected 403 until then
-- [ ] Dependabot / Renovate action bumps (`actions/checkout`, `docker/login-action`,
+- [x] Dependabot / Renovate action bumps (`actions/checkout`, `docker/login-action`,
       etc.): land **only** if exclusive to `.github/workflows/*` and CI-safe.
       If skipped, WORK_LOG why (scope, pin policy, or needs human review)
-- [ ] No pin policy change unless a bump forces it (still fail-closed)
-- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
+- [x] No pin policy change unless a bump forces it (still fail-closed)
+- [x] `bash planning/qa/run-all.sh --only pins-static` PASS
 
 ## Deliverables
 
@@ -60,10 +60,10 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Done criteria
 
-- [ ] Visibility steps are copy-pasteable and do not claim public GHCR
-- [ ] Dependabot items resolved or documented skip
-- [ ] pins-static PASS
-- [ ] `git push -u origin lane/a-stabilize`
+- [x] Visibility steps are copy-pasteable and do not claim public GHCR
+- [x] Dependabot items resolved or documented skip
+- [x] pins-static PASS
+- [x] `git push -u origin lane/a-stabilize`
 
 ## On completion
 
