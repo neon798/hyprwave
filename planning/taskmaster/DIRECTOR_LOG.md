@@ -330,3 +330,9 @@
 - origin lane tips: A `cdabba0`, B `3cbe3e6`, C `19a82b7`, D `41b7958`, E `5d6b968`, F `9f59118`, G `924b835`.
 - **Blockers (human):** push local main → origin (ahead by 342 commits); T8 image builds / VM smokes / GHCR.
 - No re-issue of product work; models correctly idle.
+
+## 2026-08-13T02:25:17Z — Director follow-up (push)
+
+- Pushed integrated `main` to origin: `3db77d4..d5c6961` (includes Wave 1 merges + director HOLD refresh).
+- Program state → `MERGED_PUSHED_AWAITING_T8`.
+- Models still HOLD; sole remaining gates: image builds / VM smokes / GHCR (human/infra T8).
