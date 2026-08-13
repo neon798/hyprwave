@@ -20,6 +20,26 @@ ok() {
 	echo "OK: $*"
 }
 
+# Active (non-comment) install/copy of pam snippets into live /etc/pam.d.
+# Share-only destinations under /usr/share/hyprwave/duress/pam.d are fine.
+active_pam_snippet_to_etc() {
+	local f="$1"
+	[[ -f "$f" ]] || return 1
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE '(^|[[:space:]])(cp|install|rsync|tee|cat)([[:space:]].*)?/etc/pam\.d' >/dev/null 2>&1; then
+		return 0
+	fi
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE '(cp|install|rsync)[[:space:]].*pam\.d.*/etc/pam\.d' >/dev/null 2>&1; then
+		return 0
+	fi
+	if grep -vE '^\s*#|^\s*$' "$f" |
+		grep -nE 'install[[:space:]].+/etc/pam\.d/' >/dev/null 2>&1; then
+		return 0
+	fi
+	return 1
+}
+
 FAILED=0
 
 echo "== snippet-selftest (repo: $ROOT) =="
@@ -57,6 +77,12 @@ if [[ -f "$BUILD" ]]; then
 		fail "$BUILD appears to write into /etc/pam.d"
 	else
 		ok "$BUILD: no write tools targeting /etc/pam.d"
+	fi
+	# D-W3-001: must not copy reference pam.d snippets onto live stacks
+	if active_pam_snippet_to_etc "$BUILD"; then
+		fail "$BUILD would install/copy pam snippets into /etc/pam.d"
+	else
+		ok "$BUILD: pam snippets not installed into /etc/pam.d"
 	fi
 
 	# Explicit off-by-default commentary still present
@@ -146,6 +172,11 @@ if [[ -f "$LIVE_BUILD" ]]; then
 	else
 		ok "$LIVE_BUILD: no write tools targeting /etc/pam.d"
 	fi
+	if active_pam_snippet_to_etc "$LIVE_BUILD"; then
+		fail "$LIVE_BUILD would install/copy pam snippets into /etc/pam.d"
+	else
+		ok "$LIVE_BUILD: pam snippets not installed into /etc/pam.d"
+	fi
 	# pam.d docs deploy only under share (when present)
 	if grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -E 'duress/pam\.d' >/dev/null 2>&1; then
 		if grep -vE '^\s*#|^\s*$' "$LIVE_BUILD" | grep -E '/usr/share/hyprwave/duress/pam\.d' >/dev/null 2>&1; then
@@ -162,6 +193,37 @@ if [[ -f "$LIVE_BUILD" ]]; then
 else
 	ok "live build.sh not present (snippet-only checkout)"
 fi
+
+# --- negative fixtures (temp): prove helper catches snippet→/etc/pam.d ---
+NEG_ST="${TMPDIR:-/tmp}/hyprwave-snippet-selftest-$$"
+mkdir -p "$NEG_ST"
+trap 'rm -rf "$NEG_ST"' EXIT
+printf '%s\n' \
+	'cp -a /ctx/duress/pam.d/. /etc/pam.d/' \
+	>"$NEG_ST/bad-cp-snippets.sh"
+if active_pam_snippet_to_etc "$NEG_ST/bad-cp-snippets.sh"; then
+	ok "negative: cp pam.d → /etc/pam.d detected"
+else
+	fail "negative: cp pam.d → /etc/pam.d NOT detected"
+fi
+printf '%s\n' \
+	'install -m0644 /ctx/duress/pam.d/x.snippet /etc/pam.d/system-auth' \
+	>"$NEG_ST/bad-install-snippet.sh"
+if active_pam_snippet_to_etc "$NEG_ST/bad-install-snippet.sh"; then
+	ok "negative: install snippet → /etc/pam.d detected"
+else
+	fail "negative: install snippet → /etc/pam.d NOT detected"
+fi
+printf '%s\n' \
+	'cp -a /ctx/duress/pam.d/. /usr/share/hyprwave/duress/pam.d/' \
+	>"$NEG_ST/ok-share.sh"
+if active_pam_snippet_to_etc "$NEG_ST/ok-share.sh"; then
+	fail "negative: share-only deploy wrongly flagged"
+else
+	ok "negative: share-only pam.d deploy allowed"
+fi
+rm -rf "$NEG_ST"
+trap - EXIT
 
 echo
 if [[ "$FAILED" -ne 0 ]]; then
