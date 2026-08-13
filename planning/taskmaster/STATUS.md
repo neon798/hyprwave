@@ -2,7 +2,7 @@
 
 **Program:** Hyprwave parallel execution  
 **Director wave:** 1 complete → **MERGED + PUSHED; T8 pending**  
-**Updated:** 2026-08-13T02:53:28Z (director check-in)  
+**Updated:** 2026-08-13T03:03:33Z (director check-in)  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Status |
@@ -15,12 +15,12 @@
 | F | COSMIC variant | `lane/f-cosmic` | merged → main; **HOLD OPEN** (quiet tip) |
 | G | QA automation / integration prep | `lane/g-qa` | merged → main; **HOLD OPEN** |
 
-## This check-in (2026-08-13T02:53:28Z)
+## This check-in (2026-08-13T03:03:33Z)
 
-- Main tip `5e849f9`; origin in sync.
+- Main tip `a15bb1c`; origin in sync.
 - Harness: **RESULT OK** (33 PASS, 0 FAIL).
 - All models **\*-W1-HOLD OPEN** — no DONE/BLOCKED/IN_PROGRESS; no new task_ids.
-- Lane tips: A `cdabba0` (quiet multi-cycle), B `965efe1`, C `d56685c` (heartbeat), D `443c51b`, E `1ca1b21`, F `9f59118` (quiet since 2026-08-07), G `02c3678`.
+- Lane tips unchanged vs prior cycle: A `cdabba0`, B `965efe1`, C `d56685c`, D `443c51b`, E `1ca1b21`, F `9f59118` (offline multi-cycle), G `02c3678`.
 - Program state unchanged: await human T8.
 
 ## Integration readiness
