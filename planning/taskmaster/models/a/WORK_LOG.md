@@ -372,3 +372,26 @@ GHCR                                       still documented private
 ```
 
 Poll 2026-08-13T06:37:43Z: still DONE; main `c712cbd`; pins-static 11 PASS.
+
+## 2026-08-13 — A-W5-001 reconfirm (director copy still OPEN)
+
+**status:** DONE (no new product work)  
+**branch:** `lane/a-stabilize`  
+**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
+
+`git checkout origin/main -- planning/taskmaster/models/a/` reissued OPEN.
+Re-ran exclusive verify only. No `versions.env` / `build.sh` / workflow
+edits. No invented A-W6.
+
+```
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)  2026-08-13T06:39:58Z
+A-W2-002 SHAs on origin/main HEAD          metadata 6.2.0 dc802804
+                                           login 4.5.1 abd2ef45
+                                           cosign 4.1.2 6f9f1778
+                                           checkout remains v6 (skip major)
+                                           push-to-registry remains v2 (skip major)
+GHCR                                       still documented private
+                                           (GHCR-VISIBILITY.md + RELEASE 403)
+```
+
+Lane already merged with `origin/main` (merge-base == `c712cbd`).

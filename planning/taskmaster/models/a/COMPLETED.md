@@ -13,3 +13,4 @@ A-W3-001 | 2026-08-13 | Stamp FIRST-BOOT local+CI proofs; GHCR still 403; pins c
 A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 | a31ecce
 A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
 A-W5-001 | 2026-08-13 | Post-merge pin verify on c712cbd; pins-static 11 PASS; A-W2-002 SHAs; GHCR private | d52fca8
+A-W5-001 | 2026-08-13 | Reconfirm OPEN from main: pins-static 11 PASS; SHAs/GHCR unchanged; still DONE | a402fca
