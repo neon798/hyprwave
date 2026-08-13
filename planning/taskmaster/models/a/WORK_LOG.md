@@ -357,13 +357,13 @@ releases/latest                               CLEAN
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main merge tip:** `c712cbd` (`merge: G-W5 wofi-comment allowlist`)
+**main merge tip:** `c712cbd`
 
-Director inbox on `origin/main` still OPEN for A-W5-001. Re-verified only:
+Director inbox on `origin/main` still OPEN. Re-verified only:
 
-- `git merge origin/main` → already up to date (`c712cbd`).
-- `planning/qa/run-all.sh --only pins-static` → **RESULT: OK** (11 PASS).
-- `build.yml` A-W2-002 SHAs still on HEAD: metadata v6.2.0 `dc802804`, login v4.5.1 `abd2ef45`, cosign-installer v4.1.2 `6f9f177`. Checkout stays v6; push-to-registry stays v2.
-- `git diff origin/main -- .github/workflows/build.yml versions.env build.sh` empty.
-- GHCR still documented private (`INSTALL.md`, `GHCR-VISIBILITY.md`).
+- merge `origin/main` already up to date (`c712cbd`)
+- `planning/qa/run-all.sh --only pins-static` RESULT: OK (11 PASS)
+- A-W2-002 SHAs on HEAD: metadata `dc802804` v6.2.0, login `abd2ef45` v4.5.1, cosign-installer `6f9f177` v4.1.2; checkout v6; push-to-registry v2
+- workflows/`versions.env`/`build.sh` identical to `origin/main`
+- GHCR still documented private
 - No A-W6. No invented follow-up.
