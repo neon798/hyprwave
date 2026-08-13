@@ -20,10 +20,10 @@ hyprwave-assistant kb bootc-rebase
 |---------------|---------|
 | Updater / `update` | `bootc upgrade`, `flatpak update` with dry-run + double-confirm; **never reboots** |
 | Installer / `install` | Curated Flathub IDs + layer notes |
-| Knowledge Base / `kb` | First boot, updates, theming, Walker, variants, bootc rebase, … |
+| Knowledge Base / `kb` | First boot, updates, 11 themes, Walker/hyprpaper, variants, GHCR, … |
 | About | Version, theme, offline banner, host tools |
 
 Data: `/usr/share/hyprwave/assistant/`.  
-Suggested keybind: **Super+Shift+A** → `ghostty -e hyprwave-assistant` (integrator applies to skel).
+Hyprland keybind: **Super+Shift+A** → `ghostty -e hyprwave-assistant` (stock skel).
 
 Not a FlatArcade replacement — FlatArcade browses all of Flathub.

@@ -20,7 +20,7 @@ Integrator CHANGELOG blurb for image / distro release notes.
 
 Suggested one-liner for image notes:
 
-> **Hyprwave Assistant 0.2.2** — TUI/CLI for bootc + Flatpak updates, curated installs, and offline knowledge base. Launch from the menu or Super+Shift+A (when wired). Never auto-reboots.
+> **Hyprwave Assistant 0.2.2** — TUI/CLI for bootc + Flatpak updates, curated installs, and offline knowledge base. In the Hyprland image (`/usr/bin`); launch from the menu or **Super+Shift+A**. Never auto-reboots.
 
 ## 0.2.1
 
