@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: E-W2-001
+task_id: E-W2-002
 wave: 2
-issued: 2026-08-13T03:25:00Z
+issued: 2026-08-13T03:29:05Z
 poll: 2m
-title: Hyprland session hardening (assistant + day-1 UX)
+title: hyprlock/hypridle copy + waybar tooltip sanity (no redesign)
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Hyprland image builds. Make the **new-user session** feel finished: binds,
-window rules, autostart, Walker/waybar. Existing homes are not rewritten —
-document that in HANDOFF, do not write a destructive migrator.
+E-W2-001 locked binds, window rules, and autostart. Small **copy/sanity** pass
+on lock/idle comments and waybar tooltips so a new user is not confused.
+**No visual redesign.**
 
 Refresh first:
 
@@ -44,32 +44,29 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 - COSMIC vendor, duress, apps/, `build.sh`, wholesale theme store rewrites
 - Do not reintroduce Wofi/swaybg/cliphist
+- No bar/layout redesign
 
 ## Requirements
 
-- [ ] Confirm Super+Shift+A → assistant, Super+Shift+T → theme GUI,
-      Super+Shift+E exit, Super+D/Space Walker, Super+R runner — all in
-      `bindings.conf`; refresh KEYBIND-MAP if drift
-- [ ] Window rules: assistant (Ghostty `-e hyprwave-assistant`) and
-      `hyprwave-theme-gui` should not look broken (float/center if that matches
-      existing style — justify in comments)
-- [ ] Autostart: elephant + walker + waybar + mako + hyprpaper + hypridle;
-      no cliphist
-- [ ] Walker emergencies still restart `app-walker@autostart.service`
-- [ ] SESSION-SMOKE.md / HANDOFF: existing-user skel caveat; image
-      `localhost/hyprwave:latest` exists
-- [ ] Small UX bugs only (typos, missing comments, one bind). No redesign.
+- [ ] `hyprlock.conf` / `hypridle.conf`: comments match real binds
+      (Super+Shift+L → loginctl → hypridle `pidof hyprlock || hyprlock`);
+      timeout ladder still documented
+- [ ] Waybar tooltips / module labels: no Wofi, no “coming soon” Assistant,
+      theme/lock/network text matches shipped tools
+- [ ] KEYBIND-MAP / SESSION-SMOKE: one-line lock/idle note if drift
+- [ ] Existing-user skel caveat stays in HANDOFF
+- [ ] Typos/comments only unless a tooltip is factually wrong
 
 ## Deliverables
 
-- Skel + KEYBIND-MAP in sync
-- SESSION-SMOKE updated for Wave 2
-- HANDOFF for integrator (what changed for new users)
+- Comment/tooltip hygiene
+- HANDOFF note (what new users see)
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
 - [ ] No Wofi/swaybg/cliphist
-- [ ] KEYBIND-MAP matches `bindings.conf`
+- [ ] No redesign
 - [ ] `git push -u origin lane/e-hyprland`
 
 ## On completion

@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
-status: DONE
-task_id: A-W2-001
+status: OPEN
+task_id: A-W2-002
 wave: 2
-issued: 2026-08-13T03:25:00Z
+issued: 2026-08-13T03:27:11Z
 poll: 2m
-title: Pin verify + release closeout after Wave 1 CI
+title: GHCR visibility operator steps + dependabot workflow bumps if still open
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Wave 1 is on `main`. CI built **and pushed** both variants on `77755f1`
-(run `31662742064`). GHCR remains **anonymously private** (403). Make pins
-and release docs match that reality so a human can ship a stable image.
+A-W2-001 closed pins/docs vs private GHCR. Next: a **human-runnable** visibility
+checklist (operator only — do not flip repo settings yourself unless you are
+the package owner) and finish leftover Dependabot workflow bumps.
 
 Refresh first:
 
@@ -39,31 +39,31 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 - Enabling duress PAM, handbook prose (B), assistant/duress product, skel
 - Force-push main; do not invent floating `/releases/latest`
+- Do not claim GHCR is already public (anonymous pull is still 403)
 
 ## Requirements
 
-- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light` (and `--checksum` if practical)
-- [x] If a pin is broken or a newer **compatible** companion release is clearly better, bump `versions.env` with SHA256 + comment (date, why)
-- [x] Update `RELEASE.md` / `FIRST-BOOT-CHECKLIST.md` / `COSIGN.md` as needed:
-      CI dual-image success 2026-08-13; local `localhost/hyprwave:latest` exists;
-      **do not** claim anonymous GHCR public
-- [x] Record GHCR visibility next step (repo package visibility / org settings) — operator notes only
-- [x] Dependabot branches (`actions/checkout-7`, `docker/login-action`, etc.):
-      review; land **only** if the bump is exclusive to workflows and CI-safe.
-      Leave a WORK_LOG note if you skip.
+- [ ] Tighten `RELEASE.md` (or a short `GHCR-VISIBILITY.md`) operator steps:
+      Packages → visibility Public for **both** `hyprwave` and `hyprwave-cosmic`;
+      re-run `ghcr-pull-test.sh` after; record expected 403 until then
+- [ ] Dependabot / Renovate action bumps (`actions/checkout`, `docker/login-action`,
+      etc.): land **only** if exclusive to `.github/workflows/*` and CI-safe.
+      If skipped, WORK_LOG why (scope, pin policy, or needs human review)
+- [ ] No pin policy change unless a bump forces it (still fail-closed)
+- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
 
 ## Deliverables
 
-- Pin verify log snippet in WORK_LOG
-- Release/first-boot docs accurate vs merged main
-- Optional pin bump commit **or** explicit “pins still current” note
+- Operator GHCR visibility steps (still private until human clicks)
+- Workflow bump commit **or** explicit skip note
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [x] Pins still fail-closed (no `/releases/latest`)
-- [x] `bash planning/qa/run-all.sh --only pins-static` PASS
-- [x] Docs in a-stabilize do not claim public GHCR
-- [x] `git push -u origin lane/a-stabilize`
+- [ ] Visibility steps are copy-pasteable and do not claim public GHCR
+- [ ] Dependabot items resolved or documented skip
+- [ ] pins-static PASS
+- [ ] `git push -u origin lane/a-stabilize`
 
 ## On completion
 

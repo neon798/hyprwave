@@ -73,3 +73,17 @@
 
 - Idle: still OPEN HOLD; freeze tip 2dc0509; no product work; no new task_id
 - Recovered worktree main→lane/c-assistant; merged origin/main (3db77d4 director check-in)
+
+## 2026-08-13 — C-W1-HOLD poll (scheduler confirmed)
+
+- Idle: still OPEN HOLD (reissued 02:35Z); MERGED_PUSHED_AWAITING_T8; no product work
+- 10m durable scheduler 019fda889c3c active; leave status OPEN
+
+
+## 2026-08-13 — C-W2-001
+
+- Day-1 KB refresh: dual DE, Walker/hyprpaper, 11 themes, duress OFF, skel=new users, Super+Shift+A, GHCR private (`kb/ghcr.md`)
+- Catalog: Thunderbird + Discord + Spotify (verified Flathub IDs)
+- HANDOFF: image-hooked 0.2.2 verified on localhost/hyprwave:latest; smoke-host day-1 guards
+- `go test ./...` PASS; `bash planning/integration/c-assistant/smoke-host.sh` exit 0
+- status → DONE

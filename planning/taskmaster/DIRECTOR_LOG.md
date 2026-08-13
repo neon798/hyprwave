@@ -391,3 +391,27 @@
 - A–F remain OPEN on W2-001; lane tips still W1-HOLD (stale refresh). No HOLD.
 - Program `WAVE2_ISSUED`. VM smoke + GHCR public still open.
 
+## 2026-08-13T03:27:11Z — Issue A-W2-002 B-W2-002 F-W2-002
+
+- Verified DONE exclusive-only: A `85f5c74` pins/docs; B `072e972` handbook;
+  F `395eb13`/`ac500cc` vendor stamp + inspect notes.
+- Issued **A-W2-002** (GHCR visibility ops + dependabot), **B-W2-002** (B-6
+  IMAGE_NAME note + screenshot checklist; no Justfile edit), **F-W2-002**
+  (cosmic IMAGE-INSPECT card).
+- C/D/E still OPEN W2-001 (stale HOLD tips). G-W2-003 already issued.
+
+## 2026-08-13T03:29:05Z — Issue C-W2-002 D-W2-002 E-W2-002
+
+- Verified DONE exclusive-only: C KB/catalog `5df69a3`; D safety `5cc25bd`;
+  E session `e364669`.
+- Issued **C-W2-002** (About/preflight + private GHCR), **D-W2-002** (DRILL.md
+  vs image paths, stay OFF), **E-W2-002** (hyprlock/idle + waybar tooltips).
+- A/B/F/G already have next OPEN tasks; awaiting lane refresh.
+
+## 2026-08-13T03:31:08Z — Issue B-W3-001
+
+- Verified **B-W2-002 DONE**: `07d7e9e` IMAGE_NAME + B-6; tip `2574bc9`.
+  Exclusive handbook paths only (Justfile untouched).
+- Issued **B-W3-001** from WAVE3-QUEUE (first-boot/INSTALL vs private GHCR).
+- A/C/D/E/F/G remain OPEN on last W2 follow-up; do not double-issue.
+
