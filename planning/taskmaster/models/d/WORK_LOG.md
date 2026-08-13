@@ -150,3 +150,5 @@
 - `bash planning/qa/run-all.sh --only duress-safety` → **RESULT: OK** (9 PASS)
 - PAM still OFF BY DEFAULT (snippet-selftest + build.sh audit green).
 - Criteria: validate PASS, duress-safety PASS, push lane/d-duress.
+
+- DONE tip: `f47cd3b`
