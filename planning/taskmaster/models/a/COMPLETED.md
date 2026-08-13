@@ -19,3 +19,4 @@ A-W5-001 | 2026-08-13 | Reconfirm after D/F/G W4 merge: pins-static PASS; merge 
 A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still 07be046 / merge 754ed9e | cf13324
 A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; director STATUS still stale OPEN | 06e9a3c
 A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still OPEN at 07be046 | 9852135
+A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; director STATUS still stale | c1be5e8

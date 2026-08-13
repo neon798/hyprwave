@@ -452,3 +452,10 @@ A-W2-002 SHAs unchanged. GHCR still 403. No invented follow-up.
 
 Unchanged tip `07be046` / `754ed9e`. `pins-static` PASS (11).
 SHAs `dc802804`/`abd2ef45`/`6f9f1778`. GHCR still private. No invented work.
+
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
+
+**status:** DONE (no new product work)
+
+Still `07be046` / `754ed9e`. `pins-static` PASS (11). Action SHAs
+unchanged. GHCR still private. No invented follow-up.
