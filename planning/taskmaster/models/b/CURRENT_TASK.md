@@ -1,9 +1,10 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: B-W2-002
 wave: 2
 issued: 2026-08-13T03:27:11Z
+completed: 2026-08-13T03:35:00Z
 poll: 2m
 title: Justfile IMAGE_NAME note (B-6) + screenshot checklist remaining rows only
 
@@ -44,13 +45,13 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Requirements
 
-- [ ] INSTALL.md (and contributor-notes if needed): `IMAGE_NAME` default is
+- [x] INSTALL.md (and contributor-notes if needed): `IMAGE_NAME` default is
       `image-template`; override `IMAGE_NAME=hyprwave` / CI uses repo name
-- [ ] Close or rewrite ISSUES.md **B-6** after the note exists
-- [ ] screenshot-checklist.md: remaining TODO rows only — fix stale paths,
+- [x] Close or rewrite ISSUES.md **B-6** after the note exists
+- [x] screenshot-checklist.md: remaining TODO rows only — fix stale paths,
       blockers, or Hyprland vs COSMIC capture notes; leave Status TODO
-- [ ] Do not capture or embed new PNG/JPG
-- [ ] Link walk still 0 missing for files you touch
+- [x] Do not capture or embed new PNG/JPG
+- [x] Link walk still 0 missing for files you touch
 
 ## Deliverables
 
@@ -60,10 +61,10 @@ git checkout origin/main -- planning/taskmaster/models/b/
 
 ## Done criteria
 
-- [ ] IMAGE_NAME default documented; Justfile untouched
-- [ ] No new screenshot binaries
-- [ ] Duress still off / GHCR not claimed public
-- [ ] `git push -u origin lane/b-docs`
+- [x] IMAGE_NAME default documented; Justfile untouched
+- [x] No new screenshot binaries
+- [x] Duress still off / GHCR not claimed public
+- [x] `git push -u origin lane/b-docs`
 
 ## On completion
 
