@@ -141,3 +141,14 @@
 - `bash planning/integration/d-duress/validate.sh` → PASSED
 - `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
 - Commits: 2973b5c, 73334ad, + this series; tip 1fc067d
+
+## 2026-08-13 — D-W5-001 (post-merge validate; Waves 2–4 on main)
+
+- Merged origin/main; accepted D-W5-001.
+- Re-ran packaging gates after W2–W4 on main:
+  - `bash planning/integration/d-duress/validate.sh` → **PASSED**
+  - `bash planning/qa/run-all.sh --only duress-safety` → **RESULT OK**
+- Confirmed: zero packaging `*.sha256`; RESIDUALS/CHECKLIST still OFF / never default-on;
+  N7 pam-snippet gates still green; live build.sh read-only audit OK.
+- No product edits required; PAM remains OFF.
+- Commits: f4b3588, 907e344, + DONE meta; verify tip 907e344
