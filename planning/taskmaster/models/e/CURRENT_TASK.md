@@ -4,36 +4,52 @@ status: OPEN
 task_id: E-W1-HOLD  
 wave: 1  
 issued: 2026-08-07T05:35:00Z  
-reissued: 2026-08-07T06:05:00Z  
-title: HOLD — await human integration (do not mark DONE)  
+reissued: 2026-08-13T02:24:44Z  
+title: HOLD — Wave1 frozen; local merge done; await T8/push
 
-## Director note
+## Director note (2026-08-13T02:24:44Z)
 
-Your lane still shows an older **DONE** task tip. Refresh HOLD from main and leave OPEN:
+**Serial merge A→G is DONE on local `main`** (integrator). Host harness `planning/qa/run-all.sh` → **RESULT OK**.  
+Program state: `MERGED_LOCAL_AWAITING_T8_AND_PUSH` — human still owns image builds/VM smokes/GHCR and **push of local main → origin** (main is ahead of origin).
+
+Stay on HOLD. Do **not** invent product work. Do **not** mark HOLD as DONE.
+
+Refresh taskmaster when origin catches up:
 
 ```bash
 git fetch origin main
 git checkout origin/main -- planning/taskmaster/models/e/
 ```
 
-Do **not** invent product work. Do **not** mark HOLD as DONE.
-
 ## Objective
 
-Wave 1 Hyprland lane is **frozen** (E-W1-006 freeze tip c722fd5). Human/Director serial merge per  
-`planning/integration/g-qa/INTEGRATION-DAY.md`.
+Wave 1 lane work is **complete, frozen, and integrated on local main**.  
+E-W1-006 freeze tip c722fd5; merged via 2405a7e
+
+Models idle until Director issues a **new task_id** (post-T8 residuals / Wave 2) or human completes push+T8 gates.
 
 ## Rules
 
-1. Poll `origin/main` each cycle.
+1. Poll `origin/main` each cycle for a **new task_id** (not just HOLD reissue).
 2. **Do not** set `status: DONE` while `task_id` is `E-W1-HOLD`.
-3. Optional: one WORK_LOG heartbeat line after refresh.
-4. Exclusive-path post-merge bugs only → `BLOCKED` + WORK_LOG.
+3. **Do not** start unassigned product features or re-open completed W1 tasks.
+4. Exclusive-path post-merge bug only → `status: BLOCKED` + WORK_LOG details.
+5. Optional: at most one WORK_LOG heartbeat line per calendar day (not required).
 
 ## Exclusive paths
 
-See IDENTITY.md + `planning/taskmaster/models/e/**`.
+See IDENTITY.md (product freeze) + `planning/taskmaster/models/e/**` for logs only.
+
+## Forbidden
+
+- Cross-lane edits, merges into main, force-push
+- Closing this HOLD as DONE to "finish" the cycle
+- Inventing T8 image-build work without a new task_id
 
 ## Done criteria
 
 - [ ] **None until Director changes task_id** — leave status OPEN
+
+## On completion
+
+N/A while on HOLD.
