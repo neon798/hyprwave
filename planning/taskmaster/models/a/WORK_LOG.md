@@ -361,7 +361,7 @@ releases/latest                               CLEAN
 **lane:** already merged (`Already up to date`)
 
 ```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)  2026-08-13T05:47:41Z
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)  2026-08-13T05:49:38Z
 ```
 
 A-W2-002 SHAs still on HEAD: metadata v6.2.0, login v4.5.1, cosign-installer v4.1.2.  
