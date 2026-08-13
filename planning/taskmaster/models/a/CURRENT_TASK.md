@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: A-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
@@ -42,13 +42,13 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Requirements
 
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light` (and `--checksum` if practical)
-- [ ] If a pin is broken or a newer **compatible** companion release is clearly better, bump `versions.env` with SHA256 + comment (date, why)
-- [ ] Update `RELEASE.md` / `FIRST-BOOT-CHECKLIST.md` / `COSIGN.md` as needed:
+- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light` (and `--checksum` if practical)
+- [x] If a pin is broken or a newer **compatible** companion release is clearly better, bump `versions.env` with SHA256 + comment (date, why)
+- [x] Update `RELEASE.md` / `FIRST-BOOT-CHECKLIST.md` / `COSIGN.md` as needed:
       CI dual-image success 2026-08-13; local `localhost/hyprwave:latest` exists;
       **do not** claim anonymous GHCR public
-- [ ] Record GHCR visibility next step (repo package visibility / org settings) — operator notes only
-- [ ] Dependabot branches (`actions/checkout-7`, `docker/login-action`, etc.):
+- [x] Record GHCR visibility next step (repo package visibility / org settings) — operator notes only
+- [x] Dependabot branches (`actions/checkout-7`, `docker/login-action`, etc.):
       review; land **only** if the bump is exclusive to workflows and CI-safe.
       Leave a WORK_LOG note if you skip.
 
@@ -60,10 +60,10 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Done criteria
 
-- [ ] Pins still fail-closed (no `/releases/latest`)
-- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
-- [ ] Docs in a-stabilize do not claim public GHCR
-- [ ] `git push -u origin lane/a-stabilize`
+- [x] Pins still fail-closed (no `/releases/latest`)
+- [x] `bash planning/qa/run-all.sh --only pins-static` PASS
+- [x] Docs in a-stabilize do not claim public GHCR
+- [x] `git push -u origin lane/a-stabilize`
 
 ## On completion
 
