@@ -408,3 +408,25 @@ planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
 Action SHAs unchanged (`dc802804` / `abd2ef45` / `6f9f1778`; checkout v6;
 push-to-registry v2). GHCR still documented 403. Merge SHA still `42450b1`.
 No invented follow-up.
+
+## 2026-08-13 — A-W5-001 reconfirm (D/F/G Wave 4 on main)
+
+**status:** DONE (no new product work)
+
+Director copy on `origin/main` still lists **A-W5-001 OPEN**. Merged
+`origin/main` (`07be046` g-qa W2–4 + f-cosmic + d-duress) into the lane:
+
+- **lane merge SHA:** `754ed9e`
+- **A product merge on main:** still `42450b1`
+
+Re-ran:
+
+```
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+```
+
+`build.yml` A-W2-002 SHAs still on HEAD:
+metadata-action `dc802804` v6.2.0; login-action `abd2ef45` v4.5.1;
+cosign-installer `6f9f1778` v4.1.2; checkout v6; push-to-registry v2.
+GHCR still documented private (`GHCR-VISIBILITY.md` 403). No pin bump.
+No invented follow-up.
