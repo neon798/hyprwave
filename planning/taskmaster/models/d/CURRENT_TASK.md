@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: D-W2-001
 wave: 2
 issued: 2026-08-13T03:25:00Z
@@ -41,15 +41,15 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Requirements
 
-- [ ] `bash planning/integration/d-duress/validate.sh` PASS
-- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [ ] ENABLE.md / README / THREAT-MODEL paths match image layout
+- [x] `bash planning/integration/d-duress/validate.sh` PASS
+- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [x] ENABLE.md / README / THREAT-MODEL paths match image layout
       (`/usr/share/hyprwave/duress`, `/etc/duress.d` empty + README)
-- [ ] Add or tighten a validate gate: shipped `pam.d` snippets must **not** be
+- [x] Add or tighten a validate gate: shipped `pam.d` snippets must **not** be
       installed under `/etc/pam.d` by `build.sh` (snippet-selftest already
       exists — extend if a hole remains)
-- [ ] `hyprwave-duress-setup --help` / `--dry-run` text: operator-only, PAM off
-- [ ] WORK_LOG: record image inspect facts (module present, PAM inert)
+- [x] `hyprwave-duress-setup --help` / `--dry-run` text: operator-only, PAM off
+- [x] WORK_LOG: record image inspect facts (module present, PAM inert)
 
 ## Deliverables
 
@@ -59,10 +59,10 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Done criteria
 
-- [ ] No default PAM enablement introduced
-- [ ] No `*.sha256` added under templates
-- [ ] validate + duress-safety PASS
-- [ ] `git push -u origin lane/d-duress`
+- [x] No default PAM enablement introduced
+- [x] No `*.sha256` added under templates
+- [x] validate + duress-safety PASS
+- [x] `git push -u origin lane/d-duress`
 
 ## On completion
 
