@@ -379,3 +379,11 @@ Lane catch-up: `17cf678` Merge origin/main into lane/a-stabilize.
 
 1. merge `origin/main` (`42450b1`)
 2. taskmaster DONE
+
+## 2026-08-13 — A-W5-001 reconfirm (main still OPEN)
+
+**status:** DONE (no new product work)
+
+Re-merged `origin/main` (director STATUS only). Re-ran `pins-static` PASS.
+Action SHAs still on HEAD. Merge SHA still `42450b1`. GHCR still private.
+No invented follow-up.
