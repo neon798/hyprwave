@@ -353,24 +353,12 @@ releases/latest                               CLEAN
 2. MERGE-READY / INTEGRATION-DAY inventory
 3. taskmaster DONE
 
-## 2026-08-13 — A-W5-001 (director re-issued OPEN)
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main merge tip:** `c712cbd` (`merge: G-W5 wofi-comment allowlist`)
+**main merge tip:** `c712cbd`
 
-Lane already contained `origin/main` (`git merge origin/main` → Already up to date).
-Refreshed `planning/taskmaster/models/a/` from `origin/main`. No pin or workflow edits.
-
-### Requirements
-
-- `planning/qa/run-all.sh --only pins-static` → **RESULT: OK (11 PASS)**
-- A-W2-002 `build.yml` SHA bumps **on `origin/main` HEAD**:
-  - `docker/metadata-action@dc802804…` # v6.2.0
-  - `docker/login-action@abd2ef45…` # v4.5.1
-  - `sigstore/cosign-installer@6f9f1778…` # v4.1.2
-  - still skipped: checkout v6 (not v7), push-to-registry v2 (not v3)
-- GHCR still documented **private** (`GHCR-VISIBILITY.md`: hyprwave `unauthorized`/403)
-- Pins unchanged: Yazi v26.5.6 / Neonwolf v152.0.1-3 / FlatArcade v0.1.0
-
-No invented follow-up. No `/releases/latest`.
+`git merge origin/main` already up to date. `pins-static` PASS (11).
+A-W2-002 SHAs unchanged on HEAD (metadata 6.2.0, login 4.5.1, cosign 4.1.2).
+GHCR still documented 403. No invented work.
