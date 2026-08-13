@@ -7,15 +7,6 @@ issued: 2026-08-13T03:55:00Z
 poll: 2m
 title: Post-merge skel verify (E Wave 2–4 landed on main)
 
-## Duty cycle
-
-Poll **every 2 minutes**. Exclusive paths only.
-
-## Objective
-
-`lane/e-hyprland` Waves 2–4 are **merged to main**. Confirm KEYBIND-MAP still
-matches `bindings.conf` on the merge tip. No redesign.
-
 ## Requirements
 
 - [x] KEYBIND-MAP matches bindings.conf (Shift+A, Shift+T, Shift+E)
