@@ -353,24 +353,17 @@ releases/latest                               CLEAN
 2. MERGE-READY / INTEGRATION-DAY inventory
 3. taskmaster DONE
 
-## 2026-08-13 — A-W5-001 reconfirm (G-W5 allowlist on main)
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN at c712cbd)
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`
 
-Director copy on `origin/main` still lists **A-W5-001 OPEN**. No new
-product work. Re-synced models/a, already merged:
-
-- **origin/main:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac` (G-W5 wofi-comment allowlist)
-- **lane merge of main:** `0a6f99a`
-
-### Pin verify
+Director copy on `origin/main` still **A-W5-001 OPEN**. Tip unchanged
+`c712cbd` (already merged `0a6f99a`). Re-ran:
 
 ```
 planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
 ```
 
-A-W2-002 SHAs still on HEAD: metadata `dc802804` v6.2.0; login `abd2ef45`
-v4.5.1; cosign `6f9f1778` v4.1.2; checkout v6; push-to-registry v2.
-GHCR still documented private (`GHCR-VISIBILITY.md` 403). No pin bump.
-No invented follow-up.
+A-W2-002 SHAs unchanged (`dc802804` / `abd2ef45` / `6f9f1778`; checkout v6;
+push-to-registry v2). GHCR still documented 403. No invented work.
