@@ -219,6 +219,8 @@ HYPRWAVE_COSMIC_IMAGE=localhost/hyprwave-cosmic:latest \
   bash planning/qa/check-image.sh
 ```
 
+CI: `planning/qa/ci-snippet.yml` job `packaging-qa-image` is **advisory-only** (`continue-on-error: true`, skip-if-missing). Live workflows stay under Model A; GH-hosted runners typically SKIP.
+
 ### 9.1 Hard gates (block publish)
 
 | # | Gate | Command / proof | Owner |

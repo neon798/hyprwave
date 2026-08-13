@@ -142,19 +142,51 @@ Harness still **FAIL** only on `pins-static` until A merges (expected).
 **Status:** OPEN HOLD — idle  
 Wave 1 frozen at G-W1-005. Awaiting human integration via INTEGRATION-DAY.md. No product work; no DONE on HOLD.
 
-## G-W2-001 — 2026-08-13 (merge + verify)
+## G-W2-001 — 2026-08-13
 
 **Status:** DONE  
-**Branch tip work:** merge origin/main; conflict-resolve ENDPOINT-RESIDUALS; re-verify harness
+**Branch:** `lane/g-qa` (worktree `/home/zen/hyprwave-g-qa`, rebased onto `origin/main`)  
+**Task:** Container image smoke check + T8 residual update
 
-### Delivered (already on lane; re-verified after main merge)
+### Work performed
 
-- `planning/qa/check-image.sh` — skip-if-missing; PASS on `localhost/hyprwave:latest` + cosmic
-- Registered in `run-all.sh` after `assistant` (`--only image`)
-- ENDPOINT-RESIDUALS: CI `31662742064` met; local digests; VM open; GHCR 403 open
-- Full `bash planning/qa/run-all.sh` → RESULT OK (image 18 PASS)
+1. `planning/qa/check-image.sh` — skip-if-missing podman inspect:
+   - `HYPRWAVE_IMAGE` (default `localhost/hyprwave:latest`): assistant version, hyprwave-theme, walker, hyprpaper, ≥11 themes, catalog.toml, ENABLE.md, no pam_duress, sddm enabled, no wofi/swaybg
+   - Optional cosmic (`HYPRWAVE_COSMIC_IMAGE` / `--cosmic`): cosmic-greeter, no cosmic-store, flatarcade, hyprwave-theme
+2. Registered `image` in `run-all.sh` after `assistant`; README + help docs for `--only image`
+3. Refreshed ENDPOINT-RESIDUALS / PROGRAM-CLOSEOUT / SMOKE-MATRIX §9.0:
+   - CI run `31662742064` both variants PASS
+   - Local hyprland + cosmic image inspect PASS
+   - GHCR anonymous still 403; VM smoke still open
+   - Residuals no longer claim “all T8 pending”
 
-### Notes
+### Host run
 
-- No product/handbook edits
-- Idle for next OPEN task
+- `bash planning/qa/run-all.sh` → **RESULT OK** (image PASS 18/0 on local tags)
+- `bash planning/qa/run-all.sh --only image` → PASS
+
+### Notes for Director
+
+- Lane tip reset onto post-merge `origin/main` (HOLD heartbeats discarded; product already on main).
+- PROGRAM_COMPLETE still open until VM + GHCR policy.
+
+## G-W2-003 — 2026-08-13
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** Wire check-image into CI snippet as continue-on-error / skip-ok
+
+### Work performed
+
+1. `planning/qa/ci-snippet.yml` — new job `packaging-qa-image`:
+   - `continue-on-error: true` (advisory; never blocks)
+   - `bash planning/qa/run-all.sh --only image`
+   - env `HYPRWAVE_IMAGE` / `HYPRWAVE_COSMIC_IMAGE`; no secrets / no GHCR pull
+   - Comments: GH-hosted typically SKIP; enable on self-hosted after build
+2. README: section “Advisory image job (self-hosted / image-bearing runners)”
+3. SMOKE-MATRIX §9.0 + ENDPOINT-RESIDUALS: snippet advisory-only; live workflows remain A
+4. No `.github/workflows/*` edits
+
+### Host run
+
+- `bash planning/qa/run-all.sh` → **RESULT OK**

@@ -7,5 +7,5 @@ G-W1-002 | 2026-08-07 | lane-artifacts + ENDPOINT-RESIDUALS + ci-snippet + playb
 G-W1-003 | 2026-08-07 | pre-merge dry-run + merge-tree probe + GHCR gates | 1c8822d
 G-W1-004 | 2026-08-07 | INTEGRATION-DAY master runbook + residual tip refresh | a4562aa
 G-W1-005 | 2026-08-07 | PROGRAM-CLOSEOUT ENDPOINT verify matrix | fb18b31
-
-G-W2-001 | 2026-08-13 | check-image.sh + T8 residuals (image met, VM/GHCR open) | e7e9257
+G-W2-001 | 2026-08-13 | check-image.sh + T8 residual flip (CI+local PASS; VM/GHCR open) | d13e250
+G-W2-003 | 2026-08-13 | ci-snippet packaging-qa-image advisory job + README/residuals | e67985b

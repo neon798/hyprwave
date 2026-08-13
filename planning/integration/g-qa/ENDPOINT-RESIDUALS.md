@@ -137,6 +137,7 @@ bash planning/qa/run-all.sh --only image
 | `check-image.sh` skip-if-missing | **met** | G-W2-001; registered after `assistant` |
 | INTEGRATION-DAY / closeout | **met on main** | |
 | Host harness RESULT OK | **met** | run-all PASS including image |
+| CI snippet image job | **met (advisory)** | `ci-snippet.yml` `packaging-qa-image` continue-on-error; live workflow still A |
 
 ---
 

@@ -111,7 +111,9 @@ Integration **order and conflict hotspots** live in:
 
 Prefer the ready-to-copy job file:
 
-- **`planning/qa/ci-snippet.yml`** — static / full / advisory lane-ref jobs, no secrets.
+- **`planning/qa/ci-snippet.yml`** — static / full / advisory lane-ref / **advisory image** jobs, no secrets.
+  - Live `.github/workflows/*` remains **Model A** — this file is copy-paste only.
+  - `packaging-qa-image` uses `continue-on-error: true` and `--only image` (skip-if-missing).
 
 Minimal inline static job (no network, no Go):
 
@@ -130,6 +132,28 @@ Full harness (including `go test`, duress validate, optional lane refs) after C/
   run: bash planning/qa/run-all.sh
   env:
     NO_COLOR: "1"
+```
+
+### Advisory image job (self-hosted / image-bearing runners)
+
+GH-hosted `ubuntu-latest` almost always **SKIP**s the image check (no `localhost/hyprwave:latest`, often no podman). That is **OK** — the harness treats missing images as SKIP, and the snippet job sets `continue-on-error: true` so it never blocks the workflow.
+
+To get a real PASS after a local or self-hosted build:
+
+1. Build tags on the runner: `just build` and optionally `just build-cosmic`.
+2. Ensure `podman` (or the engine `podman image exists` / `podman run` use) is on `PATH`.
+3. Copy the `packaging-qa-image` job from `ci-snippet.yml` into your workflow (or enable it as-is when pasting the whole snippet).
+4. Optional cosmic: leave `HYPRWAVE_COSMIC_IMAGE=localhost/hyprwave-cosmic:latest` (default) or run `bash planning/qa/check-image.sh --cosmic`. Still SKIP if the cosmic tag is absent.
+5. Do **not** require a GHCR pull for this job (anonymous pull may still 403).
+
+```yaml
+- name: Packaging QA (image, advisory)
+  continue-on-error: true
+  run: bash planning/qa/run-all.sh --only image
+  env:
+    NO_COLOR: "1"
+    HYPRWAVE_IMAGE: localhost/hyprwave:latest
+    HYPRWAVE_COSMIC_IMAGE: localhost/hyprwave-cosmic:latest
 ```
 
 Endpoint residual tracker (human-maintained from harness + `git ls-tree`):
