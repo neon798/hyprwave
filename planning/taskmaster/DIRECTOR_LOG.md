@@ -345,3 +345,10 @@
 - Refreshed HOLD CURRENT_TASK: push complete; await human T8 only.
 - **Blocker:** image builds / VM smokes / GHCR (human/infra).
 - Note: director committed via worktree `/home/zen/hyprwave-director-main` (primary worktree branch thrash from concurrent lane agents).
+
+## 2026-08-13T02:43:34Z — Director check-in
+
+- HOLD steady A–G; no DONE/BLOCKED; no re-issue; no new task_ids.
+- Heartbeats: B `965efe1`, D `443c51b`, E `1ca1b21`, G `02c3678`. Quiet: A `cdabba0`, C `68f6b83`, F `9f59118` (F offline multi-cycle — leave OPEN).
+- Harness **RESULT OK**. Program `MERGED_PUSHED_AWAITING_T8`.
+- **Blocker:** human T8 (image builds / VM smokes / GHCR).
