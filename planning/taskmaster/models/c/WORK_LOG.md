@@ -120,3 +120,14 @@
 
 - main still OPEN for C-W3-001; lane already complete (tip 96f1b6e / mark a78d8c4). Re-assert DONE; no re-implement.
 - product tests still present (knownFlathubIDs, About/help/KB wave-3 guards)
+
+## 2026-08-13 — C-W4-001
+
+- HANDOFF: 0.2.2 apply order (Containerfile.snippet → build.sh.snippet;
+  Super+Shift+A is Model E / integrator only)
+- snippet-selftest.sh fail-closed: assistant-builder, 0.2.2, ldflags,
+  /usr/bin/hyprwave-assistant; no public-GHCR claim
+- smoke-host invokes snippet-selftest
+- go test ./... PASS; smoke-host + snippet-selftest exit 0
+- did not edit live Containerfile/build.sh
+- status → DONE
