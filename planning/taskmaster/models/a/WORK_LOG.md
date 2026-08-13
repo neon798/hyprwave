@@ -466,3 +466,15 @@ unchanged. GHCR still private. No invented follow-up.
 
 Still `07be046` / `754ed9e`. `pins-static` PASS (11). SHAs unchanged.
 GHCR still private. No invented follow-up.
+
+## 2026-08-13 — A-W5-001 idle (director: free / can retask)
+
+**status:** DONE — idle, no invented work
+
+Director STATUS `f97680d` (`W5_DONE`): **A-W5-001 DONE — free / can retask**.
+A CURRENT_TASK on main still says OPEN (stale file); STATUS is authoritative.
+Issued next: **B-W6-001**, **G-W6-001** only. Quote: "A/C/D/E/F have no
+exclusive product left without inventing work."
+
+Merged `origin/main` into lane (`18ffa3a`). Re-ran `pins-static` PASS (11).
+Action SHAs unchanged. GHCR still 403. **Not inventing A-W6.**
