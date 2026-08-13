@@ -126,6 +126,60 @@ See `COSIGN.md` and `RELEASE.md` for failure modes and private-registry continge
 - Assistant / Duress enablement (C/D + human review)
 - Full VM first-boot (use `FIRST-BOOT-CHECKLIST.md` when a machine is free)
 
+## Wave 4 exclusive inventory (A-W4-001)
+
+Recorded **2026-08-13** on `lane/a-stabilize` (`85cbe67` + this commit).
+Baseline: tag `post-integration-20260807` / `origin/main` merge-base
+`fe1bcbab`. **Do not** merge this lane onto `main` from this doc — inventory only.
+
+### pin_guards still pass
+
+```
+verify-pins.sh --head --light                 exit 0
+planning/qa/run-all.sh --only pins-static     RESULT: OK (11 PASS)
+floating-release token in build.sh / versions.env  CLEAN
+build.yml pin_guards: HEAD + --checksum --light + matrix de: [hyprland, cosmic]
+checkout remains v6; push-to-registry remains v2 (majors not landed)
+```
+
+Pins unchanged: Yazi `v26.5.6`, Neonwolf `v152.0.1-3`, FlatArcade `v0.1.0`.
+
+GHCR: still **private** (anonymous `hyprwave` 403). See `GHCR-VISIBILITY.md`.
+Does **not** block merging A.
+
+### Exclusive-path commits since `post-integration-20260807`
+
+(Only `versions.env`, `build.sh` pin logic, `.github/workflows/*`,
+`planning/integration/a-stabilize/**` — taskmaster `models/a` omitted.)
+
+| Commit | Summary |
+|--------|---------|
+| `f758ebb` | docs: Wave 1 CI closeout (pins + private GHCR) |
+| `41aaab6` | docs: `GHCR-VISIBILITY.md` copy-paste card |
+| `00bc0da` | ci: login-action 4.5.1, metadata-action 6.2.0, cosign-installer 4.1.2 |
+| `c845521` | docs: FIRST-BOOT local+CI proofs (VM smoke OPEN) |
+
+### Exclusive files vs `origin/main`
+
+| Path | Why it differs |
+|------|----------------|
+| `.github/workflows/build.yml` | SHA bumps above; `pin_guards` intact |
+| `build_files/versions.env` | operator verify comment only (no tag bump) |
+| `planning/integration/a-stabilize/COSIGN.md` | unsigned/private GHCR note |
+| `planning/integration/a-stabilize/FIRST-BOOT-CHECKLIST.md` | Wave 3 proofs + 403 |
+| `planning/integration/a-stabilize/GHCR-VISIBILITY.md` | **new** operator card |
+| `planning/integration/a-stabilize/INTEGRATION-DAY.md` | visibility link |
+| `planning/integration/a-stabilize/RELEASE.md` | CI closeout + visibility pointer |
+| `planning/integration/a-stabilize/MERGE-READY.md` | this inventory |
+
+`build_files/build.sh` pin block is **identical** to `origin/main`.
+
+### Not in this merge (skipped)
+
+- `actions/checkout` v7 and `push-to-registry` v3 (majors)
+- VM first-boot (still OPEN)
+- Flipping GHCR Public (human)
+
 ## Related
 
 | Doc | Role |

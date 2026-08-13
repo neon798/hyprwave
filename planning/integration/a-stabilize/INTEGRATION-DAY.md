@@ -27,6 +27,7 @@ then pull other lanes. Full rationale lives in linked docs; this is the run shee
 git fetch origin
 git log --oneline origin/main..origin/lane/a-stabilize | head -30
 # Expect pin_guards, versions.env, planning/integration/a-stabilize/** only
+# Exclusive inventory: MERGE-READY.md § Wave 4 exclusive inventory (A-W4-001)
 ```
 
 ### 2. Merge A into main first
