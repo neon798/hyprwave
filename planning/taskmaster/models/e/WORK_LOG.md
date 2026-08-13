@@ -309,8 +309,9 @@
 
 - origin/main still OPEN E-W4-001; lane remains DONE at 39d5d7c; no product changes
 
-## 2026-08-13T03:53Z — E-W5-001 poll re-verify (remain DONE)
+## 2026-08-13T03:55Z — E-W5-001 poll re-verify after main move
 
-- origin/main still OPEN E-W5-001 at f2fcb76; lane already up to date (9d13d57)
-- 87 binds; Shift+A/T/E match KEYBIND-MAP; no forbidden tools
-- no product changes; idle until new task_id or coordinator accepts DONE on main
+- Merged origin/main `07be046` → lane `0eee777` (F/G activity on main; E skel unchanged)
+- 87 binds; Super+Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg
+- E product merge `878d38e` still ancestor; no product edits
+- Status → DONE; push lane/e-hyprland
