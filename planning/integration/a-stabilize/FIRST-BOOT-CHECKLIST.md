@@ -39,7 +39,7 @@ Re-probe 2026-08-13 (`scripts/ghcr-pull-test.sh --owner neon798`):
 | `ghcr.io/neon798/hyprwave:latest` | **FAIL** | `unauthorized` — Package settings → Public (hyprland first) |
 | `ghcr.io/neon798/hyprwave-cosmic:latest` | inspect **OK** | not a dual-package pass; `ghcr-pull-test.sh` still exits 1 |
 
-See `RELEASE.md` for the visibility fix checklist and private contingency.
+See `GHCR-VISIBILITY.md` (copy-paste Public clicks) and `RELEASE.md` (private contingency).
 
 ```bash
 bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh

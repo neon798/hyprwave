@@ -111,31 +111,35 @@ Until **both** packages are **public** (or install docs document authenticated p
 
 ### Maintainer fix checklist (public packages) — next operator step
 
-Packages were **pushed** by CI; visibility is still the human step.
+**Copy-paste card:** [`GHCR-VISIBILITY.md`](./GHCR-VISIBILITY.md)
+(UI clicks + expected 403 + post-Public `ghcr-pull-test.sh`).
 
-1. Open the GitHub org/user (`neon798`) → **Packages**.
+Packages were **pushed** by CI; visibility is still the human step. Do **not**
+claim anonymous GHCR is public until that script exits 0 for **both** images.
+
+1. GitHub user/org (`neon798`) → **Packages**.
 2. For **each** of `hyprwave` and `hyprwave-cosmic` (hyprland is the failing one):
    - Package settings (⋯ or package name → Package settings)
    - **Change visibility** → **Public**
    - Confirm “Inherit access from repository” is acceptable for your threat model
 3. Confirm repo secret **`SIGNING_SECRET`** holds the Cosign private key PEM.
 4. Confirm root **`cosign.pub`** matches that private key.
-5. Actions → **Build container image** → Run workflow on default branch
-   (or merge a no-op). Wait for `pin_guards` + both matrix legs + sign.
+5. Optional: Actions → **Build container image** → Run workflow on default branch
+   if you need a fresh dated tag after visibility change (push already happened).
 6. Anonymous pull test (no `podman login`, no `DOCKER_CONFIG` creds):
 
    ```bash
-   bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh --owner <owner>
+   bash planning/integration/a-stabilize/scripts/ghcr-pull-test.sh --owner neon798
    # equivalent manual:
-   podman pull ghcr.io/<owner>/hyprwave:latest
-   podman pull ghcr.io/<owner>/hyprwave-cosmic:latest
+   podman pull ghcr.io/neon798/hyprwave:latest
+   podman pull ghcr.io/neon798/hyprwave-cosmic:latest
    ```
 
 7. Cosign (see `COSIGN.md`):
 
    ```bash
-   cosign verify --key cosign.pub ghcr.io/<owner>/hyprwave:latest
-   cosign verify --key cosign.pub ghcr.io/<owner>/hyprwave-cosmic:latest
+   cosign verify --key cosign.pub ghcr.io/neon798/hyprwave:latest
+   cosign verify --key cosign.pub ghcr.io/neon798/hyprwave-cosmic:latest
    ```
 
 ### Private-registry contingency (packages stay private)
@@ -237,7 +241,7 @@ commit `versions.env` only, let `pin_guards` pass, dual-variant image build.
 | `MERGE-READY.md` | Pre-merge green gate for `lane/a-stabilize` |
 | `INTEGRATION-DAY.md` | One-page ordered merge/verify run sheet |
 | `CI-MATRIX.md` | Dual-image CI audit + gaps |
-| `COSIGN.md` | Verify / rotate / failure modes |
+| `GHCR-VISIBILITY.md` | Operator Public-package clicks + expected 403 |
 | `scripts/verify-pins.sh` | Companion pin HEAD/checksum |
 | `scripts/check-upstream-pins.sh` | Advisory upstream tag compare (not CI) |
 | `scripts/ghcr-pull-test.sh` | Anonymous dual-image GHCR probe |

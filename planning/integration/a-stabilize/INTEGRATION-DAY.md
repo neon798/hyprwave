@@ -11,7 +11,7 @@ then pull other lanes. Full rationale lives in linked docs; this is the run shee
 | Dual-image CI audit | [`CI-MATRIX.md`](./CI-MATRIX.md) |
 | Cosign verify | [`COSIGN.md`](./COSIGN.md) |
 | Pin bump SOP | [`BUMP.md`](./BUMP.md) |
-| Publish / GHCR | [`RELEASE.md`](./RELEASE.md) |
+| Publish / GHCR | [`RELEASE.md`](./RELEASE.md) / [`GHCR-VISIBILITY.md`](./GHCR-VISIBILITY.md) |
 | Pin freeze source | `build_files/versions.env` + `build_files/build.sh` (checksum block only) |
 
 **Do not** merge Assistant/Duress/handbook lanes before A if they might touch
