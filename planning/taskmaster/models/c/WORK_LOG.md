@@ -76,5 +76,5 @@
 
 ## 2026-08-13 — C-W1-HOLD poll (scheduler confirmed)
 
-- Idle: still OPEN HOLD (reissued 02:24Z); MERGED_LOCAL_AWAITING_T8_AND_PUSH; no product work
+- Idle: still OPEN HOLD (reissued 02:35Z); MERGED_PUSHED_AWAITING_T8; no product work
 - 10m durable scheduler 019fda889c3c active; leave status OPEN
