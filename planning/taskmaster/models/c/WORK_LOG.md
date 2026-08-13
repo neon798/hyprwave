@@ -145,3 +145,8 @@
 - smoke-host also exit 0 (extra confirm)
 - no product changes; post-merge verify only
 - status → DONE
+
+## 2026-08-13 — poll re-assert C-W5-001
+
+- main still OPEN for C-W5-001; lane already complete (tip 2496ff6). Re-assert DONE; no re-implement.
+- go test + snippet-selftest still PASS on merge tip
