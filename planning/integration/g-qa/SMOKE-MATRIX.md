@@ -195,19 +195,21 @@ signer/tester:
 
 Do **not** push/sign a “Wave 1 integrated” image to GHCR until **all** hard gates pass. Soft gates may ship with a tracked residual in `ENDPOINT-RESIDUALS.md`.
 
-### 9.0 T8 status snapshot (2026-08-13, G-W2-001)
+### 9.0 T8 status snapshot (2026-08-13, G-W3-001)
 
 | Gate | Status | Evidence |
 |---|---|---|
 | P1 host harness | **met** | `run-all.sh` RESULT OK (includes `image`) |
 | P2 pins | **met** | pins-static PASS on main |
 | P3 Hyprland image | **met** | CI run `31662742064` PASS; local `localhost/hyprwave:latest` |
-| P4 COSMIC image | **met** | CI run `31662742064` PASS; local `localhost/hyprwave-cosmic:latest` |
+| P4 COSMIC image | **met** | CI `31662742064`; local `localhost/hyprwave-cosmic:latest`; **`check-image.sh --cosmic` PASS** |
 | P5 duress OFF | **met** | harness + image PAM inspect (no `pam_duress`) |
 | P6 assistant | **met** | `go test` + image `hyprwave-assistant 0.2.2` |
-| Image content smoke | **met** | `bash planning/qa/run-all.sh --only image` (skip-if-missing) |
-| VM session smokes | **open** | human |
+| Image content smoke | **met** | `--only image` + `--cosmic` (skip-if-missing) |
+| VM qcow2 session smokes | **open** | human only — **not** claimed done |
 | GHCR anonymous pull | **open** | still **403** |
+
+**Residual policy (W3):** local/CI image builds are **not** pending. Remaining open = **VM smokes + GHCR 403**.
 
 Automated image re-check (does not require rebuild if tags exist):
 

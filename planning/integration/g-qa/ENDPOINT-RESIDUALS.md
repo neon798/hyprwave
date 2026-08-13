@@ -2,19 +2,22 @@
 
 **Owner:** Model G (read-only inspection + tracking; does not merge product lanes).  
 **Source of truth for “finished”:** `planning/taskmaster/ENDPOINT.md` product items 1–10.  
-**Inspection date:** 2026-08-13 (UTC) — G-W2-001 T8 residual refresh  
-**Baseline refs:** `origin/main` @ `045391f` (Wave 1 merged+pushed) + host image inspect.  
+**Inspection date:** 2026-08-13 (UTC) — G-W3-001 cosmic `--cosmic` prove + residual narrow  
+**Baseline refs:** `origin/main` (Wave 1 merged+pushed) + host image inspect.  
 **Master human procedure:** [INTEGRATION-DAY.md](./INTEGRATION-DAY.md)  
 **Closeout verify matrix:** [PROGRAM-CLOSEOUT.md](./PROGRAM-CLOSEOUT.md)
 
 | Source | Tip / id | Notes |
 |---|---|---|
-| origin/main | `045391f` (fetch-time) | Wave 1 A→G on main |
-| CI build | run `31662742064` | Both hyprland + cosmic variants **PASS** (Director) |
-| Local hyprland image | `localhost/hyprwave:latest` | Inspected via `check-image.sh` — **PASS** |
-| Local cosmic image | `localhost/hyprwave-cosmic:latest` | Inspected via `check-image.sh` — **PASS** |
-| GHCR anonymous pull | — | Still **403** (public pull open residual) |
-| VM session smoke | — | **open** (human T8) |
+| origin/main | Wave 1 A→G | Integrated |
+| CI build | run `31662742064` | Both hyprland + cosmic variants **PASS** |
+| Local hyprland image | `localhost/hyprwave:latest` | `check-image.sh` — **PASS** |
+| Local cosmic image | `localhost/hyprwave-cosmic:latest` | `check-image.sh --cosmic` — **PASS** (G-W3-001) |
+| GHCR anonymous pull | — | Still **403** (**open** residual) |
+| VM qcow2 session smoke | — | **open** (human; Hyprland + COSMIC) |
+
+**Remaining open (only):** VM session smokes (qcow2) + GHCR public/anonymous pull (403).  
+Image builds and local/CI container inspects are **met** — do not list as pending.
 
 Status vocabulary:
 
@@ -170,11 +173,13 @@ bash planning/qa/run-all.sh --only image
 | Host `run-all.sh` | **met** | RESULT OK |
 | CI hyprland + cosmic | **met** | `31662742064` |
 | Local hyprland inspect | **met** | check-image PASS |
-| Local cosmic inspect | **met** | check-image PASS |
-| VM Hyprland session | **open** | human |
-| VM COSMIC session | **open** | human |
+| Local cosmic inspect | **met** | `check-image.sh --cosmic` PASS (G-W3-001) |
+| VM Hyprland session (qcow2) | **open** | human only |
+| VM COSMIC session (qcow2) | **open** | human only |
 | GHCR anonymous pull | **open** | 403 |
-| PROGRAM_COMPLETE | **open** | Director |
+| PROGRAM_COMPLETE | **open** | Director (after VM + GHCR policy) |
+
+**Wave 3 residual policy:** do not track local image build as open. Open set = **VM smokes + GHCR 403**.
 
 ---
 

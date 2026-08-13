@@ -4,7 +4,7 @@
 **Owner:** Model G (matrix only). **Does not merge** product lanes.  
 **Source:** `planning/taskmaster/ENDPOINT.md` § Product 1–10 + Process.  
 **Inspection baseline (pre-merge):** `origin/main` @ `98fe075` (2026-08-07 UTC).  
-**Post-merge refresh:** 2026-08-13 — Wave 1 on main; G-W2-001 image check + T8 residuals (CI `31662742064`, local images PASS, VM/GHCR still open).
+**Post-merge refresh:** 2026-08-13 — Wave 1 on main; image builds **met** (CI `31662742064` + local + `check-image.sh --cosmic` PASS G-W3-001). **Open only:** VM qcow2 smokes + GHCR anonymous 403.
 
 ### Linked procedures
 
@@ -268,10 +268,11 @@ Model G does **not** set `PROGRAM_COMPLETE`. Model G does **not** merge lanes.
 | 9 | QA harness | open / lane G | **met** (+ `check-image.sh`) | G |
 | 10 | Release path | open / lane A | **partial** (CI green; **GHCR anon 403**; publish open) | A / Director |
 
-### T8 residual (do not call “all T8 pending”)
+### T8 residual (do not call “all T8 pending” or “image build pending”)
 
 | Step | Status |
 |---|---|
-| Container image builds (CI + local) | **met** — CI run `31662742064` both variants PASS; `check-image` PASS |
-| VM session smokes | **open** |
+| Container image builds (CI + local) | **met** — CI `31662742064`; local hyprland + cosmic tags; `check-image.sh` / `--cosmic` PASS |
+| Image content smoke (automated) | **met** — G-W2-001 / G-W3-001 |
+| VM session smokes (qcow2) | **open** (human) |
 | GHCR public pull / signed Wave-1 publish | **open** (anonymous 403) |

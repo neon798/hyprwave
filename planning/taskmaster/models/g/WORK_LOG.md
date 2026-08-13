@@ -190,3 +190,64 @@ Wave 1 frozen at G-W1-005. Awaiting human integration via INTEGRATION-DAY.md. No
 ### Host run
 
 - `bash planning/qa/run-all.sh` → **RESULT OK**
+
+## G-W3-001 — 2026-08-13
+
+**Status:** DONE  
+**Branch:** `lane/g-qa`  
+**Task:** check-image.sh --cosmic PASS; residuals VM-only
+
+### Work performed
+
+1. Ran `bash planning/qa/check-image.sh --cosmic` against `localhost/hyprwave-cosmic:latest` → **PASS** (18 PASS / 0 FAIL).
+2. Narrowed ENDPOINT-RESIDUALS / PROGRAM-CLOSEOUT / SMOKE-MATRIX §9.0: image builds **met**; remaining open = **VM qcow2 smokes + GHCR anon 403** only. Did **not** claim VM smoke done.
+3. `bash planning/qa/run-all.sh` → RESULT OK.
+
+### check-image.sh --cosmic snippet
+
+```
+  HYPRWAVE_IMAGE=localhost/hyprwave:latest
+  HYPRWAVE_COSMIC_IMAGE=localhost/hyprwave-cosmic:latest
+PASS image.podman: podman available
+PASS image.hyprland.present: found localhost/hyprwave:latest
+PASS image.hyprland.assistant: hyprwave-assistant hyprwave-assistant 0.2.2
+PASS image.hyprland.bin.hyprwave-theme: hyprwave-theme present
+PASS image.hyprland.bin.walker: walker present
+PASS image.hyprland.bin.hyprpaper: hyprpaper present
+PASS image.hyprland.themes: themes count 11 (≥11)
+PASS image.hyprland.catalog: catalog.toml present
+PASS image.hyprland.enable_md: ENABLE.md present
+PASS image.hyprland.pam: no pam_duress in /etc/pam.d
+PASS image.hyprland.sddm: sddm enabled (ok)
+PASS image.hyprland.no-legacy: no wofi/swaybg binaries
+PASS image.cosmic.present: found localhost/hyprwave-cosmic:latest
+PASS image.cosmic.greeter: cosmic-greeter present
+PASS image.cosmic.greeter-enabled: cosmic-greeter enabled (ok:enabled)
+PASS image.cosmic.no-store: cosmic-store not installed
+PASS image.cosmic.flatarcade: flatarcade present
+PASS image.cosmic.theme-tool: hyprwave-theme present
+=== check-image ===
+PASS    image.podman                  podman available
+PASS    image.hyprland.present        found localhost/hyprwave:latest
+PASS    image.hyprland.assistant      hyprwave-assistant hyprwave-assistant 0.2.2
+PASS    image.hyprland.bin.hyprwave-theme  hyprwave-theme present
+PASS    image.hyprland.bin.walker     walker present
+PASS    image.hyprland.bin.hyprpaper  hyprpaper present
+PASS    image.hyprland.themes         themes count 11 (≥11)
+PASS    image.hyprland.catalog        catalog.toml present
+PASS    image.hyprland.enable_md      ENABLE.md present
+PASS    image.hyprland.pam            no pam_duress in /etc/pam.d
+PASS    image.hyprland.sddm           sddm enabled (ok)
+PASS    image.hyprland.no-legacy      no wofi/swaybg binaries
+PASS    image.cosmic.present          found localhost/hyprwave-cosmic:latest
+PASS    image.cosmic.greeter          cosmic-greeter present
+PASS    image.cosmic.greeter-enabled  cosmic-greeter enabled (ok:enabled)
+PASS    image.cosmic.no-store         cosmic-store not installed
+PASS    image.cosmic.flatarcade       flatarcade present
+PASS    image.cosmic.theme-tool       hyprwave-theme present
+Totals: PASS=18 FAIL=0 WARN=0 SKIP=0
+```
+
+### Notes
+
+- No product/workflow edits. Local image build no longer tracked as pending.
