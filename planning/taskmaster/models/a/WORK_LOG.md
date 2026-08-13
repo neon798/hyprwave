@@ -371,23 +371,7 @@ planning/qa/run-all.sh --only pins-static      RESULT: OK (11 PASS, 0 FAIL)
 releases/latest in build.sh / verify-pins.sh   CLEAN
 ```
 
-### A-W2-002 action SHA bumps still on HEAD `build.yml`
+A-W2-002 SHAs still on HEAD: metadata 6.2.0, login 4.5.1, cosign 4.1.2;
+checkout v6; push-to-registry v2. GHCR still documented private.
 
-| Action | Pin (comment) | Present |
-|--------|---------------|---------|
-| `docker/metadata-action` | `dc802804…` # v6.2.0 | yes |
-| `docker/login-action` | `abd2ef45…` # v4.5.1 | yes |
-| `sigstore/cosign-installer` | `6f9f1778…` # v4.1.2 | yes |
-| `actions/checkout` | `df4cb1c0…` # v6 (no v7) | yes |
-| `redhat-actions/push-to-registry` | `5ed88d26…` # v2 (no v3) | yes |
-
-### GHCR
-
-Still documented **private** (`GHCR-VISIBILITY.md`: anonymous hyprwave 403).
-No visibility flip.
-
-Poll 2026-08-13T05:59:41Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-### Commits
-
-1. taskmaster DONE + WORK_LOG/COMPLETED (reconfirm cycle)
+Poll 2026-08-13T06:02:12Z: still DONE; main `c712cbd`; pins-static 11 PASS.
