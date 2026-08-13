@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: D-W2-002
 wave: 2
 issued: 2026-08-13T03:29:05Z
@@ -42,15 +42,15 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Requirements
 
-- [ ] DRILL.md steps match image layout; dry-run / `--help` only — **no**
+- [x] DRILL.md steps match image layout; dry-run / `--help` only — **no**
       `pam_duress` install into `/etc/pam.d`
-- [ ] Banner: drill is rehearsal; production enable is still operator-only
+- [x] Banner: drill is rehearsal; production enable is still operator-only
       (ENABLE.md)
-- [ ] Paths: `/usr/share/hyprwave/duress`, `/usr/sbin/hyprwave-duress-setup`
+- [x] Paths: `/usr/share/hyprwave/duress`, `/usr/sbin/hyprwave-duress-setup`
       or actual usr-merge path, `/etc/duress.d`
-- [ ] `bash planning/integration/d-duress/validate.sh` PASS
-- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [ ] RESIDUALS.md still **OFF**
+- [x] `bash planning/integration/d-duress/validate.sh` PASS
+- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [x] RESIDUALS.md still **OFF**
 
 ## Deliverables
 
@@ -60,10 +60,10 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Done criteria
 
-- [ ] Drill never enables PAM
-- [ ] No `*.sha256` templates added
-- [ ] validate + duress-safety PASS
-- [ ] `git push -u origin lane/d-duress`
+- [x] Drill never enables PAM
+- [x] No `*.sha256` templates added
+- [x] validate + duress-safety PASS
+- [x] `git push -u origin lane/d-duress`
 
 ## On completion
 
