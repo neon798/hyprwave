@@ -317,3 +317,9 @@
 - KEYBIND-MAP vs bindings.conf: Super+SHIFT+A (assistant class), Super+SHIFT+T, Super+SHIFT+E match; **87** binds
 - No wofi/swaybg/cliphist in skel (negation comments only)
 - KEYBIND-MAP + HANDOFF stamped with merge SHA 878d38e
+
+## 2026-08-13T03:48Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001; lane already DONE at bab5f0e (tip set 192eef2)
+- Re-count binds: 87; Super+SHIFT+A/T/E match; merge SHA 878d38e; no product changes
+- status remains DONE; idle until new task_id
