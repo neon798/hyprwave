@@ -357,88 +357,28 @@ releases/latest                               CLEAN
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
-**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
+**main merge tip:** `c712cbd` (`merge: G-W5 wofi-comment allowlist`)
 
-A Waves 2–4 landed on main as `42450b1`. Director copy on `origin/main`
-still lists A-W5-001 OPEN. Re-verified exclusive pin/CI only. No
-`versions.env` / `build.sh` / workflow edits. No invented A-W6.
+### Work done
+
+Director copy on `origin/main` still lists A-W5-001 **OPEN**. No product
+delta vs previous lane completion — re-verified exclusive gates only.
+
+- `git merge origin/main` → already up to date (`c712cbd`).
+- `bash planning/qa/run-all.sh --only pins-static` → **RESULT: OK** (11 PASS / 0 FAIL).
+- `build.yml` on HEAD matches A-W2-002 SHA bumps (same as `origin/main`):
+  - `docker/metadata-action@dc802804…` # v6.2.0
+  - `docker/login-action@abd2ef45…` # v4.5.1
+  - `sigstore/cosign-installer@6f9f177…` # v4.1.2
+  - checkout remains v6 (`df4cb1c…`); push-to-registry remains v2 (majors skipped).
+- Workflows / `versions.env` / pin block: **identical** to `origin/main`.
+- GHCR still documented private (`INSTALL.md`, `GHCR-VISIBILITY.md`).
+- No A-W6 on director inbox. No invented follow-up.
+
+### Validation
 
 ```
 planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
-A-W2-002 SHAs on HEAD                      metadata 6.2.0 / login 4.5.1 / cosign 4.1.2
-                                           (dc802804 / abd2ef45 / 6f9f1778)
-GHCR                                       still documented private
-                                           (GHCR-VISIBILITY.md + README 403)
+git rev-parse origin/main                  c712cbdbdadc29019dbcece83f5d2c1678c012ac
+git diff origin/main -- .github/workflows/build.yml build_files/versions.env  (empty)
 ```
-
-Poll 2026-08-13T06:37:43Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-## 2026-08-13 — A-W5-001 reconfirm (director copy still OPEN)
-
-**status:** DONE (no new product work)  
-**branch:** `lane/a-stabilize`  
-**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
-
-`git checkout origin/main -- planning/taskmaster/models/a/` reissued OPEN.
-Re-ran exclusive verify only. No `versions.env` / `build.sh` / workflow
-edits. No invented A-W6.
-
-```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)  2026-08-13T06:39:58Z
-A-W2-002 SHAs on origin/main HEAD          metadata 6.2.0 dc802804
-                                           login 4.5.1 abd2ef45
-                                           cosign 4.1.2 6f9f1778
-                                           checkout remains v6 (skip major)
-                                           push-to-registry remains v2 (skip major)
-GHCR                                       still documented private
-                                           (GHCR-VISIBILITY.md + RELEASE 403)
-```
-
-Lane already merged with `origin/main` (merge-base == `c712cbd`).
-
-## 2026-08-13 — A-W5-001 poll (director still OPEN)
-
-**status:** DONE (no new product work)  
-**main tip (merge SHA):** `c712cbdbdadc29019dbcece83f5d2c1678c012ac`
-
-Poll 2026-08-13T06:41:44Z: `pins-static` RESULT OK (11 PASS). SHAs/GHCR
-unchanged. No versions.env / build.sh / workflow edits. No A-W6.
-
-Poll 2026-08-13T06:43:40Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:45:42Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:47:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:49:40Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:51:42Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:53:42Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:55:45Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T06:57:41Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:00:19Z: `git checkout origin/main -- models/a/` reissued
-OPEN. Re-ran pins-static RESULT OK (11 PASS). A-W2-002 SHAs on `c712cbd`
-unchanged (dc802804 / abd2ef45 / 6f9f1778). GHCR still documented private.
-No versions.env / build.sh / workflow edits. No A-W6.
-
-Poll 2026-08-13T07:01:42Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:03:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:05:40Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:07:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:09:38Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:11:40Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:13:41Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:15:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
-
-Poll 2026-08-13T07:17:39Z: still DONE; main `c712cbd`; pins-static 11 PASS.
