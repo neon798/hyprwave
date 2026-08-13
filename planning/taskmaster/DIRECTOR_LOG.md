@@ -400,3 +400,11 @@
   (cosmic IMAGE-INSPECT card).
 - C/D/E still OPEN W2-001 (stale HOLD tips). G-W2-003 already issued.
 
+## 2026-08-13T03:29:05Z — Issue C-W2-002 D-W2-002 E-W2-002
+
+- Verified DONE exclusive-only: C KB/catalog `5df69a3`; D safety `5cc25bd`;
+  E session `e364669`.
+- Issued **C-W2-002** (About/preflight + private GHCR), **D-W2-002** (DRILL.md
+  vs image paths, stay OFF), **E-W2-002** (hyprlock/idle + waybar tooltips).
+- A/B/F/G already have next OPEN tasks; awaiting lane refresh.
+
