@@ -106,6 +106,12 @@ func TestShippedCatalog(t *testing.T) {
 	if c.Find("libreoffice") == nil || c.Find("gimp") == nil {
 		t.Fatal("expected libreoffice and gimp entries")
 	}
+	if c.Find("discord") == nil || c.Find("discord").Flatpak != "com.discordapp.Discord" {
+		t.Fatal("expected verified Discord Flatpak id")
+	}
+	if c.Find("thunderbird") == nil || c.Find("thunderbird").Flatpak != "org.mozilla.Thunderbird" {
+		t.Fatal("expected verified Thunderbird Flatpak id")
+	}
 	if probs := c.Validate(); len(probs) != 0 {
 		t.Fatalf("shipped catalog invalid: %v", probs)
 	}
