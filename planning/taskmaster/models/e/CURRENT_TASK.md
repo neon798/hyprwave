@@ -16,27 +16,6 @@ Poll **every 2 minutes**. Exclusive paths only.
 `lane/e-hyprland` Waves 2–4 are **merged to main**. Confirm KEYBIND-MAP still
 matches `bindings.conf` on the merge tip. No redesign.
 
-```bash
-git fetch origin
-git checkout lane/e-hyprland
-git merge origin/main || git rebase origin/main
-git checkout origin/main -- planning/taskmaster/models/e/
-```
-
-## Exclusive paths
-
-- `build_files/etc/skel/.config/hypr/**`
-- `build_files/etc/skel/.config/waybar/**`
-- `build_files/etc/skel/.config/walker/**`
-- `build_files/etc/skel/.config/mako/**`
-- `planning/integration/e-hyprland/**`
-- `planning/taskmaster/models/e/**`
-
-## Forbidden
-
-- COSMIC, duress, apps, build.sh, theme store wholesale
-- Wofi/swaybg/cliphist
-
 ## Requirements
 
 - [x] KEYBIND-MAP matches bindings.conf (Shift+A, Shift+T, Shift+E)
@@ -49,8 +28,8 @@ git checkout origin/main -- planning/taskmaster/models/e/
 - [x] Map/skel in sync on merged main
 - [x] Lane pushed
 
-## Result (2026-08-13T05:33Z; re-verify 05:35Z)
+## Result
 
-- **main tip:** `c712cbd` (Wave 2–4 merge `878d38e`)
-- **Binds:** 87; SUPER+SHIFT+A/T/E match KEYBIND-MAP; no forbidden in skel
-- Idle until director issues a new task_id
+- main tip `c712cbd`; Wave 2–4 merge `878d38e`
+- 87 binds; SUPER+SHIFT+A/T/E match; no forbidden in skel
+- Idle until new task_id
