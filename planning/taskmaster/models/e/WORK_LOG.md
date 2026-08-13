@@ -323,3 +323,7 @@
 - origin/main still OPEN E-W5-001; lane already DONE at bab5f0e (tip set 192eef2)
 - Re-count binds: 87; Super+SHIFT+A/T/E match; merge SHA 878d38e; no product changes
 - status remains DONE; idle until new task_id
+
+## 2026-08-13T03:49Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001; lane DONE (bab5f0e); merge 878d38e; no product changes
