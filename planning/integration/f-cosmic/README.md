@@ -12,10 +12,11 @@ Owned by Task Master **Model F** (`lane/f-cosmic`).
 | Doc | Purpose |
 |---|---|
 | [INTEGRATION-DAY.md](./INTEGRATION-DAY.md) | **Merge-day one-pager:** host gates + condensed smoke + declutter do-not-regress |
-| [INTEGRATOR-CHECKLIST.md](./INTEGRATOR-CHECKLIST.md) | Pre-merge freeze steps: vendor tree, ISO ref, script, smoke, do-not-regress |
+| [INTEGRATOR-CHECKLIST.md](./INTEGRATOR-CHECKLIST.md) | Pre-merge freeze / **F-W4-001** merge-prep: vendor script, greeter ≠ SDDM, ISO note, inspect id |
 | [DECLUTTER.md](./DECLUTTER.md) | Packages removed (`cosmic-store` etc.), `--no-autoremove`, must-remain list |
 | [GREETER.md](./GREETER.md) | cosmic-greeter DM expectations, branding limits, day-1 vs Hyprland |
 | [SESSION-SMOKE.md](./SESSION-SMOKE.md) | First-login + FlatArcade/Neonwolf/theme-switch smoke checklist |
+| [IMAGE-INSPECT.md](./IMAGE-INSPECT.md) | **Host** copy-paste `podman` card for `localhost/hyprwave-cosmic:latest` (no SDDM) |
 | [THEME-COSMIC-MATRIX.md](./THEME-COSMIC-MATRIX.md) | All 11 theme packs: cosmic/config keys, wallpaper path proofs |
 | [REGENERATE.md](./REGENERATE.md) | How to regenerate themegen trees; no `target/` commits |
 | [VENDOR-INVENTORY.md](./VENDOR-INVENTORY.md) | Full `/usr/share/cosmic` key inventory (F-W1-001) |
@@ -44,4 +45,15 @@ planning/integration/f-cosmic/check-vendor-paths.sh
 
 rg 'hyprwave-cosmic:latest' disk_config/iso-cosmic.toml
 # kickstart bootc switch must target hyprwave-cosmic, not hyprwave
+```
+
+After a local `just build-cosmic`, re-run the durable inspect card:
+
+→ **[IMAGE-INSPECT.md](./IMAGE-INSPECT.md)** (DM = cosmic-greeter; **not** SDDM)
+
+COSMIC ISO (rootful Podman + KVM, after container build):
+
+```bash
+just build-iso-cosmic
+# uses disk_config/iso-cosmic.toml — cosmic-greeter DM; do not assume GHCR public
 ```

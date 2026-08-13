@@ -109,3 +109,15 @@
 - `check-vendor-paths.sh`: exit **0**
 - No build_files/usr/share/cosmic or build.sh edits
 - Forbidden paths untouched
+
+## 2026-08-13 — F-W4-001 merge-prep checklist + vendor green
+
+- Branch: `lane/f-cosmic` on `origin/main` + carried F-W2/F-W3 integration docs + iso-cosmic
+- INTEGRATOR-CHECKLIST.md: Wave 4 host stamp table; 1.x/3.x/5.4/5.6 checked
+  - check-vendor-paths exit **0**
+  - greeter ≠ SDDM (docs + image)
+  - ISO note current (`just build-iso-cosmic`; GHCR not public-assumed)
+  - host image id **189340691cc7**
+- iso-cosmic.toml: TOML_OK; F-W3-001 operator blurb unchanged (still current)
+- FREEZE-STATUS stamped F-W4-001; README index note
+- No build_files/usr/share/cosmic edits; forbidden paths untouched
