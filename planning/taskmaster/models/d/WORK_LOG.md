@@ -141,3 +141,12 @@
 - `bash planning/integration/d-duress/validate.sh` → PASSED
 - `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
 - Commits: 2973b5c, 73334ad, + this series; tip 1fc067d
+
+## 2026-08-13 — D-W5-001 (post-merge validate; Waves 2–4 on main)
+
+- Merged `origin/main` into `lane/d-duress` (already up to date on re-poll).
+- Re-ran post-merge safety only; no product/PAM changes; no `*.sha256`.
+- `bash planning/integration/d-duress/validate.sh` → **PASSED**
+- `bash planning/qa/run-all.sh --only duress-safety` → **RESULT: OK** (9 PASS)
+- PAM still OFF BY DEFAULT (snippet-selftest + build.sh audit green).
+- Criteria: validate PASS, duress-safety PASS, push `lane/d-duress`.
