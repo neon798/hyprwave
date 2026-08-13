@@ -259,3 +259,10 @@
 - KEYBIND-MAP: 87 active binds; SESSION-SMOKE Wave 2; HANDOFF existing-home caveat
 - No wofi/swaybg/cliphist; no migrator; image `localhost/hyprwave:latest` present on host
 - Walker emergency still restarts `app-walker@autostart.service`
+
+## 2026-08-13T03:28Z — E-W2-001 poll re-verify
+
+- Refreshed from origin/main; task still E-W2-001 (was OPEN on origin; lane already DONE at e364669)
+- Re-audited binds/windowrules/autostart/KEYBIND-MAP/HANDOFF/SESSION-SMOKE — requirements met
+- Merged origin/main into lane/e-hyprland; no product changes this poll
+- status remains DONE; idle until new task_id
