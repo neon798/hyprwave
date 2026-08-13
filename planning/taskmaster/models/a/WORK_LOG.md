@@ -461,3 +461,10 @@ up to date). Re-ran exclusive gates only:
 - `versions.env` / `build.sh` / workflows identical to `origin/main`
 - GHCR still documented private (`unauthorized` / 403)
 - No A-W6. No invented follow-up.
+
+## 2026-08-13 — A-W5-001 poll 08:01Z
+
+**status:** DONE  
+**main:** `c712cbd`
+
+Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR unchanged. No A-W6.
