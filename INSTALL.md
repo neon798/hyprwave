@@ -201,13 +201,13 @@ Step-by-step narrative (login → bar/launcher → apps → themes → updates):
 2. Log in → **Hyprland** session with skel defaults (**new users only**):
    - Waybar, Walker (elephant), Mako, hyprpaper, hypridle
 3. Try: **Super+D** (Walker), **Super+Return** (Ghostty), **Super+B** (Neonwolf).
-   Exit session (after E-lane merge): **Super+Shift+E** — see [keybinds.md](docs/keybinds.md).
+   Exit session: **Super+Shift+E** — see [keybinds.md](docs/keybinds.md).
 
 ### COSMIC — cosmic-greeter
 
 1. Boot into **cosmic-greeter** (not SDDM). Greeter face may be upstream stock;
-   session wallpaper/theme is Hyprwave-branded. Greeter limits documented on
-   `lane/f-cosmic` as `planning/integration/f-cosmic/GREETER.md` (until merge).
+   session wallpaper/theme is Hyprwave-branded. Greeter limits:
+   [GREETER.md](planning/integration/f-cosmic/GREETER.md).
 2. COSMIC session with dock favorites (Neonwolf, FlatArcade, Ghostty, Files,
    Hyprwave Themes, Settings — order per F vendor inventory).
 3. No Walker/Waybar — use COSMIC’s launcher. Themes still via **Hyprwave Themes**.

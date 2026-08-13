@@ -1,20 +1,20 @@
 # Hyprland keybinds (Hyprwave defaults)
 
 These bindings match the Hyprland skel file
-`build_files/etc/skel/.config/hypr/bindings.conf` as refined on **`lane/e-hyprland`**
+`build_files/etc/skel/.config/hypr/bindings.conf` on `main`
 (machine-readable map: `planning/integration/e-hyprland/KEYBIND-MAP.md`). New users
 get a copy under `~/.config/hypr/bindings.conf` from `/etc/skel`.
 
 `Super` is the Windows / Command key (`$mainMod = SUPER`). Layout assumption:
 **dwindle** (see theme `looknfeel.conf`).
 
-### Merge honesty
+### Existing installs
 
-Until the E lane merge is on the image you boot (`bootc status` / published GHCR),
-older trees may still use **Super+M** to exit Hyprland and master-layout ratio binds
-for H/L/−. After E-W1-001 lands, exit is **Super+Shift+E** and focus/split use
-dwindle-safe dispatchers (documented below). Prefer live `~/.config/hypr/bindings.conf`
-on your machine if it differs.
+Image upgrades do **not** rewrite `~/.config/hypr/`. Older homes may still use
+**Super+M** to exit and master-layout ratio binds. New users (and a fresh copy
+from `/etc/skel`) get **Super+Shift+E** exit and dwindle-safe focus/split
+(documented below). Prefer live `~/.config/hypr/bindings.conf` on your machine
+if it differs.
 
 ### COSMIC
 
@@ -146,14 +146,14 @@ Store: `/usr/share/hyprwave/themes/` (11 packs). Full guide: [theming.md](themin
 
 ## Intentional E-W1-001 changes (for upgraders)
 
-| Change | Older skel | After E lane |
-|--------|------------|--------------|
+| Change | Older skel | On main (new users) |
+|--------|------------|---------------------|
 | Session exit | Super+M | **Super+Shift+E** |
 | Focus H/L | master `setleftwideratio` | **movefocus** (vim) |
 | Split ratio | master ratio on minus | **splitratio** (dwindle) |
 | Vim move/resize | missing | Super+Shift / Super+Alt + hjkl |
 
-Full table: `planning/integration/e-hyprland/KEYBIND-MAP.md` (on `lane/e-hyprland` until merge).
+Full table: [planning/integration/e-hyprland/KEYBIND-MAP.md](../planning/integration/e-hyprland/KEYBIND-MAP.md).
 
 ---
 

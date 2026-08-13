@@ -1,0 +1,86 @@
+# CI snippet — Packaging QA job for Hyprwave
+#
+# NOT a live workflow. Model A / integrator may copy this job into
+# .github/workflows/build.yml (or a dedicated qa.yml). No secrets required.
+#
+# Suggested placement: after checkout; before or after container build.
+# PR builds: use the "static" only set (no Go toolchain / no lane refs).
+# Post-integration main: use "full" set.
+#
+# Exit semantics of planning/qa/run-all.sh:
+#   0 — no FAIL (WARN/SKIP allowed; soft-missing lane artifacts are WARN)
+#   1 — at least one check FAIL
+#   2 — harness misconfiguration (bad --only id, etc.)
+
+name: packaging-qa-snippet  # rename / nest under existing workflow as needed
+
+on:
+  workflow_dispatch: {}
+  # Example triggers when wiring for real:
+  # pull_request:
+  # push:
+  #   branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  packaging-qa-static:
+    name: Packaging QA (static)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run static packaging checks
+        # No network pins download; no Go required.
+        # lane-artifacts soft-WARNs if origin/lane/* not fetched (default on shallow checkout).
+        run: bash planning/qa/run-all.sh --only pins-static,themes,no-wofi-swaybg
+        env:
+          NO_COLOR: "1"
+          # Optional: skip multi-ref check entirely in PR CI
+          LANE_ARTIFACTS_OFF: "1"
+
+  packaging-qa-full:
+    name: Packaging QA (full)
+    # Enable after C/D (and preferably A) are on the tested ref.
+    if: ${{ false }}  # flip to true or remove when ready
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed if you also want lane-artifacts against origin/lane/*
+
+      - name: Fetch lane refs (optional multi-ref check)
+        run: |
+          git fetch origin \
+            '+refs/heads/lane/*:refs/remotes/origin/lane/*' || true
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache-dependency-path: apps/hyprwave-assistant/go.sum
+
+      - name: Run full packaging harness
+        run: bash planning/qa/run-all.sh
+        env:
+          NO_COLOR: "1"
+
+  # Optional dedicated job: multi-lane residual signal only (never blocks on missing refs)
+  packaging-qa-lane-refs:
+    name: Lane artifact presence (advisory)
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch lanes
+        run: git fetch origin '+refs/heads/lane/*:refs/remotes/origin/lane/*' || true
+      - name: Check lane artifacts
+        run: bash planning/qa/run-all.sh --only lane-artifacts
+        env:
+          NO_COLOR: "1"

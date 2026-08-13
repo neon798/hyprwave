@@ -89,8 +89,9 @@ pending** for features that actually shipped. Summary:
 5. **Screenshots** — still optional; ops checklist in
    [screenshots.md](screenshots.md) / b-docs screenshot-checklist.
 
-Until merge, prefer documenting **lane ENDPOINT + merge honesty** over inventing
-main-only fiction.
+After Wave 1, prefer documenting **what is on `main` / the built image** over
+lane-only language. Use [POST-MERGE-DOC-FLIP.md](../planning/integration/b-docs/POST-MERGE-DOC-FLIP.md)
+when a later wave lands.
 
 ---
 
@@ -101,10 +102,9 @@ main-only fiction.
 - File manager default is **Yazi**, not Thunar.  
 - Do not claim GHCR is public without verification.  
 - Do not claim duress is on by default.  
-- Keybinds: read skel `bindings.conf` (or E-lane tip until merge); note skel =
-  **new users only**.  
-- Architecture boundaries: Assistant + duress are optional/pending packaging —
-  [architecture.md](architecture.md).  
+- Keybinds: read skel `bindings.conf`; note skel = **new users only**.  
+- Architecture boundaries: Assistant is image-hooked; duress is packaged **off
+  by default** — [architecture.md](architecture.md).  
 - After doc edits, re-check relative links and update ACCURACY-AUDIT.
 
 ---

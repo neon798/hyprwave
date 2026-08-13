@@ -62,7 +62,8 @@ title: Short title
 ## Commits
 
 - Small, frequent commits with clear messages.
-- Push lane branch at least when marking DONE (preferably every 10 min if you have commits).
+- Push lane branch at least when marking DONE (preferably every **2 minutes** if you have commits).
+- **Duty cycle is 2 minutes** (Director and Models A–G). Poll `CURRENT_TASK.md` from `origin/main` each cycle.
 
 ## Never
 

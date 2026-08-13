@@ -1,52 +1,75 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: C-W1-001  
-wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Production-harden Assistant (tests, offline UX, safer system ops)  
+status: OPEN
+task_id: C-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+poll: 2m
+title: Assistant day-1 KB + catalog vs shipped OS
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Take the existing Assistant from “Wave 2 feature-complete skeleton” to **production-hardened**: high test coverage on pure logic, bulletproof dry-run, excellent offline KB UX, and integration snippets that an integrator can apply without guessing.
+Assistant **0.2.2 is in the Hyprland image** (`/usr/bin` usr-merge). KB/catalog
+still read like pre-merge theory in places. Make offline help match the OS that
+actually shipped.
 
-## Exclusive paths
+Refresh first:
+
+```bash
+git fetch origin
+git checkout lane/c-assistant
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/c/
+```
+
+## Exclusive paths (only these)
 
 - `apps/hyprwave-assistant/**`
 - `build_files/usr/share/hyprwave/assistant/**`
 - `build_files/usr/share/applications/hyprwave-assistant.desktop`
 - `planning/integration/c-assistant/**`
+- `planning/taskmaster/models/c/**`
 
 ## Forbidden
 
-- Editing `build_files/etc/skel/**`
-- Editing production `build.sh` / `Containerfile` (snippets only)
-- Duress/PAM implementation
-- Network calls during `go test`
+- Skel bindings (already Super+Shift+A on main — HANDOFF only)
+- `build.sh` / Containerfile (snippets only if a real hook bug)
+- Duress enablement, CI, handbook
 
 ## Requirements
 
-- [ ] `go test ./...` passes; add tests until **≥70%** coverage on `internal/catalog`, `internal/kb`, and command-building paths under `internal/system` (or document measured % and gap plan if tool limits)
-- [ ] Every destructive path has dry-run and double-confirm in TUI **and** CLI
-- [ ] Offline mode: KB + catalog work with no network; updater shows clear “cannot reach” states
-- [ ] Expand KB: first-boot, walker, hyprpaper, dual-variant, troubleshooting (≥3 new or substantially expanded articles)
-- [ ] Catalog: only real Flathub IDs; validate with a small Go test or script that checks ID format
-- [ ] `Containerfile.snippet` builds a static-ish binary with `-trimpath` and version ldflags; `build.sh.snippet` installs data + desktop file
-- [ ] `HANDOFF-WAVE2.md` (or HANDOFF.md) lists exact skel keybind line for Super+Shift+A — do not edit skel
-- [ ] README in apps/ covers CLI, env vars, data paths, testing
-- [ ] ≥3 commits; push `lane/c-assistant`
+- [ ] Re-read KB pages; fix any “pending merge”, Wofi/swaybg, or “assistant not
+      installed” claims
+- [ ] KB must state: dual DE, Walker/hyprpaper, 11 themes, duress **OFF**,
+      GHCR may be private, skel = new users only, Super+Shift+A
+- [ ] Add/refresh pages if missing: first-boot, GHCR/private pull, COSMIC vs
+      Hyprland (do not duplicate whole handbook — short, actionable)
+- [ ] Catalog: keep Flathub IDs real; add 1–2 clearly missing day-1 apps only
+      if IDs are verified (do not invent)
+- [ ] `cd apps/hyprwave-assistant && go test ./...`
+- [ ] Update `planning/integration/c-assistant/smoke-host.sh` / HANDOFF if stale
+- [ ] Desktop entry Name/Comment accurate
 
 ## Deliverables
 
-- Hardened Go tree + tests
-- Richer KB/catalog
-- Updated integration snippets + handoff
+- Corrected KB + catalog
+- Green `go test`
+- HANDOFF note: image-hooked 0.2.2 verified on `localhost/hyprwave:latest`
 
 ## Done criteria
 
-- [ ] `cd apps/hyprwave-assistant && go test ./... && go build -o /tmp/hyprwave-assistant .` succeeds
-- [ ] Requirements met; push; WORK_LOG + COMPLETED; status DONE
+- [ ] `go test ./...` PASS
+- [ ] No Wofi/swaybg/Thunar-as-default in assistant KB
+- [ ] Duress not described as enabled
+- [ ] `git push -u origin lane/c-assistant`
 
 ## On completion
 
-Idle until next OPEN task.
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

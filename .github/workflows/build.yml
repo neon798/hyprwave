@@ -26,8 +26,124 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Fast, non-matrix guards: pin hygiene + shell syntax. Fail before the heavy
+  # image build when someone reintroduces /releases/latest or breaks bash.
+  pin_guards:
+    name: Pin and shell syntax guards
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Forbid floating GitHub release redirects in pins
+        run: |
+          set -euo pipefail
+          # Construct token so this workflow file is not a false positive source.
+          token="$(printf '%s/%s' releases latest)"
+          bad=0
+          if grep -nF "${token}" build_files/build.sh; then
+            echo "::error::build_files/build.sh must not use floating GitHub release redirects — pin via build_files/versions.env"
+            bad=1
+          fi
+          if grep -nF "${token}" build_files/versions.env; then
+            echo "::error::build_files/versions.env must not use floating GitHub release redirects"
+            bad=1
+          fi
+          if [[ "${bad}" -ne 0 ]]; then
+            exit 1
+          fi
+          echo "OK: no floating-release token in build.sh or versions.env"
+
+      - name: build.sh must source versions.env and verify digests
+        run: |
+          set -euo pipefail
+          if ! grep -qE '\. /ctx/versions\.env|versions\.env' build_files/build.sh; then
+            echo "::error::build_files/build.sh must source /ctx/versions.env"
+            exit 1
+          fi
+          if ! grep -q 'verify_sha256' build_files/build.sh; then
+            echo "::error::build_files/build.sh must call verify_sha256 on pinned downloads"
+            exit 1
+          fi
+          # Ensure each companion binary path still goes through verify_sha256
+          for key in YAZI_SHA256 NEONWOLF_SHA256 FLATARCADE_SHA256 FLATARCADE_SVG_SHA256; do
+            if ! grep -q "\${${key}}" build_files/build.sh; then
+              echo "::error::build_files/build.sh does not reference \${${key}}"
+              exit 1
+            fi
+            echo "OK build.sh references \${${key}}"
+          done
+
+      # Dual-image hygiene: both DE legs must remain in the matrix so PRs never
+      # ship a single-variant-only CI gate by accident (see CI-MATRIX.md).
+      - name: Dual DE matrix (hyprland + cosmic) still declared
+        run: |
+          set -euo pipefail
+          if ! grep -nE 'de:[[:space:]]*\[hyprland,[[:space:]]*cosmic\]' .github/workflows/build.yml; then
+            echo "::error::build.yml must keep matrix.de = [hyprland, cosmic] — see planning/integration/a-stabilize/CI-MATRIX.md"
+            exit 1
+          fi
+          if ! grep -n 'iso-cosmic.toml' .github/workflows/build-disk.yml; then
+            echo "::error::build-disk.yml must retain cosmic ISO matrix entry (iso-cosmic.toml)"
+            exit 1
+          fi
+          echo "OK: dual-image matrix declarations present"
+
+      - name: bash -n on build_files + verify-pins
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(find build_files -name '*.sh' -type f -print0 | sort -z)
+          if [[ "${#files[@]}" -eq 0 ]]; then
+            echo "::error::no build_files/**/*.sh found"
+            exit 1
+          fi
+          for f in "${files[@]}"; do
+            echo "bash -n ${f}"
+            bash -n "${f}"
+          done
+          VP=planning/integration/a-stabilize/scripts/verify-pins.sh
+          echo "bash -n ${VP}"
+          bash -n "${VP}"
+          echo "OK: bash -n passed on ${#files[@]} build script(s) + verify-pins.sh"
+
+      - name: versions.env required keys + sha256 shape
+        run: |
+          set -euo pipefail
+          # shellcheck source=/dev/null
+          . build_files/versions.env
+          required=(
+            YAZI_VERSION YAZI_URL YAZI_SHA256
+            NEONWOLF_VERSION NEONWOLF_URL NEONWOLF_SHA256
+            FLATARCADE_VERSION FLATARCADE_URL FLATARCADE_SHA256
+            FLATARCADE_SVG_URL FLATARCADE_SVG_SHA256
+          )
+          for v in "${required[@]}"; do
+            if [[ -z "${!v:-}" ]]; then
+              echo "::error::versions.env missing or empty: ${v}"
+              exit 1
+            fi
+            echo "OK ${v}=${!v}"
+          done
+          for v in YAZI_SHA256 NEONWOLF_SHA256 FLATARCADE_SHA256 FLATARCADE_SVG_SHA256; do
+            if [[ ! "${!v}" =~ ^[0-9a-fA-F]{64}$ ]]; then
+              echo "::error::${v} is not a 64-char hex digest"
+              exit 1
+            fi
+          done
+          echo "OK: all companion sha256 digests are well-formed"
+
+      - name: Verify pin URLs reachable (HEAD)
+        run: bash planning/integration/a-stabilize/scripts/verify-pins.sh --head
+
+      # Light checksums catch wrong sha256 without downloading the ~100MB Neonwolf AppImage.
+      - name: Verify pin checksums (light)
+        run: bash planning/integration/a-stabilize/scripts/verify-pins.sh --checksum --light
+
   build_push:
     name: Build and push image
+    needs: pin_guards
     runs-on: ubuntu-24.04
 
     strategy:

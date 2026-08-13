@@ -111,8 +111,7 @@ Some Hyprland utilities are **source-built** in a multi-stage container build
 (hyprpaper, hyprpicker, hyprsunset, hyprland-qtutils) so the final image stays free of
 the heavy `-devel` toolchain.
 
-Keybinds: [keybinds.md](keybinds.md) (E-lane ENDPOINT may still be pending merge —
-handbook notes that).
+Keybinds: [keybinds.md](keybinds.md) (skel `bindings.conf` on this tree).
 
 ---
 
@@ -126,26 +125,27 @@ handbook notes that).
 | Ghostty | Terminal | Default on both variants |
 
 These are part of the OS image, not something you download after first boot (unless you
-rebuild from source). Companion **version pins** may still land from `lane/a-stabilize`
-— not assumed on published `:latest` until merge ([CHANGELOG.md](../CHANGELOG.md)).
+rebuild from source). Companion **version pins** live in `build_files/versions.env` on
+`main`. A published GHCR `:latest` only matches this tree after a post-merge rebuild
+([CHANGELOG.md](../CHANGELOG.md)).
 
 ---
 
-## Optional / lane packaging boundaries (not stock UX)
+## Optional packaging boundaries (not stock UX)
 
-Wave-1 parallel work may ship **additional packages or assets** without changing the
-default login story. Treat these as **boundaries**, not features you must use.
+Wave 1 ships **additional packages or assets** without changing the default login
+story. Treat these as **boundaries**, not features you must use.
 
-### Hyprwave Assistant (lane C — pending merge / image hook)
+### Hyprwave Assistant (on main; image-hooked)
 
 | | |
 |--|--|
 | Intent | Go TUI for updates / Flatpak / offline knowledge base |
-| Stock claim | **Do not** assume `/usr/bin/hyprwave-assistant` on disk until CHANGELOG lists it as image-hooked |
+| Stock claim | Built into both image variants (`/usr/bin/hyprwave-assistant`); Hyprland bind Super+Shift+A |
 | Boundary | Convenience UI only — confirm OS upgrades; reboot still required after `bootc upgrade` |
-| Docs | Mentioned in [security.md](security.md) / FAQ as upcoming; not an INSTALL step |
+| Docs | [CHANGELOG.md](../CHANGELOG.md); not required for INSTALL |
 
-### Duress packaging (lane D — pending merge; **off by default**)
+### Duress packaging (on main; **off by default**)
 
 | | |
 |--|--|
@@ -154,12 +154,12 @@ default login story. Treat these as **boundaries**, not features you must use.
 | Boundary | Admin ENABLE docs only; not LUKS; not forensic wipe; no handbook enable paste |
 | Docs | [security.md](security.md) — residual risks and non-goals |
 
-### QA / merge tooling (lane G)
+### QA / merge tooling
 
 Scripts and smoke matrices live under `planning/` / integration trees for contributors.
 They are **not** end-user desktop features.
 
-Honesty table for all lanes: [CHANGELOG.md](../CHANGELOG.md) Unreleased.
+What actually shipped: [CHANGELOG.md](../CHANGELOG.md) dated Wave 1 section.
 
 ---
 

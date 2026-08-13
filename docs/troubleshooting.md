@@ -99,7 +99,7 @@ journalctl -b -u display-manager.service --no-pager | tail -80
 | Unit failed | journal + GPU / seat issues |
 
 COSMIC greeter may use **upstream** styling; session wallpaper is still Hyprwave-branded.
-Lane notes (until merge): `planning/integration/f-cosmic/GREETER.md` on `lane/f-cosmic`.
+Operator notes: [GREETER.md](../planning/integration/f-cosmic/GREETER.md).
 
 ### Cannot log in (password rejected)
 
@@ -195,15 +195,15 @@ hyprwave-theme-gui          # or Super+Shift+T
 ### Keybinds not working
 
 Defaults live in `~/.config/hypr/bindings.conf`. If you overwrote skel early, restore from
-`/etc/skel/.config/hypr/bindings.conf`. Super = Windows key. After E-lane merge, session
-exit is **Super+Shift+E** (not Super+M) — [keybinds.md](keybinds.md).
+`/etc/skel/.config/hypr/bindings.conf`. Super = Windows key. Session
+exit is **Super+Shift+E** (not Super+M on new-user skel) — [keybinds.md](keybinds.md).
 
 ---
 
 ## COSMIC session
 
-Full comparison: [cosmic.md](cosmic.md). Session smoke (on lane until merge):
-`planning/integration/f-cosmic/SESSION-SMOKE.md`.
+Full comparison: [cosmic.md](cosmic.md). Session smoke:
+[SESSION-SMOKE.md](../planning/integration/f-cosmic/SESSION-SMOKE.md).
 
 ### Session never appears / loops to greeter
 

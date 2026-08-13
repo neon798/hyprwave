@@ -1,57 +1,72 @@
 # CURRENT_TASK
 
-status: OPEN  
-task_id: A-W1-001  
-wave: 1  
-issued: 2026-08-07T03:50:00Z  
-title: Deepen pin verification, CI fail-gates, and release automation docs  
+status: OPEN
+task_id: A-W2-001
+wave: 2
+issued: 2026-08-13T03:25:00Z
+poll: 2m
+title: Pin verify + release closeout after Wave 1 CI
+
+## Duty cycle
+
+Poll **every 2 minutes**. Fetch `origin/main` and refresh this file. Push lane
+commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Make external binary pins **CI-enforced** and **operator-bumpable**, with a release/publish path that a human can follow without guessing. This is multi-hour depth — not a drive-by edit.
+Wave 1 is on `main`. CI built **and pushed** both variants on `77755f1`
+(run `31662742064`). GHCR remains **anonymously private** (403). Make pins
+and release docs match that reality so a human can ship a stable image.
+
+Refresh first:
+
+```bash
+git fetch origin
+git checkout lane/a-stabilize
+git merge --ff-only origin/main || git rebase origin/main
+git checkout origin/main -- planning/taskmaster/models/a/
+```
 
 ## Exclusive paths (only these)
 
 - `build_files/versions.env`
-- `build_files/build.sh` (pin/checksum sourcing only)
+- `build_files/build.sh` (pins / sourcing / checksum **only**)
 - `.github/workflows/*`
 - `planning/integration/a-stabilize/**`
+- `planning/taskmaster/models/a/**`
 
 ## Forbidden
 
-- Wiring Assistant or Duress into `build.sh`
-- Rewriting README/INSTALL (Model B)
-- Enabling duress PAM
-- Marking DONE under 30 minutes of real work unless all Done criteria are truly met
+- Enabling duress PAM, handbook prose (B), assistant/duress product, skel
+- Force-push main; do not invent floating `/releases/latest`
 
 ## Requirements
 
-- [ ] `build.sh` sources `versions.env` and verifies sha256 for Yazi, Neonwolf, FlatArcade (fail closed on mismatch)
-- [ ] Zero matches for `releases/latest` in `build_files/build.sh`
-- [ ] Script `planning/integration/a-stabilize/scripts/verify-pins.sh` downloads (or curl -I + sha256 if full download too heavy) and validates pins; documented usage
-- [ ] CI workflow step fails PRs if `releases/latest` reappears or if `verify-pins.sh` fails (where network allowed) OR a static job that at least greps + bash -n + checks versions.env keys exist
-- [ ] `planning/integration/a-stabilize/RELEASE.md` covers: version tags, GHCR package visibility, cosign, when to bump pins, rollback
-- [ ] `FIRST-BOOT-CHECKLIST.md` includes a fill-in log template (date, image digest, pass/fail per item)
-- [ ] `BUMP.md` includes a worked example of bumping one component end-to-end
-- [ ] At least **3 commits** on `lane/a-stabilize` for this task (incremental)
-- [ ] Branch pushed to origin
+- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light` (and `--checksum` if practical)
+- [ ] If a pin is broken or a newer **compatible** companion release is clearly better, bump `versions.env` with SHA256 + comment (date, why)
+- [ ] Update `RELEASE.md` / `FIRST-BOOT-CHECKLIST.md` / `COSIGN.md` as needed:
+      CI dual-image success 2026-08-13; local `localhost/hyprwave:latest` exists;
+      **do not** claim anonymous GHCR public
+- [ ] Record GHCR visibility next step (repo package visibility / org settings) — operator notes only
+- [ ] Dependabot branches (`actions/checkout-7`, `docker/login-action`, etc.):
+      review; land **only** if the bump is exclusive to workflows and CI-safe.
+      Leave a WORK_LOG note if you skip.
 
 ## Deliverables
 
-- Updated pin pipeline + CI guards
-- verify-pins.sh + docs under `planning/integration/a-stabilize/`
-- RELEASE.md + expanded checklist
+- Pin verify log snippet in WORK_LOG
+- Release/first-boot docs accurate vs merged main
+- Optional pin bump commit **or** explicit “pins still current” note
 
 ## Done criteria
 
-- [ ] All Requirements checkboxes satisfied
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh` documented; script exits 0 or clear skip reason
+- [ ] Pins still fail-closed (no `/releases/latest`)
+- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
+- [ ] Docs in a-stabilize do not claim public GHCR
 - [ ] `git push -u origin lane/a-stabilize`
-- [ ] WORK_LOG + COMPLETED updated; status DONE
 
 ## On completion
 
-1. Set `status: DONE`  
-2. Append WORK_LOG.md  
-3. Append COMPLETED.md  
-4. Idle until Task Master issues next OPEN task  
+1. Set status: DONE
+2. Append WORK_LOG.md + COMPLETED.md
+3. Do not start unassigned work

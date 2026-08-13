@@ -2,10 +2,10 @@
 
 What to expect from login through a working desktop on either Hyprwave variant.
 This is the **end-user** path. Integrator / VM operators also use the longer validation
-checklist on Model A’s lane (path may exist only on **`lane/a-stabilize`** until merge):
+checklist:
 
-- `planning/integration/a-stabilize/FIRST-BOOT-CHECKLIST.md` — greeter, skel, Ghostty,
-  Walker, companions, theme, NetworkManager, GHCR pull notes.
+- [planning/integration/a-stabilize/FIRST-BOOT-CHECKLIST.md](../planning/integration/a-stabilize/FIRST-BOOT-CHECKLIST.md)
+  — greeter, skel, Ghostty, Walker, companions, theme, NetworkManager, GHCR pull notes.
 
 Install methods: [INSTALL.md](../INSTALL.md). Updates later: [updating.md](updating.md).
 
@@ -45,9 +45,9 @@ If the screen stays black after password: [troubleshooting — black screen](tro
 
 1. Boot to **cosmic-greeter** (not SDDM). Greeter chrome may use upstream styling —
    Hyprwave wallpaper/theme is guaranteed for the **session**, not necessarily the
-   greeter face. Lane docs (read-only, may be on branch only):
-   - `planning/integration/f-cosmic/GREETER.md` on **`lane/f-cosmic`**
-   - Session checks: `planning/integration/f-cosmic/SESSION-SMOKE.md` on **`lane/f-cosmic`**
+   greeter face. Operator notes:
+   - [GREETER.md](../planning/integration/f-cosmic/GREETER.md)
+   - [SESSION-SMOKE.md](../planning/integration/f-cosmic/SESSION-SMOKE.md)
 2. Select the **COSMIC** session and sign in.
 
 ---
@@ -56,7 +56,7 @@ If the screen stays black after password: [troubleshooting — black screen](tro
 
 ### Hyprland
 
-Autostart (skel `autostart.conf`, refined on `lane/e-hyprland`) brings up roughly:
+Autostart (skel `autostart.conf`) brings up roughly:
 
 | Piece | Role |
 |-------|------|
@@ -134,9 +134,10 @@ flatpak update               # apps installed via Flatpak / FlatArcade
   **private** — that is a registry visibility issue, not a broken command. See
   [INSTALL.md](../INSTALL.md#important-ghcr-may-be-private) and
   [troubleshooting](troubleshooting.md#install--registry).
-- Companion version pins and release operator notes live on **`lane/a-stabilize`**
-  (`versions.env`, `planning/integration/a-stabilize/RELEASE.md`) until merged — do
-  not assume every pin improvement is already on published `:latest`.
+- Companion pins live in `build_files/versions.env` on `main`. A published GHCR
+  `:latest` only matches this tree after a post-merge rebuild — confirm with
+  `bootc status`. Operator notes:
+  [RELEASE.md](../planning/integration/a-stabilize/RELEASE.md).
 
 ---
 
@@ -147,28 +148,30 @@ flatpak update               # apps installed via Flatpak / FlatArcade
 3. Security overview: [security.md](security.md).
 4. If something fails, start with [troubleshooting.md](troubleshooting.md).
 
+### Also on the image (optional)
+
+- **Hyprwave Assistant** — offline TUI (Hyprland: Super+Shift+A). Not required to
+  use the desktop.
+
 ### What is *not* on by default
 
-- **Duress / wipe password** — optional packaging only; never enabled as stock login.
-  See [security.md](security.md).
-- **Hyprwave Assistant** and other Wave-1 lane features may be **pending merge** —
-  [CHANGELOG.md](../CHANGELOG.md) lists lane status honestly.
+- **Duress / wipe password** — packaging ships; PAM is **never** enabled as stock
+  login. See [security.md](security.md).
 
 ---
 
 ## 7. Operator paths (not required to use the OS)
 
-Lane integration trees may exist only on their branches until Wave 1 merges. Listed as
-repo paths (not hard links) so this page stays valid on `main` without those files:
+Operator / integrator paths (all on `main` after Wave 1):
 
-| Path | When / branch |
-|------|----------------|
-| `planning/integration/a-stabilize/FIRST-BOOT-CHECKLIST.md` | VM / ship validation — `lane/a-stabilize` |
-| `planning/integration/e-hyprland/KEYBIND-MAP.md` | Hyprland binds — `lane/e-hyprland` |
-| `planning/integration/e-hyprland/SESSION-SMOKE.md` | Hyprland session smoke — `lane/e-hyprland` |
-| `planning/integration/f-cosmic/GREETER.md` | cosmic-greeter limits — `lane/f-cosmic` |
-| `planning/integration/f-cosmic/SESSION-SMOKE.md` | COSMIC session smoke — `lane/f-cosmic` |
-| `planning/integration/g-qa/SMOKE-MATRIX.md` | Dual-variant matrix — `lane/g-qa` |
-| [ACCURACY-AUDIT](../planning/integration/b-docs/ACCURACY-AUDIT.md) | Docs source map (this lane; always on `lane/b-docs`) |
+| Path | When |
+|------|------|
+| [FIRST-BOOT-CHECKLIST.md](../planning/integration/a-stabilize/FIRST-BOOT-CHECKLIST.md) | VM / ship validation |
+| [KEYBIND-MAP.md](../planning/integration/e-hyprland/KEYBIND-MAP.md) | Hyprland binds |
+| [SESSION-SMOKE.md](../planning/integration/e-hyprland/SESSION-SMOKE.md) | Hyprland session smoke |
+| [GREETER.md](../planning/integration/f-cosmic/GREETER.md) | cosmic-greeter limits |
+| [f-cosmic/SESSION-SMOKE.md](../planning/integration/f-cosmic/SESSION-SMOKE.md) | COSMIC session smoke |
+| [SMOKE-MATRIX.md](../planning/integration/g-qa/SMOKE-MATRIX.md) | Dual-variant matrix |
+| [ACCURACY-AUDIT](../planning/integration/b-docs/ACCURACY-AUDIT.md) | Docs source map |
 
 Handbook pages under `docs/` stay usable without the other lanes.

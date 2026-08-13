@@ -83,7 +83,7 @@ Hyprland remains the default desktop. A second image variant ships the **COSMIC 
 
 - Default theme: deep purple background (`#15052e`), light foreground (`#e0e0ff`), pink accent (`#ff2d95`), cyan window hint (`#00f0ff`), purple neutral tint (`#b967ff`).
 - Default wallpaper: the Hyprwave default (synthwave).
-- Dock favorites: Neonwolf (browser), CosmicFiles, Ghostty (terminal), FlatArcade (app store), CosmicSettings.
+- Dock favorites: Neonwolf, FlatArcade, Ghostty, Cosmic Files, Hyprwave Themes, Cosmic Settings.
 - Removed apps (decluttered with `--no-autoremove`): cosmic-store (replaced by FlatArcade), cosmic-edit (use geany), cosmic-player (use mpv), cosmic-wallpapers (use hyprwave wallpaper). cosmic-term is kept (required by cosmic-session); Ghostty remains the promoted terminal.
 
 - Image: `ghcr.io/neon798/hyprwave-cosmic:latest`

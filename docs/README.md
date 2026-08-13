@@ -12,7 +12,7 @@ daily install and use.
 | [keybinds.md](keybinds.md) | Hyprland Super+ shortcuts (E KEYBIND-MAP) |
 | [security.md](security.md) | Immutable core; duress **off by default**; no LUKS claims |
 | [../README.md](../README.md) | Product overview, stack, companions, themes |
-| [../CHANGELOG.md](../CHANGELOG.md) | What ships / Unreleased lane reality (pending merge) |
+| [../CHANGELOG.md](../CHANGELOG.md) | What ships on main / still-open ops |
 | [faq.md](faq.md) | ≥12 frequent questions |
 
 ## Using the desktop
@@ -20,7 +20,7 @@ daily install and use.
 | Doc | Description |
 |-----|-------------|
 | [theming.md](theming.md) | 11 themes, GUI/CLI switcher, palette |
-| [cosmic.md](cosmic.md) | COSMIC variant; F greeter/session smoke cross-links |
+| [cosmic.md](cosmic.md) | COSMIC variant; greeter/session smoke cross-links |
 | [updating.md](updating.md) | `bootc upgrade`, reboot, Flatpak |
 | [troubleshooting.md](troubleshooting.md) | Dual-variant matrix; greeter/session/launcher/themes |
 | [screenshots.md](screenshots.md) | Capture ops index; assets under `docs/assets/` |
