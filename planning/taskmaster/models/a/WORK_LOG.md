@@ -412,3 +412,10 @@ Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR unchanged. No A-W6.
 **main:** `c712cbd`
 
 Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR unchanged. No A-W6.
+
+## 2026-08-13 — A-W5-001 poll 07:49Z
+
+**status:** DONE  
+**main:** `c712cbd`
+
+Director inbox still OPEN. pins-static 11 PASS. SHAs/GHCR unchanged. No A-W6.
