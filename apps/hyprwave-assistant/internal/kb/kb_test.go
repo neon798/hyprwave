@@ -132,3 +132,83 @@ func TestShippedKBMatchesOS(t *testing.T) {
 		}
 	}
 }
+
+func TestShippedKBWave3Copy(t *testing.T) {
+	dir := shippedKBDir(t)
+	s, err := LoadDir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	forbidPublic := []string{"ghcr is public", "publicly available on ghcr", "ghcr is open"}
+	for _, a := range s.Articles {
+		low := strings.ToLower(a.Body)
+		for _, bad := range forbidPublic {
+			if strings.Contains(low, bad) {
+				t.Errorf("%s.md claims public GHCR (%q)", a.ID, bad)
+			}
+		}
+	}
+
+	ghcr := s.Get("ghcr")
+	if ghcr == nil {
+		t.Fatal("missing ghcr")
+	}
+	glow := strings.ToLower(ghcr.Body)
+	for _, n := range []string{"private", "401", "403", "localhost", "localhost/hyprwave"} {
+		if !strings.Contains(glow, n) {
+			t.Errorf("ghcr.md missing %q", n)
+		}
+	}
+	if !strings.Contains(glow, "may be private") && !strings.Contains(glow, "may still be private") {
+		t.Error("ghcr.md must say packages may be private")
+	}
+
+	variants := s.Get("variants")
+	if variants == nil {
+		t.Fatal("missing variants")
+	}
+	vlow := strings.ToLower(variants.Body)
+	if !strings.Contains(vlow, "hyprland") || !strings.Contains(vlow, "cosmic") {
+		t.Error("variants.md must describe dual DE (Hyprland + COSMIC)")
+	}
+	if !strings.Contains(vlow, "super+shift+a") {
+		t.Error("variants.md must mention Super+Shift+A")
+	}
+	if !strings.Contains(vlow, "private") {
+		t.Error("variants.md must mention private GHCR")
+	}
+
+	keys := s.Get("keybindings")
+	if keys == nil {
+		t.Fatal("missing keybindings")
+	}
+	if !strings.Contains(strings.ToLower(keys.Body), "super+shift+a") {
+		t.Error("keybindings.md must document Super+Shift+A")
+	}
+
+	duress := s.Get("duress")
+	if duress == nil {
+		t.Fatal("missing duress")
+	}
+	dlow := strings.ToLower(duress.Body)
+	if !strings.Contains(dlow, "off by default") && !strings.Contains(dlow, "not enabled") {
+		t.Error("duress.md must say OFF / not enabled")
+	}
+	if strings.Contains(dlow, "enabled in the stock") || strings.Contains(dlow, "duress is enabled") {
+		t.Error("duress.md must not claim duress is enabled")
+	}
+
+	// Wofi/swaybg only as denials — not the shipped stack.
+	for _, a := range s.Articles {
+		low := strings.ToLower(a.Body)
+		for _, needle := range []string{"wofi", "swaybg"} {
+			if !strings.Contains(low, needle) {
+				continue
+			}
+			if !strings.Contains(low, "not") && !strings.Contains(low, "never") {
+				t.Errorf("%s.md mentions %s without a denial", a.ID, needle)
+			}
+		}
+	}
+}

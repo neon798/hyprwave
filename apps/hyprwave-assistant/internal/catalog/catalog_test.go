@@ -117,6 +117,97 @@ func TestShippedCatalog(t *testing.T) {
 	}
 }
 
+// knownFlathubIDs are real Flathub app IDs shipped in catalog.toml.
+// Do not invent IDs — change this table only to match published Flathub apps.
+var knownFlathubIDs = map[string]string{
+	"libreoffice":     "org.libreoffice.LibreOffice",
+	"onlyoffice":      "org.onlyoffice.desktopeditors",
+	"obsidian":        "md.obsidian.Obsidian",
+	"joplin":          "net.cozic.joplin_desktop",
+	"thunderbird":     "org.mozilla.Thunderbird",
+	"steam":           "com.valvesoftware.Steam",
+	"heroic":          "com.heroicgameslauncher.hgl",
+	"lutris":          "net.lutris.Lutris",
+	"bottles":         "com.usebottles.bottles",
+	"tailscale":       "io.tailscale.ipn",
+	"syncthing":       "com.github.zocker_160.SyncThingy",
+	"remmina":         "org.remmina.Remmina",
+	"librewolf":       "io.gitlab.librewolf-community",
+	"mullvad-browser": "net.mullvad.MullvadBrowser",
+	"tor-browser":     "org.torproject.torbrowser-launcher",
+	"firefox":         "org.mozilla.firefox",
+	"vscodium":        "com.vscodium.codium",
+	"zed":             "dev.zed.Zed",
+	"podman-desktop":  "io.podman_desktop.PodmanDesktop",
+	"mullvad-vpn":     "net.mullvad.MullvadVPN",
+	"protonvpn":       "com.protonvpn.www",
+	"bitwarden":       "com.bitwarden.desktop",
+	"keepassxc":       "org.keepassxc.KeePassXC",
+	"element":         "im.riot.Riot",
+	"signal":          "org.signal.Signal",
+	"telegram":        "org.telegram.desktop",
+	"discord":         "com.discordapp.Discord",
+	"spotify":         "com.spotify.Client",
+	"jellyfin-mp":     "com.github.iwalton3.jellyfin-media-player",
+	"vlc":             "org.videolan.VLC",
+	"obs":             "com.obsproject.Studio",
+	"gimp":            "org.gimp.GIMP",
+	"inkscape":        "org.inkscape.Inkscape",
+	"krita":           "org.kde.krita",
+	"blender":         "org.blender.Blender",
+}
+
+func loadShippedCatalog(t *testing.T) *Catalog {
+	t.Helper()
+	candidates := []string{
+		filepath.Join("..", "..", "..", "build_files", "usr", "share", "hyprwave", "assistant", "catalog.toml"),
+		filepath.Join("build_files", "usr", "share", "hyprwave", "assistant", "catalog.toml"),
+	}
+	for _, p := range candidates {
+		c, err := Load(p)
+		if err == nil {
+			return c
+		}
+	}
+	t.Skip("shipped catalog not found from test cwd")
+	return nil
+}
+
+func TestShippedCatalogKnownFlathubIDs(t *testing.T) {
+	c := loadShippedCatalog(t)
+	for id, want := range knownFlathubIDs {
+		it := c.Find(id)
+		if it == nil {
+			t.Errorf("missing catalog id %q (expected real Flathub %s)", id, want)
+			continue
+		}
+		if it.Source != SourceFlatpak {
+			t.Errorf("%s: source=%q want flathub", id, it.Source)
+		}
+		if it.Flatpak != want {
+			t.Errorf("%s: flatpak=%q want known real ID %q", id, it.Flatpak, want)
+		}
+		if !ValidFlatpakID(it.Flatpak) {
+			t.Errorf("%s: %q failed ValidFlatpakID", id, it.Flatpak)
+		}
+	}
+	// Every shipped flathub row must be in the known-real table (no invented IDs).
+	for _, row := range c.FlatList() {
+		it := row.Item
+		if it.Source != SourceFlatpak {
+			continue
+		}
+		want, ok := knownFlathubIDs[it.ID]
+		if !ok {
+			t.Errorf("catalog id %q (%s) not in knownFlathubIDs — do not invent Flathub IDs", it.ID, it.Flatpak)
+			continue
+		}
+		if it.Flatpak != want {
+			t.Errorf("%s drifted from known ID: got %q want %q", it.ID, it.Flatpak, want)
+		}
+	}
+}
+
 func containsDot(s string) bool {
 	for i := 0; i < len(s); i++ {
 		if s[i] == '.' {
