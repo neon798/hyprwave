@@ -121,3 +121,15 @@
 - iso-cosmic.toml: TOML_OK; F-W3-001 operator blurb unchanged (still current)
 - FREEZE-STATUS stamped F-W4-001; README index note
 - No build_files/usr/share/cosmic edits; forbidden paths untouched
+
+## 2026-08-13 — F-W5-001 post-merge vendor paths
+
+- Branch: `lane/f-cosmic` fast-forwarded `a6eff69` → `origin/main` (`07be046`)
+- Waves 2–4 COSMIC already on main (merge `b52f54f`); post-merge recheck only
+- `bash planning/integration/f-cosmic/check-vendor-paths.sh` → **exit 0** (fail=0)
+  - wallpaper PNG + CosmicBackground path OK
+  - favorites 6 IDs (neonwolf, Ghostty, CosmicFiles, CosmicSettings, flatarcade, hyprwave-theme)
+  - Mode is_dark=true; Dark=30 / Builder=16 vendor keys
+  - 11/11 theme packs OK
+- No `build_files/usr/share/cosmic/**` or `iso-cosmic.toml` edits required
+- Forbidden paths untouched

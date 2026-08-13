@@ -15,12 +15,12 @@
 | Vendor tree file count | 49 files under `build_files/usr/share/cosmic/` | AppList, Background, Dark, Builder, Mode |
 | themegen `target/` | **not committed** | [REGENERATE.md](./REGENERATE.md) |
 
-**Stamped:** 2026-08-13 · lane `lane/f-cosmic` · task **F-W4-001**  
+**Stamped:** 2026-08-13 · lane `lane/f-cosmic` · task **F-W5-001**  
 
-F-W4-001 merge-prep: INTEGRATOR-CHECKLIST refreshed (vendor script green, greeter ≠
-SDDM, ISO note current, host image id `189340691cc7`). `check-vendor-paths.sh`
-exit 0; `iso-cosmic.toml` TOML OK. Prior: F-W3-001 ISO operator note + inspect;
-F-W2-002 IMAGE-INSPECT card.
+F-W5-001 post-merge: `lane/f-cosmic` ff to `origin/main` (`07be046`);
+`check-vendor-paths.sh` exit **0** (11 themes, favorites/Mode/wallpaper). No
+vendor or ISO edits. Prior F-W4-001: INTEGRATOR-CHECKLIST merge-prep; greeter ≠
+SDDM; host image id `189340691cc7`.
 
 VM/ISO interactive SESSION-SMOKE remains integrator-side for greeter GUI; host
 image-inspect rows (#48–#56) in [SESSION-SMOKE.md](./SESSION-SMOKE.md) and the
