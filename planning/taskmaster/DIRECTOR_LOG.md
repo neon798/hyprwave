@@ -400,3 +400,35 @@
   (cosmic IMAGE-INSPECT card).
 - C/D/E still OPEN W2-001 (stale HOLD tips). G-W2-003 already issued.
 
+## 2026-08-13T03:29:05Z — Issue C-W2-002 D-W2-002 E-W2-002
+
+- Verified DONE exclusive-only: C KB/catalog `5df69a3`; D safety `5cc25bd`;
+  E session `e364669`.
+- Issued **C-W2-002** (About/preflight + private GHCR), **D-W2-002** (DRILL.md
+  vs image paths, stay OFF), **E-W2-002** (hyprlock/idle + waybar tooltips).
+- A/B/F/G already have next OPEN tasks; awaiting lane refresh.
+
+## 2026-08-13T03:31:08Z — Issue B-W3-001
+
+- Verified **B-W2-002 DONE**: `07d7e9e` IMAGE_NAME + B-6; tip `2574bc9`.
+  Exclusive handbook paths only (Justfile untouched).
+- Issued **B-W3-001** from WAVE3-QUEUE (first-boot/INSTALL vs private GHCR).
+- A/C/D/E/F/G remain OPEN on last W2 follow-up; do not double-issue.
+
+## 2026-08-13T03:33:03Z — Issue E-W3-001 F-W3-001 G-W3-001
+
+- Verified DONE exclusive-only: E lock/tooltip `7c1b044`; F IMAGE-INSPECT
+  `a068147`; G ci-snippet image job `04f54b4`.
+- Issued **E-W3-001** (SESSION-SMOKE inspect + dwindle comments),
+  **F-W3-001** (iso-cosmic operator note + inspect results),
+  **G-W3-001** (`check-image --cosmic`; residuals VM-only).
+- A/C/D still OPEN on W2-002; B already on W3-001.
+
+## 2026-08-13T03:35:03Z — Issue A-W3-001 D-W3-001
+
+- Verified DONE exclusive-only: A GHCR card + action bumps `c280d16`;
+  D DRILL.md PAM-inert `7663596`.
+- Issued **A-W3-001** (FIRST-BOOT-CHECKLIST proofs + pin re-verify),
+  **D-W3-001** (negative fixture: no pam.d install from build.sh).
+- C still OPEN C-W2-002. B/E/F/G already on W3-001.
+

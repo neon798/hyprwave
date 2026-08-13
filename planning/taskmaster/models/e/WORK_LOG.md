@@ -249,3 +249,29 @@
 
 - Refreshed taskmaster from origin/main; status OPEN (HOLD)
 - No product work; freeze tip c722fd5; idle for Director
+
+## 2026-08-13 — E-W2-001
+
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
+- Status → DONE
+- Super+SHIFT+A active: `ghostty --class=dev.hyprwave.Assistant --title="Hyprwave Assistant" -e hyprwave-assistant`
+- Windowrules: float+center+size for Assistant + ThemeSwitcher
+- KEYBIND-MAP: 87 active binds; SESSION-SMOKE Wave 2; HANDOFF existing-home caveat
+- No wofi/swaybg/cliphist; no migrator; image `localhost/hyprwave:latest` present on host
+- Walker emergency still restarts `app-walker@autostart.service`
+
+## 2026-08-13T03:28Z — E-W2-001 poll re-verify
+
+- Refreshed from origin/main; task still E-W2-001 (was OPEN on origin; lane already DONE at e364669)
+- Re-audited binds/windowrules/autostart/KEYBIND-MAP/HANDOFF/SESSION-SMOKE — requirements met
+- Merged origin/main into lane/e-hyprland; no product changes this poll
+- status remains DONE; idle until new task_id
+
+## 2026-08-13T03:30Z — E-W2-002
+
+- Branch: `lane/e-hyprland` (worktree `/home/zen/hyprwave-e-hyprland`)
+- Status → DONE
+- hyprlock/hypridle headers: Super+SHIFT+L → loginctl → `pidof hyprlock || hyprlock`; ladder unchanged
+- waybar tooltips name nm-connection-editor / pavucontrol / blueman-manager; header notes Walker/theme-gui/lock
+- KEYBIND-MAP + SESSION-SMOKE lock path one-liners; HANDOFF E-W2-002 + existing-home caveat
+- No redesign; no wofi/swaybg/cliphist

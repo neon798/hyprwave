@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: E-W2-001
-wave: 2
-issued: 2026-08-13T03:25:00Z
+task_id: E-W3-001
+wave: 3
+issued: 2026-08-13T03:33:03Z
 poll: 2m
-title: Hyprland session hardening (assistant + day-1 UX)
+title: SESSION-SMOKE vs localhost/hyprwave:latest inspect notes; dwindle comments only
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Hyprland image builds. Make the **new-user session** feel finished: binds,
-window rules, autostart, Walker/waybar. Existing homes are not rewritten —
-document that in HANDOFF, do not write a destructive migrator.
+E-W2-002 cleaned lock/idle comments and waybar tooltips. Wave 3: stamp
+SESSION-SMOKE against the **local Hyprland image** and only touch dwindle
+layout **comments** (no layout redesign).
 
 Refresh first:
 
@@ -44,32 +44,28 @@ git checkout origin/main -- planning/taskmaster/models/e/
 
 - COSMIC vendor, duress, apps/, `build.sh`, wholesale theme store rewrites
 - Do not reintroduce Wofi/swaybg/cliphist
+- No dwindle/layout **behavior** change — comments only
 
 ## Requirements
 
-- [ ] Confirm Super+Shift+A → assistant, Super+Shift+T → theme GUI,
-      Super+Shift+E exit, Super+D/Space Walker, Super+R runner — all in
-      `bindings.conf`; refresh KEYBIND-MAP if drift
-- [ ] Window rules: assistant (Ghostty `-e hyprwave-assistant`) and
-      `hyprwave-theme-gui` should not look broken (float/center if that matches
-      existing style — justify in comments)
-- [ ] Autostart: elephant + walker + waybar + mako + hyprpaper + hypridle;
-      no cliphist
-- [ ] Walker emergencies still restart `app-walker@autostart.service`
-- [ ] SESSION-SMOKE.md / HANDOFF: existing-user skel caveat; image
-      `localhost/hyprwave:latest` exists
-- [ ] Small UX bugs only (typos, missing comments, one bind). No redesign.
+- [ ] SESSION-SMOKE: add/refresh inspect notes for
+      `localhost/hyprwave:latest` (assistant bind, hyprpaper, walker, 11
+      themes, no wofi/swaybg). If image missing, record SKIP — do not invent.
+- [ ] `looknfeel.conf` (or layout fragment): dwindle comments match actual
+      settings; no gap/border/animation redesign
+- [ ] Existing-user skel caveat stays in HANDOFF
+- [ ] KEYBIND-MAP only if a comment you add would drift it
 
 ## Deliverables
 
-- Skel + KEYBIND-MAP in sync
-- SESSION-SMOKE updated for Wave 2
-- HANDOFF for integrator (what changed for new users)
+- SESSION-SMOKE inspect addendum
+- Optional dwindle comment hygiene
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
-- [ ] No Wofi/swaybg/cliphist
-- [ ] KEYBIND-MAP matches `bindings.conf`
+- [ ] No redesign; no Wofi/swaybg/cliphist
+- [ ] Inspect notes honest (PASS or SKIP)
 - [ ] `git push -u origin lane/e-hyprland`
 
 ## On completion

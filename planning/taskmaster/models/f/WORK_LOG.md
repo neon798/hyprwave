@@ -93,3 +93,19 @@
 - Docs: SESSION-SMOKE #48–#56 image-inspect; GREETER reconfirm stock face; FREEZE-STATUS stamped 2026-08-13
 - No build_files/usr/share/cosmic or build.sh edits required
 - Forbidden paths untouched (Hyprland skel, pins, duress, assistant)
+
+## 2026-08-13 — F-W2-002 Cosmic image inspect card
+
+- Branch: `lane/f-cosmic` rebased onto `origin/main` (cherry-pick F-W2-001 docs 395eb13)
+- Deliverable: `planning/integration/f-cosmic/IMAGE-INSPECT.md` (durable podman card)
+- Cross-links: README, SESSION-SMOKE #48–#56, GREETER, FREEZE-STATUS (stamp F-W2-002)
+- Re-ran inspect `localhost/hyprwave-cosmic:latest`:
+  - id `189340691cc7` · digest `sha256:a9ca6920971a9c4f8b17ba7faa64f6d618fdd9e3e6890b7321be5b81b0fb4dfa`
+  - ~10.1GB · created 2026-08-13T03:22:53Z
+  - cosmic-store/edit/player/wallpapers: not installed
+  - DM → cosmic-greeter.service (enabled); **no SDDM** unit
+  - flatarcade, neonwolf, hyprwave-theme-gui + desktops present
+  - favorites (6) + is_dark=true + wallpaper PNG PASS
+- `check-vendor-paths.sh`: exit **0**
+- No build_files/usr/share/cosmic or build.sh edits
+- Forbidden paths untouched

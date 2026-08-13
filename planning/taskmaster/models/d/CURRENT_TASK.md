@@ -1,11 +1,11 @@
 # CURRENT_TASK
 
 status: OPEN
-task_id: D-W2-001
-wave: 2
-issued: 2026-08-13T03:25:00Z
+task_id: D-W3-001
+wave: 3
+issued: 2026-08-13T03:35:03Z
 poll: 2m
-title: Image-backed duress safety pass (stay OFF)
+title: Extra negative fixture: build.sh must not copy pam snippets to /etc/pam.d
 
 ## Duty cycle
 
@@ -14,9 +14,9 @@ commits as you go. Do not idle on HOLD — HOLD is cancelled.
 
 ## Objective
 
-Image inspect of `localhost/hyprwave:latest` (2026-08-13): `pam_duress.so` and
-`hyprwave-duress-setup` ship; **zero** `pam_duress` lines in `/etc/pam.d`; no
-`*.sha256`. Harden packaging/docs/tests so that cannot regress.
+D-W2-002 aligned DRILL.md with image paths (still OFF). Wave 3: add a
+**negative fixture** so validate/snippet-selftest FAIL if `build.sh` (or the
+duress snippet) would install pam snippets into `/etc/pam.d`.
 
 Refresh first:
 
@@ -36,31 +36,29 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Forbidden
 
-- Enabling pam_duress in any default PAM file shipped by the image
+- Enabling pam_duress in any default PAM file
+- Editing live `build_files/build.sh` (A owns pins; use `build.sh.snippet`
+  + validate against tree `build.sh` **read-only**)
 - Pre-signing templates; skel; assistant; handbook; CI
 
 ## Requirements
 
+- [ ] Extend `validate.sh` and/or `snippet-selftest.sh`: FAIL if snippet or
+      `build.sh` copies `pam.d` / `pam_duress` into `/etc/pam.d`
+- [ ] Do not change production enablement; stay OFF
 - [ ] `bash planning/integration/d-duress/validate.sh` PASS
 - [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [ ] ENABLE.md / README / THREAT-MODEL paths match image layout
-      (`/usr/share/hyprwave/duress`, `/etc/duress.d` empty + README)
-- [ ] Add or tighten a validate gate: shipped `pam.d` snippets must **not** be
-      installed under `/etc/pam.d` by `build.sh` (snippet-selftest already
-      exists — extend if a hole remains)
-- [ ] `hyprwave-duress-setup --help` / `--dry-run` text: operator-only, PAM off
-- [ ] WORK_LOG: record image inspect facts (module present, PAM inert)
+- [ ] RESIDUALS.md still **OFF**
 
 ## Deliverables
 
-- validate.sh still green
-- Docs/tests match built image
-- Explicit “still OFF” residual in RESIDUALS.md if present
+- Negative fixture + green validate
+- WORK_LOG + COMPLETED
 
 ## Done criteria
 
 - [ ] No default PAM enablement introduced
-- [ ] No `*.sha256` added under templates
+- [ ] No `*.sha256` templates added
 - [ ] validate + duress-safety PASS
 - [ ] `git push -u origin lane/d-duress`
 

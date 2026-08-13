@@ -82,3 +82,38 @@
 - No product work; did not mark DONE.
 - Freeze tip unchanged: `adbb4f4`.
 - Idle until Director changes `task_id`.
+
+## 2026-08-13 — D-W2-001
+
+- Image-backed duress safety pass on `lane/d-duress` after merge of origin/main.
+- **Image inspect** (`localhost/hyprwave:latest`, 2026-08-13):
+  - `/usr/lib64/security/pam_duress.so` present (20816 bytes)
+  - `/usr/bin/hyprwave-duress-setup` present
+  - `grep -R pam_duress /etc/pam.d` → **ZERO lines**
+  - No `*.sha256` under `/usr/share/hyprwave/duress` or `/etc/duress.d`
+  - Layout: `/usr/share/hyprwave/duress/{README,ENABLE,pam.d,templates,BUILD-INFO}`; `/etc/duress.d/README` only
+- Tightened `snippet-selftest.sh`: share-only pam.d deploy; read-only audit of live `build_files/build.sh` (no `/etc/pam.d` writes).
+- Expanded `validate.sh` N6/N7: build.sh PAM-inert, layout docs, RESIDUALS still-OFF, setup --help/--dry-run PAM-off language.
+- `build.sh.snippet`: install THREAT-MODEL when present; pam.d docs only under `/usr/share/.../pam.d`; template list includes 20-local-only.
+- ENABLE/README path tables match stock image; RESIDUALS “Still OFF — image residual”.
+- `hyprwave-duress-setup` v1.2.1: operator-only help + dry-run banner (never edits PAM).
+- `bash planning/integration/d-duress/validate.sh` → PASSED
+- `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
+- No default PAM enable; no `*.sha256` added.
+
+## 2026-08-13 — D-W2-002 (operator drill vs image paths; still OFF)
+
+- Merged origin/main; accepted D-W2-002 (HOLD cancelled; 2m poll).
+- Rewrote `planning/integration/d-duress/DRILL.md`:
+  - Banner: rehearsal only; production enable stays ENABLE.md / runbook §3+
+  - Stock image path table: `/usr/bin/hyprwave-duress-setup` (not sbin),
+    `/usr/share/hyprwave/duress`, `/etc/duress.d` README-only,
+    `/usr/lib64/security/pam_duress.so`, zero `/etc/pam.d` pam_duress
+  - Phases A–C: validate + path inventory + --help/--status/--verify/--dry-run
+  - Optional Phase D mild sign still PAM OFF; STOP before any PAM edit
+- OPERATOR-RUNBOOK: drill vs enable split; real path checks in §0–§1
+- validate.sh: gate DRILL image paths + rehearsal scope + no enable recipe in phases
+- RESIDUALS.md still OFF residual unchanged
+- `bash planning/integration/d-duress/validate.sh` → PASSED
+- `bash planning/qa/run-all.sh --only duress-safety` → RESULT OK
+- Commits: c897ee1, 5bc50c1, c904dd1, 411c9c6, 7663596 (+ DONE meta)

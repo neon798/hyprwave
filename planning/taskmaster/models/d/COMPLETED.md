@@ -8,3 +8,6 @@ D-W1-003 | 2026-08-07 | SIGNING.md, RESIDUALS.md, snippet-selftest, README sever
 D-W1-004 | 2026-08-07 | INTEGRATOR-CHECKLIST freeze; README full index; validate gates | f88bb3d
 D-W1-005 | 2026-08-07 | INTEGRATION-DAY one-page gate card (merge → validate → no PAM) | c8ea0ae
 D-W1-006 | 2026-08-07 | Integration standby heartbeat; freeze tip adbb4f4; validate still green | adbb4f4
+D-W2-001 | 2026-08-13 | Image-backed safety: validate/snippet-selftest, ENABLE layout, setup PAM-off banner | 5cc25bd
+
+D-W2-002 | 2026-08-13 | Operator drill vs image paths; PAM-inert rehearsal; validate green | 7663596
