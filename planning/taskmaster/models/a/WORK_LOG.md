@@ -225,3 +225,24 @@ Reviewed vs `origin/main`; all exclusive to `.github/workflows/*`. **Not landed*
 1. merge `origin/main` into lane
 2. pin comment + release/first-boot/cosign closeout
 3. taskmaster DONE + WORK_LOG/COMPLETED
+
+## 2026-08-13 — A-W2-001 reconfirm (main still OPEN)
+
+**status:** DONE (no new product work)
+
+Director copy on `origin/main` still listed A-W2-001 OPEN. Re-synced models/a,
+merged latest main (G-W2-003 / T8 only), re-ran gates:
+
+```
+verify-pins.sh --head --light     exit 0  (4× HTTP 200)
+verify-pins.sh --checksum --light exit 0  (Yazi + FlatArcade + SVG)
+check-upstream-pins.sh            current (no bump)
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
+releases/latest                   CLEAN
+ghcr-pull-test.sh --owner neon798 exit 1  (hyprwave unauthorized; cosmic inspect OK)
+localhost/hyprwave:latest         9bc0e1e57d6b
+localhost/hyprwave-cosmic:latest  189340691cc7
+```
+
+Pins still current. Docs already match private GHCR + CI run `31662742064`.
+Dependabot still skipped (majors + same-day push path). No invented follow-up.
