@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: A-W3-001
 wave: 3
 issued: 2026-08-13T03:35:03Z
@@ -43,13 +43,13 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Requirements
 
-- [ ] FIRST-BOOT-CHECKLIST: mark local `localhost/hyprwave:latest` +
+- [x] FIRST-BOOT-CHECKLIST: mark local `localhost/hyprwave:latest` +
       `localhost/hyprwave-cosmic:latest` inspects; CI run `31662742064`
       dual-image PASS; VM smoke still OPEN
-- [ ] GHCR anonymous pull still documented as 403 (visibility card / RELEASE)
-- [ ] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
-- [ ] `bash planning/qa/run-all.sh --only pins-static` PASS
-- [ ] Pin bump only if broken; else WORK_LOG “pins still current”
+- [x] GHCR anonymous pull still documented as 403 (visibility card / RELEASE)
+- [x] `bash planning/integration/a-stabilize/scripts/verify-pins.sh --head --light`
+- [x] `bash planning/qa/run-all.sh --only pins-static` PASS
+- [x] Pin bump only if broken; else WORK_LOG “pins still current”
 
 ## Deliverables
 
@@ -59,10 +59,10 @@ git checkout origin/main -- planning/taskmaster/models/a/
 
 ## Done criteria
 
-- [ ] No public-GHCR claim
-- [ ] Pins still fail-closed
-- [ ] pins-static PASS
-- [ ] `git push -u origin lane/a-stabilize`
+- [x] No public-GHCR claim
+- [x] Pins still fail-closed
+- [x] pins-static PASS
+- [x] `git push -u origin lane/a-stabilize`
 
 ## On completion
 
