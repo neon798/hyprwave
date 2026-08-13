@@ -1,6 +1,6 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: D-W3-001
 wave: 3
 issued: 2026-08-13T03:35:03Z
@@ -43,12 +43,12 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Requirements
 
-- [ ] Extend `validate.sh` and/or `snippet-selftest.sh`: FAIL if snippet or
+- [x] Extend `validate.sh` and/or `snippet-selftest.sh`: FAIL if snippet or
       `build.sh` copies `pam.d` / `pam_duress` into `/etc/pam.d`
-- [ ] Do not change production enablement; stay OFF
-- [ ] `bash planning/integration/d-duress/validate.sh` PASS
-- [ ] `bash planning/qa/run-all.sh --only duress-safety` PASS
-- [ ] RESIDUALS.md still **OFF**
+- [x] Do not change production enablement; stay OFF
+- [x] `bash planning/integration/d-duress/validate.sh` PASS
+- [x] `bash planning/qa/run-all.sh --only duress-safety` PASS
+- [x] RESIDUALS.md still **OFF**
 
 ## Deliverables
 
@@ -57,10 +57,10 @@ git checkout origin/main -- planning/taskmaster/models/d/
 
 ## Done criteria
 
-- [ ] No default PAM enablement introduced
-- [ ] No `*.sha256` templates added
-- [ ] validate + duress-safety PASS
-- [ ] `git push -u origin lane/d-duress`
+- [x] No default PAM enablement introduced
+- [x] No `*.sha256` templates added
+- [x] validate + duress-safety PASS
+- [x] `git push -u origin lane/d-duress`
 
 ## On completion
 
