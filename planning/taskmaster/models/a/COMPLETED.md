@@ -17,3 +17,4 @@ A-W5-001 | 2026-08-13 | Reconfirm: pins-static PASS, action SHAs still on 42450b
 A-W5-001 | 2026-08-13 | Reconfirm after B/C W5 issue: pins-static PASS, still 42450b1 | 348a6a0
 A-W5-001 | 2026-08-13 | Reconfirm after D/F/G W4 merge: pins-static PASS; merge 754ed9e | 754ed9e
 A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still 07be046 / merge 754ed9e | cf13324
+A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; director STATUS still stale OPEN | 06e9a3c

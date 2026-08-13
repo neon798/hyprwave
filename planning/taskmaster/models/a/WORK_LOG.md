@@ -438,3 +438,10 @@ No invented follow-up.
 `origin/main` still `07be046`; already merged (`754ed9e`). Re-ran
 `pins-static` PASS (11). Action SHAs unchanged. GHCR still private.
 No invented follow-up.
+
+## 2026-08-13 — A-W5-001 heartbeat (main still OPEN)
+
+**status:** DONE (no new product work)
+
+Still `07be046` / lane merge `754ed9e`. `pins-static` PASS (11).
+A-W2-002 SHAs unchanged. GHCR still 403. No invented follow-up.
