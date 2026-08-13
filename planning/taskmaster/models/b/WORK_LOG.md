@@ -99,3 +99,14 @@
 - Freeze / lane tip: `fb3eb36`
 - Standby for integration (Director serial merge / INTEGRATION-DAY)
 - Optional self-check: relative links checked=245 missing=0
+
+
+## 2026-08-13 — B-W6-001
+
+- status OPEN → IN_PROGRESS → DONE
+- Merged origin/main into lane/b-docs (took Director CURRENT_TASK)
+- CHANGELOG Unreleased: W1–W4 A–G **on main**; VM smoke still open; GHCR 403
+- Dated section `[2026-08-13] — Waves 2–4 residual merge`
+- ISSUES merge-prep → on-main table; B-4 VM smoke called out
+- ACCURACY-AUDIT + POST-MERGE-DOC-FLIP + contributor-notes flip notes
+- Link walk checked=268 missing=0; no GHCR-public / duress-on claims

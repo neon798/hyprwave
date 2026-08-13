@@ -1,9 +1,10 @@
 # CURRENT_TASK
 
-status: OPEN
+status: DONE
 task_id: B-W6-001
 wave: 6
 issued: 2026-08-13T04:15:00Z
+completed: 2026-08-13T04:25:00Z
 poll: 2m
 title: CHANGELOG — Wave 2–4 is on main
 
@@ -24,6 +25,6 @@ CHANGELOG.md docs/** planning/integration/b-docs/** planning/taskmaster/models/b
 
 ## Done criteria
 
-- [ ] Dated or Unreleased note: W2–W4 on main; VM smoke still open
-- [ ] No GHCR-public / duress-on claims
-- [ ] `git push -u origin lane/b-docs`
+- [x] Dated or Unreleased note: W2–W4 on main; VM smoke still open
+- [x] No GHCR-public / duress-on claims
+- [x] `git push -u origin lane/b-docs`
