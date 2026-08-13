@@ -358,34 +358,23 @@ releases/latest                               CLEAN
 **status:** DONE  
 **branch:** `lane/a-stabilize`  
 **main merge tip:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac` (`merge: G-W5 wofi-comment allowlist`)  
-**lane merge-base:** same (`Already up to date` with `origin/main`)
+**lane merge-base:** same (`Already up to date`)
 
-### Refresh
-
-- `git fetch origin` + `git merge origin/main` → Already up to date
-- `git checkout origin/main -- planning/taskmaster/models/a/` (Director still OPEN)
-
-### Pin verify (merged main tree)
+### Pin verify
 
 ```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS, 0 FAIL)
+planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS, 0 FAIL)  2026-08-13T05:37:43Z
 releases/latest in build.sh / versions.env CLEAN
 ```
 
-### A-W2-002 action SHAs on HEAD (`origin/main` `c712cbd` / lane merge-base)
+### A-W2-002 SHAs on `origin/main` / HEAD
 
-| Action | Pin on `build.yml` |
-|--------|--------------------|
-| `docker/metadata-action` | `dc802804…` **v6.2.0** |
-| `docker/login-action` | `abd2ef45…` **v4.5.1** |
-| `sigstore/cosign-installer` | `6f9f1778…` **v4.1.2** (`cosign-release` still v2.6.3) |
-
-Majors still skipped: `actions/checkout` v6, `redhat-actions/push-to-registry` v2.
+- `docker/metadata-action@dc802804…` v6.2.0
+- `docker/login-action@abd2ef45…` v4.5.1
+- `sigstore/cosign-installer@6f9f1778…` v4.1.2
 
 ### GHCR
 
-Still documented **private**. `GHCR-VISIBILITY.md`: anonymous `hyprwave` **FAIL** `unauthorized`; do not claim public. Human Settings → Public still required.
+Still documented **private** (`GHCR-VISIBILITY.md`: hyprwave anonymous `unauthorized`).
 
-### Notes
-
-No `versions.env` / pin / workflow product change. No A-W6 issued. Exclusive paths only.
+No product change. No A-W6. Director copy on main still OPEN — reconfirmed only.
