@@ -101,3 +101,8 @@
 - KB `ghcr.md` + `updates.md` consistent
 - go test ./... PASS; smoke-host exit 0
 - status → DONE
+
+## 2026-08-13 — poll re-assert C-W2-002
+
+- main still OPEN for C-W2-002; lane already complete (tip 449ccf6 / mark 9fd9714). Re-assert DONE; no re-implement.
+- go test + smoke-host green
