@@ -6,7 +6,7 @@ Both are terminal-friendly tools on Hyprwave. They **complement** each other; ne
 
 - Flathub **browser** / app store TUI: search, browse categories, install, remove, update.
 - Best when you know an app name, want to explore the whole catalog, or manage apps outside the curated list.
-- Launched from the menu or as `flatarcade` (exact command may be a Ghostty wrapper depending on image version).
+- Launched from the menu, Super+A on Hyprland (skel), or `flatarcade` / Ghostty wrapper on the stock image.
 
 Typical jobs:
 
@@ -18,7 +18,7 @@ Typical jobs:
 
 - **Updater** — base image (`bootc`) + Flatpak updates with dry-run and double-confirm.
 - **Installer** — short **curated** catalog (`catalog.toml`), not all of Flathub.
-- **Knowledge Base** — how Hyprwave works (bootc, themes, dual DE, Walker, …).
+- **Knowledge Base** — how Hyprwave works (bootc, 11 themes, dual DE, Walker/hyprpaper, GHCR, …).
 - Never reboots the host; stages base upgrades and tells you to reboot yourself.
 
 Typical jobs:

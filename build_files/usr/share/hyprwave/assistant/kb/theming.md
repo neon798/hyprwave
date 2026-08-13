@@ -1,6 +1,6 @@
 # Theming & Customization
 
-Hyprwave ships a multi-theme store under `/usr/share/hyprwave/themes/`. Themes are whole-file packs (not partial palette fragments) so switches stay consistent across the stack.
+Hyprwave ships **11** theme packs under `/usr/share/hyprwave/themes/`. Themes are whole-file packs (not partial palette fragments) so switches stay consistent across the stack.
 
 ## Switching themes
 
@@ -9,17 +9,31 @@ hyprwave-theme list
 hyprwave-theme set <name>
 ```
 
-On **Hyprland**, the switcher live-reloads compositor UI pieces (hypr look, waybar, walker, mako, ghostty, wallpaper) when those components are present.
+On **Hyprland**, Super+Shift+T opens the theme GUI (`hyprwave-theme-gui`). The switcher live-reloads compositor UI pieces (hypr look, waybar, walker, mako, ghostty, wallpaper) when those components are present.
 
 On **COSMIC**, it copies theme `cosmic/config/` into `~/.config/cosmic/` and applies the wallpaper. You may need to reopen COSMIC settings panels or re-login for some keys to fully apply depending on session state.
 
-Active theme pointer (Hyprland-oriented):
+Active theme pointer:
 
 - `~/.config/hyprwave/theme` — absolute indirection symlink/file used by tools and Assistant accent detection
 
-## Bundled themes (examples)
+## The 11 bundled themes
 
-Synthwave (default), Retro Arcade, Cozy Harvest, Fjord Dark, Touge Drive, Vaporwave, Highway Haze, Lunar Pulse, Glitch Horizon, Arcade Rain, Verdant Haven — and any others listed by `hyprwave-theme list`.
+| Name | Character |
+|------|-----------|
+| **hyprwave** (default) | Classic synthwave |
+| retro-arcade | 80s arcade cabinets |
+| cozy-harvest | Warm earthy farm life |
+| fjord-dark | Clean cold nordic |
+| touge-drive | Night mountain racing |
+| vaporwave | 80s/90s vapor |
+| highway-haze | Misty neon drive |
+| lunar-pulse | Dreamy moonlit |
+| glitch-horizon | Glitchy retro future |
+| arcade-rain | Rainy neon arcade |
+| verdant-haven | Immersive nature |
+
+Confirm with `hyprwave-theme list` (must match these 11 names).
 
 ## What a theme package contains
 
@@ -30,9 +44,9 @@ Each directory under `/usr/share/hyprwave/themes/<name>/` typically provides:
 | `hypr/` | Compositor look / related fragments |
 | `ghostty/` | Terminal palette |
 | `waybar/` | Status bar styles |
-| `walker/` | Launcher theme |
+| `walker/` | Launcher theme (Hyprland) |
 | `mako/` | Notification styling |
-| `wallpapers/` | Desktop backgrounds |
+| `wallpapers/` | Desktop backgrounds (hyprpaper on Hyprland) |
 | `cosmic/config/` | COSMIC vendor-default keys (COSMIC variant) |
 | optional `sddm/` | Greeter assets when present |
 
@@ -55,7 +69,7 @@ Unknown names keep the classic synthwave palette (pink / cyan / purple). Accent 
 
 ## Wallpapers
 
-Theme wallpapers live with the theme pack. System-shared art may also appear under `/usr/share/hyprwave/wallpapers` depending on image version. Hyprland wallpaper is typically driven by hyprpaper config linked from the theme.
+Theme wallpapers live with the theme pack. Hyprland wallpaper is driven by **hyprpaper** (see `hyprpaper` article). COSMIC uses its own background keys.
 
 ## Troubleshooting themes
 
