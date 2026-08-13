@@ -12,5 +12,4 @@ A-W2-002 | 2026-08-13 | GHCR-VISIBILITY card + safe action bumps; skip checkout 
 A-W3-001 | 2026-08-13 | Stamp FIRST-BOOT local+CI proofs; GHCR still 403; pins current | c845521
 A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 | a31ecce
 A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
-A-W5-001 | 2026-08-13 | Post-merge pin verify; pins-static PASS; A-W2-002 SHAs on HEAD; GHCR 403 | 0e1fc15
-A-W5-001 | 2026-08-13 | Idle after G-W5 allowlist merge; pins-static PASS; no A-W6 | 43514f2
+A-W5-001 | 2026-08-13 | Reconfirm after G-W5 merge: pins-static PASS; merge 0a6f99a / main c712cbd | aeb828b

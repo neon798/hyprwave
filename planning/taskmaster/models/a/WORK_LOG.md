@@ -353,52 +353,24 @@ releases/latest                               CLEAN
 2. MERGE-READY / INTEGRATION-DAY inventory
 3. taskmaster DONE
 
-## 2026-08-13 — A-W5-001
+## 2026-08-13 — A-W5-001 reconfirm (G-W5 allowlist on main)
 
 **status:** DONE  
 **branch:** `lane/a-stabilize`
 
-Post-merge pin verify on `origin/main` after A Waves 2–4 landed.
-No product edits (`versions.env` / `build.sh` pins / workflows unchanged).
+Director copy on `origin/main` still lists **A-W5-001 OPEN**. No new
+product work. Re-synced models/a, already merged:
 
-### Merge SHAs
-
-- **origin/main tip:** `f97680db95cdb46ead69913000a27420b48cb1a5` (W5 complete)
-- **lane merge of main:** `18ffa3a` (`Merge remote-tracking branch 'origin/main' into lane/a-stabilize`)
-- **A Waves 2–4 on main:** `42450b1` (prior inventory; still ancestor of HEAD)
+- **origin/main:** `c712cbdbdadc29019dbcece83f5d2c1678c012ac` (G-W5 wofi-comment allowlist)
+- **lane merge of main:** `0a6f99a`
 
 ### Pin verify
 
 ```
 planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
-releases/latest                            CLEAN
 ```
 
-### build.yml A-W2-002 SHAs (HEAD blob == origin/main)
-
-| Action | Pin | Tag |
-|--------|-----|-----|
-| docker/metadata-action | `dc802804100637a589fabce1cb79ff13a1411302` | v6.2.0 |
-| docker/login-action | `abd2ef45e78c5afb21d64d4ca52ee8550d9572c7` | v4.5.1 |
-| sigstore/cosign-installer | `6f9f17788090df1f26f669e9d70d6ae9567deba6` | v4.1.2 |
-| actions/checkout | `df4cb1c069e1874edd31b4311f1884172cec0e10` | **v6** (no v7) |
-| redhat-actions/push-to-registry | `5ed88d269cf581ea9ef6dd6806d01562096bee9c` | **v2** (no v3) |
-
-### GHCR
-
-Still private. `ghcr-pull-test.sh --owner neon798` **exit 1**:
-hyprwave `unauthorized`; cosmic inspect OK. Docs still say do not claim public.
-
-### Commits
-
-1. already merged `origin/main` (`18ffa3a`)
-2. taskmaster DONE + WORK_LOG/COMPLETED
-
-## 2026-08-13 — A-W5-001 idle (G-W5 allowlist on main)
-
-**status:** DONE — idle, no invented work
-
-Director STATUS still **A free / can retask** (`W5_DONE`). No A-W6.
-Merged `origin/main` `c712cbd` (G-W5 wofi-comment allowlist) → lane `0a6f99a`.
-Re-ran `pins-static` PASS (11). Action SHAs unchanged. GHCR still 403.
-**Not inventing A-W6.**
+A-W2-002 SHAs still on HEAD: metadata `dc802804` v6.2.0; login `abd2ef45`
+v4.5.1; cosign `6f9f1778` v4.1.2; checkout v6; push-to-registry v2.
+GHCR still documented private (`GHCR-VISIBILITY.md` 403). No pin bump.
+No invented follow-up.
