@@ -14,4 +14,4 @@ A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 |
 A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
 A-W5-001 | 2026-08-13 | Post-merge pin verify on c712cbd; pins-static 11 PASS; A-W2-002 SHAs; GHCR private | 68ffa2a
 A-W5-001 | 2026-08-13 | Reconfirm: main still c712cbd; pins-static 11 PASS; SHAs/GHCR unchanged | 8e92f97
-A-W5-001 | 2026-08-13 | Poll: main still c712cbd; pins-static 11 PASS; no A-W6 | TBD
+A-W5-001 | 2026-08-13 | Poll: main still c712cbd; pins-static 11 PASS; no A-W6 | 2d15c41
