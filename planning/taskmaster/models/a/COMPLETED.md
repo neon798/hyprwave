@@ -11,3 +11,4 @@ A-W2-001 | 2026-08-13 | Reconfirm after origin/main merge: pins current, GHCR st
 A-W2-002 | 2026-08-13 | GHCR-VISIBILITY card + safe action bumps; skip checkout v7 / push v3 | c280d16
 A-W3-001 | 2026-08-13 | Stamp FIRST-BOOT local+CI proofs; GHCR still 403; pins current | c845521
 A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 | a31ecce
+A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
