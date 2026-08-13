@@ -358,5 +358,5 @@ releases/latest                               CLEAN
 **status:** DONE  
 **branch:** `lane/a-stabilize`
 
-Still `c712cbd` / `0a6f99a`. `pins-static` PASS (11). SHAs
-`dc802804`/`abd2ef45`/`6f9f1778`. GHCR still private. No invented work.
+Unchanged `c712cbd` / `0a6f99a`. `pins-static` PASS (11). Action SHAs
+unchanged. GHCR still 403. No invented follow-up.

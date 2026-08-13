@@ -12,4 +12,4 @@ A-W2-002 | 2026-08-13 | GHCR-VISIBILITY card + safe action bumps; skip checkout 
 A-W3-001 | 2026-08-13 | Stamp FIRST-BOOT local+CI proofs; GHCR still 403; pins current | c845521
 A-W3-001 | 2026-08-13 | Reconfirm: pins current, stamp present, GHCR still 403 | a31ecce
 A-W4-001 | 2026-08-13 | MERGE-READY exclusive inventory; pin_guards still pass | 782e68a
-A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; director STATUS still stale OPEN | 0a6f99a
+A-W5-001 | 2026-08-13 | Heartbeat: pins-static PASS; main still c712cbd OPEN | 0a6f99a
