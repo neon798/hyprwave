@@ -51,6 +51,18 @@ on `main` succeeds, then re-check anonymous pull.
 
 Local-only validation remains valid: build from this tree and boot a qcow2/ISO.
 
+## Wave 3 image proofs (2026-08-13, A-W3-001)
+
+| Proof | Result | Evidence |
+|-------|--------|----------|
+| Local Hyprland image | **PASS** (inspect) | `localhost/hyprwave:latest` Id `9bc0e1e57d6b` Digest `sha256:a935dbeb23d1…` Created 2026-08-13T03:16:36Z |
+| Local COSMIC image | **PASS** (inspect) | `localhost/hyprwave-cosmic:latest` Id `189340691cc7` Digest `sha256:a9ca6920971a…` Created 2026-08-13T03:22:53Z |
+| CI dual-image build + GHCR push | **PASS** | Actions run `31662742064` on `77755f1` (hyprland + cosmic, signed) |
+| Anonymous GHCR | **FAIL** 403/`unauthorized` | `hyprwave` unauthorized; cosmic inspect OK; `ghcr-pull-test.sh` exit 1 — **not public** |
+| VM / first-boot smoke | **OPEN** | No qcow2/ISO boot this tick; greeter/session rows stay unchecked |
+
+Operator next step for public pull: [`GHCR-VISIBILITY.md`](./GHCR-VISIBILITY.md). Do **not** document GHCR as anonymously readable.
+
 ## Out of scope (do not block first-boot “usable”)
 
 | Item | Why out of scope |
@@ -265,4 +277,31 @@ Follow-ups: none on lane A exclusive paths
 Overall: pins current + fail-closed; CI dual-push real; GHCR **not** anonymously public
 Blockers for ship: Package visibility Public on hyprwave (and confirm both via ghcr-pull-test.sh)
 Follow-ups: Dependabot skipped this cycle (see WORK_LOG)
+```
+
+```
+### Run log
+- Date (UTC): 2026-08-13
+- Operator: Model A (A-W3-001)
+- Branch / commit: lane/a-stabilize (Wave 3 stamp)
+- Artifact: localhost/hyprwave:latest + localhost/hyprwave-cosmic:latest; CI 77755f1 / run 31662742064
+- Image digest: sha256:a935dbeb23d13191ad05da0e876d46e97a0839c8931bca87adef240945618886 (hyprland); sha256:a9ca6920971a9c4f8b17ba7faa64f6d618fdd9e3e6890b7321be5b81b0fb4dfa (cosmic)
+- Image ID / RepoDigest: 9bc0e1e57d6b / 189340691cc7
+- Variant: both local images inspected
+- Host notes: no VM; pin HEAD --light + pins-static
+
+| Check | Result | Notes |
+|-------|--------|-------|
+| pin grep clean (build.sh) | PASS | no /releases/latest |
+| verify-pins.sh (--head --light) | PASS | 4× HTTP 200 |
+| pins-static QA | PASS | 11 PASS |
+| image/disk build | PASS | local inspects only (images already present) |
+| CI dual-image | PASS | run 31662742064 |
+| greeter / VM smoke | OPEN | not run |
+| GHCR anonymous pull | FAIL | 403/unauthorized; do not claim public |
+| Cosign verify (digest/tag) | SKIP | blocked by hyprwave unauthorized |
+
+Overall: local+CI image proofs stamped; pins still current; GHCR still private
+Blockers for ship: GHCR Public on both packages; VM first-boot still OPEN
+Follow-ups: none invented
 ```
