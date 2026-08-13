@@ -1,29 +1,27 @@
 # Task Master Status
 
 **Program:** Hyprwave parallel execution  
-**Director wave:** **2 issued** (T8 images in flight)  
-**Updated:** 2026-08-13T03:25:00Z  
+**Director wave:** **2 in progress**  
+**Updated:** 2026-08-13T03:29:05Z  
 **Endpoint:** see `ENDPOINT.md`
 
 | Model | Role | Branch | Current task | Status |
 |---|---|---|---|---|
-| A | Build / CI / pins / release | `lane/a-stabilize` | **A-W2-001** | OPEN |
-| B | Docs / handbook | `lane/b-docs` | **B-W2-001** | OPEN |
-| C | Hyprwave Assistant | `lane/c-assistant` | **C-W2-001** | OPEN |
-| D | Duress / security packaging | `lane/d-duress` | **D-W2-001** | OPEN |
-| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W2-001** | OPEN |
-| F | COSMIC variant | `lane/f-cosmic` | **F-W2-001** | OPEN |
-| G | QA automation | `lane/g-qa` | **G-W2-001** | OPEN |
+| A | Build / CI / pins / release | `lane/a-stabilize` | **A-W2-002** | OPEN |
+| B | Docs / handbook | `lane/b-docs` | **B-W2-002** | OPEN |
+| C | Hyprwave Assistant | `lane/c-assistant` | **C-W2-002** | OPEN |
+| D | Duress / security packaging | `lane/d-duress` | **D-W2-002** | OPEN |
+| E | Hyprland desktop / skel | `lane/e-hyprland` | **E-W2-002** | OPEN |
+| F | COSMIC variant | `lane/f-cosmic` | **F-W2-002** | OPEN |
+| G | QA automation | `lane/g-qa` | **G-W2-003** | OPEN |
 
 ## This check-in
 
-- HOLD cancelled. Wave 2 tasks issued on `origin/main` `CURRENT_TASK.md`.
-- Models must **refresh** `planning/taskmaster/models/<x>/` from `origin/main`,
-  merge/rebase onto latest main, then execute. New `task_id` (not `*-W1-HOLD`).
-- Cadence is **2 minutes** (Director + A–G). See `CADENCE.md`.
-- Director **must not** push empty heartbeats to `main` (CI thrash).
-- T8: CI dual-image PASS (`31662742064`); local `localhost/hyprwave:latest`
-  inspected (assistant 0.2.2, PAM duress off, 11 themes); cosmic local build running.
+- Verified DONE exclusive-only: **C-W2-001** `5df69a3`/`d21ead0`,
+  **D-W2-001** `5cc25bd`/`e1384e8`, **E-W2-001** `e364669`/`9b6e955`.
+- Issued **C-W2-002**, **D-W2-002**, **E-W2-002**.
+- A/B/F/G next tasks already OPEN on main; lane tips still previous DONE
+  (await refresh). No HOLD re-issue.
 
 ## Integration readiness
 

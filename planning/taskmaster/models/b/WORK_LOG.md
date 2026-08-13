@@ -2,6 +2,17 @@
 
 (append only)
 
+## 2026-08-13 — B-W2-001
+
+- status OPEN → IN_PROGRESS → DONE
+- Merged origin/main into lane/b-docs (conflict only in CURRENT_TASK; took main)
+- README: Assistant companion + stack + Optional extras (shipped, not upcoming)
+- docs/keybinds.md: Super+Shift+A → ghostty -e hyprwave-assistant (skel-accurate)
+- ISSUES B-5 closed; faq Q15 + security Assistant sections updated
+- COSMIC dock confirmed vs favorites file
+- Link check (fenced examples excluded): 263 / 0 missing
+- GHCR not claimed public; duress still off by default
+
 ## 2026-08-07 — B-W1-001
 
 - status OPEN → IN_PROGRESS → DONE
