@@ -359,26 +359,11 @@ releases/latest                               CLEAN
 **branch:** `lane/a-stabilize`  
 **main merge tip:** `c712cbd` (`merge: G-W5 wofi-comment allowlist`)
 
-### Work done
-
-Director copy on `origin/main` still lists A-W5-001 **OPEN**. No product
-delta vs previous lane completion — re-verified exclusive gates only.
+Director inbox on `origin/main` still OPEN for A-W5-001. Re-verified only:
 
 - `git merge origin/main` → already up to date (`c712cbd`).
-- `bash planning/qa/run-all.sh --only pins-static` → **RESULT: OK** (11 PASS / 0 FAIL).
-- `build.yml` on HEAD matches A-W2-002 SHA bumps (same as `origin/main`):
-  - `docker/metadata-action@dc802804…` # v6.2.0
-  - `docker/login-action@abd2ef45…` # v4.5.1
-  - `sigstore/cosign-installer@6f9f177…` # v4.1.2
-  - checkout remains v6 (`df4cb1c…`); push-to-registry remains v2 (majors skipped).
-- Workflows / `versions.env` / pin block: **identical** to `origin/main`.
+- `planning/qa/run-all.sh --only pins-static` → **RESULT: OK** (11 PASS).
+- `build.yml` A-W2-002 SHAs still on HEAD: metadata v6.2.0 `dc802804`, login v4.5.1 `abd2ef45`, cosign-installer v4.1.2 `6f9f177`. Checkout stays v6; push-to-registry stays v2.
+- `git diff origin/main -- .github/workflows/build.yml versions.env build.sh` empty.
 - GHCR still documented private (`INSTALL.md`, `GHCR-VISIBILITY.md`).
-- No A-W6 on director inbox. No invented follow-up.
-
-### Validation
-
-```
-planning/qa/run-all.sh --only pins-static  RESULT: OK (11 PASS)
-git rev-parse origin/main                  c712cbdbdadc29019dbcece83f5d2c1678c012ac
-git diff origin/main -- .github/workflows/build.yml build_files/versions.env  (empty)
-```
+- No A-W6. No invented follow-up.
