@@ -330,3 +330,9 @@
 ## 2026-08-13T04:57Z — E-W5-001 poll re-verify
 
 - origin/main still OPEN E-W5-001 @ c712cbd; lane already merged; 87 binds OK; status remains DONE
+
+## 2026-08-13T04:58Z — E-W5-001 poll re-verify
+
+- origin/main still OPEN E-W5-001 @ c712cbd; lane already DONE; merge: already up to date
+- 87 binds; Shift+A/T/E match KEYBIND-MAP; no cliphist/wofi/swaybg in skel
+- status remains DONE; no product edits
