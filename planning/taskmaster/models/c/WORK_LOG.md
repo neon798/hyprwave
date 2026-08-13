@@ -155,3 +155,10 @@
 
 - main still OPEN for C-W5-001; merged origin/main (07be046 D/F/G Wave 2–4)
 - go test + snippet-selftest still PASS; no product work; status left DONE
+
+## 2026-08-13 — poll re-verify C-W5-001 (W5 director close)
+
+- main still OPEN for C-W5-001; merged origin/main (f97680d W5 complete; B-W6/G-W6 issued)
+- `cd apps/hyprwave-assistant && go test ./...` PASS
+- `bash planning/integration/c-assistant/snippet-selftest.sh` PASS
+- no product work; status → DONE
